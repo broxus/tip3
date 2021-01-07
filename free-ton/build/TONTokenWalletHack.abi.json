@@ -1,0 +1,34 @@
+{
+	"ABI version": 2,
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "mint",
+			"inputs": [
+				{"name":"to","type":"address"},
+				{"name":"tokens","type":"uint128"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"name_","type":"bytes"},
+		{"key":2,"name":"symbol_","type":"bytes"},
+		{"key":3,"name":"decimals_","type":"uint8"},
+		{"key":4,"name":"root_address_","type":"address"},
+		{"key":5,"name":"code_","type":"cell"},
+		{"key":6,"name":"wallet_public_key_","type":"uint256"},
+		{"key":7,"name":"owner_address_","type":"address"}
+	],
+	"events": [
+	]
+}

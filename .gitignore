@@ -1,0 +1,9 @@
+ethereum/build/
+env/ethereum.env
+env/freeton.env
+node_modules/
+.idea/
+#Bridge.abi.json
+#Bridge.code
+free-ton/migration-log.json
+free-ton/keys

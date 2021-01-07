@@ -1,0 +1,176 @@
+{
+	"ABI version": 2,
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getName",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"bytes"}
+			]
+		},
+		{
+			"name": "getSymbol",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"bytes"}
+			]
+		},
+		{
+			"name": "getDecimals",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint8"}
+			]
+		},
+		{
+			"name": "getRootAddress",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "getOwnerAddress",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "getWalletPublicKey",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "getBalance",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "allowance",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"remaining_tokens","type":"uint128"},{"name":"spender","type":"address"}],"name":"value0","type":"tuple"}
+			]
+		},
+		{
+			"name": "accept",
+			"inputs": [
+				{"name":"tokens","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "approve",
+			"inputs": [
+				{"name":"spender","type":"address"},
+				{"name":"remaining_tokens","type":"uint128"},
+				{"name":"tokens","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "disapprove",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "transfer",
+			"inputs": [
+				{"name":"to","type":"address"},
+				{"name":"tokens","type":"uint128"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "transferFrom",
+			"inputs": [
+				{"name":"from","type":"address"},
+				{"name":"to","type":"address"},
+				{"name":"tokens","type":"uint128"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "internalTransfer",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"sender_public_key","type":"uint256"},
+				{"name":"sender_address","type":"address"},
+				{"name":"send_gas_to","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "internalTransferFrom",
+			"inputs": [
+				{"name":"to","type":"address"},
+				{"name":"tokens","type":"uint128"},
+				{"name":"send_gas_to","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "burnByOwner",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"grams","type":"uint128"},
+				{"name":"callback_address","type":"address"},
+				{"name":"callback_payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "burnByRoot",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"callback_address","type":"address"},
+				{"name":"callback_payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"name_","type":"bytes"},
+		{"key":2,"name":"symbol_","type":"bytes"},
+		{"key":3,"name":"decimals_","type":"uint8"},
+		{"key":4,"name":"root_address_","type":"address"},
+		{"key":5,"name":"code_","type":"cell"},
+		{"key":6,"name":"wallet_public_key_","type":"uint256"},
+		{"key":7,"name":"owner_address_","type":"address"}
+	],
+	"events": [
+	]
+}
