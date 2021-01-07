@@ -114,6 +114,7 @@ describe('Test Fungible Tokens', function () {
                     grams: freeton.utils.convertCrystal('1', 'nano'),
                     wallet_public_key: `0x${tonWrapper.keys[1].public}`,
                     owner_address: ZERO_ADDRESS,
+                    gas_back_address: ZERO_ADDRESS,
                 },
                 tonWrapper.keys[0]
             );
@@ -144,6 +145,7 @@ describe('Test Fungible Tokens', function () {
                     grams: freeton.utils.convertCrystal('1', 'nano'),
                     wallet_public_key: `0x${tonWrapper.keys[2].public}`,
                     owner_address: ZERO_ADDRESS,
+                    gas_back_address: ZERO_ADDRESS,
                 },
                 tonWrapper.keys[0]
             );
@@ -232,7 +234,7 @@ describe('Test Fungible Tokens', function () {
                     tokens: 60000,
                     grams: freeton.utils.convertCrystal('2.5', 'nano'),
                     pubkey: `0x${tonWrapper.keys[6].public}`,
-                    addr: ZERO_ADDRESS,
+                    addr: ZERO_ADDRESS
                 },
                 tonWrapper.keys[0]
             ).catch(e => console.log(e));

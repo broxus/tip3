@@ -1,0 +1,143 @@
+{
+	"ABI version": 2,
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "broxusBridgeCallback",
+			"inputs": [
+				{"components":[{"name":"eventTransaction","type":"uint256"},{"name":"eventIndex","type":"uint256"},{"name":"eventData","type":"cell"},{"name":"eventBlockNumber","type":"uint256"},{"name":"eventBlock","type":"uint256"},{"name":"ethereumEventConfiguration","type":"address"},{"name":"requiredConfirmations","type":"uint256"},{"name":"requiredRejects","type":"uint256"},{"name":"proxyAddress","type":"address"}],"name":"eventData","type":"tuple"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "burnCallback",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"payload","type":"cell"},
+				{"name":"sender_public_key","type":"uint256"},
+				{"name":"sender_address","type":"address"},
+				{"name":"wallet_address","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "burnMyTokens",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"callback_address","type":"address"},
+				{"name":"callback_payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getTokenRootAddress",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "getEthEventDeployPubkey",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "getEthEventConfigAddress",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "getBurnMinMsgValue",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "getDeployWalletGrams",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "setTokenRootAddressOnce",
+			"inputs": [
+				{"name":"value","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setEthEventDeployPubkeyOnce",
+			"inputs": [
+				{"name":"value","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setEthEventConfigAddressOnce",
+			"inputs": [
+				{"name":"value","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setBurnMinMsgValue",
+			"inputs": [
+				{"name":"value","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setDeployWalletGrams",
+			"inputs": [
+				{"name":"value","type":"uint128"}
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"_randomNonce","type":"uint256"},
+		{"key":2,"name":"external_owner_pubkey","type":"uint256"},
+		{"key":3,"name":"internal_owner_address","type":"address"},
+		{"key":4,"name":"ethereum_event_code","type":"cell"}
+	],
+	"events": [
+		{
+			"name": "Burn",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"payload","type":"cell"},
+				{"name":"owner_public_key","type":"uint256"},
+				{"name":"owner_address","type":"address"},
+				{"name":"wallet_address","type":"address"}
+			],
+			"outputs": [
+			]
+		}
+	]
+}

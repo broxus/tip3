@@ -81,7 +81,8 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         uint128 tokens,
         uint128 grams,
         uint256 wallet_public_key,
-        address owner_address
+        address owner_address,
+        address gas_back_address
     ) override external onlyOwner returns (address) {
         require(tokens >= 0);
         require(owner_address.value != 0 && wallet_public_key == 0 ||
@@ -113,8 +114,12 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         total_supply_ += tokens;
 
-        if(root_owner_address_.value != 0) {
-            msg.sender.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+        if (root_owner_address_.value != 0) {
+            if (gas_back_address.value != 0) {
+                gas_back_address.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+            } else {
+                msg.sender.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+            }
         }
 
         return wallet;
@@ -123,7 +128,8 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     function deployEmptyWallet(
         uint128 grams,
         uint256 wallet_public_key,
-        address owner_address
+        address owner_address,
+        address gas_back_address
     ) override external returns (address) {
         require(owner_address.value != 0 && wallet_public_key == 0 ||
                 owner_address.value == 0 && wallet_public_key != 0,
@@ -148,7 +154,11 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
             }
         }();
 
-        msg.sender.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+        if (gas_back_address.value != 0) {
+            gas_back_address.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+        } else {
+            msg.sender.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+        }
 
         return walletAddress;
     }

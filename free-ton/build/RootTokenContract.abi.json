@@ -81,7 +81,8 @@
 				{"name":"tokens","type":"uint128"},
 				{"name":"grams","type":"uint128"},
 				{"name":"wallet_public_key","type":"uint256"},
-				{"name":"owner_address","type":"address"}
+				{"name":"owner_address","type":"address"},
+				{"name":"gas_back_address","type":"address"}
 			],
 			"outputs": [
 				{"name":"value0","type":"address"}
@@ -92,7 +93,8 @@
 			"inputs": [
 				{"name":"grams","type":"uint128"},
 				{"name":"wallet_public_key","type":"uint256"},
-				{"name":"owner_address","type":"address"}
+				{"name":"owner_address","type":"address"},
+				{"name":"gas_back_address","type":"address"}
 			],
 			"outputs": [
 				{"name":"value0","type":"address"}

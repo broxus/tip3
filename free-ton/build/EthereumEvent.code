@@ -1,0 +1,1082 @@
+.globl	constructor
+.public	constructor
+.type	constructor, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7_with_init_storage$
+}
+IF
+;; constructor protection
+GETGLOB 6
+THROWIF 51
+PUSHINT 1
+SETGLOB 6
+;; end constructor protection
+; Decode input parameters
+; Decode relayKey
+LDU 256
+ENDS
+;; param: relayKey
+; constructor EthereumEvent
+ACCEPT
+; expValue
+; end expValue
+;; get member InProcess
+PUSHINT 0
+; colValue
+SETGLOB 11
+; end colValue
+;; push identifier relayKey
+DUP
+CALL $confirm_internal$
+DROP
+; end constructor EthereumEvent
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	confirm
+.public	confirm
+.type	confirm, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode relayKey
+LDU 256
+ENDS
+;; param: relayKey
+; modifier onlyEventConfiguration
+;; get member ethereumEventConfiguration
+;; push identifier initData
+GETGLOB 10
+INDEX 5
+PUSHINT 12642
+;; get member sender
+GETGLOB 9
+;; push identifier configuration
+PUSH S2
+SDEQ
+THROWANYIFNOT
+; modifier eventInProcess
+PUSHINT 16428
+;; push identifier status
+GETGLOB 11
+;; get member InProcess
+PUSHINT 0
+;; ==
+EQUAL
+THROWANYIFNOT
+; function confirm
+; for
+PUSHINT 0
+;; decl: i
+PUSHCONT {
+	;; push identifier i
+	DUP
+	;; get member length
+	;; push identifier confirmKeys
+	GETGLOB 12
+	INDEX 0
+	;; <
+	LESS
+}
+PUSHCONT {
+	;; index
+	;; push identifier i
+	DUP
+	;; push identifier confirmKeys
+	GETGLOB 12
+	INDEX 1
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	PLDU 256
+	;; push identifier relayKey
+	PUSH S3
+	;; !=
+	NEQ
+	THROWIFNOT 404
+	;; ++
+	; expValue
+	; end expValue
+	INC
+	; colValue
+	; end colValue
+}
+WHILE
+DROP
+; end for
+; expValue
+;; fetch confirmKeys
+GETGLOB 12
+; end expValue
+;; push identifier relayKey
+PUSH S2
+;; array.push(..)
+NEWC
+STU 256
+SWAP
+UNPAIR
+PUSH S1
+INC
+XCHG s3
+ROTREV
+PUSHINT 32
+DICTUSETB
+PAIR
+; colValue
+SETGLOB 12
+; end colValue
+;; if
+;; get member length
+;; push identifier confirmKeys
+GETGLOB 12
+INDEX 0
+;; get member requiredConfirmations
+;; push identifier initData
+GETGLOB 10
+INDEX 6
+;; >=
+GEQ
+PUSHCONT {
+	CALL $_executeProxyCallback_internal$
+	; expValue
+	; end expValue
+	;; get member Confirmed
+	PUSHINT 1
+	; colValue
+	SETGLOB 11
+	; end colValue
+	;; transfer()
+	;; get member ethereumEventConfiguration
+	;; push identifier initData
+	GETGLOB 10
+	INDEX 5
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+IF
+;; end if
+; end function confirm
+; end modifier eventInProcess
+DROP2
+; end modifier onlyEventConfiguration
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	confirm_internal
+.type	confirm_internal, @function
+;; param: relayKey
+; modifier onlyEventConfiguration
+;; get member ethereumEventConfiguration
+;; push identifier initData
+GETGLOB 10
+INDEX 5
+PUSHINT 12642
+;; get member sender
+GETGLOB 9
+;; push identifier configuration
+PUSH S2
+SDEQ
+THROWANYIFNOT
+; modifier eventInProcess
+PUSHINT 16428
+;; push identifier status
+GETGLOB 11
+;; get member InProcess
+PUSHINT 0
+;; ==
+EQUAL
+THROWANYIFNOT
+; function confirm
+; for
+PUSHINT 0
+;; decl: i
+PUSHCONT {
+	;; push identifier i
+	DUP
+	;; get member length
+	;; push identifier confirmKeys
+	GETGLOB 12
+	INDEX 0
+	;; <
+	LESS
+}
+PUSHCONT {
+	;; index
+	;; push identifier i
+	DUP
+	;; push identifier confirmKeys
+	GETGLOB 12
+	INDEX 1
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	PLDU 256
+	;; push identifier relayKey
+	PUSH S3
+	;; !=
+	NEQ
+	THROWIFNOT 404
+	;; ++
+	; expValue
+	; end expValue
+	INC
+	; colValue
+	; end colValue
+}
+WHILE
+DROP
+; end for
+; expValue
+;; fetch confirmKeys
+GETGLOB 12
+; end expValue
+;; push identifier relayKey
+PUSH S2
+;; array.push(..)
+NEWC
+STU 256
+SWAP
+UNPAIR
+PUSH S1
+INC
+XCHG s3
+ROTREV
+PUSHINT 32
+DICTUSETB
+PAIR
+; colValue
+SETGLOB 12
+; end colValue
+;; if
+;; get member length
+;; push identifier confirmKeys
+GETGLOB 12
+INDEX 0
+;; get member requiredConfirmations
+;; push identifier initData
+GETGLOB 10
+INDEX 6
+;; >=
+GEQ
+PUSHCONT {
+	CALL $_executeProxyCallback_internal$
+	; expValue
+	; end expValue
+	;; get member Confirmed
+	PUSHINT 1
+	; colValue
+	SETGLOB 11
+	; end colValue
+	;; transfer()
+	;; get member ethereumEventConfiguration
+	;; push identifier initData
+	GETGLOB 10
+	INDEX 5
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+IF
+;; end if
+; end function confirm
+; end modifier eventInProcess
+DROP2
+; end modifier onlyEventConfiguration
+
+.globl	reject
+.public	reject
+.type	reject, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode relayKey
+LDU 256
+ENDS
+;; param: relayKey
+; modifier onlyEventConfiguration
+;; get member ethereumEventConfiguration
+;; push identifier initData
+GETGLOB 10
+INDEX 5
+PUSHINT 12642
+;; get member sender
+GETGLOB 9
+;; push identifier configuration
+PUSH S2
+SDEQ
+THROWANYIFNOT
+; modifier eventInProcess
+PUSHINT 16428
+;; push identifier status
+GETGLOB 11
+;; get member InProcess
+PUSHINT 0
+;; ==
+EQUAL
+THROWANYIFNOT
+; function reject
+; for
+PUSHINT 0
+;; decl: i
+PUSHCONT {
+	;; push identifier i
+	DUP
+	;; get member length
+	;; push identifier rejectKeys
+	GETGLOB 13
+	INDEX 0
+	;; <
+	LESS
+}
+PUSHCONT {
+	;; index
+	;; push identifier i
+	DUP
+	;; push identifier rejectKeys
+	GETGLOB 13
+	INDEX 1
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	PLDU 256
+	;; push identifier relayKey
+	PUSH S3
+	;; !=
+	NEQ
+	THROWIFNOT 404
+	;; ++
+	; expValue
+	; end expValue
+	INC
+	; colValue
+	; end colValue
+}
+WHILE
+DROP
+; end for
+; expValue
+;; fetch rejectKeys
+GETGLOB 13
+; end expValue
+;; push identifier relayKey
+PUSH S2
+;; array.push(..)
+NEWC
+STU 256
+SWAP
+UNPAIR
+PUSH S1
+INC
+XCHG s3
+ROTREV
+PUSHINT 32
+DICTUSETB
+PAIR
+; colValue
+SETGLOB 13
+; end colValue
+;; if
+;; get member length
+;; push identifier rejectKeys
+GETGLOB 13
+INDEX 0
+;; get member requiredRejects
+;; push identifier initData
+GETGLOB 10
+INDEX 7
+;; >=
+GEQ
+PUSHCONT {
+	; expValue
+	; end expValue
+	;; get member Rejected
+	PUSHINT 2
+	; colValue
+	SETGLOB 11
+	; end colValue
+	;; transfer()
+	;; get member ethereumEventConfiguration
+	;; push identifier initData
+	GETGLOB 10
+	INDEX 5
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+IF
+;; end if
+; end function reject
+; end modifier eventInProcess
+DROP2
+; end modifier onlyEventConfiguration
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	reject_internal
+.type	reject_internal, @function
+;; param: relayKey
+; modifier onlyEventConfiguration
+;; get member ethereumEventConfiguration
+;; push identifier initData
+GETGLOB 10
+INDEX 5
+PUSHINT 12642
+;; get member sender
+GETGLOB 9
+;; push identifier configuration
+PUSH S2
+SDEQ
+THROWANYIFNOT
+; modifier eventInProcess
+PUSHINT 16428
+;; push identifier status
+GETGLOB 11
+;; get member InProcess
+PUSHINT 0
+;; ==
+EQUAL
+THROWANYIFNOT
+; function reject
+; for
+PUSHINT 0
+;; decl: i
+PUSHCONT {
+	;; push identifier i
+	DUP
+	;; get member length
+	;; push identifier rejectKeys
+	GETGLOB 13
+	INDEX 0
+	;; <
+	LESS
+}
+PUSHCONT {
+	;; index
+	;; push identifier i
+	DUP
+	;; push identifier rejectKeys
+	GETGLOB 13
+	INDEX 1
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	PLDU 256
+	;; push identifier relayKey
+	PUSH S3
+	;; !=
+	NEQ
+	THROWIFNOT 404
+	;; ++
+	; expValue
+	; end expValue
+	INC
+	; colValue
+	; end colValue
+}
+WHILE
+DROP
+; end for
+; expValue
+;; fetch rejectKeys
+GETGLOB 13
+; end expValue
+;; push identifier relayKey
+PUSH S2
+;; array.push(..)
+NEWC
+STU 256
+SWAP
+UNPAIR
+PUSH S1
+INC
+XCHG s3
+ROTREV
+PUSHINT 32
+DICTUSETB
+PAIR
+; colValue
+SETGLOB 13
+; end colValue
+;; if
+;; get member length
+;; push identifier rejectKeys
+GETGLOB 13
+INDEX 0
+;; get member requiredRejects
+;; push identifier initData
+GETGLOB 10
+INDEX 7
+;; >=
+GEQ
+PUSHCONT {
+	; expValue
+	; end expValue
+	;; get member Rejected
+	PUSHINT 2
+	; colValue
+	SETGLOB 11
+	; end colValue
+	;; transfer()
+	;; get member ethereumEventConfiguration
+	;; push identifier initData
+	GETGLOB 10
+	INDEX 5
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+IF
+;; end if
+; end function reject
+; end modifier eventInProcess
+DROP2
+; end modifier onlyEventConfiguration
+
+.globl	_executeProxyCallback_internal
+.type	_executeProxyCallback_internal, @function
+; function _executeProxyCallback
+;; Remote call IProxy.broxusBridgeCallback
+;; get member proxyAddress
+;; push identifier initData
+GETGLOB 10
+INDEX 8
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x43b9aca00000000000000000000000000004_
+STSLICER
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x16afd0c4
+;; eventData
+;; push identifier initData
+GETGLOB 10
+UNTUPLE 9
+BLKSWAP 1, 9
+PUSH S9
+STUR 256
+PUSH S8
+STUR 256
+PUSH S7
+STREFR
+PUSH S6
+STUR 256
+NEWC
+PUSH S6
+STUR 256
+PUSH S5
+STSLICER
+PUSH S4
+STUR 256
+NEWC
+PUSH S4
+STUR 256
+PUSH S3
+STSLICER
+BLKDROP2 9, 3
+STBREFR
+STBREFR
+STBREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+; end function _executeProxyCallback
+
+.globl	getDetails
+.public	getDetails
+.type	getDetails, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; function getDetails
+;; ret param: _initData
+PUSHINT 0
+PUSHINT 0
+NEWC
+ENDC
+PUSHINT 0
+PUSHINT 0
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+PUSHINT 0
+PUSHINT 0
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+TUPLE 9
+;; ret param: _status
+PUSHINT 0
+;; ret param: _confirmKeys
+PUSHINT 0
+NEWDICT
+PAIR
+;; ret param: _rejectKeys
+PUSHINT 0
+NEWDICT
+PAIR
+;; return
+;; push identifier initData
+GETGLOB 10
+;; push identifier status
+GETGLOB 11
+;; push identifier confirmKeys
+GETGLOB 12
+;; push identifier rejectKeys
+GETGLOB 13
+BLKDROP2 4, 4
+;; emitting 4 value(s)
+PUSH S4
+EQINT -1
+PUSHCONT {
+	PUSH S6
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 1
+	NEWC
+	STSLICECONST x9436828e
+	PUSH S5
+	UNTUPLE 9
+	BLKSWAP 1, 9
+	PUSH S9
+	STUR 256
+	PUSH S8
+	STUR 256
+	PUSH S7
+	STREFR
+	PUSH S6
+	STUR 256
+	NEWC
+	PUSH S6
+	STUR 256
+	PUSH S5
+	STSLICER
+	PUSH S4
+	STUR 256
+	NEWC
+	PUSH S4
+	STUR 256
+	PUSH S3
+	STSLICER
+	BLKDROP2 9, 3
+	PUSH S6
+	STUR 8
+	PUSH S5
+	UNPAIR
+	XCHG s2
+	STU 32
+	STDICT
+	PUSH S4
+	UNPAIR
+	XCHG s2
+	STU 32
+	STDICT
+	STBREFR
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+}
+IF
+BLKDROP 4
+; end function getDetails
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
+TRUE
+SETGLOB 7
+
+.globl	getDetails_internal
+.type	getDetails_internal, @function
+; function getDetails
+;; ret param: _initData
+PUSHINT 0
+PUSHINT 0
+NEWC
+ENDC
+PUSHINT 0
+PUSHINT 0
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+PUSHINT 0
+PUSHINT 0
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+TUPLE 9
+;; ret param: _status
+PUSHINT 0
+;; ret param: _confirmKeys
+PUSHINT 0
+NEWDICT
+PAIR
+;; ret param: _rejectKeys
+PUSHINT 0
+NEWDICT
+PAIR
+;; return
+;; push identifier initData
+GETGLOB 10
+;; push identifier status
+GETGLOB 11
+;; push identifier confirmKeys
+GETGLOB 12
+;; push identifier rejectKeys
+GETGLOB 13
+BLKDROP2 4, 4
+; end function getDetails
+
+.globl	c7_to_c4
+.type	c7_to_c4, @function
+GETGLOB 2
+NEWC
+STU 256
+GETGLOB 3
+STUR 64
+GETGLOB 6
+STUR 1
+GETGLOB 10
+GETGLOB 11
+GETGLOB 12
+UNTUPLE 2
+GETGLOB 13
+UNTUPLE 2
+REVERSE 7, 0
+SWAP
+UNTUPLE 9
+NEWC
+NEWC
+PUSH S6
+STUR 256
+PUSH S5
+STSLICER
+PUSH S4
+STUR 256
+STBREFR
+NEWC
+PUSH S3
+STUR 256
+PUSH S2
+STSLICER
+STBREFR
+PUSH S9
+STUR 256
+PUSH S8
+STUR 256
+PUSH S7
+STREFR
+PUSH S6
+STUR 256
+XCHG s9
+BLKDROP 9
+STBREFR
+STU 8
+STU 32
+STDICT
+STU 32
+STDICT
+ENDC
+POP C4
+
+.globl	c4_to_c7
+.type	c4_to_c7, @function
+PUSHROOT
+CTOS        ; c4
+LDU 256      ; pubkey c4
+LDU 64      ; pubkey timestamp c4
+LDU 1       ; pubkey [timestamp] constructor_flag memory
+LDREFRTOS
+LDREF
+LDREF
+LDU 256
+LDU 256
+LDREF
+PLDU 256
+BLKSWAP 1, 5
+CTOS
+LDU 256
+LDMSGADDR
+PLDU 256
+BLKSWAP 1, 7
+CTOS
+LDU 256
+TUPLE 9
+SETGLOB 10
+LDU 8
+LDU 32
+LDDICT
+ROTREV
+PAIR
+SETGLOB 12
+LDU 32
+PLDDICT
+PAIR
+SETGLOB 13
+SETGLOB 11
+TRUE
+SETGLOB 1   ; pubkey [timestamp] constructor_flag
+SETGLOB 6   ; pubkey [timestamp]
+SETGLOB 3   ; D
+SETGLOB 2
+
+.macro c4_to_c7_with_init_storage
+PUSHROOT
+CTOS        ; c4
+DUP        ; c4 c4
+SBITS      ; c4 bits
+GTINT 1    ; c4 bits>1
+PUSHCONT {
+	LDU 256      ; pubkey c4
+	LDU 64      ; pubkey timestamp c4
+	LDU 1       ; pubkey [timestamp] constructor_flag memory
+	LDREFRTOS
+	LDREF
+	LDREF
+	LDU 256
+	LDU 256
+	LDREF
+	PLDU 256
+	BLKSWAP 1, 5
+	CTOS
+	LDU 256
+	LDMSGADDR
+	PLDU 256
+	BLKSWAP 1, 7
+	CTOS
+	LDU 256
+	TUPLE 9
+	SETGLOB 10
+	LDU 8
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SETGLOB 12
+	LDU 32
+	PLDDICT
+	PAIR
+	SETGLOB 13
+	SETGLOB 11
+	TRUE
+	SETGLOB 1   ; pubkey [timestamp] constructor_flag
+	SETGLOB 6   ; pubkey [timestamp]
+	SETGLOB 3   ; D
+	SETGLOB 2
+}
+PUSHCONT {
+	PLDDICT   ; D
+	; init initData
+	PUSHINT 1
+	PUSH S1
+	PUSHINT 64
+	DICTUGETREF
+	PUSHCONT {
+		CTOS
+		LDREF
+		LDREF
+		LDU 256
+		LDU 256
+		LDREF
+		PLDU 256
+		BLKSWAP 1, 5
+		CTOS
+		LDU 256
+		LDMSGADDR
+		PLDU 256
+		BLKSWAP 1, 7
+		CTOS
+		LDU 256
+		TUPLE 9
+	}
+	PUSHCONT {
+		PUSHINT 0
+		PUSHINT 0
+		NEWC
+		ENDC
+		PUSHINT 0
+		PUSHINT 0
+		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+		PUSHINT 0
+		PUSHINT 0
+		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+		TUPLE 9
+	}
+	IFELSE
+	SETGLOB 10
+	; init status
+	PUSHINT 0
+	SETGLOB 11
+	; init confirmKeys
+	PUSHINT 0
+	NEWDICT
+	PAIR
+	SETGLOB 12
+	; init rejectKeys
+	PUSHINT 0
+	NEWDICT
+	PAIR
+	SETGLOB 13
+	; set contract pubkey
+	PUSHINT 0
+	SWAP
+	PUSHINT 64
+	DICTUGET
+	THROWIFNOT 61
+	PLDU 256
+	SETGLOB 2
+	PUSHINT 0 ; timestamp
+	SETGLOB 3
+	PUSHINT 0 ; constructor_flag
+	SETGLOB 6
+	TRUE
+	SETGLOB 1
+}
+IFELSE
+
+.internal-alias :main_internal,        0
+.internal	:main_internal
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Function: main_internal
+;; param: contract_balance
+;; param: msg_balance
+;; param: int_msg_info
+;; param: msg_body_slice
+PUSHINT 0  ; main_external trans id
+PUSH S2
+CTOS
+LDU 4       ; bounced tail
+LDMSGADDR   ; bounced src tail
+DROP
+SETGLOB 9
+MODPOW2 1
+IFRET
+PUSH S1    ; body
+SEMPTY     ; isEmpty
+IFRET
+PUSH S1 ; body
+LDU 32  ; funcId body'
+PUSH S1 ; funcId body' funcId
+IFNOTRET
+PUSH S1 ; funcId body' funcId
+LESSINT 3            ; funcId body' funcId<3
+PUSH S2              ; funcId body' funcId<3 funcId
+PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
+GREATER              ; funcId body' funcId<3 funcId>4294967293
+OR                   ; funcId body' funcId<3||funcId>4294967293
+PUSHCONT {
+	DROP2
+	THROW 60
+}
+IFJMP
+SWAP    ; body funcId
+CALL 1
+GETGLOB 7
+ISNULL
+PUSHCONT {
+	DROP
+	THROW 60
+}
+IF
+
+.internal-alias :main_external,        -1
+.internal	:main_external
+PUSHINT -1 ; main_external trans id
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+SETGLOB 9
+PUSH S1
+CALL $c4_to_c7_with_init_storage$
+LDU 1 ; haveSign msgSlice
+SWAP
+PUSHCONT {
+	PUSHINT 512
+	LDSLICEX ; signatureSlice msgSlice
+	DUP      ; signatureSlice msgSlice msgSlice
+	HASHSU   ; signatureSlice msgSlice hashMsgSlice
+	ROT
+	GETGLOB 2
+	CHKSIGNU      ; msgSlice isSigned
+	THROWIFNOT 40 ; msgSlice
+}
+IF
+LDU 64                         ; timestamp msgSlice
+SWAP                           ; msgSlice timestamp
+CALL $replay_protection_macro$ ; msgSlice
+LDU 32  ; expireAt msgSlice
+SWAP    ; msgSlice expireAt
+NOW     ; msgSlice expireAt now
+GREATER ; msgSlice expireAt>now
+THROWIFNOT 57
+LDU  32 ; funcId body
+PUSH S1 ; funcId body funcId
+LESSINT 3            ; funcId body' funcId<3
+PUSH S2              ; funcId body' funcId<3 funcId
+PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
+GREATER              ; funcId body' funcId<3 funcId>4294967293
+OR                   ; funcId body' funcId<3||funcId>4294967293
+PUSHCONT {
+	DROP2
+	THROW 60
+}
+IFJMP
+SWAP    ; body funcId
+CALL 1
+GETGLOB 7
+ISNULL
+PUSHCONT {
+	DROP
+	THROW 60
+}
+IF
+

@@ -116,7 +116,13 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
     function deployWallet(uint128 tokens, uint128 grams, uint256 pubkey, address addr) external view onlyOwner {
         require(root_address_.value != 0);
         tvm.accept();
-        IRootTokenContract(root_address_).deployWallet{value: (grams + settings_deploy_value)}(tokens, grams, pubkey, addr);
+        IRootTokenContract(root_address_).deployWallet{value: (grams + settings_deploy_value)}(
+            tokens,
+            grams,
+            pubkey,
+            addr,
+            address(this)
+        );
     }
 
     function mint(uint128 tokens, address addr) external view onlyOwner {
