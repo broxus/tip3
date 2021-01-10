@@ -21,7 +21,12 @@ contract DeployEmptyWalletFor {
         tvm.accept();
         latest_pubkey = pubkey;
         latest_addr = addr;
-        IRootTokenContract(root).deployEmptyWallet{value: 2 ton}(1 ton, pubkey, addr);
+        IRootTokenContract(root).deployEmptyWallet{value: 2 ton}(
+            1 ton,
+            pubkey,
+            addr,
+            address.makeAddrStd(0, 0)
+        );
     }
 
     function getLatestPublicKey() external view returns(uint256) {

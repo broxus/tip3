@@ -655,11 +655,22 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode gas_back_address
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
 ;; param: tokens
 ;; param: grams
 ;; param: wallet_public_key
 ;; param: owner_address
+;; param: gas_back_address
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 19
@@ -720,7 +731,7 @@ IFNOT
 THROWANYIFNOT
 ; function deployWallet
 ;; push identifier tokens
-PUSH S3
+PUSH S4
 PUSHINT 0
 ;; >=
 GEQ
@@ -736,7 +747,7 @@ PUSHCONT {
 IF
 ;; get member value
 ;; push identifier owner_address
-PUSH S1
+PUSH S2
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -746,7 +757,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	PUSH S2
+	PUSH S3
 	EQINT 0
 }
 IF
@@ -756,7 +767,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address
-	PUSH S1
+	PUSH S2
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -766,7 +777,7 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		PUSH S2
+		PUSH S3
 		NEQINT 0
 	}
 	IF
@@ -800,7 +811,7 @@ IF
 ;; end if
 NEWDICT
 ;; push identifier wallet_public_key
-PUSH S2
+PUSH S3
 NEWC
 STU 256
 PUSHINT 0
@@ -839,7 +850,7 @@ ROT
 PUSHINT 64
 DICTUSETREF
 ;; push identifier wallet_public_key
-PUSH S2
+PUSH S3
 NEWC
 STU 256
 PUSHINT 6
@@ -847,7 +858,7 @@ ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address
-PUSH S1
+PUSH S2
 PUSHINT 7
 ROT
 PUSHINT 64
@@ -871,7 +882,7 @@ STU 256
 ENDC
 CTOS
 ;; push identifier grams
-PUSH S4
+PUSH S5
 PUSH S1
 NEWC
 STSLICECONST x62_
@@ -904,13 +915,13 @@ STSLICECONST 0
 STSLICECONST x0b3fcf57
 ;; tokens
 ;; push identifier tokens
-PUSH S5
+PUSH S6
 STUR 128
 ENDC
 PUSHINT 1
 SENDRAWMSG
 ;; push identifier tokens
-PUSH S4
+PUSH S5
 ; expValue
 ;; fetch total_supply_
 GETGLOB 17
@@ -929,28 +940,55 @@ PARSEMSGADDR
 INDEX 3
 PLDU 256
 PUSHCONT {
-	;; transfer()
-	;; get member sender
-	GETGLOB 9
-	NEWC
-	STSLICECONST x62_
-	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	ENDC
-	PUSHINT 128
-	SENDRAWMSG
+	;; if
+	;; get member value
+	;; push identifier gas_back_address
+	PUSH S1
+	PARSEMSGADDR
+	INDEX 3
+	PLDU 256
+	NEQINT 0
+	PUSHCONT {
+		;; transfer()
+		;; push identifier gas_back_address
+		PUSH S1
+		NEWC
+		STSLICECONST x62_
+		STSLICE
+		PUSHINT 109
+		STZEROES
+		STSLICECONST 0
+		STSLICECONST 0
+		ENDC
+		PUSHINT 128
+		SENDRAWMSG
+	}
+	PUSHCONT {
+		;; transfer()
+		;; get member sender
+		GETGLOB 9
+		NEWC
+		STSLICECONST x62_
+		STSLICE
+		PUSHINT 109
+		STZEROES
+		STSLICECONST 0
+		STSLICECONST 0
+		ENDC
+		PUSHINT 128
+		SENDRAWMSG
+	}
+	IFELSE
+	;; end if
 }
 IF
 ;; end if
 ;; return
 ;; emitting 1 value(s)
-PUSH S5
+PUSH S6
 EQINT -1
 PUSHCONT {
-	PUSH S7
+	PUSH S8
 	CTOS
 	LDU 2
 	LDMSGADDR
@@ -963,7 +1001,7 @@ PUSHCONT {
 	STZEROES
 	STSLICECONST 0
 	STSLICECONST 0
-	STSLICECONST xb16a6382
+	STSLICECONST xe6211c6f
 	PUSH S1
 	STSLICER
 	ENDC
@@ -973,7 +1011,7 @@ PUSHCONT {
 IF
 DROP
 ; end function deployWallet
-BLKDROP 4
+BLKDROP 5
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE
@@ -1011,10 +1049,21 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode gas_back_address
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
 ;; param: grams
 ;; param: wallet_public_key
 ;; param: owner_address
+;; param: gas_back_address
 ; function deployEmptyWallet
 ;; push identifier error_define_wallet_public_key_or_owner_address
 GETGLOB 22
@@ -1027,7 +1076,7 @@ PUSHCONT {
 IF
 ;; get member value
 ;; push identifier owner_address
-PUSH S1
+PUSH S2
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1037,7 +1086,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	PUSH S2
+	PUSH S3
 	EQINT 0
 }
 IF
@@ -1047,7 +1096,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address
-	PUSH S1
+	PUSH S2
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -1057,7 +1106,7 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		PUSH S2
+		PUSH S3
 		NEQINT 0
 	}
 	IF
@@ -1080,7 +1129,7 @@ PUSHINT 2
 RAWRESERVE
 NEWDICT
 ;; push identifier wallet_public_key
-PUSH S2
+PUSH S3
 NEWC
 STU 256
 PUSHINT 0
@@ -1119,7 +1168,7 @@ ROT
 PUSHINT 64
 DICTUSETREF
 ;; push identifier wallet_public_key
-PUSH S2
+PUSH S3
 NEWC
 STU 256
 PUSHINT 6
@@ -1127,7 +1176,7 @@ ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address
-PUSH S1
+PUSH S2
 PUSHINT 7
 ROT
 PUSHINT 64
@@ -1151,7 +1200,7 @@ STU 256
 ENDC
 CTOS
 ;; push identifier grams
-PUSH S4
+PUSH S5
 PUSH S1
 NEWC
 STSLICECONST x62_
@@ -1171,22 +1220,49 @@ PUSHINT 1
 SENDRAWMSG
 NIP
 ;; decl: walletAddress
-;; transfer()
-;; get member sender
-GETGLOB 9
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 0
-ENDC
-PUSHINT 128
-SENDRAWMSG
+;; if
+;; get member value
+;; push identifier gas_back_address
+PUSH S1
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+PUSHCONT {
+	;; transfer()
+	;; push identifier gas_back_address
+	PUSH S1
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+PUSHCONT {
+	;; transfer()
+	;; get member sender
+	GETGLOB 9
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+IFELSE
+;; end if
 ;; return
-XCHG s3
-BLKDROP 3
+XCHG s4
+BLKDROP 4
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -1204,7 +1280,7 @@ PUSHCONT {
 	STZEROES
 	STSLICECONST 0
 	STSLICECONST 0
-	STSLICECONST xa9c206e3
+	STSLICECONST xd42b1672
 	PUSH S1
 	STSLICER
 	ENDC
