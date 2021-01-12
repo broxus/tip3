@@ -14,16 +14,17 @@ let TONTokenWalletInternalOwnerTest;
 let SelfDeployedWallet;
 let DeployEmptyWalletFor;
 let TONTokenWalletHack;
-let BurnTokensCallbackExample;
-let wallet1address;
-let Wallet1;
-let wallet2address;
-let Wallet2;
-let barWalletInternalAddress;
+let fw0address;
+let FooWallet0;
+let fw1address;
+let FooWallet1;
+let fw2address;
+let FooWallet2;
+let bwInternalAddress;
 let BarWalletInternal;
-let barWallet3address;
+let bw3address;
 let BarWallet3;
-let barWallet6address;
+let bw6address;
 let BarWallet6;
 
 
@@ -59,54 +60,70 @@ describe('Test Fungible Tokens', function () {
         logger.log(`RootTokenContractInternalOwner address: ${RootTokenContractInternalOwner.address}`);
         logger.log(`RootTokenContractInternalOwnerTest address: ${RootTokenContractInternalOwnerTest.address}`);
         logger.log(`TONTokenWalletInternalOwnerTest address: ${TONTokenWalletInternalOwnerTest.address}`);
-        logger.log(`SelfDeployedWallet (wallet#4) address: ${SelfDeployedWallet.address}`);
+        logger.log(`SelfDeployedWallet (FooWallet#4) address: ${SelfDeployedWallet.address}`);
         logger.log(`TONTokenWalletHack address: ${TONTokenWalletHack.address}`);
         logger.log(`DeployEmptyWalletFor address: ${DeployEmptyWalletFor.address}`);
     });
 
     describe('Test deploy wallets', async function () {
-        it('Deploy empty wallet for #0 user using DeployEmptyWalletFor contract', async () => {
+        it('Internal call RootTokenContractExternalOwner.deployEmptyWallet by DeployEmptyWalletFor', async () => {
+            logger.log('######################################################');
+            logger.log('Deploy FooWallet#0 using DeployEmptyWalletFor contract');
 
-            const expectedAddress = await RootTokenContractExternalOwner.runLocal('getWalletAddress', {
-                wallet_public_key: `0x${tonWrapper.keys[0].public}`,
-                owner_address: ZERO_ADDRESS,
-            });
-            logger.log(`expectedAddress = ${expectedAddress}`);
-
-            const root = await DeployEmptyWalletFor.runLocal('getRoot', {});
-            logger.log(`root = ${root}`);
-
-            const keyStart = await DeployEmptyWalletFor.runLocal('getLatestPublicKey', {});
-            logger.log(`keyStart = ${keyStart}`);
-
-            const addrStart = await DeployEmptyWalletFor.runLocal('getLatestAddr', {});
-            logger.log(`addrStart = ${addrStart}`);
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
+            const deployEmptyWalletForStartGrams = await tonWrapper.getBalance(DeployEmptyWalletFor.address);
 
             await DeployEmptyWalletFor.run('deployEmptyWalletFor', {
                 pubkey: `0x${tonWrapper.keys[0].public}`,
                 addr: ZERO_ADDRESS
             }, tonWrapper.keys[0]);
 
-            await new Promise((r) => setTimeout(r, 10000));
+            fw0address = await RootTokenContractExternalOwner.runLocal('getWalletAddress', {
+                wallet_public_key: `0x${tonWrapper.keys[0].public}`,
+                owner_address: ZERO_ADDRESS,
+            });
 
-            const keyEnd = await DeployEmptyWalletFor.runLocal('getLatestPublicKey', {});
-            logger.log(`keyEnd = ${keyEnd}`);
-
-            const addrEnd = await DeployEmptyWalletFor.runLocal('getLatestAddr', {});
-            logger.log(`addrEnd = ${addrEnd}`);
-
-            const DeployedWallet = await freeton.requireContract(
+            FooWallet0 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                expectedAddress
+                fw0address
             );
 
-            const balance = await DeployedWallet.runLocal('getBalance', {});
-            logger.log(`wallet#0 ${expectedAddress} balance = ${balance}`);
-            assert.ok(1);
+            const fw0balance = await FooWallet0.runLocal('getBalance', {});
+
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
+            const deployEmptyWalletForEndGrams = await tonWrapper.getBalance(DeployEmptyWalletFor.address);
+            const fw0EndGrams = await tonWrapper.getBalance(FooWallet0.address);
+            const totalGas = new BigNumber(rootStartGrams)
+                .plus(deployEmptyWalletForStartGrams)
+                .minus(rootEndGrams)
+                .minus(deployEmptyWalletForEndGrams)
+                .minus(fw0EndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`RootTokenContractExternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`DeployEmptyWalletFor GRAMS change: 
+                ${new BigNumber(deployEmptyWalletForEndGrams).minus(deployEmptyWalletForStartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`FooWallet#0: 
+                address = ${fw0address}, 
+                tokens = ${fw0balance} FOO,
+                grams = ${new BigNumber(fw0EndGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`GAS used: ${totalGas} TON`);
+
+            assert.ok(fw0address);
         });
 
-        it('Deploy wallet for #1 user with 10.000 tokens', async () => {
+        it('External call RootTokenContractExternalOwner.deployWallet by owner #1', async () => {
+            logger.log('######################################################');
+            logger.log('Deploy FooWallet#1 user with 10.000 tokens. (grams= 1 ton)');
+
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
+
             await RootTokenContractExternalOwner.run(
                 'deployWallet',
                 {
@@ -119,25 +136,49 @@ describe('Test Fungible Tokens', function () {
                 tonWrapper.keys[0]
             );
 
-            wallet1address = await RootTokenContractExternalOwner.runLocal(
+            fw1address = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[1].public}`,
                     owner_address: ZERO_ADDRESS,
                 });
 
-            Wallet1 = await freeton.requireContract(
+            FooWallet1 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                wallet1address
+                fw1address
             );
 
-            const balance = await Wallet1.runLocal('getBalance', {});
-            logger.log(`wallet1address: ${wallet1address}, balance = ${balance}`);
-            assert.ok(wallet1address);
+            const fw1balance = await FooWallet1.runLocal('getBalance', {});
+
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
+            const fw1EndGrams = await tonWrapper.getBalance(FooWallet1.address);
+
+            const totalGas = new BigNumber(rootStartGrams)
+                .minus(rootEndGrams)
+                .minus(fw1EndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`RootTokenContractExternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`FooWallet#1: 
+                address = ${fw1address}, 
+                balance = ${fw1balance} FOO,
+                grams = ${new BigNumber(fw1EndGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`GAS used: ${totalGas} TON`);
+
+            assert.ok(fw1address);
         });
 
-        it('Deploy wallet for #2 user with 20.000 tokens', async () => {
+        it('External call RootTokenContractExternalOwner.deployWallet by owner #2', async () => {
+            logger.log('######################################################');
+            logger.log('Deploy FooWallet#2 with 20.000 tokens. (grams = 1 ton)');
+
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
+
             await RootTokenContractExternalOwner.run(
                 'deployWallet',
                 {
@@ -150,26 +191,50 @@ describe('Test Fungible Tokens', function () {
                 tonWrapper.keys[0]
             );
 
-            wallet2address = await RootTokenContractExternalOwner.runLocal(
+            fw2address = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[2].public}`,
                     owner_address: ZERO_ADDRESS,
                 });
 
-            Wallet2 = await freeton.requireContract(
+            FooWallet2 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                wallet2address
+                fw2address
             );
 
-            const balance = await Wallet2.runLocal('getBalance', {});
+            const fw2balance = await FooWallet2.runLocal('getBalance', {});
 
-            logger.log(`wallet2address: ${wallet2address}, balance = ${balance}`);
-            assert.ok(wallet2address);
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
+            const fw2EndGrams = await tonWrapper.getBalance(FooWallet2.address);
+
+            const totalGas = new BigNumber(rootStartGrams)
+                .minus(rootEndGrams)
+                .minus(fw2EndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`RootTokenContractExternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`FooWallet#2: 
+                address = ${fw2address}, 
+                balance = ${fw2balance} FOO,
+                grams = ${new BigNumber(fw2EndGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`GAS used: ${totalGas} TON`);
+
+            assert.ok(fw2address);
         });
 
-        it('Deploy BarToken wallet for TONTokenWalletInternalOwnerTest', async () => {
+        it('Internal call RootTokenContractInternalOwner.deployEmptyWallet by TONTokenWalletInternalOwnerTest', async () => {
+            logger.log('######################################################');
+            logger.log('Deploy BarWallet#Internal');
+
+            const tokensInternalOwnerStartGrams = await tonWrapper.getBalance(TONTokenWalletInternalOwnerTest.address);
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+
             await TONTokenWalletInternalOwnerTest.run(
                 'deployEmptyWallet',
                 {
@@ -179,7 +244,7 @@ describe('Test Fungible Tokens', function () {
                 tonWrapper.keys[5]
             );
 
-            barWalletInternalAddress = await RootTokenContractInternalOwner.runLocal(
+            bwInternalAddress = await RootTokenContractInternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x0`,
@@ -189,15 +254,42 @@ describe('Test Fungible Tokens', function () {
             BarWalletInternal = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                barWalletInternalAddress
+                bwInternalAddress
             );
-            const balance = await BarWalletInternal.runLocal('getBalance', {});
+            const bwInternalBalance = await BarWalletInternal.runLocal('getBalance', {});
 
-            logger.log(`fakeWallet3address: ${barWalletInternalAddress}, balance = ${balance}`);
-            assert.ok(barWalletInternalAddress);
+            const tokensInternalOwnerEndGrams = await tonWrapper.getBalance(TONTokenWalletInternalOwnerTest.address);
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+            const bwInternalEndGrams = await tonWrapper.getBalance(BarWalletInternal.address);
+
+            const totalGas = new BigNumber(tokensInternalOwnerStartGrams)
+                .plus(rootStartGrams)
+                .minus(tokensInternalOwnerEndGrams)
+                .minus(rootEndGrams)
+                .minus(bwInternalEndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change: 
+                ${new BigNumber(tokensInternalOwnerEndGrams).minus(tokensInternalOwnerStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`BarWallet#Internal: 
+                address = ${bwInternalAddress}, 
+                tokens = ${bwInternalBalance} BAR, 
+                grams = ${new BigNumber(bwInternalEndGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`GAS used: ${totalGas} TON`);
+            assert.ok(bwInternalAddress);
         });
 
-        it('Deploy BarToken wallet for user #3 with 30000 BAR', async () => {
+        it('Internal call RootTokenContractInternalOwner.deployWallet by RootTokenContractInternalOwnerTest #1', async () => {
+            logger.log('######################################################');
+            logger.log(`Deploy BarWallet#3 with 30000 BAR`);
+
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+            const rootOwnerStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+
             await RootTokenContractInternalOwnerTest.run(
                 'deployWallet',
                 {
@@ -209,7 +301,7 @@ describe('Test Fungible Tokens', function () {
                 tonWrapper.keys[0]
             ).catch(e => console.log(e));
 
-            barWallet3address = await RootTokenContractInternalOwner.runLocal(
+            bw3address = await RootTokenContractInternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[3].public}`,
@@ -219,15 +311,42 @@ describe('Test Fungible Tokens', function () {
             BarWallet3 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                barWallet3address
+                bw3address
             );
-            const balance = await BarWallet3.runLocal('getBalance', {});
+            const bw3balance = await BarWallet3.runLocal('getBalance', {});
 
-            logger.log(`barWallet3address: ${barWallet3address}, balance = ${balance}`);
-            assert.ok(barWallet3address);
+            const bw3EndGrams = await tonWrapper.getBalance(BarWallet3.address);
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+            const rootOwnerEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+
+            const totalGas = new BigNumber(rootStartGrams)
+                .plus(rootOwnerStartGrams)
+                .minus(rootEndGrams)
+                .minus(rootOwnerEndGrams)
+                .minus(bw3EndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+                ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`BarWallet#3: 
+                address = ${bw3address}, 
+                balance = ${bw3balance} BAR,
+                grams = ${new BigNumber(bw3EndGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`GAS used: ${totalGas} TON`);
+            assert.ok(bw3address);
         });
 
-        it('Deploy BarToken wallet for user #6 with 60000 BAR', async () => {
+        it('Internal call RootTokenContractInternalOwner.deployWallet by RootTokenContractInternalOwnerTest #2', async () => {
+            logger.log('######################################################');
+            logger.log(`Deploy BarWallet#6 with 60000 BAR`);
+
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+            const rootOwnerStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+
             await RootTokenContractInternalOwnerTest.run(
                 'deployWallet',
                 {
@@ -239,7 +358,7 @@ describe('Test Fungible Tokens', function () {
                 tonWrapper.keys[0]
             ).catch(e => console.log(e));
 
-            barWallet6address = await RootTokenContractInternalOwner.runLocal(
+            bw6address = await RootTokenContractInternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[6].public}`,
@@ -249,16 +368,38 @@ describe('Test Fungible Tokens', function () {
             BarWallet6 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                barWallet6address
+                bw6address
             );
-            const balance = await BarWallet6.runLocal('getBalance', {});
 
-            logger.log(`barWallet6address: ${barWallet6address}, balance = ${balance}`);
-            assert.ok(barWallet6address);
+            const bw6balance = await BarWallet6.runLocal('getBalance', {});
+
+            const bw6EndGrams = await tonWrapper.getBalance(BarWallet6.address);
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+            const rootOwnerEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+
+            const totalGas = new BigNumber(rootStartGrams)
+                .plus(rootOwnerStartGrams)
+                .minus(rootEndGrams)
+                .minus(rootOwnerEndGrams)
+                .minus(bw6EndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+                ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`BarWallet#6: 
+                address = ${bw6address}, 
+                balance = ${bw6balance} BAR,
+                grams = ${new BigNumber(bw6EndGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`GAS used: ${totalGas} TON`);
+            assert.ok(bw6address);
         });
 
-        it('Check self deployed wallet address', async () => {
-
+        it('Check SelfDeployedWallet address (must be equals RootTokenContractExternalOwner.getWalletAddress(...))', async () => {
+            logger.log('######################################################');
+            logger.log('Check SelfDeployedWallet address');
             const expectedAddress = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
@@ -266,12 +407,14 @@ describe('Test Fungible Tokens', function () {
                     owner_address: ZERO_ADDRESS,
                 });
 
-            logger.log(`Expected address for user #4: ${expectedAddress}`);
-            logger.log(`User self deploy wallet address: ${SelfDeployedWallet.address}`);
+            logger.log(`Expected FooWallet#4 address: ${expectedAddress}`);
+            logger.log(`Actual SelfDeployedWallet address: ${SelfDeployedWallet.address}`);
             assert.equal(expectedAddress, SelfDeployedWallet.address, 'Wallets address not equals');
         });
 
-        it('Check hacker address', async () => {
+        it('Check address for contract with changed code (must be NOT equals RootTokenContractExternalOwner.getWalletAddress(...))', async () => {
+            logger.log('######################################################');
+            logger.log('Check TONTokenWalletHack address');
             const expectedAddress = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
@@ -279,32 +422,60 @@ describe('Test Fungible Tokens', function () {
                     owner_address: ZERO_ADDRESS,
                 });
 
-            logger.log(`Expected address for user #9: ${expectedAddress}`);
-            logger.log(`Hacker wallet address: ${TONTokenWalletHack.address}`);
+            logger.log(`Expected FooWallet#9 address: ${expectedAddress}`);
+            logger.log(`Actual TONTokenWalletHack address: ${TONTokenWalletHack.address}`);
             assert.notEqual(expectedAddress, TONTokenWalletHack.address, 'Wallets address equals');
         });
     });
 
     describe('Test mint/burn', async function () {
-        it('Mint 100.000 tokens for barWalletInternal', async () => {
+        it('Internal call RootTokenContractInternalOwner.mint by owner', async () => {
+            logger.log('######################################################');
+            logger.log('Mint 100.000 tokens for BarWallet#Internal');
             const startBalance = await BarWalletInternal.runLocal('getBalance', {});
             const startTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
-            logger.log(`Start balance of barWalletInternal: ${startBalance}`);
-            logger.log(`Start total supply: ${startTotalSupply}`);
+            logger.log(`Start balance of BarWallet#Internal: ${startBalance} BAR`);
+            logger.log(`Start total supply: ${startTotalSupply} BAR`);
+
+            const bwInternalStartGrams = await tonWrapper.getBalance(BarWalletInternal.address);
+            const rootOwnerStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
 
             await RootTokenContractInternalOwnerTest.run(
                 'mint',
                 {
                     tokens: 100000,
-                    addr: barWalletInternalAddress
+                    addr: bwInternalAddress
                 },
                 tonWrapper.keys[0]
             ).catch(e => console.log(e));
 
             const endBalance = await BarWalletInternal.runLocal('getBalance', {});
             const endTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
-            logger.log(`End balance of barWalletInternal: ${endBalance}`);
-            logger.log(`End total supply: ${endTotalSupply}`);
+            logger.log(`End balance of barWalletInternal: ${endBalance} BAR`);
+            logger.log(`End total supply: ${endTotalSupply} BAR`);
+
+            const bwInternalEndGrams = await tonWrapper.getBalance(BarWalletInternal.address);
+            const rootOwnerEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+
+            const totalGas = new BigNumber(rootStartGrams)
+                .plus(rootOwnerStartGrams)
+                .plus(bwInternalStartGrams)
+                .minus(rootEndGrams)
+                .minus(rootOwnerEndGrams)
+                .minus(bwInternalEndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+                ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`BarWallet#Internal GRAMS change: 
+                ${new BigNumber(bwInternalEndGrams).minus(bwInternalStartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`GAS used: ${totalGas} TON`);
 
             assert.equal(
                 new BigNumber(startBalance).plus(100000).toNumber(),
@@ -316,18 +487,24 @@ describe('Test Fungible Tokens', function () {
                 'Total supply wrong');
         });
 
-        it('BurnByOwner 5.000 tokens from barWallet#3', async () => {
+        it('External call TONTokenWallet.burnByOwner', async () => {
+            logger.log('######################################################');
+            logger.log('BurnByOwner 5.000 tokens from BarWallet#3');
             const startBalance = await BarWallet3.runLocal('getBalance', {});
             const startTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             const startBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
             const startLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
 
-            logger.log(`Start balance of barWallet#3: ${startBalance}`);
-            logger.log(`Start total supply: ${startTotalSupply}`);
-            logger.log(`Start burned count: ${startBurnedCount}`);
+            logger.log(`Start balance of BarWallet#3: ${startBalance} BAR`);
+            logger.log(`Start total supply: ${startTotalSupply} BAR`);
+            logger.log(`Start burned count: ${startBurnedCount} BAR`);
             logger.log(`Start payload: ${startLatestPayload}`);
 
-            barWallet3address = await RootTokenContractInternalOwner.runLocal(
+            const bw3StartGrams = await tonWrapper.getBalance(BarWallet3.address);
+            const rootOwnerStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+
+            bw3address = await RootTokenContractInternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[3].public}`,
@@ -337,7 +514,7 @@ describe('Test Fungible Tokens', function () {
             BarWallet3 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                barWallet3address
+                bw3address
             );
 
             await BarWallet3.run(
@@ -355,10 +532,32 @@ describe('Test Fungible Tokens', function () {
             const endTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             const endBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
             const endLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
-            logger.log(`End balance of barWallet#3: ${endBalance}`);
-            logger.log(`End total supply: ${endTotalSupply}`);
-            logger.log(`End burned count: ${endBurnedCount}`);
+            logger.log(`End balance of BarWallet#3: ${endBalance} BAR`);
+            logger.log(`End total supply: ${endTotalSupply} BAR`);
+            logger.log(`End burned count: ${endBurnedCount} BAR`);
             logger.log(`End payload: ${endLatestPayload}`);
+
+            const bw3EndGrams = await tonWrapper.getBalance(BarWallet3.address);
+            const rootOwnerEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+
+            const totalGas = new BigNumber(rootStartGrams)
+                .plus(rootOwnerStartGrams)
+                .plus(bw3StartGrams)
+                .minus(rootEndGrams)
+                .minus(rootOwnerEndGrams)
+                .minus(bw3EndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+                ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`BarWallet3 GRAMS change: 
+                ${new BigNumber(bw3EndGrams).minus(bw3StartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`GAS used: ${totalGas} TON`);
 
             assert.equal(
                 new BigNumber(startBalance).minus(5000).toNumber(),
@@ -374,16 +573,23 @@ describe('Test Fungible Tokens', function () {
                 'Burned count wrong');
         });
 
-        it('BurnByRoot 50.000 tokens from barWalletInternal', async () => {
+        it('Internal call RootTokenContractInternalOwnerTest.burnMyTokens by TONTokenWalletInternalOwnerTest', async () => {
+            logger.log('######################################################');
+            logger.log('BurnByRoot 50.000 tokens from BarWallet#Internal');
             const startBalance = await BarWalletInternal.runLocal('getBalance', {});
             const startTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             const startBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
             const startLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
 
-            logger.log(`Start balance of barWalletInternal: ${startBalance}`);
+            logger.log(`Start balance of BarWallet#Internal: ${startBalance} BAR`);
             logger.log(`Start total supply: ${startTotalSupply}`);
             logger.log(`Start burned count: ${startBurnedCount}`);
             logger.log(`Start payload: ${startLatestPayload}`);
+
+            const tokensInternalOwnerStartGrams = await tonWrapper.getBalance(TONTokenWalletInternalOwnerTest.address);
+            const bwInternalStartGrams = await tonWrapper.getBalance(BarWalletInternal.address);
+            const rootOwnerStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
 
             await TONTokenWalletInternalOwnerTest.run(
                 'burnMyTokens',
@@ -401,10 +607,37 @@ describe('Test Fungible Tokens', function () {
             const endTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             const endBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
             const endLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
-            logger.log(`End balance of barWalletInternal: ${endBalance}`);
-            logger.log(`End total supply: ${endTotalSupply}`);
-            logger.log(`End burned count: ${endBurnedCount}`);
+            logger.log(`End balance of BarWallet#Internal: ${endBalance} BAR`);
+            logger.log(`End total supply: ${endTotalSupply} BAR`);
+            logger.log(`End burned count: ${endBurnedCount} BAR `);
             logger.log(`End payload: ${endLatestPayload}`);
+
+            const tokensInternalOwnerEndGrams = await tonWrapper.getBalance(TONTokenWalletInternalOwnerTest.address);
+            const bwInternalEndGrams = await tonWrapper.getBalance(BarWalletInternal.address);
+            const rootOwnerEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+
+            const totalGas = new BigNumber(rootStartGrams)
+                .plus(rootOwnerStartGrams)
+                .plus(bwInternalStartGrams)
+                .plus(tokensInternalOwnerStartGrams)
+                .minus(rootEndGrams)
+                .minus(rootOwnerEndGrams)
+                .minus(bwInternalEndGrams)
+                .minus(tokensInternalOwnerEndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change: 
+                ${new BigNumber(tokensInternalOwnerEndGrams).minus(tokensInternalOwnerStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`BarWalletInternal GRAMS change: 
+                ${new BigNumber(bwInternalEndGrams).minus(bwInternalStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+                ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`GAS used: ${totalGas} TON`);
 
             assert.equal(
                 new BigNumber(startBalance).minus(50000).toNumber(),
@@ -420,15 +653,23 @@ describe('Test Fungible Tokens', function () {
                 'Burned count wrong');
         });
 
-        it('Mint 10.000 tokens for non exists address', async () => {
+        it('onBounce for RootTokenContractExternalOwner.mint must decrease total supply', async () => {
+            logger.log('######################################################');
+            logger.log('Mint 10.000 tokens for non exists address (BarWallet#44)');
+
             const startTotalSupply = await RootTokenContractExternalOwner.runLocal('getTotalSupply', {});
-            logger.log(`Start total supply: ${startTotalSupply}`);
+            logger.log(`Start total supply: ${startTotalSupply} FOO`);
+
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
+
             const notExistsWalletAddress = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[44].public}`,
                     owner_address: ZERO_ADDRESS,
                 });
+            logger.log('RUN RootTokenContractExternalOwner.mint. That increase total supply.');
+            logger.log(`Current total supply: ${new BigNumber(startTotalSupply).plus(10000).toNumber()} FOO`);
             await RootTokenContractExternalOwner.run(
                 'mint',
                 {
@@ -439,7 +680,12 @@ describe('Test Fungible Tokens', function () {
             );
 
             const endTotalSupply = await RootTokenContractExternalOwner.runLocal('getTotalSupply', {});
-            logger.log(`End total supply: ${endTotalSupply}`);
+            logger.log(`End total supply: ${endTotalSupply} FOO`);
+
+            const rootEndGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
+
+            logger.log(`RootTokenContractExternalOwner GRAMS change: 
+                ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toNumber()} TON`);
 
             assert.equal(
                 new BigNumber(startTotalSupply).toNumber(),
@@ -449,9 +695,12 @@ describe('Test Fungible Tokens', function () {
     });
 
     describe('Trying to hack', async function () {
-        it('Fake internal_transfer(...) call from hacker address', async () => {
+        it('Internal call TONTokenWallet.internal_transfer by TONTokenWalletHack (must be failed)', async () => {
+            logger.log('######################################################');
+            logger.log('TONTokenWalletHack calls TONTokenWallet.internal_transfer');
             const startBalance = await SelfDeployedWallet.runLocal('getBalance', {});
-            logger.log(`Start balance for ${SelfDeployedWallet.address}: ${startBalance}`);
+
+            logger.log(`Start balance for FooWallet#4: ${startBalance} FOO`);
 
             await TONTokenWalletHack.run(
                 'mint',
@@ -464,86 +713,102 @@ describe('Test Fungible Tokens', function () {
             );
 
             const endBalance = await SelfDeployedWallet.runLocal('getBalance', {});
-            logger.log(`End balance for ${SelfDeployedWallet.address}: ${endBalance}`);
+            logger.log(`End balance for FooWallet#4: ${endBalance} FOO`);
             assert.equal(new BigNumber(startBalance).toNumber(), new BigNumber(endBalance).toNumber(), 'Exploit expected');
         });
     });
 
     describe('Test transfer', async function () {
 
-        it('Transfer 1000 tokens from wallet#2 to wallet#1', async () => {
-            wallet1address = await RootTokenContractExternalOwner.runLocal(
+        it('Simple transfer (external call TONTokenWallet.transfer)', async () => {
+            logger.log('######################################################');
+            logger.log('Transfer 1000 tokens from FooWallet#2 to FooWallet#1');
+            fw1address = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[1].public}`,
                     owner_address: ZERO_ADDRESS,
                 });
 
-            Wallet1 = await freeton.requireContract(
+            FooWallet1 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                wallet1address
+                fw1address
             );
 
-            wallet2address = await RootTokenContractExternalOwner.runLocal(
+            fw2address = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[2].public}`,
                     owner_address: ZERO_ADDRESS,
                 });
 
-            Wallet2 = await freeton.requireContract(
+            FooWallet2 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                wallet2address
+                fw2address
             );
 
-            const w1StartBalance = await Wallet1.runLocal('getBalance', {});
-            const w2StartBalance = await Wallet2.runLocal('getBalance', {});
-            logger.log(`wallet#1 ${wallet1address} start balance: ${w1StartBalance}`);
-            logger.log(`wallet#2 ${wallet2address} start balance: ${w2StartBalance}`);
+            const w1StartBalance = await FooWallet1.runLocal('getBalance', {});
+            const w2StartBalance = await FooWallet2.runLocal('getBalance', {});
+            logger.log(`FooWallet#1 start balance: ${w1StartBalance}`);
+            logger.log(`FooWallet#2 start balance: ${w2StartBalance}`);
 
-            await Wallet2.run(
+            const fw1StartGrams = await tonWrapper.getBalance(FooWallet1.address);
+            const fw2StartGrams = await tonWrapper.getBalance(FooWallet2.address);
+
+            await FooWallet2.run(
                 'transfer',
                 {
                     tokens: 1000,
-                    to: wallet1address,
+                    to: fw1address,
                     grams: freeton.utils.convertCrystal('0.1', 'nano')
                 },
                 tonWrapper.keys[2]
             );
 
-            await new Promise((r) => setTimeout(r, 10000));
+            const fw1EndBalance = await FooWallet1.runLocal('getBalance', {});
+            const fw2EndBalance = await FooWallet2.runLocal('getBalance', {});
+            logger.log(`FooWallet#1 end balance: ${fw1EndBalance} FOO`);
+            logger.log(`FooWallet#2 end balance: ${fw2EndBalance} FOO`);
 
-            const w1EndBalance = await Wallet1.runLocal('getBalance', {});
-            const w2EndBalance = await Wallet2.runLocal('getBalance', {});
-            logger.log(`wallet#1 end balance: ${w1EndBalance}`);
-            logger.log(`wallet#2 end balance: ${w2EndBalance}`);
-            assert.equal(new BigNumber(w1EndBalance).toNumber(), new BigNumber(w1StartBalance).plus(1000).toNumber(), 'Wallet 1 balance wrong');
-            assert.equal(new BigNumber(w2EndBalance).toNumber(), new BigNumber(w2StartBalance).minus(1000).toNumber(), 'Wallet 2 balance wrong');
+            const fw1EndGrams = await tonWrapper.getBalance(FooWallet1.address);
+            const fw2EndGrams = await tonWrapper.getBalance(FooWallet2.address);
+            logger.log(`FooWallet#1 GRAMS change:
+                ${new BigNumber(fw1EndGrams).minus(fw1StartGrams).div(1000000000).toNumber()}`);
+            logger.log(`FooWallet#2 GRAMS change: 
+                ${new BigNumber(fw2EndGrams).minus(fw2StartGrams).div(1000000000).toNumber()}`);
+
+            assert.equal(new BigNumber(fw1EndBalance).toNumber(), new BigNumber(w1StartBalance).plus(1000).toNumber(), 'FooWallet#1 balance wrong');
+            assert.equal(new BigNumber(fw2EndBalance).toNumber(), new BigNumber(w2StartBalance).minus(1000).toNumber(), 'FooWallet#2 balance wrong');
 
         });
 
-        it('Transfer 1000 tokens from wallet#1 to self deployed wallet#0', async () => {
-            wallet1address = await RootTokenContractExternalOwner.runLocal(
+        it('Transfer to self deployed wallet (external call TONTokenWallet.transfer)', async () => {
+            logger.log('######################################################');
+            logger.log('Transfer 1000 tokens from FooWallet#1 to self deployed FooWallet#4');
+            fw1address = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[1].public}`,
                     owner_address: ZERO_ADDRESS,
                 });
 
-            Wallet1 = await freeton.requireContract(
+            FooWallet1 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                wallet1address
+                fw1address
             );
 
-            const w1StartBalance = await Wallet1.runLocal('getBalance', {});
-            const selfDeployWalletStartBalance = await SelfDeployedWallet.runLocal('getBalance', {});
-            logger.log(`wallet#1 ${wallet1address} start balance: ${w1StartBalance}`);
-            logger.log(`self deploy wallet ${SelfDeployedWallet.address} start balance: ${selfDeployWalletStartBalance}`);
+            const fw1StartGrams = await tonWrapper.getBalance(FooWallet1.address);
+            const selfDeployWalletStartGrams = await tonWrapper.getBalance(SelfDeployedWallet.address);
 
-            await Wallet1.run(
+            const fw1StartBalance = await FooWallet1.runLocal('getBalance', {});
+            const selfDeployWalletStartBalance = await SelfDeployedWallet.runLocal('getBalance', {});
+            logger.log(`FooWallet#1 start balance: ${fw1StartBalance} FOO`);
+            logger.log(`FooWallet#4 start balance: ${selfDeployWalletStartBalance} FOO`);
+
+            await FooWallet1.run(
                 'transfer',
                 {
                     tokens: 1000,
@@ -553,20 +818,34 @@ describe('Test Fungible Tokens', function () {
                 tonWrapper.keys[1]
             );
 
-            await new Promise((r) => setTimeout(r, 10000));
+            // await new Promise((r) => setTimeout(r, 10000));
 
-            const w1EndBalance = await Wallet1.runLocal('getBalance', {});
+            const fw1EndBalance = await FooWallet1.runLocal('getBalance', {});
             const selfDeployWalletEndBalance = await SelfDeployedWallet.runLocal('getBalance', {});
-            logger.log(`wallet#1 end balance: ${w1EndBalance}`);
-            logger.log(`self deploy wallet end balance: ${selfDeployWalletEndBalance}`);
-            assert.equal(new BigNumber(w1EndBalance).toNumber(), new BigNumber(w1StartBalance).minus(1000).toNumber(), 'Wallet 1 balance wrong');
-            assert.equal(new BigNumber(selfDeployWalletEndBalance).toNumber(), new BigNumber(selfDeployWalletStartBalance).plus(1000).toNumber(), 'Self deploy wallet balance wrong');
+            logger.log(`FooWallet#1 end balance: ${fw1EndBalance} FOO`);
+            logger.log(`FooWallet#4 end balance: ${selfDeployWalletEndBalance} FOO`);
+
+            const fw1EndGrams = await tonWrapper.getBalance(FooWallet1.address);
+            const selfDeployWalletEndGrams = await tonWrapper.getBalance(SelfDeployedWallet.address);
+            logger.log(`FooWallet#1 GRAMS change: 
+                ${new BigNumber(fw1EndGrams).minus(fw1StartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`FooWallet#4 GRAMS change: 
+                ${new BigNumber(selfDeployWalletEndGrams).minus(selfDeployWalletStartGrams).div(1000000000).toNumber()} TON`);
+
+            assert.equal(new BigNumber(fw1EndBalance).toNumber(),
+                new BigNumber(fw1StartBalance).minus(1000).toNumber(),
+                'FooWallet#1 balance wrong');
+            assert.equal(new BigNumber(selfDeployWalletEndBalance).toNumber(),
+                new BigNumber(selfDeployWalletStartBalance).plus(1000).toNumber(),
+                'FooWallet#4 balance wrong');
 
         });
 
-        it('Transfer 100 tokens from wallet#2 to non-exists address (must be bounced)', async () => {
+        it('onBounce for TONTokenWallet.internalTransfer must increase balance', async () => {
+            logger.log('######################################################');
+            logger.log('Transfer 100 FOO from FooWallet#2 to non-exists address FooWallet#44 (must be bounced)');
 
-            wallet2address = await RootTokenContractExternalOwner.runLocal(
+            fw2address = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[2].public}`,
@@ -580,16 +859,20 @@ describe('Test Fungible Tokens', function () {
                     owner_address: ZERO_ADDRESS,
                 });
 
-            Wallet2 = await freeton.requireContract(
+            logger.log(`Non-exists address FooWallet#44: ${notExistsWalletAddress}`);
+
+            FooWallet2 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                wallet2address
+                fw2address
             );
 
-            const startBalance = await Wallet2.runLocal('getBalance', {});
-            logger.log(`wallet#2 ${wallet2address} start balance: ${startBalance}`);
+            const startBalance = await FooWallet2.runLocal('getBalance', {});
+            logger.log(`FooWallet#2 start balance: ${startBalance} FOO`);
 
-            await Wallet2.run(
+            logger.log('RUN TONTokenWallet.transfer. That decrease balance.');
+            logger.log(`Current FooWallet#2 balance: ${new BigNumber(startBalance).minus(100).toNumber()} FOO`);
+            await FooWallet2.run(
                 'transfer',
                 {
                     tokens: 100,
@@ -598,31 +881,32 @@ describe('Test Fungible Tokens', function () {
                 },
                 tonWrapper.keys[2]
             );
-            logger.log(`notExistsWalletAddress: ${notExistsWalletAddress}`);
 
-            await new Promise((r) => setTimeout(r, 20000));
-
-            const endBalance = await Wallet2.runLocal('getBalance', {});
-            logger.log(`wallet#2 ${wallet2address} end balance: ${endBalance}`);
-            assert.equal(new BigNumber(startBalance).toNumber(), new BigNumber(endBalance).toNumber(), 'Wallet2 balance wrong');
+            const endBalance = await FooWallet2.runLocal('getBalance', {});
+            logger.log(`FooWallet#2 end balance: ${endBalance} FOO`);
+            assert.equal(new BigNumber(startBalance).toNumber(),
+                new BigNumber(endBalance).toNumber(),
+                'FooWallet#2 balance wrong');
         });
 
-        it('Transfer 5000 tokens from barWallet#3 to wallet#1 (must be failed)', async () => {
+        it('Transfer wrong tokens', async () => {
+            logger.log('######################################################');
+            logger.log('Transfer 1000 BAR from BarWallet#3 to FooWallet#1 (must be failed)');
 
-            wallet1address = await RootTokenContractExternalOwner.runLocal(
+            fw1address = await RootTokenContractExternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[1].public}`,
                     owner_address: ZERO_ADDRESS,
                 });
 
-            Wallet1 = await freeton.requireContract(
+            FooWallet1 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                wallet1address
+                fw1address
             );
 
-            barWallet3address = await RootTokenContractInternalOwner.runLocal(
+            bw3address = await RootTokenContractInternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key: `0x${tonWrapper.keys[3].public}`,
@@ -632,38 +916,57 @@ describe('Test Fungible Tokens', function () {
             BarWallet3 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
-                barWallet3address
+                bw3address
             );
 
-            const w1StartBalance = await Wallet1.runLocal('getBalance', {});
+            const fw1StartBalance = await FooWallet1.runLocal('getBalance', {});
             const bw3startBalance = await BarWallet3.runLocal('getBalance', {});
-            logger.log(`wallet#1 ${wallet1address} start balance: ${w1StartBalance}`);
-            logger.log(`barwallet#3 ${barWallet3address} start balance: ${bw3startBalance}`);
+            logger.log(`FooWallet#1 start balance: ${fw1StartBalance}`);
+            logger.log(`BarWallet#3 start balance: ${bw3startBalance}`);
+
+            const w1StartGrams = await tonWrapper.getBalance(FooWallet1.address);
+            const bw3StartGrams = await tonWrapper.getBalance(BarWallet3.address);
 
             await BarWallet3.run(
                 'transfer',
                 {
                     tokens: 1000,
-                    to: wallet1address,
+                    to: fw1address,
                     grams: freeton.utils.convertCrystal('0.1', 'nano')
                 },
                 tonWrapper.keys[3]
             ).catch(e => console.log(3));
 
-            await new Promise((r) => setTimeout(r, 10000));
-
-            const w1EndBalance = await Wallet1.runLocal('getBalance', {});
+            const w1EndBalance = await FooWallet1.runLocal('getBalance', {});
             const bw3EndBalance = await BarWallet3.runLocal('getBalance', {});
-            logger.log(`wallet#1 end balance: ${w1EndBalance}`);
-            logger.log(`barwallet#3 end balance: ${bw3EndBalance}`);
-            assert.equal(new BigNumber(w1StartBalance).toNumber(), new BigNumber(w1EndBalance).toNumber(), 'Wallet1 balance wrong');
-            assert.equal(new BigNumber(bw3startBalance).toNumber(), new BigNumber(bw3EndBalance).toNumber(), 'BarWallet3 balance wrong');
+            logger.log(`FooWallet#1 end balance: ${w1EndBalance} BAR`);
+            logger.log(`BarWallet#3 end balance: ${bw3EndBalance} BAR`);
+
+            const fw1EndGrams = await tonWrapper.getBalance(FooWallet1.address);
+            const bw3EndGrams = await tonWrapper.getBalance(BarWallet3.address);            
+            logger.log(`FooWallet#1 GRAMS change: 
+                ${new BigNumber(fw1EndGrams).minus(w1StartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`BarWallet#3 GRAMS change:
+                ${new BigNumber(bw3EndGrams).minus(bw3StartGrams).div(1000000000).toNumber()} TON`);
+
+            assert.equal(new BigNumber(fw1StartBalance).toNumber(),
+                new BigNumber(w1EndBalance).toNumber(),
+                'FooWallet#1 balance wrong');
+            assert.equal(new BigNumber(bw3startBalance).toNumber(),
+                new BigNumber(bw3EndBalance).toNumber(),
+                'BarWallet#3 balance wrong');
 
         });
 
-        it('barWallet#6 disapprove', async () => {
+        it('External call TONTokenWallet.disapprove', async () => {
+            logger.log('######################################################');
+            logger.log('BarWallet#6 disapprove');
             const allowanceStart = await BarWallet6.runLocal('allowance', {});
-            logger.log(`Start allowance: remaining_tokens = ${allowanceStart.remaining_tokens}, spender = ${allowanceStart.spender}, `);
+            logger.log(`Start allowance: 
+                remaining_tokens = ${allowanceStart.remaining_tokens},
+                spender = ${allowanceStart.spender}`);
+
+            const bw6StartGrams = await tonWrapper.getBalance(BarWallet6.address);
 
             await BarWallet6.run(
                 'disapprove',
@@ -672,13 +975,30 @@ describe('Test Fungible Tokens', function () {
             ).catch(e => console.log(e));
 
             const allowanceEnd = await BarWallet6.runLocal('allowance', {});
-            logger.log(`End allowance: remaining_tokens = ${allowanceEnd.remaining_tokens}, spender = ${allowanceEnd.spender}, `);
-            assert.ok(allowanceEnd);
+            logger.log(`End allowance: 
+                remaining_tokens = ${allowanceEnd.remaining_tokens}, 
+                spender = ${allowanceEnd.spender}`);
+
+            const bw6EndGrams = await tonWrapper.getBalance(BarWallet6.address);
+            logger.log(`BarWallet#6 GRAMS change:
+                ${new BigNumber(bw6EndGrams).minus(bw6StartGrams).div(1000000000).toNumber()} TON`);
+
+            assert.equal(
+                new BigNumber(allowanceEnd.remaining_tokens).toNumber(),
+                0,
+                'Wrong remaining_tokens');
+            assert.equal(allowanceEnd.spender, ZERO_ADDRESS, 'Wrong spender');
         });
 
-        it('barWallet#6 approve 10000 to wallet of TONTokenWalletInternalOwnerTest', async () => {
+        it('External call TONTokenWallet.approve', async () => {
+            logger.log('######################################################');
+            logger.log('BarWallet#6 approve 10000 to wallet of TONTokenWalletInternalOwnerTest');
             const allowanceStart = await BarWallet6.runLocal('allowance', {});
-            logger.log(`Start allowance: remaining_tokens = ${allowanceStart.remaining_tokens}, spender = ${allowanceStart.spender}, `);
+            logger.log(`Start allowance: 
+                remaining_tokens = ${allowanceStart.remaining_tokens}, 
+                spender = ${allowanceStart.spender}`);
+
+            const bw6StartGrams = await tonWrapper.getBalance(BarWallet6.address);
 
             await BarWallet6.run(
                 'approve',
@@ -691,20 +1011,36 @@ describe('Test Fungible Tokens', function () {
             ).catch(e => console.log(e));
 
             const allowanceEnd = await BarWallet6.runLocal('allowance', {});
-            logger.log(`End allowance: remaining_tokens = ${allowanceEnd.remaining_tokens}, spender = ${allowanceEnd.spender}, `);
+            logger.log(`End allowance: 
+                remaining_tokens = ${allowanceEnd.remaining_tokens}, 
+                spender = ${allowanceEnd.spender}`);
+
+            const bw6EndGrams = await tonWrapper.getBalance(BarWallet6.address);
+            logger.log(`BarWallet#6 GRAMS change: 
+                ${new BigNumber(bw6EndGrams).minus(bw6StartGrams).div(1000000000).toNumber()} TON`);
+
             assert.equal(
                 new BigNumber(allowanceEnd.remaining_tokens).toNumber(),
                 new BigNumber(10000).toNumber(),
-                'Allowance wrong');
+                'Wrong remaining_tokens');
+            assert.equal(allowanceEnd.spender, BarWalletInternal.address, 'Wrong spender');
         });
 
-        it('TONTokenWalletInternalOwnerTest transfer 5000 from barWallet#6 to barWallet#3', async () => {
+        it('Internal call TONTokenWallet.transferFrom by TONTokenWalletInternalOwnerTest', async () => {
+            logger.log('######################################################');
+            logger.log('TONTokenWalletInternalOwnerTest transfer 5000 from BarWallet#6 to BarWallet#3');
             const allowanceStart = await BarWallet6.runLocal('allowance', {});
-            const w3balanceStart = await BarWallet3.runLocal('getBalance', {});
-            const w6balanceStart = await BarWallet6.runLocal('getBalance', {});
-            logger.log(`Start allowance: remaining_tokens = ${allowanceStart.remaining_tokens}, spender = ${allowanceStart.spender}, `);
-            logger.log(`Start barWallet3 balance = ${w3balanceStart}`);
-            logger.log(`Start barWallet6 balance = ${w6balanceStart}`);
+            const bw3balanceStart = await BarWallet3.runLocal('getBalance', {});
+            const bw6balanceStart = await BarWallet6.runLocal('getBalance', {});
+            logger.log(`Start allowance: 
+                remaining_tokens = ${allowanceStart.remaining_tokens}, 
+                spender = ${allowanceStart.spender}`);
+            logger.log(`Start BarWallet3 balance: ${bw3balanceStart} BAR`);
+            logger.log(`Start BarWallet6 balance: ${bw6balanceStart} BAR`);
+
+            const tokensInternalOwnerStartGrams = await tonWrapper.getBalance(TONTokenWalletInternalOwnerTest.address);
+            const bw3StartGrams = await tonWrapper.getBalance(BarWallet3.address);
+            const bw6StartGrams = await tonWrapper.getBalance(BarWallet6.address);
 
             await TONTokenWalletInternalOwnerTest.run(
                 'testTransferFrom',
@@ -719,23 +1055,49 @@ describe('Test Fungible Tokens', function () {
             ).catch(e => console.log(e));
 
             const allowanceEnd = await BarWallet6.runLocal('allowance', {});
-            const w3balanceEnd = await BarWallet3.runLocal('getBalance', {});
-            const w6balanceEnd = await BarWallet6.runLocal('getBalance', {});
-            logger.log(`End allowance: remaining_tokens = ${allowanceEnd.remaining_tokens}, spender = ${allowanceEnd.spender}, `);
-            logger.log(`End barWallet3 balance = ${w3balanceEnd}`);
-            logger.log(`End barWallet6 balance = ${w6balanceEnd}`);
+            const bw3balanceEnd = await BarWallet3.runLocal('getBalance', {});
+            const bw6balanceEnd = await BarWallet6.runLocal('getBalance', {});
+            logger.log(`End allowance: 
+                remaining_tokens = ${allowanceEnd.remaining_tokens}, 
+                spender = ${allowanceEnd.spender}`);
+            logger.log(`End BarWallet3 balance: ${bw3balanceEnd}`);
+            logger.log(`End BarWallet6 balance: ${bw6balanceEnd} BAR`);
+
+            const tokensInternalOwnerEndGrams = await tonWrapper.getBalance(TONTokenWalletInternalOwnerTest.address);
+            const bw3EndGrams = await tonWrapper.getBalance(BarWallet3.address);
+            const bw6EndGrams = await tonWrapper.getBalance(BarWallet6.address);
+
+            const totalGas = new BigNumber(bw3StartGrams)
+                .plus(bw6StartGrams)
+                .plus(tokensInternalOwnerStartGrams)
+                .minus(bw3EndGrams)
+                .minus(bw6EndGrams)
+                .minus(tokensInternalOwnerEndGrams)
+                .div(1000000000)
+                .toNumber();
+
+            logger.log(`BarWallet3 GRAMS change: 
+                ${new BigNumber(bw3EndGrams).minus(bw3StartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`BarWallet6 GRAMS change: 
+                ${new BigNumber(bw6EndGrams).minus(bw6StartGrams).div(1000000000).toNumber()} TON`);
+            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change: 
+                ${new BigNumber(tokensInternalOwnerEndGrams).minus(tokensInternalOwnerStartGrams).div(1000000000).toNumber()} TON`);
+
+            logger.log(`GAS used: ${totalGas} TON`);
+
             assert.equal(
-                new BigNumber(w3balanceStart).plus(5000).toNumber(),
-                new BigNumber(w3balanceEnd).toNumber(),
+                new BigNumber(bw3balanceStart).plus(5000).toNumber(),
+                new BigNumber(bw3balanceEnd).toNumber(),
                 'BarWallet#3 balance wrong');
             assert.equal(
-                new BigNumber(w6balanceStart).minus(5000).toNumber(),
-                new BigNumber(w6balanceEnd).toNumber(),
+                new BigNumber(bw6balanceStart).minus(5000).toNumber(),
+                new BigNumber(bw6balanceEnd).toNumber(),
                 'BarWallet#6 balance wrong');
             assert.equal(
                 new BigNumber(allowanceStart.remaining_tokens).minus(5000).toNumber(),
                 new BigNumber(allowanceEnd.remaining_tokens).toNumber(),
-                'Allowance wrong');
+                'Wrong remaining_tokens');
+            assert.equal(allowanceEnd.spender, BarWalletInternal.address, 'Wrong spender');
 
         });
 
