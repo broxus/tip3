@@ -109,14 +109,14 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`RootTokenContractExternalOwner GRAMS change: 
+            logger.log(`RootTokenContractExternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
 
-            logger.log(`DeployEmptyWalletFor GRAMS change: 
+            logger.log(`DeployEmptyWalletFor GRAMS change:
                 ${new BigNumber(deployEmptyWalletForEndGrams).minus(deployEmptyWalletForStartGrams).div(1000000000).toFixed(9)} TON`);
 
-            logger.log(`FooWallet#0: 
-                address = ${fw0address}, 
+            logger.log(`FooWallet#0:
+                address = ${fw0address},
                 tokens = ${fw0balance} FOO,
                 grams = ${new BigNumber(fw0EndGrams).div(1000000000).toFixed(9)} TON`);
 
@@ -167,11 +167,11 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`RootTokenContractExternalOwner GRAMS change: 
+            logger.log(`RootTokenContractExternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
 
-            logger.log(`FooWallet#1: 
-                address = ${fw1address}, 
+            logger.log(`FooWallet#1:
+                address = ${fw1address},
                 balance = ${fw1balance} FOO,
                 grams = ${new BigNumber(fw1EndGrams).div(1000000000).toFixed(9)} TON`);
 
@@ -222,11 +222,11 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`RootTokenContractExternalOwner GRAMS change: 
+            logger.log(`RootTokenContractExternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
 
-            logger.log(`FooWallet#2: 
-                address = ${fw2address}, 
+            logger.log(`FooWallet#2:
+                address = ${fw2address},
                 balance = ${fw2balance} FOO,
                 grams = ${new BigNumber(fw2EndGrams).div(1000000000).toFixed(9)} TON`);
 
@@ -277,14 +277,14 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change: 
+            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change:
                 ${new BigNumber(tokensInternalOwnerEndGrams).minus(tokensInternalOwnerStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+            logger.log(`RootTokenContractInternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
 
-            logger.log(`BarWallet#Internal: 
-                address = ${bwInternalAddress}, 
-                tokens = ${bwInternalBalance} BAR, 
+            logger.log(`BarWallet#Internal:
+                address = ${bwInternalAddress},
+                tokens = ${bwInternalBalance} BAR,
                 grams = ${new BigNumber(bwInternalEndGrams).div(1000000000).toFixed(9)} TON`);
             logger.log(`GAS used: ${totalGas} TON`);
             assert.ok(bwInternalAddress);
@@ -334,13 +334,13 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change:
                 ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+            logger.log(`RootTokenContractInternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
 
-            logger.log(`BarWallet#3: 
-                address = ${bw3address}, 
+            logger.log(`BarWallet#3:
+                address = ${bw3address},
                 balance = ${bw3balance} BAR,
                 grams = ${new BigNumber(bw3EndGrams).div(1000000000).toFixed(9)} TON`);
             logger.log(`GAS used: ${totalGas} TON`);
@@ -392,12 +392,12 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change:
                 ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+            logger.log(`RootTokenContractInternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`BarWallet#6: 
-                address = ${bw6address}, 
+            logger.log(`BarWallet#6:
+                address = ${bw6address},
                 balance = ${bw6balance} BAR,
                 grams = ${new BigNumber(bw6EndGrams).div(1000000000).toFixed(9)} TON`);
             logger.log(`GAS used: ${totalGas} TON`);
@@ -475,11 +475,11 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+            logger.log(`RootTokenContractInternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change:
                 ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`BarWallet#Internal GRAMS change: 
+            logger.log(`BarWallet#Internal GRAMS change:
                 ${new BigNumber(bwInternalEndGrams).minus(bwInternalStartGrams).div(1000000000).toFixed(9)} TON`);
 
             logger.log(`GAS used: ${totalGas} TON`);
@@ -497,19 +497,6 @@ describe('Test Fungible Tokens', function () {
         it('External call TONTokenWallet.burnByOwner', async () => {
             logger.log('######################################################');
             logger.log('BurnByOwner 5.000 tokens from BarWallet#3');
-            const startBalance = await BarWallet3.runLocal('getBalance', {});
-            const startTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
-            const startBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
-            const startLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
-
-            logger.log(`Start balance of BarWallet#3: ${startBalance} BAR`);
-            logger.log(`Start total supply: ${startTotalSupply} BAR`);
-            logger.log(`Start burned count: ${startBurnedCount} BAR`);
-            logger.log(`Start payload: ${startLatestPayload}`);
-
-            const bw3StartGrams = await tonWrapper.getBalance(BarWallet3.address);
-            const rootOwnerStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
-            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
 
             bw3address = await RootTokenContractInternalOwner.runLocal(
                 'getWalletAddress',
@@ -523,6 +510,20 @@ describe('Test Fungible Tokens', function () {
                 'TONTokenWallet',
                 bw3address
             );
+
+            const startBalance = await BarWallet3.runLocal('getBalance', {});
+            const startTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
+            const startBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
+            const startLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
+
+            logger.log(`Start balance of BarWallet#3: ${startBalance} BAR`);
+            logger.log(`Start total supply: ${startTotalSupply} BAR`);
+            logger.log(`Start burned count: ${startBurnedCount} BAR`);
+            logger.log(`Start payload: ${startLatestPayload}`);
+
+            const bw3StartGrams = await tonWrapper.getBalance(BarWallet3.address);
+            const rootOwnerStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+            const rootStartGrams = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
 
             await BarWallet3.run(
                 'burnByOwner',
@@ -583,6 +584,19 @@ describe('Test Fungible Tokens', function () {
         it('Internal call RootTokenContractInternalOwnerTest.burnMyTokens by TONTokenWalletInternalOwnerTest', async () => {
             logger.log('######################################################');
             logger.log('BurnByRoot 50.000 tokens from BarWallet#Internal');
+            bwInternalAddress = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key: `0x0`,
+                    owner_address: TONTokenWalletInternalOwnerTest.address,
+                });
+
+            BarWalletInternal = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bwInternalAddress
+            );
+
             const startBalance = await BarWalletInternal.runLocal('getBalance', {});
             const startTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             const startBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
@@ -605,7 +619,7 @@ describe('Test Fungible Tokens', function () {
                     grams: freeton.utils.convertCrystal('3', 'nano'),
                     burner_address: RootTokenContractInternalOwnerTest.address,
                     callback_address: RootTokenContractInternalOwnerTest.address,
-                    callback_payload: startLatestPayload
+                    ethereum_address: 'c227CE9EdCc60a725DE66A1132171a22ae62a64F'
                 },
                 tonWrapper.keys[5]
             ).catch(e => console.log(e));
@@ -691,7 +705,7 @@ describe('Test Fungible Tokens', function () {
 
             const rootEndGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
 
-            logger.log(`RootTokenContractExternalOwner GRAMS change: 
+            logger.log(`RootTokenContractExternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
 
             assert.equal(
@@ -783,7 +797,7 @@ describe('Test Fungible Tokens', function () {
             const fw2EndGrams = await tonWrapper.getBalance(FooWallet2.address);
             logger.log(`FooWallet#1 GRAMS change:
                 ${new BigNumber(fw1EndGrams).minus(fw1StartGrams).div(1000000000).toFixed(9)}`);
-            logger.log(`FooWallet#2 GRAMS change: 
+            logger.log(`FooWallet#2 GRAMS change:
                 ${new BigNumber(fw2EndGrams).minus(fw2StartGrams).div(1000000000).toFixed(9)}`);
 
             assert.equal(new BigNumber(fw1EndBalance).toNumber(), new BigNumber(w1StartBalance).plus(1000).toNumber(), 'FooWallet#1 balance wrong');
@@ -834,9 +848,9 @@ describe('Test Fungible Tokens', function () {
 
             const fw1EndGrams = await tonWrapper.getBalance(FooWallet1.address);
             const selfDeployWalletEndGrams = await tonWrapper.getBalance(SelfDeployedWallet.address);
-            logger.log(`FooWallet#1 GRAMS change: 
+            logger.log(`FooWallet#1 GRAMS change:
                 ${new BigNumber(fw1EndGrams).minus(fw1StartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`FooWallet#4 GRAMS change: 
+            logger.log(`FooWallet#4 GRAMS change:
                 ${new BigNumber(selfDeployWalletEndGrams).minus(selfDeployWalletStartGrams).div(1000000000).toFixed(9)} TON`);
 
             assert.equal(new BigNumber(fw1EndBalance).toNumber(),
@@ -950,8 +964,8 @@ describe('Test Fungible Tokens', function () {
             logger.log(`BarWallet#3 end balance: ${bw3EndBalance} BAR`);
 
             const fw1EndGrams = await tonWrapper.getBalance(FooWallet1.address);
-            const bw3EndGrams = await tonWrapper.getBalance(BarWallet3.address);            
-            logger.log(`FooWallet#1 GRAMS change: 
+            const bw3EndGrams = await tonWrapper.getBalance(BarWallet3.address);
+            logger.log(`FooWallet#1 GRAMS change:
                 ${new BigNumber(fw1EndGrams).minus(w1StartGrams).div(1000000000).toFixed(9)} TON`);
             logger.log(`BarWallet#3 GRAMS change:
                 ${new BigNumber(bw3EndGrams).minus(bw3StartGrams).div(1000000000).toFixed(9)} TON`);
@@ -969,7 +983,7 @@ describe('Test Fungible Tokens', function () {
             logger.log('######################################################');
             logger.log('BarWallet#6 disapprove');
             const allowanceStart = await BarWallet6.runLocal('allowance', {});
-            logger.log(`Start allowance: 
+            logger.log(`Start allowance:
                 remaining_tokens = ${allowanceStart.remaining_tokens},
                 spender = ${allowanceStart.spender}`);
 
@@ -982,8 +996,8 @@ describe('Test Fungible Tokens', function () {
             ).catch(e => console.log(e));
 
             const allowanceEnd = await BarWallet6.runLocal('allowance', {});
-            logger.log(`End allowance: 
-                remaining_tokens = ${allowanceEnd.remaining_tokens}, 
+            logger.log(`End allowance:
+                remaining_tokens = ${allowanceEnd.remaining_tokens},
                 spender = ${allowanceEnd.spender}`);
 
             const bw6EndGrams = await tonWrapper.getBalance(BarWallet6.address);
@@ -1001,8 +1015,8 @@ describe('Test Fungible Tokens', function () {
             logger.log('######################################################');
             logger.log('BarWallet#6 approve 10000 to wallet of TONTokenWalletInternalOwnerTest');
             const allowanceStart = await BarWallet6.runLocal('allowance', {});
-            logger.log(`Start allowance: 
-                remaining_tokens = ${allowanceStart.remaining_tokens}, 
+            logger.log(`Start allowance:
+                remaining_tokens = ${allowanceStart.remaining_tokens},
                 spender = ${allowanceStart.spender}`);
 
             const bw6StartGrams = await tonWrapper.getBalance(BarWallet6.address);
@@ -1018,12 +1032,12 @@ describe('Test Fungible Tokens', function () {
             ).catch(e => console.log(e));
 
             const allowanceEnd = await BarWallet6.runLocal('allowance', {});
-            logger.log(`End allowance: 
-                remaining_tokens = ${allowanceEnd.remaining_tokens}, 
+            logger.log(`End allowance:
+                remaining_tokens = ${allowanceEnd.remaining_tokens},
                 spender = ${allowanceEnd.spender}`);
 
             const bw6EndGrams = await tonWrapper.getBalance(BarWallet6.address);
-            logger.log(`BarWallet#6 GRAMS change: 
+            logger.log(`BarWallet#6 GRAMS change:
                 ${new BigNumber(bw6EndGrams).minus(bw6StartGrams).div(1000000000).toFixed(9)} TON`);
 
             assert.equal(
@@ -1039,8 +1053,8 @@ describe('Test Fungible Tokens', function () {
             const allowanceStart = await BarWallet6.runLocal('allowance', {});
             const bw3balanceStart = await BarWallet3.runLocal('getBalance', {});
             const bw6balanceStart = await BarWallet6.runLocal('getBalance', {});
-            logger.log(`Start allowance: 
-                remaining_tokens = ${allowanceStart.remaining_tokens}, 
+            logger.log(`Start allowance:
+                remaining_tokens = ${allowanceStart.remaining_tokens},
                 spender = ${allowanceStart.spender}`);
             logger.log(`Start BarWallet3 balance: ${bw3balanceStart} BAR`);
             logger.log(`Start BarWallet6 balance: ${bw6balanceStart} BAR`);
@@ -1064,8 +1078,8 @@ describe('Test Fungible Tokens', function () {
             const allowanceEnd = await BarWallet6.runLocal('allowance', {});
             const bw3balanceEnd = await BarWallet3.runLocal('getBalance', {});
             const bw6balanceEnd = await BarWallet6.runLocal('getBalance', {});
-            logger.log(`End allowance: 
-                remaining_tokens = ${allowanceEnd.remaining_tokens}, 
+            logger.log(`End allowance:
+                remaining_tokens = ${allowanceEnd.remaining_tokens},
                 spender = ${allowanceEnd.spender}`);
             logger.log(`End BarWallet3 balance: ${bw3balanceEnd}`);
             logger.log(`End BarWallet6 balance: ${bw6balanceEnd} BAR`);
@@ -1083,11 +1097,11 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`BarWallet3 GRAMS change: 
+            logger.log(`BarWallet3 GRAMS change:
                 ${new BigNumber(bw3EndGrams).minus(bw3StartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`BarWallet6 GRAMS change: 
+            logger.log(`BarWallet6 GRAMS change:
                 ${new BigNumber(bw6EndGrams).minus(bw6StartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change: 
+            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change:
                 ${new BigNumber(tokensInternalOwnerEndGrams).minus(tokensInternalOwnerStartGrams).div(1000000000).toFixed(9)} TON`);
 
             logger.log(`GAS used: ${totalGas} TON`);

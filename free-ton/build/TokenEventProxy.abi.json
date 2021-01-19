@@ -30,6 +30,15 @@
 			]
 		},
 		{
+			"name": "transferMyTokensToEthereum",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"ethereum_address","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "burnMyTokens",
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
@@ -128,13 +137,10 @@
 	],
 	"events": [
 		{
-			"name": "Burn",
+			"name": "TokenBurn",
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
-				{"name":"payload","type":"cell"},
-				{"name":"owner_public_key","type":"uint256"},
-				{"name":"owner_address","type":"address"},
-				{"name":"wallet_address","type":"address"}
+				{"name":"ethereum_address","type":"bytes"}
 			],
 			"outputs": [
 			]

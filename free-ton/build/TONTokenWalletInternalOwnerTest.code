@@ -56,15 +56,14 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode callback_payload
-;; decode TvmCell
+; Decode ethereum_address
 LDREF
 ENDS
 ;; param: tokens
 ;; param: grams
 ;; param: burner_address
 ;; param: callback_address
-;; param: callback_payload
+;; param: ethereum_address
 ; modifier onlyExternalOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 12
@@ -94,12 +93,35 @@ IF
 ; end function isExternalOwner
 THROWANYIFNOT
 ; function burnMyTokens
+;; get member length
+;; push identifier ethereum_address
+DUP
+CTOS
+SBITS
+RSHIFT 3
+EQINT 20
+THROWIFNOT 100
 ACCEPT
+NEWC
+;; decl: builder
+; expValue
+DUP
+; end expValue
+;; push identifier ethereum_address
+PUSH S2
+STREFR
+; colValue
+NIP
+; end colValue
+;; push identifier builder
+DUP
+ENDC
+;; decl: callback_payload
 ;; Remote call ITokensBurner.burnMyTokens
 ;; push identifier grams
-PUSH S3
+PUSH S5
 ;; push identifier burner_address
-PUSH S3
+PUSH S5
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -112,11 +134,11 @@ STSLICECONST 0
 STSLICECONST x17fa92d3
 ;; tokens
 ;; push identifier tokens
-PUSH S5
+PUSH S7
 STUR 128
 ;; callback_address
 ;; push identifier callback_address
-PUSH S2
+PUSH S4
 STSLICER
 ;; callback_payload
 ;; push identifier callback_payload
@@ -125,6 +147,7 @@ STREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
+DROP2
 ; end function burnMyTokens
 BLKDROP 5
 ; end modifier onlyExternalOwner
