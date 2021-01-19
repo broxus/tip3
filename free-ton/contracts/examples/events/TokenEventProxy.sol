@@ -36,12 +36,9 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
     uint8 error_message_sender_is_not_valid_event = 103;
     uint8 error_message_not_valid_payload = 104;
 
-    event Burn(
+    event TokenBurn(
         uint128 tokens,
-        TvmCell payload,
-        uint256 owner_public_key,
-        address owner_address,
-        address wallet_address
+        bytes ethereum_address
     );
 
     constructor() public {
@@ -64,8 +61,10 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         tvm.accept();
         tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
-        (uint128 tokens, uint256 owner_pubkey, address owner_address) =
-            eventData.eventData.toSlice().decode(uint128, uint256, address);
+        (uint128 tokens, int8 wid, uint256 owner_addr, uint256 owner_pubkey) =
+            eventData.eventData.toSlice().decode(uint128, int8, uint256, uint256);
+
+        address owner_address = address.makeAddrStd(wid, owner_addr);
 
         require(tokens > 0, error_message_not_valid_payload);
         require((owner_pubkey != 0 && owner_address.value == 0) ||
@@ -93,13 +92,35 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
 
         burned_count += tokens;
 
-        emit Burn(tokens, payload, sender_public_key, sender_address, wallet_address);
+        (bytes ethereum_address) = payload.toSlice().decode(bytes);
+
+        emit TokenBurn(tokens, ethereum_address);
 
         if (sender_address.value == 0) {
             wallet_address.transfer({ value: 0, flag: 128 });
         } else {
             sender_address.transfer({ value: 0, flag: 128 });
         }
+    }
+
+    function transferMyTokensToEthereum(uint128 tokens, bytes ethereum_address) external {
+        require(ethereum_address.length  == 20);
+        require(token_root_address.value != 0);
+        require(msg.sender.value != 0);
+        require(msg.value >= settings_burn_min_msg_value);
+        tvm.accept();
+        tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+
+        TvmBuilder builder;
+        builder.store(ethereum_address);
+        TvmCell callback_payload = builder.toCell();
+
+        IBurnableByRootTokenRootContract(token_root_address).proxyBurn{value: 0, flag: 128}(
+            tokens,
+            msg.sender,
+            address(this),
+            callback_payload
+        );
     }
 
     function burnMyTokens(uint128 tokens, address callback_address, TvmCell callback_payload) override external {

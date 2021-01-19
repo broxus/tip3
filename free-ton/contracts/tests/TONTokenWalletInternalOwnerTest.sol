@@ -24,9 +24,16 @@ contract TONTokenWalletInternalOwnerTest {
         uint128 grams,
         address burner_address,
         address callback_address,
-        TvmCell callback_payload
+        bytes ethereum_address
     ) external view onlyExternalOwner {
+        require(ethereum_address.length  == 20);
+
         tvm.accept();
+
+        TvmBuilder builder;
+        builder.store(ethereum_address);
+        TvmCell callback_payload = builder.toCell();
+
         ITokensBurner(burner_address).burnMyTokens{value: grams}(tokens, callback_address, callback_payload);
     }
 

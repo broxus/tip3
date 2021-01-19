@@ -285,13 +285,26 @@ PUSH S1
 INDEX 2
 CTOS
 LDU 128
+LDI 8
 LDU 256
-;; decode address
-LDMSGADDR
+LDU 256
 ; colValue
 DROP
 ;; decl: tokens
+;; decl: wid
+;; decl: owner_addr
 ;; decl: owner_pubkey
+;; address.makeAddrStd()
+;; push identifier owner_addr
+PUSH S1
+;; push identifier wid
+PUSH S3
+NEWC
+STSLICECONST x9_
+STI 8
+STU 256
+ENDC
+CTOS
 ;; decl: owner_address
 ;; push identifier error_message_not_valid_payload
 GETGLOB 24
@@ -303,7 +316,7 @@ PUSHCONT {
 }
 IF
 ;; push identifier tokens
-PUSH S3
+PUSH S5
 GTINT 0
 THROWANYIFNOT
 ;; push identifier error_message_not_valid_payload
@@ -368,7 +381,7 @@ NEWC
 STSLICECONST x66211c6f
 ;; tokens
 ;; push identifier tokens
-PUSH S4
+PUSH S6
 STUR 128
 ;; grams
 ;; push identifier settings_deploy_wallet_grams
@@ -392,7 +405,7 @@ STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-BLKDROP 5
+BLKDROP 7
 ; end function broxusBridgeCallback
 CALL $c7_to_c4$
 TRUE
@@ -531,13 +544,26 @@ PUSH S1
 INDEX 2
 CTOS
 LDU 128
+LDI 8
 LDU 256
-;; decode address
-LDMSGADDR
+LDU 256
 ; colValue
 DROP
 ;; decl: tokens
+;; decl: wid
+;; decl: owner_addr
 ;; decl: owner_pubkey
+;; address.makeAddrStd()
+;; push identifier owner_addr
+PUSH S1
+;; push identifier wid
+PUSH S3
+NEWC
+STSLICECONST x9_
+STI 8
+STU 256
+ENDC
+CTOS
 ;; decl: owner_address
 ;; push identifier error_message_not_valid_payload
 GETGLOB 24
@@ -549,7 +575,7 @@ PUSHCONT {
 }
 IF
 ;; push identifier tokens
-PUSH S3
+PUSH S5
 GTINT 0
 THROWANYIFNOT
 ;; push identifier error_message_not_valid_payload
@@ -614,7 +640,7 @@ NEWC
 STSLICECONST x66211c6f
 ;; tokens
 ;; push identifier tokens
-PUSH S4
+PUSH S6
 STUR 128
 ;; grams
 ;; push identifier settings_deploy_wallet_grams
@@ -638,7 +664,7 @@ STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-BLKDROP 5
+BLKDROP 7
 ; end function broxusBridgeCallback
 
 .globl	burnCallback
@@ -738,42 +764,36 @@ UFITS 128
 ; colValue
 SETGLOB 20
 ; end colValue
-;; emit Burn
+;; push identifier payload
+PUSH S3
+CTOS
+;; decode bytes
+LDREF
+; colValue
+DROP
+;; decl: ethereum_address
+;; emit TokenBurn
 NEWC
 PUSHSLICE xc0000000000000000000000002_
 STSLICER
 STSLICECONST 0
-STSLICECONST 1
-NEWC
-STSLICECONST x7f389a0b
+STSLICECONST 0
+STSLICECONST x54ce9eb5
 ;; tokens
 ;; push identifier tokens
 PUSH S6
 STUR 128
-;; payload
-;; push identifier payload
-PUSH S5
+;; ethereum_address
+;; push identifier ethereum_address
+PUSH S1
 STREFR
-;; owner_public_key
-;; push identifier sender_public_key
-PUSH S4
-STUR 256
-;; owner_address
-;; push identifier sender_address
-PUSH S3
-STSLICER
-;; wallet_address
-;; push identifier wallet_address
-PUSH S2
-STSLICER
-STBREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
 ;; if
 ;; get member value
 ;; push identifier sender_address
-PUSH S1
+PUSH S2
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -781,7 +801,7 @@ EQINT 0
 PUSHCONT {
 	;; transfer()
 	;; push identifier wallet_address
-	DUP
+	PUSH S1
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -796,7 +816,7 @@ PUSHCONT {
 PUSHCONT {
 	;; transfer()
 	;; push identifier sender_address
-	PUSH S1
+	PUSH S2
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -810,9 +830,125 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
+DROP
 ; end function burnCallback
 BLKDROP 5
 ; end modifier onlyRoot
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	transferMyTokensToEthereum
+.public	transferMyTokensToEthereum
+.type	transferMyTokensToEthereum, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode tokens
+LDU 128
+; Decode ethereum_address
+LDREF
+ENDS
+;; param: tokens
+;; param: ethereum_address
+; function transferMyTokensToEthereum
+;; get member length
+;; push identifier ethereum_address
+DUP
+CTOS
+SBITS
+RSHIFT 3
+EQINT 20
+THROWIFNOT 100
+;; get member value
+;; push identifier token_root_address
+GETGLOB 16
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+THROWIFNOT 100
+;; get member value
+;; get member sender
+GETGLOB 9
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+THROWIFNOT 100
+;; get member value
+CALL $message_balance_macro$
+;; push identifier settings_burn_min_msg_value
+GETGLOB 17
+;; >=
+GEQ
+THROWIFNOT 100
+ACCEPT
+;; push identifier start_balance_
+GETGLOB 19
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+MAX
+PUSHINT 2
+RAWRESERVE
+NEWC
+;; decl: builder
+; expValue
+DUP
+; end expValue
+;; push identifier ethereum_address
+PUSH S2
+STREFR
+; colValue
+NIP
+; end colValue
+;; push identifier builder
+DUP
+ENDC
+;; decl: callback_payload
+;; Remote call IBurnableByRootTokenRootContract.proxyBurn
+;; push identifier token_root_address
+GETGLOB 16
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x6a63575c
+;; tokens
+;; push identifier tokens
+PUSH S5
+STUR 128
+;; sender_address
+;; get member sender
+GETGLOB 9
+STSLICER
+;; callback_address
+MYADDR
+STSLICER
+;; callback_payload
+;; push identifier callback_payload
+PUSH S2
+STREFR
+STBREFR
+ENDC
+PUSHINT 128
+SENDRAWMSG
+BLKDROP 4
+; end function transferMyTokensToEthereum
 CALL $c7_to_c4$
 TRUE
 SETGLOB 7
