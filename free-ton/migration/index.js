@@ -32,22 +32,9 @@ const tonWrapper = new freeton.TonWrapper({
   const migration = new freeton.Migration(tonWrapper);
   const ZERO_ADDRESS = '0:0000000000000000000000000000000000000000000000000000000000000000';
 
-  async function deployWithAttempts(params, attempts = 10) {
-    if (attempts > 0) {
-      let error = false;
-      await migration.deploy(params).catch(e => {
-        console.log(e);
-        error = true;
-      });
-      if (error) {
-        await deployWithAttempts(params, attempts - 1);
-      }
-    }
-  }
-
   const TONTokenWallet = await freeton.requireContract(tonWrapper, 'TONTokenWallet');
   const RootTokenContractExternalOwner = await freeton.requireContract(tonWrapper, 'RootTokenContract');
-  await deployWithAttempts({
+  await migration.deploy({
     contract: RootTokenContractExternalOwner,
     constructorParams: {},
     initParams: {
@@ -63,7 +50,7 @@ const tonWrapper = new freeton.TonWrapper({
     alias: 'RootTokenContractExternalOwner'
   });
 
-  await deployWithAttempts({
+  await migration.deploy({
     contract: TONTokenWallet,
     constructorParams: {},
     initParams: {
@@ -81,7 +68,7 @@ const tonWrapper = new freeton.TonWrapper({
   }).catch(e => console.log(e));
 
   const RootTokenContractInternalOwnerTest = await freeton.requireContract(tonWrapper, 'RootTokenContractInternalOwnerTest');
-  await deployWithAttempts({
+  await migration.deploy({
     contract: RootTokenContractInternalOwnerTest,
     constructorParams: {},
     initParams:{
@@ -94,7 +81,7 @@ const tonWrapper = new freeton.TonWrapper({
   }).catch(e => console.log(e));
 
   const RootTokenContractInternalOwner = await freeton.requireContract(tonWrapper, 'RootTokenContract');
-  await deployWithAttempts({
+  await migration.deploy({
     contract: RootTokenContractInternalOwner,
     constructorParams: {},
     initParams: {
@@ -115,7 +102,7 @@ const tonWrapper = new freeton.TonWrapper({
   }, tonWrapper.keys[0]);
 
   const TONTokenWalletInternalOwnerTest = await freeton.requireContract(tonWrapper, 'TONTokenWalletInternalOwnerTest');
-  await deployWithAttempts({
+  await migration.deploy({
     contract: TONTokenWalletInternalOwnerTest,
     constructorParams: {},
     initParams: {
@@ -127,7 +114,7 @@ const tonWrapper = new freeton.TonWrapper({
   }).catch(e => console.log(e));
 
   const DeployEmptyWalletFor = await freeton.requireContract(tonWrapper, 'DeployEmptyWalletFor');
-  await deployWithAttempts({
+  await migration.deploy({
     contract: DeployEmptyWalletFor,
     constructorParams: {},
     initParams: {
@@ -138,7 +125,7 @@ const tonWrapper = new freeton.TonWrapper({
   }).catch(e => console.log(e));
 
   const TONTokenWalletHack = await freeton.requireContract(tonWrapper, 'TONTokenWalletHack');
-  await deployWithAttempts({
+  await migration.deploy({
     contract: TONTokenWalletHack,
     constructorParams: {},
     initParams: {
