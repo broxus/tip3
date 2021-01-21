@@ -22,7 +22,7 @@
     "solidity-docgen": "^0.5.7",
     "ton-client-js": "^0.28.1",
     "ton-client-node-js": "^0.28.0",
-    "ton-testing-suite": "^1.0.6",
+`    "ton-testing-suite": "^1.0.12",
     "underscore": "^1.12.0"
   },
   "devDependencies": {
