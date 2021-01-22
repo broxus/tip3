@@ -43,7 +43,7 @@ INDEX 0
 ; expValue
 ; end expValue
 ; colValue
-SETGLOB 19
+SETGLOB 20
 ; end colValue
 ; end constructor TokenEventProxy
 CALL $c7_to_c4$
@@ -65,29 +65,9 @@ IF
 ;; decode EthereumEventInitData.eventTransaction
 LDU 256
 ;; decode EthereumEventInitData.eventIndex
-LDUQ 256
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 256
-}
-IFNOT
+LDU 32
 ;; decode EthereumEventInitData.eventData
 ;; decode TvmCell
-DUP
-SBITREFS
-EQINT 1
-SWAP
-EQINT 0
-AND
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-}
-IF
 LDREF
 ;; decode EthereumEventInitData.eventBlockNumber
 LDUQ 256
@@ -156,143 +136,14 @@ SWAP
 ENDS
 ;; param: eventData
 ; function broxusBridgeCallback
-;; push identifier eventData
-DUP
-;; param: initData
-; function getExpectedEventAddress
-NEWDICT
-;; push identifier ethereum_event_deploy_pubkey
-GETGLOB 14
-NEWC
-STU 256
-PUSHINT 0
-ROT
-PUSHINT 64
-DICTUSETB
-;; push identifier initData
-PUSH S1
-UNTUPLE 9
-NEWC
-NEWC
-PUSH S6
-STUR 256
-PUSH S5
-STSLICER
-PUSH S4
-STUR 256
-STBREFR
-NEWC
-PUSH S3
-STUR 256
-PUSH S2
-STSLICER
-STBREFR
-PUSH S9
-STUR 256
-PUSH S8
-STUR 256
-PUSH S7
-STREFR
-PUSH S6
-STUR 256
-XCHG s9
-BLKDROP 9
-ENDC
-PUSHINT 1
-ROT
-PUSHINT 64
-DICTUSETREF
-NEWC
-STDICT
-ENDC
-;; push identifier ethereum_event_code
-GETGLOB 13
-NEWC
-STSLICECONST x2_
-STOPTREF
-STOPTREF
-STZERO
-ENDC
-;; decl: stateInit
-;; return
-;; push identifier stateInit
-DUP
-HASHCU
-NEWC
-STSLICECONST x801_
-STU 256
-ENDC
-CTOS
-NIP
-NIP
-; end function getExpectedEventAddress
-;; decl: expectedSenderAddress
-;; push identifier error_message_sender_is_not_valid_event
-GETGLOB 23
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-;; push identifier expectedSenderAddress
-PUSH S1
-;; get member sender
-GETGLOB 9
-SDEQ
-THROWANYIFNOT
-;; get member ethereumEventConfiguration
-;; push identifier eventData
-PUSH S1
-INDEX 5
-;; push identifier ethereum_event_configuration_address
-GETGLOB 15
-SDEQ
-THROWIFNOT 100
-;; get member proxyAddress
-;; push identifier eventData
-PUSH S1
-INDEX 8
-MYADDR
-SDEQ
-THROWIFNOT 100
-;; get member value
-;; push identifier token_root_address
-GETGLOB 16
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-THROWIFNOT 100
 ACCEPT
-;; push identifier start_balance_
-GETGLOB 19
-;; get member balance
-GETPARAM 7
-INDEX 0
-;; get member value
-CALL $message_balance_macro$
-;; -
-SUB
-UFITS 128
-MAX
-PUSHINT 2
-RAWRESERVE
-;; get member eventData
-;; push identifier eventData
-PUSH S1
-INDEX 2
-CTOS
-LDU 128
-LDI 8
-LDU 256
-LDU 256
-; colValue
-DROP
+PUSHINT 10
 ;; decl: tokens
+PUSHINT 0
 ;; decl: wid
+PUSHINT 106140713374280272103230765557995125462291848293353214406741659878575333492533
 ;; decl: owner_addr
+PUSHINT 0
 ;; decl: owner_pubkey
 ;; address.makeAddrStd()
 ;; push identifier owner_addr
@@ -307,7 +158,7 @@ ENDC
 CTOS
 ;; decl: owner_address
 ;; push identifier error_message_not_valid_payload
-GETGLOB 24
+GETGLOB 25
 DUP
 LESSINT 2
 PUSHCONT {
@@ -320,7 +171,7 @@ PUSH S5
 GTINT 0
 THROWANYIFNOT
 ;; push identifier error_message_not_valid_payload
-GETGLOB 24
+GETGLOB 25
 DUP
 LESSINT 2
 PUSHCONT {
@@ -368,12 +219,16 @@ PUSHCONT {
 IFNOT
 THROWANYIFNOT
 ;; Remote call IRootTokenContract.deployWallet
+;; push identifier settings_deploy_wallet_value
+GETGLOB 19
 ;; push identifier token_root_address
 GETGLOB 16
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHINT 109
+SWAP
+STGRAMS
+PUSHINT 105
 STZEROES
 STSLICECONST 0
 STSLICECONST 1
@@ -397,15 +252,14 @@ PUSH S2
 STSLICER
 NEWC
 ;; gas_back_address
-;; get member sender
-GETGLOB 9
+MYADDR
 STSLICER
 STBREFR
 STBREFR
 ENDC
-PUSHINT 128
+PUSHINT 1
 SENDRAWMSG
-BLKDROP 7
+BLKDROP 6
 ; end function broxusBridgeCallback
 CALL $c7_to_c4$
 TRUE
@@ -415,143 +269,14 @@ SETGLOB 7
 .type	broxusBridgeCallback_internal, @function
 ;; param: eventData
 ; function broxusBridgeCallback
-;; push identifier eventData
-DUP
-;; param: initData
-; function getExpectedEventAddress
-NEWDICT
-;; push identifier ethereum_event_deploy_pubkey
-GETGLOB 14
-NEWC
-STU 256
-PUSHINT 0
-ROT
-PUSHINT 64
-DICTUSETB
-;; push identifier initData
-PUSH S1
-UNTUPLE 9
-NEWC
-NEWC
-PUSH S6
-STUR 256
-PUSH S5
-STSLICER
-PUSH S4
-STUR 256
-STBREFR
-NEWC
-PUSH S3
-STUR 256
-PUSH S2
-STSLICER
-STBREFR
-PUSH S9
-STUR 256
-PUSH S8
-STUR 256
-PUSH S7
-STREFR
-PUSH S6
-STUR 256
-XCHG s9
-BLKDROP 9
-ENDC
-PUSHINT 1
-ROT
-PUSHINT 64
-DICTUSETREF
-NEWC
-STDICT
-ENDC
-;; push identifier ethereum_event_code
-GETGLOB 13
-NEWC
-STSLICECONST x2_
-STOPTREF
-STOPTREF
-STZERO
-ENDC
-;; decl: stateInit
-;; return
-;; push identifier stateInit
-DUP
-HASHCU
-NEWC
-STSLICECONST x801_
-STU 256
-ENDC
-CTOS
-NIP
-NIP
-; end function getExpectedEventAddress
-;; decl: expectedSenderAddress
-;; push identifier error_message_sender_is_not_valid_event
-GETGLOB 23
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-;; push identifier expectedSenderAddress
-PUSH S1
-;; get member sender
-GETGLOB 9
-SDEQ
-THROWANYIFNOT
-;; get member ethereumEventConfiguration
-;; push identifier eventData
-PUSH S1
-INDEX 5
-;; push identifier ethereum_event_configuration_address
-GETGLOB 15
-SDEQ
-THROWIFNOT 100
-;; get member proxyAddress
-;; push identifier eventData
-PUSH S1
-INDEX 8
-MYADDR
-SDEQ
-THROWIFNOT 100
-;; get member value
-;; push identifier token_root_address
-GETGLOB 16
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-THROWIFNOT 100
 ACCEPT
-;; push identifier start_balance_
-GETGLOB 19
-;; get member balance
-GETPARAM 7
-INDEX 0
-;; get member value
-CALL $message_balance_macro$
-;; -
-SUB
-UFITS 128
-MAX
-PUSHINT 2
-RAWRESERVE
-;; get member eventData
-;; push identifier eventData
-PUSH S1
-INDEX 2
-CTOS
-LDU 128
-LDI 8
-LDU 256
-LDU 256
-; colValue
-DROP
+PUSHINT 10
 ;; decl: tokens
+PUSHINT 0
 ;; decl: wid
+PUSHINT 106140713374280272103230765557995125462291848293353214406741659878575333492533
 ;; decl: owner_addr
+PUSHINT 0
 ;; decl: owner_pubkey
 ;; address.makeAddrStd()
 ;; push identifier owner_addr
@@ -566,7 +291,7 @@ ENDC
 CTOS
 ;; decl: owner_address
 ;; push identifier error_message_not_valid_payload
-GETGLOB 24
+GETGLOB 25
 DUP
 LESSINT 2
 PUSHCONT {
@@ -579,7 +304,7 @@ PUSH S5
 GTINT 0
 THROWANYIFNOT
 ;; push identifier error_message_not_valid_payload
-GETGLOB 24
+GETGLOB 25
 DUP
 LESSINT 2
 PUSHCONT {
@@ -627,12 +352,16 @@ PUSHCONT {
 IFNOT
 THROWANYIFNOT
 ;; Remote call IRootTokenContract.deployWallet
+;; push identifier settings_deploy_wallet_value
+GETGLOB 19
 ;; push identifier token_root_address
 GETGLOB 16
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHINT 109
+SWAP
+STGRAMS
+PUSHINT 105
 STZEROES
 STSLICECONST 0
 STSLICECONST 1
@@ -656,16 +385,117 @@ PUSH S2
 STSLICER
 NEWC
 ;; gas_back_address
-;; get member sender
-GETGLOB 9
+MYADDR
 STSLICER
 STBREFR
 STBREFR
 ENDC
-PUSHINT 128
+PUSHINT 1
 SENDRAWMSG
-BLKDROP 7
+BLKDROP 6
 ; end function broxusBridgeCallback
+
+.globl	broxusBridgeNotification
+.public	broxusBridgeNotification
+.type	broxusBridgeNotification, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode _eventData
+;; decode struct EthereumEventInitData _eventData
+;; decode EthereumEventInitData.eventTransaction
+LDU 256
+;; decode EthereumEventInitData.eventIndex
+LDU 32
+;; decode EthereumEventInitData.eventData
+;; decode TvmCell
+LDREF
+;; decode EthereumEventInitData.eventBlockNumber
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+;; decode EthereumEventInitData.eventBlock
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+;; decode EthereumEventInitData.ethereumEventConfiguration
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+;; decode EthereumEventInitData.requiredConfirmations
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+;; decode EthereumEventInitData.requiredRejects
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+;; decode EthereumEventInitData.proxyAddress
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+;; build struct EthereumEventInitData ss:10
+BLKSWAP 9, 1
+TUPLE 9
+SWAP
+ENDS
+;; param: _eventData
+; function broxusBridgeNotification
+DROP
+; end function broxusBridgeNotification
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
+TRUE
+SETGLOB 7
+
+.globl	broxusBridgeNotification_internal
+.type	broxusBridgeNotification_internal, @function
+;; param: _eventData
+; function broxusBridgeNotification
+DROP
+; end function broxusBridgeNotification
 
 .globl	burnCallback
 .public	burnCallback
@@ -720,7 +550,7 @@ ENDS
 ;; param: wallet_address
 ; modifier onlyRoot
 ;; push identifier error_message_sender_is_not_my_root
-GETGLOB 22
+GETGLOB 23
 DUP
 LESSINT 2
 PUSHCONT {
@@ -740,7 +570,7 @@ THROWANYIFNOT
 ; function burnCallback
 ACCEPT
 ;; push identifier start_balance_
-GETGLOB 19
+GETGLOB 20
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -756,13 +586,13 @@ RAWRESERVE
 PUSH S4
 ; expValue
 ;; fetch burned_count
-GETGLOB 20
+GETGLOB 21
 ; end expValue
 SWAP
 ADD
 UFITS 128
 ; colValue
-SETGLOB 20
+SETGLOB 21
 ; end colValue
 ;; push identifier payload
 PUSH S3
@@ -889,7 +719,7 @@ GEQ
 THROWIFNOT 100
 ACCEPT
 ;; push identifier start_balance_
-GETGLOB 19
+GETGLOB 20
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -1008,7 +838,7 @@ GEQ
 THROWIFNOT 100
 ACCEPT
 ;; push identifier start_balance_
-GETGLOB 19
+GETGLOB 20
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -1303,6 +1133,55 @@ IF
 TRUE
 SETGLOB 7
 
+.globl	getDeployWalletValue
+.public	getDeployWalletValue
+.type	getDeployWalletValue, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; function getDeployWalletValue
+;; return
+;; push identifier settings_deploy_wallet_value
+GETGLOB 19
+;; emitting 1 value(s)
+PUSH S1
+EQINT -1
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST x969cdc97
+	PUSH S1
+	STUR 128
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+}
+IF
+DROP
+; end function getDeployWalletValue
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
+TRUE
+SETGLOB 7
+
 .globl	setTokenRootAddressOnce
 .public	setTokenRootAddressOnce
 .type	setTokenRootAddressOnce, @function
@@ -1319,7 +1198,7 @@ ENDS
 ;; param: value
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 21
+GETGLOB 22
 DUP
 LESSINT 2
 PUSHCONT {
@@ -1415,7 +1294,7 @@ ENDS
 ;; param: value
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 21
+GETGLOB 22
 DUP
 LESSINT 2
 PUSHCONT {
@@ -1507,7 +1386,7 @@ ENDS
 ;; param: value
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 21
+GETGLOB 22
 DUP
 LESSINT 2
 PUSHCONT {
@@ -1603,7 +1482,7 @@ ENDS
 ;; param: value
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 21
+GETGLOB 22
 DUP
 LESSINT 2
 PUSHCONT {
@@ -1691,7 +1570,7 @@ ENDS
 ;; param: value
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 21
+GETGLOB 22
 DUP
 LESSINT 2
 PUSHCONT {
@@ -1763,6 +1642,94 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
+.globl	setDeployWalletValue
+.public	setDeployWalletValue
+.type	setDeployWalletValue, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode value
+LDU 128
+ENDS
+;; param: value
+; modifier onlyOwner
+;; push identifier error_message_sender_is_not_my_owner
+GETGLOB 22
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+; function isOwner
+;; return
+; function isInternalOwner
+;; return
+;; get member value
+;; push identifier internal_owner_address
+GETGLOB 12
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+;; short-circuiting &&
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier internal_owner_address
+	GETGLOB 12
+	;; get member sender
+	GETGLOB 9
+	SDEQ
+}
+IF
+; end function isInternalOwner
+;; short-circuiting ||
+DUP
+PUSHCONT {
+	DROP
+	; function isExternalOwner
+	;; return
+	;; push identifier external_owner_pubkey
+	GETGLOB 11
+	NEQINT 0
+	;; short-circuiting &&
+	DUP
+	PUSHCONT {
+		DROP
+		;; push identifier external_owner_pubkey
+		GETGLOB 11
+		GETGLOB 2
+		;; ==
+		EQUAL
+	}
+	IF
+	; end function isExternalOwner
+}
+IFNOT
+; end function isOwner
+THROWANYIFNOT
+; function setDeployWalletValue
+ACCEPT
+; expValue
+; end expValue
+;; push identifier value
+DUP
+; colValue
+SETGLOB 19
+; end colValue
+; end function setDeployWalletValue
+DROP
+; end modifier onlyOwner
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
 .globl	c7_to_c4
 .type	c7_to_c4, @function
 GETGLOB 2
@@ -1786,18 +1753,20 @@ NEWC
 GETGLOB 16
 GETGLOB 19
 GETGLOB 20
-REVERSE 4, 0
+GETGLOB 21
+REVERSE 5, 0
 STSLICE
+STU 128
 STU 128
 STU 128
 GETGLOB 10
 GETGLOB 11
 GETGLOB 13
 GETGLOB 17
-GETGLOB 21
 GETGLOB 22
 GETGLOB 23
 GETGLOB 24
+GETGLOB 25
 REVERSE 11, 0
 STBREF
 STBREF
@@ -1831,7 +1800,9 @@ SETGLOB 12
 LDREFRTOS
 LDMSGADDR
 LDU 128
+LDU 128
 PLDU 128
+SETGLOB 21
 SETGLOB 20
 SETGLOB 19
 SETGLOB 16
@@ -1843,10 +1814,10 @@ LDU 8
 LDU 8
 LDU 8
 PLDU 8
+SETGLOB 25
 SETGLOB 24
 SETGLOB 23
 SETGLOB 22
-SETGLOB 21
 SETGLOB 17
 SETGLOB 13
 SETGLOB 11
@@ -1879,7 +1850,9 @@ PUSHCONT {
 	LDREFRTOS
 	LDMSGADDR
 	LDU 128
+	LDU 128
 	PLDU 128
+	SETGLOB 21
 	SETGLOB 20
 	SETGLOB 19
 	SETGLOB 16
@@ -1891,10 +1864,10 @@ PUSHCONT {
 	LDU 8
 	LDU 8
 	PLDU 8
+	SETGLOB 25
 	SETGLOB 24
 	SETGLOB 23
 	SETGLOB 22
-	SETGLOB 21
 	SETGLOB 17
 	SETGLOB 13
 	SETGLOB 11
@@ -1969,24 +1942,27 @@ PUSHCONT {
 	; init settings_deploy_wallet_grams
 	PUSHINT 0
 	SETGLOB 18
-	; init start_balance_
+	; init settings_deploy_wallet_value
 	PUSHINT 0
 	SETGLOB 19
-	; init burned_count
+	; init start_balance_
 	PUSHINT 0
 	SETGLOB 20
-	; init error_message_sender_is_not_my_owner
+	; init burned_count
 	PUSHINT 0
 	SETGLOB 21
-	; init error_message_sender_is_not_my_root
+	; init error_message_sender_is_not_my_owner
 	PUSHINT 0
 	SETGLOB 22
-	; init error_message_sender_is_not_valid_event
+	; init error_message_sender_is_not_my_root
 	PUSHINT 0
 	SETGLOB 23
-	; init error_message_not_valid_payload
+	; init error_message_sender_is_not_valid_event
 	PUSHINT 0
 	SETGLOB 24
+	; init error_message_not_valid_payload
+	PUSHINT 0
+	SETGLOB 25
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -2007,18 +1983,21 @@ PUSHCONT {
 	;; init state var: settings_deploy_wallet_grams
 	PUSHINT 100000000
 	SETGLOB 18
+	;; init state var: settings_deploy_wallet_value
+	PUSHINT 5000000000
+	SETGLOB 19
 	;; init state var: error_message_sender_is_not_my_owner
 	PUSHINT 100
-	SETGLOB 21
+	SETGLOB 22
 	;; init state var: error_message_sender_is_not_my_root
 	PUSHINT 102
-	SETGLOB 22
+	SETGLOB 23
 	;; init state var: error_message_sender_is_not_valid_event
 	PUSHINT 103
-	SETGLOB 23
+	SETGLOB 24
 	;; init state var: error_message_not_valid_payload
 	PUSHINT 104
-	SETGLOB 24
+	SETGLOB 25
 }
 IFELSE
 

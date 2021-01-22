@@ -27,6 +27,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
 
     uint128 settings_burn_min_msg_value = 2 ton;
     uint128 settings_deploy_wallet_grams = 0.1 ton;
+    uint128 settings_deploy_wallet_value = 5 ton;
 
     uint128 start_balance_;
     uint128 burned_count;
@@ -59,7 +60,6 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         require(token_root_address.value != 0);
 
         tvm.accept();
-        tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
         (uint128 tokens, int8 wid, uint256 owner_addr, uint256 owner_pubkey) =
             eventData.eventData.toSlice().decode(uint128, int8, uint256, uint256);
@@ -70,13 +70,20 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         require((owner_pubkey != 0 && owner_address.value == 0) ||
                 (owner_pubkey == 0 && owner_address.value != 0), error_message_not_valid_payload);
 
-        IRootTokenContract(token_root_address).deployWallet{ value: 0, flag: 128 }(
+        IRootTokenContract(token_root_address).deployWallet{ value: settings_deploy_wallet_value }(
             tokens,
             settings_deploy_wallet_grams,
             owner_pubkey,
             owner_address,
-            msg.sender
+            address(this)
         );
+    }
+
+    function broxusBridgeNotification(
+        IEvent.EthereumEventInitData _eventData
+    ) override public view {
+        // Do nothing need for handy monitoring confirmed events
+        // So someone can call them after with any gas
     }
 
     function burnCallback(
@@ -157,6 +164,10 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         return settings_deploy_wallet_grams;
     }
 
+    function getDeployWalletValue() external view returns (uint128) {
+        return settings_deploy_wallet_value;
+    }
+
     // =============== Settings ==================
 
     function setTokenRootAddressOnce(address value) external onlyOwner {
@@ -185,6 +196,11 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
     function setDeployWalletGrams(uint128 value) external onlyOwner {
         tvm.accept();
         settings_deploy_wallet_grams = value;
+    }
+
+    function setDeployWalletValue(uint128 value) external onlyOwner {
+        tvm.accept();
+        settings_deploy_wallet_value = value;
     }
 
     // =============== Support functions ==================
