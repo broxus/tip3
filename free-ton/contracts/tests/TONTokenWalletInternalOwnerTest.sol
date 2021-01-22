@@ -52,6 +52,21 @@ contract TONTokenWalletInternalOwnerTest {
         );
     }
 
+    function sendTransaction(
+        address dest,
+        uint128 value,
+        bool bounce,
+        uint8 flags,
+        TvmCell payload
+    )
+        public
+        view
+        onlyExternalOwner
+    {
+        tvm.accept();
+        dest.transfer(value, bounce, flags, payload);
+    }
+
     modifier onlyExternalOwner() {
         require(isExternalOwner(), error_message_sender_is_not_my_owner);
         _;

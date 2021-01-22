@@ -788,6 +788,12 @@ PUSHINT 1
 EQUAL
 THROWANYIFNOT
 ; function executeProxyCallback
+;; get member value
+CALL $message_balance_macro$
+PUSHINT 100000000
+;; >
+GREATER
+THROWIFNOT 100
 ; expValue
 ; end expValue
 ;; get member Executed
@@ -795,10 +801,6 @@ PUSHINT 2
 ; colValue
 SETGLOB 25
 ; end colValue
-;; get member balance
-GETPARAM 7
-INDEX 0
-;; decl: balance
 ;; Remote call IProxy.broxusBridgeCallback
 ;; get member value
 CALL $message_balance_macro$
@@ -820,7 +822,7 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x2c5cbd1a
+STSLICECONST x17fca85d
 ;; eventData
 ;; push identifier initData
 GETGLOB 24
@@ -847,13 +849,16 @@ NEWC
 PUSH S3
 STSLICER
 BLKDROP2 9, 3
+;; gasBackAddress
+;; get member sender
+GETGLOB 9
+STSLICER
 STBREFR
 STBREFR
 STBREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
-DROP
 ; end function executeProxyCallback
 ; end modifier eventConfirmed
 CALL $c7_to_c4$
@@ -880,6 +885,12 @@ PUSHINT 1
 EQUAL
 THROWANYIFNOT
 ; function executeProxyCallback
+;; get member value
+CALL $message_balance_macro$
+PUSHINT 100000000
+;; >
+GREATER
+THROWIFNOT 100
 ; expValue
 ; end expValue
 ;; get member Executed
@@ -887,10 +898,6 @@ PUSHINT 2
 ; colValue
 SETGLOB 25
 ; end colValue
-;; get member balance
-GETPARAM 7
-INDEX 0
-;; decl: balance
 ;; Remote call IProxy.broxusBridgeCallback
 ;; get member value
 CALL $message_balance_macro$
@@ -912,7 +919,7 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x2c5cbd1a
+STSLICECONST x17fca85d
 ;; eventData
 ;; push identifier initData
 GETGLOB 24
@@ -939,13 +946,16 @@ NEWC
 PUSH S3
 STSLICER
 BLKDROP2 9, 3
+;; gasBackAddress
+;; get member sender
+GETGLOB 9
+STSLICER
 STBREFR
 STBREFR
 STBREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
-DROP
 ; end function executeProxyCallback
 ; end modifier eventConfirmed
 

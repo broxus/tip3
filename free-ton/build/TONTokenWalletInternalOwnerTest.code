@@ -381,6 +381,190 @@ IF
 TRUE
 SETGLOB 7
 
+.globl	sendTransaction
+.public	sendTransaction
+.type	sendTransaction, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode dest
+LDMSGADDR
+; Decode value
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+; Decode bounce
+LDIQ 1
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+; Decode flags
+LDUQ 8
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 8
+}
+IFNOT
+; Decode payload
+;; decode TvmCell
+LDREF
+ENDS
+;; param: dest
+;; param: value
+;; param: bounce
+;; param: flags
+;; param: payload
+; modifier onlyExternalOwner
+;; push identifier error_message_sender_is_not_my_owner
+GETGLOB 12
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+; function isExternalOwner
+;; return
+;; push identifier external_owner_pubkey_
+GETGLOB 11
+NEQINT 0
+;; short-circuiting &&
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier external_owner_pubkey_
+	GETGLOB 11
+	GETGLOB 2
+	;; ==
+	EQUAL
+}
+IF
+; end function isExternalOwner
+THROWANYIFNOT
+; function sendTransaction
+ACCEPT
+;; transfer()
+;; push identifier value
+PUSH S3
+;; push identifier dest
+PUSH S5
+;; push identifier bounce
+PUSH S4
+NEWC
+STSLICECONST x6_
+STI 1
+PUSHINT 3
+STZEROES
+STSLICE
+SWAP
+STGRAMS
+PUSHINT 105
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
+;; push identifier payload
+PUSH S1
+STREFR
+ENDC
+;; push identifier flags
+PUSH S2
+SENDRAWMSG
+; end function sendTransaction
+BLKDROP 5
+; end modifier onlyExternalOwner
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
+TRUE
+SETGLOB 7
+
+.globl	sendTransaction_internal
+.type	sendTransaction_internal, @function
+;; param: dest
+;; param: value
+;; param: bounce
+;; param: flags
+;; param: payload
+; modifier onlyExternalOwner
+;; push identifier error_message_sender_is_not_my_owner
+GETGLOB 12
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+; function isExternalOwner
+;; return
+;; push identifier external_owner_pubkey_
+GETGLOB 11
+NEQINT 0
+;; short-circuiting &&
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier external_owner_pubkey_
+	GETGLOB 11
+	GETGLOB 2
+	;; ==
+	EQUAL
+}
+IF
+; end function isExternalOwner
+THROWANYIFNOT
+; function sendTransaction
+ACCEPT
+;; transfer()
+;; push identifier value
+PUSH S3
+;; push identifier dest
+PUSH S5
+;; push identifier bounce
+PUSH S4
+NEWC
+STSLICECONST x6_
+STI 1
+PUSHINT 3
+STZEROES
+STSLICE
+SWAP
+STGRAMS
+PUSHINT 105
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
+;; push identifier payload
+PUSH S1
+STREFR
+ENDC
+;; push identifier flags
+PUSH S2
+SENDRAWMSG
+; end function sendTransaction
+BLKDROP 5
+; end modifier onlyExternalOwner
+
 .globl	c7_to_c4
 .type	c7_to_c4, @function
 GETGLOB 2
