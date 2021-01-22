@@ -10,14 +10,20 @@ import "../utils/ErrorCodes.sol";
 contract EthereumEvent is IEvent, ErrorCodes {
     EthereumEventInitData static initData;
 
+    enum Status { InProcess, Confirmed, Executed, Rejected }
     Status status;
 
-    uint[] confirmKeys;
-    uint[] rejectKeys;
+    address[] confirmRelays;
+    address[] rejectRelays;
 
 
     modifier eventInProcess() {
         require(status == Status.InProcess, EVENT_NOT_IN_PROGRESS);
+        _;
+    }
+
+    modifier eventConfirmed() {
+        require(status == Status.Confirmed, EVENT_NOT_CONFIRMED);
         _;
     }
 
@@ -29,10 +35,10 @@ contract EthereumEvent is IEvent, ErrorCodes {
     /*
         Ethereum-TON event instance. Collects confirmations and than execute the Proxy callback.
         @dev Should be deployed only by EthereumEventConfiguration contract
-        @param relayKey Public key of the relay, who initiated the event creation
+        @param relay Public key of the relay, who initiated the event creation
     */
     constructor(
-        uint relayKey
+        address relay
     ) public {
         // TODO: discuss deployer set in the constructor
         tvm.accept();
@@ -40,29 +46,30 @@ contract EthereumEvent is IEvent, ErrorCodes {
         initData.ethereumEventConfiguration = msg.sender;
         status = Status.InProcess;
 
-        confirm(relayKey);
+        confirm(relay);
     }
 
     /*
         Confirm event instance.
         @dev Should be called by Bridge -> EthereumEventConfiguration
-        @param relayKey Public key of the relay, who initiated the config creation
+        @param relay Address of the relay, who initiated the config creation
     */
     function confirm(
-        uint relayKey
+        address relay
     )
         public
         onlyEventConfiguration(initData.ethereumEventConfiguration)
         eventInProcess
     {
-        for (uint i=0; i<confirmKeys.length; i++) {
-            require(confirmKeys[i] != relayKey, KEY_ALREADY_CONFIRMED);
+        for (uint i=0; i<confirmRelays.length; i++) {
+            require(confirmRelays[i] != relay, KEY_ALREADY_CONFIRMED);
         }
 
-        confirmKeys.push(relayKey);
+        confirmRelays.push(relay);
 
-        if (confirmKeys.length >= initData.requiredConfirmations) {
-            _executeProxyCallback();
+        if (confirmRelays.length >= initData.requiredConfirmations) {
+            executeProxyNotification();
+
             status = Status.Confirmed;
 
             initData.ethereumEventConfiguration.transfer({ value: address(this).balance - 1.5 ton });
@@ -72,54 +79,64 @@ contract EthereumEvent is IEvent, ErrorCodes {
     /*
         Reject event instance.
         @dev Should be called by Bridge -> EthereumEventConfiguration
-        @param relayKey Public key of the relay, who initiated the config creation
+        @param relay Public key of the relay, who initiated the config creation
     */
     function reject(
-        uint relayKey
+        address relay
     )
         public
         onlyEventConfiguration(initData.ethereumEventConfiguration)
         eventInProcess
     {
-        for (uint i=0; i<rejectKeys.length; i++) {
-            require(rejectKeys[i] != relayKey, KEY_ALREADY_REJECTED);
+        for (uint i=0; i<rejectRelays.length; i++) {
+            require(rejectRelays[i] != relay, KEY_ALREADY_REJECTED);
         }
 
-        rejectKeys.push(relayKey);
+        rejectRelays.push(relay);
 
-        if (rejectKeys.length >= initData.requiredRejects) {
+        if (rejectRelays.length >= initData.requiredRejects) {
             status = Status.Rejected;
 
-            initData.ethereumEventConfiguration.transfer({ value: address(this).balance - 1.5 ton });
+            initData.ethereumEventConfiguration.transfer({ value: address(this).balance - 0.1 ton });
         }
+    }
+
+    function executeProxyNotification() internal view {
+        IProxy(initData.proxyAddress).broxusBridgeNotification{value: 0.00001 ton}(initData);
     }
 
     /*
         Execute callback on proxy contract
         @dev Called internally, after required amount of confirmations received
     */
-    function _executeProxyCallback() internal view {
-        IProxy(initData.proxyAddress).broxusBridgeCallback{value: 1 ton}(initData);
+    function executeProxyCallback() public eventConfirmed {
+        status = Status.Executed;
+
+        uint128 balance = address(this).balance;
+
+        IProxy(initData.proxyAddress).broxusBridgeCallback{value: msg.value - 0.1 ton}(initData);
+
+//        initData.ethereumEventConfiguration.transfer({ value: balance - 0.1 ton });
     }
 
     /*
         Read contract details
         @returns _initData Init data
         @returns _status Current event status
-        @returns _confirmKeys List of confirm keys
-        @returns _rejectKeys List of reject keys
+        @returns _confirmRelays List of confirm keys
+        @returns _rejectRelays List of reject keys
     */
     function getDetails() public view returns (
         EthereumEventInitData _initData,
         Status _status,
-        uint[] _confirmKeys,
-        uint[] _rejectKeys
+        address[] _confirmRelays,
+        address[] _rejectRelays
     ) {
         return (
             initData,
             status,
-            confirmKeys,
-            rejectKeys
+            confirmRelays,
+            rejectRelays
         );
     }
 }

@@ -3,8 +3,10 @@ pragma AbiHeader expire;
 
 
 contract ErrorCodes {
+    // Bridge caller
+    uint ADDRESS_IS_NOT_OWNER = 5001;
+
     // Bridge
-    uint KEY_IS_NOT_OWNER = 5001;
     uint BRIDGE_NOT_ACTIVE = 5002;
     uint EVENT_CONFIGURATION_NOT_ACTIVE = 5003;
     uint KEYS_DIFFERENT_SHAPE = 5004;
@@ -21,4 +23,5 @@ contract ErrorCodes {
     uint SENDER_NOT_EVENT_CONFIGURATION = 5202;
     uint KEY_ALREADY_CONFIRMED = 5203;
     uint KEY_ALREADY_REJECTED = 5204;
+    uint EVENT_NOT_CONFIRMED = 5205;
 }

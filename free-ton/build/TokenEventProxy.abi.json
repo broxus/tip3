@@ -12,7 +12,15 @@
 		{
 			"name": "broxusBridgeCallback",
 			"inputs": [
-				{"components":[{"name":"eventTransaction","type":"uint256"},{"name":"eventIndex","type":"uint256"},{"name":"eventData","type":"cell"},{"name":"eventBlockNumber","type":"uint256"},{"name":"eventBlock","type":"uint256"},{"name":"ethereumEventConfiguration","type":"address"},{"name":"requiredConfirmations","type":"uint256"},{"name":"requiredRejects","type":"uint256"},{"name":"proxyAddress","type":"address"}],"name":"eventData","type":"tuple"}
+				{"components":[{"name":"eventTransaction","type":"uint256"},{"name":"eventIndex","type":"uint32"},{"name":"eventData","type":"cell"},{"name":"eventBlockNumber","type":"uint256"},{"name":"eventBlock","type":"uint256"},{"name":"ethereumEventConfiguration","type":"address"},{"name":"requiredConfirmations","type":"uint256"},{"name":"requiredRejects","type":"uint256"},{"name":"proxyAddress","type":"address"}],"name":"eventData","type":"tuple"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "broxusBridgeNotification",
+			"inputs": [
+				{"components":[{"name":"eventTransaction","type":"uint256"},{"name":"eventIndex","type":"uint32"},{"name":"eventData","type":"cell"},{"name":"eventBlockNumber","type":"uint256"},{"name":"eventBlock","type":"uint256"},{"name":"ethereumEventConfiguration","type":"address"},{"name":"requiredConfirmations","type":"uint256"},{"name":"requiredRejects","type":"uint256"},{"name":"proxyAddress","type":"address"}],"name":"_eventData","type":"tuple"}
 			],
 			"outputs": [
 			]
@@ -89,6 +97,14 @@
 			]
 		},
 		{
+			"name": "getDeployWalletValue",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
 			"name": "setTokenRootAddressOnce",
 			"inputs": [
 				{"name":"value","type":"address"}
@@ -122,6 +138,14 @@
 		},
 		{
 			"name": "setDeployWalletGrams",
+			"inputs": [
+				{"name":"value","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setDeployWalletValue",
 			"inputs": [
 				{"name":"value","type":"uint128"}
 			],

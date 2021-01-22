@@ -14,30 +14,30 @@ PUSHINT 1
 SETGLOB 6
 ;; end constructor protection
 ; Decode input parameters
-; Decode relayKey
-LDU 256
+; Decode relay
+LDMSGADDR
 ENDS
-;; param: relayKey
+;; param: relay
 ; constructor EthereumEvent
 ACCEPT
 ; expValue
 ;; fetch initData
-GETGLOB 23
+GETGLOB 24
 ; end expValue
 ;; get member sender
 GETGLOB 9
 ; colValue
 SETINDEX 5
-SETGLOB 23
+SETGLOB 24
 ; end colValue
 ; expValue
 ; end expValue
 ;; get member InProcess
 PUSHINT 0
 ; colValue
-SETGLOB 24
+SETGLOB 25
 ; end colValue
-;; push identifier relayKey
+;; push identifier relay
 DUP
 CALL $confirm_internal$
 DROP
@@ -56,14 +56,14 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
-; Decode relayKey
-LDU 256
+; Decode relay
+LDMSGADDR
 ENDS
-;; param: relayKey
+;; param: relay
 ; modifier onlyEventConfiguration
 ;; get member ethereumEventConfiguration
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 INDEX 5
 ;; push identifier SENDER_NOT_EVENT_CONFIGURATION
 GETGLOB 20
@@ -91,7 +91,7 @@ PUSHCONT {
 }
 IF
 ;; push identifier status
-GETGLOB 24
+GETGLOB 25
 ;; get member InProcess
 PUSHINT 0
 ;; ==
@@ -105,8 +105,8 @@ PUSHCONT {
 	;; push identifier i
 	DUP
 	;; get member length
-	;; push identifier confirmKeys
-	GETGLOB 25
+	;; push identifier confirmRelays
+	GETGLOB 26
 	INDEX 0
 	;; <
 	LESS
@@ -124,17 +124,16 @@ PUSHCONT {
 	;; index
 	;; push identifier i
 	PUSH S1
-	;; push identifier confirmKeys
-	GETGLOB 25
+	;; push identifier confirmRelays
+	GETGLOB 26
 	INDEX 1
 	PUSHINT 32
 	DICTUGET
 	THROWIFNOT 50
-	PLDU 256
-	;; push identifier relayKey
+	;; push identifier relay
 	PUSH S4
-	;; !=
-	NEQ
+	SDEQ
+	NOT
 	THROWANYIFNOT
 	;; ++
 	; expValue
@@ -147,14 +146,12 @@ WHILE
 DROP
 ; end for
 ; expValue
-;; fetch confirmKeys
-GETGLOB 25
+;; fetch confirmRelays
+GETGLOB 26
 ; end expValue
-;; push identifier relayKey
+;; push identifier relay
 PUSH S2
 ;; array.push(..)
-NEWC
-STU 256
 SWAP
 UNPAIR
 PUSH S1
@@ -162,30 +159,30 @@ INC
 XCHG s3
 ROTREV
 PUSHINT 32
-DICTUSETB
+DICTUSET
 PAIR
 ; colValue
-SETGLOB 25
+SETGLOB 26
 ; end colValue
 ;; if
 ;; get member length
-;; push identifier confirmKeys
-GETGLOB 25
+;; push identifier confirmRelays
+GETGLOB 26
 INDEX 0
 ;; get member requiredConfirmations
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 INDEX 6
 ;; >=
 GEQ
 PUSHCONT {
-	CALL $_executeProxyCallback_internal$
+	CALL $executeProxyNotification_internal$
 	; expValue
 	; end expValue
 	;; get member Confirmed
 	PUSHINT 1
 	; colValue
-	SETGLOB 24
+	SETGLOB 25
 	; end colValue
 	;; transfer()
 	;; get member balance
@@ -197,7 +194,7 @@ PUSHCONT {
 	UFITS 128
 	;; get member ethereumEventConfiguration
 	;; push identifier initData
-	GETGLOB 23
+	GETGLOB 24
 	INDEX 5
 	NEWC
 	STSLICECONST x62_
@@ -224,11 +221,11 @@ SETGLOB 7
 
 .globl	confirm_internal
 .type	confirm_internal, @function
-;; param: relayKey
+;; param: relay
 ; modifier onlyEventConfiguration
 ;; get member ethereumEventConfiguration
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 INDEX 5
 ;; push identifier SENDER_NOT_EVENT_CONFIGURATION
 GETGLOB 20
@@ -256,7 +253,7 @@ PUSHCONT {
 }
 IF
 ;; push identifier status
-GETGLOB 24
+GETGLOB 25
 ;; get member InProcess
 PUSHINT 0
 ;; ==
@@ -270,8 +267,8 @@ PUSHCONT {
 	;; push identifier i
 	DUP
 	;; get member length
-	;; push identifier confirmKeys
-	GETGLOB 25
+	;; push identifier confirmRelays
+	GETGLOB 26
 	INDEX 0
 	;; <
 	LESS
@@ -289,17 +286,16 @@ PUSHCONT {
 	;; index
 	;; push identifier i
 	PUSH S1
-	;; push identifier confirmKeys
-	GETGLOB 25
+	;; push identifier confirmRelays
+	GETGLOB 26
 	INDEX 1
 	PUSHINT 32
 	DICTUGET
 	THROWIFNOT 50
-	PLDU 256
-	;; push identifier relayKey
+	;; push identifier relay
 	PUSH S4
-	;; !=
-	NEQ
+	SDEQ
+	NOT
 	THROWANYIFNOT
 	;; ++
 	; expValue
@@ -312,14 +308,12 @@ WHILE
 DROP
 ; end for
 ; expValue
-;; fetch confirmKeys
-GETGLOB 25
+;; fetch confirmRelays
+GETGLOB 26
 ; end expValue
-;; push identifier relayKey
+;; push identifier relay
 PUSH S2
 ;; array.push(..)
-NEWC
-STU 256
 SWAP
 UNPAIR
 PUSH S1
@@ -327,30 +321,30 @@ INC
 XCHG s3
 ROTREV
 PUSHINT 32
-DICTUSETB
+DICTUSET
 PAIR
 ; colValue
-SETGLOB 25
+SETGLOB 26
 ; end colValue
 ;; if
 ;; get member length
-;; push identifier confirmKeys
-GETGLOB 25
+;; push identifier confirmRelays
+GETGLOB 26
 INDEX 0
 ;; get member requiredConfirmations
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 INDEX 6
 ;; >=
 GEQ
 PUSHCONT {
-	CALL $_executeProxyCallback_internal$
+	CALL $executeProxyNotification_internal$
 	; expValue
 	; end expValue
 	;; get member Confirmed
 	PUSHINT 1
 	; colValue
-	SETGLOB 24
+	SETGLOB 25
 	; end colValue
 	;; transfer()
 	;; get member balance
@@ -362,7 +356,7 @@ PUSHCONT {
 	UFITS 128
 	;; get member ethereumEventConfiguration
 	;; push identifier initData
-	GETGLOB 23
+	GETGLOB 24
 	INDEX 5
 	NEWC
 	STSLICECONST x62_
@@ -394,14 +388,14 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
-; Decode relayKey
-LDU 256
+; Decode relay
+LDMSGADDR
 ENDS
-;; param: relayKey
+;; param: relay
 ; modifier onlyEventConfiguration
 ;; get member ethereumEventConfiguration
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 INDEX 5
 ;; push identifier SENDER_NOT_EVENT_CONFIGURATION
 GETGLOB 20
@@ -429,7 +423,7 @@ PUSHCONT {
 }
 IF
 ;; push identifier status
-GETGLOB 24
+GETGLOB 25
 ;; get member InProcess
 PUSHINT 0
 ;; ==
@@ -443,8 +437,8 @@ PUSHCONT {
 	;; push identifier i
 	DUP
 	;; get member length
-	;; push identifier rejectKeys
-	GETGLOB 26
+	;; push identifier rejectRelays
+	GETGLOB 27
 	INDEX 0
 	;; <
 	LESS
@@ -462,17 +456,16 @@ PUSHCONT {
 	;; index
 	;; push identifier i
 	PUSH S1
-	;; push identifier rejectKeys
-	GETGLOB 26
+	;; push identifier rejectRelays
+	GETGLOB 27
 	INDEX 1
 	PUSHINT 32
 	DICTUGET
 	THROWIFNOT 50
-	PLDU 256
-	;; push identifier relayKey
+	;; push identifier relay
 	PUSH S4
-	;; !=
-	NEQ
+	SDEQ
+	NOT
 	THROWANYIFNOT
 	;; ++
 	; expValue
@@ -485,14 +478,12 @@ WHILE
 DROP
 ; end for
 ; expValue
-;; fetch rejectKeys
-GETGLOB 26
+;; fetch rejectRelays
+GETGLOB 27
 ; end expValue
-;; push identifier relayKey
+;; push identifier relay
 PUSH S2
 ;; array.push(..)
-NEWC
-STU 256
 SWAP
 UNPAIR
 PUSH S1
@@ -500,19 +491,19 @@ INC
 XCHG s3
 ROTREV
 PUSHINT 32
-DICTUSETB
+DICTUSET
 PAIR
 ; colValue
-SETGLOB 26
+SETGLOB 27
 ; end colValue
 ;; if
 ;; get member length
-;; push identifier rejectKeys
-GETGLOB 26
+;; push identifier rejectRelays
+GETGLOB 27
 INDEX 0
 ;; get member requiredRejects
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 INDEX 7
 ;; >=
 GEQ
@@ -520,21 +511,21 @@ PUSHCONT {
 	; expValue
 	; end expValue
 	;; get member Rejected
-	PUSHINT 2
+	PUSHINT 3
 	; colValue
-	SETGLOB 24
+	SETGLOB 25
 	; end colValue
 	;; transfer()
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	PUSHINT 1500000000
+	PUSHINT 100000000
 	;; -
 	SUB
 	UFITS 128
 	;; get member ethereumEventConfiguration
 	;; push identifier initData
-	GETGLOB 23
+	GETGLOB 24
 	INDEX 5
 	NEWC
 	STSLICECONST x62_
@@ -561,11 +552,11 @@ SETGLOB 7
 
 .globl	reject_internal
 .type	reject_internal, @function
-;; param: relayKey
+;; param: relay
 ; modifier onlyEventConfiguration
 ;; get member ethereumEventConfiguration
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 INDEX 5
 ;; push identifier SENDER_NOT_EVENT_CONFIGURATION
 GETGLOB 20
@@ -593,7 +584,7 @@ PUSHCONT {
 }
 IF
 ;; push identifier status
-GETGLOB 24
+GETGLOB 25
 ;; get member InProcess
 PUSHINT 0
 ;; ==
@@ -607,8 +598,8 @@ PUSHCONT {
 	;; push identifier i
 	DUP
 	;; get member length
-	;; push identifier rejectKeys
-	GETGLOB 26
+	;; push identifier rejectRelays
+	GETGLOB 27
 	INDEX 0
 	;; <
 	LESS
@@ -626,17 +617,16 @@ PUSHCONT {
 	;; index
 	;; push identifier i
 	PUSH S1
-	;; push identifier rejectKeys
-	GETGLOB 26
+	;; push identifier rejectRelays
+	GETGLOB 27
 	INDEX 1
 	PUSHINT 32
 	DICTUGET
 	THROWIFNOT 50
-	PLDU 256
-	;; push identifier relayKey
+	;; push identifier relay
 	PUSH S4
-	;; !=
-	NEQ
+	SDEQ
+	NOT
 	THROWANYIFNOT
 	;; ++
 	; expValue
@@ -649,14 +639,12 @@ WHILE
 DROP
 ; end for
 ; expValue
-;; fetch rejectKeys
-GETGLOB 26
+;; fetch rejectRelays
+GETGLOB 27
 ; end expValue
-;; push identifier relayKey
+;; push identifier relay
 PUSH S2
 ;; array.push(..)
-NEWC
-STU 256
 SWAP
 UNPAIR
 PUSH S1
@@ -664,19 +652,19 @@ INC
 XCHG s3
 ROTREV
 PUSHINT 32
-DICTUSETB
+DICTUSET
 PAIR
 ; colValue
-SETGLOB 26
+SETGLOB 27
 ; end colValue
 ;; if
 ;; get member length
-;; push identifier rejectKeys
-GETGLOB 26
+;; push identifier rejectRelays
+GETGLOB 27
 INDEX 0
 ;; get member requiredRejects
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 INDEX 7
 ;; >=
 GEQ
@@ -684,21 +672,21 @@ PUSHCONT {
 	; expValue
 	; end expValue
 	;; get member Rejected
-	PUSHINT 2
+	PUSHINT 3
 	; colValue
-	SETGLOB 24
+	SETGLOB 25
 	; end colValue
 	;; transfer()
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	PUSHINT 1500000000
+	PUSHINT 100000000
 	;; -
 	SUB
 	UFITS 128
 	;; get member ethereumEventConfiguration
 	;; push identifier initData
-	GETGLOB 23
+	GETGLOB 24
 	INDEX 5
 	NEWC
 	STSLICECONST x62_
@@ -720,46 +708,46 @@ IF
 DROP2
 ; end modifier onlyEventConfiguration
 
-.globl	_executeProxyCallback_internal
-.type	_executeProxyCallback_internal, @function
-; function _executeProxyCallback
-;; Remote call IProxy.broxusBridgeCallback
+.globl	executeProxyNotification_internal
+.type	executeProxyNotification_internal, @function
+; function executeProxyNotification
+;; Remote call IProxy.broxusBridgeNotification
 ;; get member proxyAddress
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 INDEX 8
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x43b9aca00000000000000000000000000004_
+PUSHSLICE x22710000000000000000000000000004_
 STSLICER
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x16afd0c4
+STSLICECONST x08afc9d6
 ;; eventData
 ;; push identifier initData
-GETGLOB 23
+GETGLOB 24
 UNTUPLE 9
 BLKSWAP 1, 9
 PUSH S9
 STUR 256
 PUSH S8
-STUR 256
+STUR 32
 PUSH S7
 STREFR
 PUSH S6
 STUR 256
-NEWC
-PUSH S6
+PUSH S5
 STUR 256
+NEWC
 PUSH S5
 STSLICER
 PUSH S4
 STUR 256
-NEWC
-PUSH S4
+PUSH S3
 STUR 256
+NEWC
 PUSH S3
 STSLICER
 BLKDROP2 9, 3
@@ -769,7 +757,197 @@ STBREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
-; end function _executeProxyCallback
+; end function executeProxyNotification
+
+.globl	executeProxyCallback
+.public	executeProxyCallback
+.type	executeProxyCallback, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; modifier eventConfirmed
+;; push identifier EVENT_NOT_CONFIRMED
+GETGLOB 23
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; push identifier status
+GETGLOB 25
+;; get member Confirmed
+PUSHINT 1
+;; ==
+EQUAL
+THROWANYIFNOT
+; function executeProxyCallback
+; expValue
+; end expValue
+;; get member Executed
+PUSHINT 2
+; colValue
+SETGLOB 25
+; end colValue
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; decl: balance
+;; Remote call IProxy.broxusBridgeCallback
+;; get member value
+CALL $message_balance_macro$
+PUSHINT 100000000
+;; -
+SUB
+UFITS 128
+;; get member proxyAddress
+;; push identifier initData
+GETGLOB 24
+INDEX 8
+NEWC
+STSLICECONST x62_
+STSLICE
+SWAP
+STGRAMS
+PUSHINT 105
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x2c5cbd1a
+;; eventData
+;; push identifier initData
+GETGLOB 24
+UNTUPLE 9
+BLKSWAP 1, 9
+PUSH S9
+STUR 256
+PUSH S8
+STUR 32
+PUSH S7
+STREFR
+PUSH S6
+STUR 256
+PUSH S5
+STUR 256
+NEWC
+PUSH S5
+STSLICER
+PUSH S4
+STUR 256
+PUSH S3
+STUR 256
+NEWC
+PUSH S3
+STSLICER
+BLKDROP2 9, 3
+STBREFR
+STBREFR
+STBREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+DROP
+; end function executeProxyCallback
+; end modifier eventConfirmed
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	executeProxyCallback_internal
+.type	executeProxyCallback_internal, @function
+; modifier eventConfirmed
+;; push identifier EVENT_NOT_CONFIRMED
+GETGLOB 23
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; push identifier status
+GETGLOB 25
+;; get member Confirmed
+PUSHINT 1
+;; ==
+EQUAL
+THROWANYIFNOT
+; function executeProxyCallback
+; expValue
+; end expValue
+;; get member Executed
+PUSHINT 2
+; colValue
+SETGLOB 25
+; end colValue
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; decl: balance
+;; Remote call IProxy.broxusBridgeCallback
+;; get member value
+CALL $message_balance_macro$
+PUSHINT 100000000
+;; -
+SUB
+UFITS 128
+;; get member proxyAddress
+;; push identifier initData
+GETGLOB 24
+INDEX 8
+NEWC
+STSLICECONST x62_
+STSLICE
+SWAP
+STGRAMS
+PUSHINT 105
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x2c5cbd1a
+;; eventData
+;; push identifier initData
+GETGLOB 24
+UNTUPLE 9
+BLKSWAP 1, 9
+PUSH S9
+STUR 256
+PUSH S8
+STUR 32
+PUSH S7
+STREFR
+PUSH S6
+STUR 256
+PUSH S5
+STUR 256
+NEWC
+PUSH S5
+STSLICER
+PUSH S4
+STUR 256
+PUSH S3
+STUR 256
+NEWC
+PUSH S3
+STSLICER
+BLKDROP2 9, 3
+STBREFR
+STBREFR
+STBREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+DROP
+; end function executeProxyCallback
+; end modifier eventConfirmed
 
 .globl	getDetails
 .public	getDetails
@@ -797,23 +975,23 @@ PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 TUPLE 9
 ;; ret param: _status
 PUSHINT 0
-;; ret param: _confirmKeys
+;; ret param: _confirmRelays
 PUSHINT 0
 NEWDICT
 PAIR
-;; ret param: _rejectKeys
+;; ret param: _rejectRelays
 PUSHINT 0
 NEWDICT
 PAIR
 ;; return
 ;; push identifier initData
-GETGLOB 23
-;; push identifier status
 GETGLOB 24
-;; push identifier confirmKeys
+;; push identifier status
 GETGLOB 25
-;; push identifier rejectKeys
+;; push identifier confirmRelays
 GETGLOB 26
+;; push identifier rejectRelays
+GETGLOB 27
 BLKDROP2 4, 4
 ;; emitting 4 value(s)
 PUSH S4
@@ -833,28 +1011,28 @@ PUSHCONT {
 	STSLICECONST 0
 	STSLICECONST 1
 	NEWC
-	STSLICECONST x9436828e
+	STSLICECONST x8e2e6495
 	PUSH S5
 	UNTUPLE 9
 	BLKSWAP 1, 9
 	PUSH S9
 	STUR 256
 	PUSH S8
-	STUR 256
+	STUR 32
 	PUSH S7
 	STREFR
 	PUSH S6
 	STUR 256
-	NEWC
-	PUSH S6
+	PUSH S5
 	STUR 256
+	NEWC
 	PUSH S5
 	STSLICER
 	PUSH S4
 	STUR 256
-	NEWC
-	PUSH S4
+	PUSH S3
 	STUR 256
+	NEWC
 	PUSH S3
 	STSLICER
 	BLKDROP2 9, 3
@@ -904,23 +1082,23 @@ PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 TUPLE 9
 ;; ret param: _status
 PUSHINT 0
-;; ret param: _confirmKeys
+;; ret param: _confirmRelays
 PUSHINT 0
 NEWDICT
 PAIR
-;; ret param: _rejectKeys
+;; ret param: _rejectRelays
 PUSHINT 0
 NEWDICT
 PAIR
 ;; return
 ;; push identifier initData
-GETGLOB 23
-;; push identifier status
 GETGLOB 24
-;; push identifier confirmKeys
+;; push identifier status
 GETGLOB 25
-;; push identifier rejectKeys
+;; push identifier confirmRelays
 GETGLOB 26
+;; push identifier rejectRelays
+GETGLOB 27
 BLKDROP2 4, 4
 ; end function getDetails
 
@@ -937,10 +1115,10 @@ NEWC
 GETGLOB 12
 GETGLOB 13
 GETGLOB 14
-GETGLOB 23
-GETGLOB 25
-UNTUPLE 2
+GETGLOB 24
 GETGLOB 26
+UNTUPLE 2
+GETGLOB 27
 UNTUPLE 2
 REVERSE 9, 0
 STU 256
@@ -950,26 +1128,26 @@ SWAP
 UNTUPLE 9
 NEWC
 NEWC
-PUSH S6
-STUR 256
 PUSH S5
 STSLICER
 PUSH S4
 STUR 256
-STBREFR
-NEWC
 PUSH S3
 STUR 256
+STBREFR
+NEWC
 PUSH S2
 STSLICER
 STBREFR
 PUSH S9
 STUR 256
 PUSH S8
-STUR 256
+STUR 32
 PUSH S7
 STREFR
 PUSH S6
+STUR 256
+PUSH S5
 STUR 256
 XCHG s9
 BLKDROP 9
@@ -997,12 +1175,14 @@ STU 256
 NEWC
 GETGLOB 21
 GETGLOB 22
-XCHG s2
+GETGLOB 23
+REVERSE 4, 0
+STU 256
 STU 256
 STU 256
 GETGLOB 10
 GETGLOB 11
-GETGLOB 24
+GETGLOB 25
 REVERSE 8, 0
 STBREF
 STBREF
@@ -1029,28 +1209,28 @@ LDREFRTOS
 LDREF
 LDREF
 LDU 256
-LDU 256
+LDU 32
 LDREF
-PLDU 256
-BLKSWAP 1, 5
-CTOS
 LDU 256
+PLDU 256
+BLKSWAP 1, 6
+CTOS
 LDMSGADDR
-PLDU 256
-BLKSWAP 1, 7
-CTOS
 LDU 256
+PLDU 256
+BLKSWAP 1, 8
+CTOS
 TUPLE 9
-SETGLOB 23
+SETGLOB 24
 LDU 32
 LDDICT
 ROTREV
 PAIR
-SETGLOB 25
+SETGLOB 26
 LDU 32
 PLDDICT
 PAIR
-SETGLOB 26
+SETGLOB 27
 SETGLOB 14
 SETGLOB 13
 SETGLOB 12
@@ -1070,13 +1250,15 @@ SETGLOB 19
 SETGLOB 18
 LDREFRTOS
 LDU 256
+LDU 256
 PLDU 256
+SETGLOB 23
 SETGLOB 22
 SETGLOB 21
 LDU 256
 LDU 256
 PLDU 8
-SETGLOB 24
+SETGLOB 25
 SETGLOB 11
 SETGLOB 10
 TRUE
@@ -1103,28 +1285,28 @@ PUSHCONT {
 	LDREF
 	LDREF
 	LDU 256
-	LDU 256
+	LDU 32
 	LDREF
-	PLDU 256
-	BLKSWAP 1, 5
-	CTOS
 	LDU 256
+	PLDU 256
+	BLKSWAP 1, 6
+	CTOS
 	LDMSGADDR
-	PLDU 256
-	BLKSWAP 1, 7
-	CTOS
 	LDU 256
+	PLDU 256
+	BLKSWAP 1, 8
+	CTOS
 	TUPLE 9
-	SETGLOB 23
+	SETGLOB 24
 	LDU 32
 	LDDICT
 	ROTREV
 	PAIR
-	SETGLOB 25
+	SETGLOB 26
 	LDU 32
 	PLDDICT
 	PAIR
-	SETGLOB 26
+	SETGLOB 27
 	SETGLOB 14
 	SETGLOB 13
 	SETGLOB 12
@@ -1144,13 +1326,15 @@ PUSHCONT {
 	SETGLOB 18
 	LDREFRTOS
 	LDU 256
+	LDU 256
 	PLDU 256
+	SETGLOB 23
 	SETGLOB 22
 	SETGLOB 21
 	LDU 256
 	LDU 256
 	PLDU 8
-	SETGLOB 24
+	SETGLOB 25
 	SETGLOB 11
 	SETGLOB 10
 	TRUE
@@ -1171,17 +1355,17 @@ PUSHCONT {
 		LDREF
 		LDREF
 		LDU 256
-		LDU 256
+		LDU 32
 		LDREF
-		PLDU 256
-		BLKSWAP 1, 5
-		CTOS
 		LDU 256
+		PLDU 256
+		BLKSWAP 1, 6
+		CTOS
 		LDMSGADDR
-		PLDU 256
-		BLKSWAP 1, 7
-		CTOS
 		LDU 256
+		PLDU 256
+		BLKSWAP 1, 8
+		CTOS
 		TUPLE 9
 	}
 	PUSHCONT {
@@ -1198,21 +1382,21 @@ PUSHCONT {
 		TUPLE 9
 	}
 	IFELSE
-	SETGLOB 23
+	SETGLOB 24
 	; init status
 	PUSHINT 0
-	SETGLOB 24
-	; init confirmKeys
-	PUSHINT 0
-	NEWDICT
-	PAIR
 	SETGLOB 25
-	; init rejectKeys
+	; init confirmRelays
 	PUSHINT 0
 	NEWDICT
 	PAIR
 	SETGLOB 26
-	; init KEY_IS_NOT_OWNER
+	; init rejectRelays
+	PUSHINT 0
+	NEWDICT
+	PAIR
+	SETGLOB 27
+	; init ADDRESS_IS_NOT_OWNER
 	PUSHINT 0
 	SETGLOB 10
 	; init BRIDGE_NOT_ACTIVE
@@ -1251,6 +1435,9 @@ PUSHCONT {
 	; init KEY_ALREADY_REJECTED
 	PUSHINT 0
 	SETGLOB 22
+	; init EVENT_NOT_CONFIRMED
+	PUSHINT 0
+	SETGLOB 23
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -1265,7 +1452,7 @@ PUSHCONT {
 	SETGLOB 6
 	TRUE
 	SETGLOB 1
-	;; init state var: KEY_IS_NOT_OWNER
+	;; init state var: ADDRESS_IS_NOT_OWNER
 	PUSHINT 5001
 	SETGLOB 10
 	;; init state var: BRIDGE_NOT_ACTIVE
@@ -1304,6 +1491,9 @@ PUSHCONT {
 	;; init state var: KEY_ALREADY_REJECTED
 	PUSHINT 5204
 	SETGLOB 22
+	;; init state var: EVENT_NOT_CONFIRMED
+	PUSHINT 5205
+	SETGLOB 23
 }
 IFELSE
 
