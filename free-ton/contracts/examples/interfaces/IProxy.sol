@@ -8,6 +8,7 @@ interface IProxy {
     ) external view;
 
     function broxusBridgeCallback(
-        IEvent.EthereumEventInitData eventData
+        IEvent.EthereumEventInitData eventData,
+        address gasBackAddress
     ) external;
 }

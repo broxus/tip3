@@ -44,8 +44,8 @@ describe('Test Fungible Tokens', function () {
     before(async function () {
         await tonWrapper.setup();
 
-        RootTokenContractExternalOwner = await freeton.requireContract(tonWrapper, 'RootTokenContract', null, 'RootTokenContractExternalOwner');
-        RootTokenContractInternalOwner = await freeton.requireContract(tonWrapper, 'RootTokenContract', null, 'RootTokenContractInternalOwner');
+        RootTokenContractExternalOwner = await freeton.requireContract(tonWrapper, 'RootTokenContract');
+        RootTokenContractInternalOwner = await freeton.requireContract(tonWrapper, 'RootTokenContract');
         RootTokenContractInternalOwnerTest = await freeton.requireContract(tonWrapper, 'RootTokenContractInternalOwnerTest');
         TONTokenWalletInternalOwnerTest = await freeton.requireContract(tonWrapper, 'TONTokenWalletInternalOwnerTest');
         SelfDeployedWallet = await freeton.requireContract(tonWrapper, 'TONTokenWallet');
