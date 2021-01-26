@@ -25,8 +25,8 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
     address ethereum_event_configuration_address;
     address token_root_address;
 
-    uint128 settings_burn_min_msg_value = 2 ton;
-    uint128 settings_deploy_wallet_grams = 0.1 ton;
+    uint128 settings_burn_min_msg_value = 1 ton;
+    uint128 settings_deploy_wallet_grams = 0.05 ton;
 
     uint128 start_balance_;
     uint128 burned_count;
@@ -113,7 +113,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         }
     }
 
-    function transferMyTokensToEthereum(uint128 tokens, bytes ethereum_address) external {
+    function transferMyTokensToEthereum(uint128 tokens, bytes ethereum_address) external view {
         require(ethereum_address.length  == 20);
         require(token_root_address.value != 0);
         require(msg.sender.value != 0);

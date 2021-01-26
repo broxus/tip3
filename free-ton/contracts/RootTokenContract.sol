@@ -69,6 +69,18 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         return wallet_code_;
     }
 
+    function getDetails() override external view returns (IRootTokenContractDetails) {
+        return IRootTokenContractDetails(
+            name_,
+            symbol_,
+            decimals_,
+            wallet_code_,
+            root_public_key_,
+            root_owner_address_,
+            total_supply_
+        );
+    }
+
     function getWalletAddress(uint256 wallet_public_key, address owner_address) override external returns (address) {
         require(owner_address.value != 0 && wallet_public_key == 0 ||
                 owner_address.value == 0 && wallet_public_key != 0,
@@ -83,7 +95,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         uint256 wallet_public_key,
         address owner_address,
         address gas_back_address
-    ) override external onlyOwner returns (address) {
+    ) override external onlyOwner {
         require(tokens >= 0);
         require(owner_address.value != 0 && wallet_public_key == 0 ||
                 owner_address.value == 0 && wallet_public_key != 0,
@@ -121,8 +133,6 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
                 msg.sender.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
             }
         }
-
-        return wallet;
     }
 
     function deployEmptyWallet(
@@ -130,7 +140,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         uint256 wallet_public_key,
         address owner_address,
         address gas_back_address
-    ) override external returns (address) {
+    ) override external {
         require(owner_address.value != 0 && wallet_public_key == 0 ||
                 owner_address.value == 0 && wallet_public_key != 0,
                 error_define_wallet_public_key_or_owner_address);
@@ -139,7 +149,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
-        address walletAddress = new TONTokenWallet{
+        new TONTokenWallet{
             value: grams,
             code: wallet_code_,
             pubkey: wallet_public_key,
@@ -159,8 +169,6 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         } else {
             msg.sender.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
         }
-
-        return walletAddress;
     }
 
     function mint(uint128 tokens, address to) override external onlyOwner {

@@ -66,6 +66,14 @@
 			]
 		},
 		{
+			"name": "getDetails",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"name","type":"bytes"},{"name":"symbol","type":"bytes"},{"name":"decimals","type":"uint8"},{"name":"wallet_code","type":"cell"},{"name":"root_public_key","type":"uint256"},{"name":"root_owner_address","type":"address"},{"name":"total_supply","type":"uint128"}],"name":"value0","type":"tuple"}
+			]
+		},
+		{
 			"name": "getWalletAddress",
 			"inputs": [
 				{"name":"wallet_public_key","type":"uint256"},
@@ -85,7 +93,6 @@
 				{"name":"gas_back_address","type":"address"}
 			],
 			"outputs": [
-				{"name":"value0","type":"address"}
 			]
 		},
 		{
@@ -97,7 +104,6 @@
 				{"name":"gas_back_address","type":"address"}
 			],
 			"outputs": [
-				{"name":"value0","type":"address"}
 			]
 		},
 		{

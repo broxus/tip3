@@ -369,7 +369,7 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x66211c6f
+STSLICECONST x31c32499
 ;; tokens
 ;; push identifier tokens
 PUSH S6
@@ -629,7 +629,7 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x66211c6f
+STSLICECONST x31c32499
 ;; tokens
 ;; push identifier tokens
 PUSH S6
@@ -1043,7 +1043,10 @@ PUSHINT 128
 SENDRAWMSG
 BLKDROP 4
 ; end function transferMyTokensToEthereum
-CALL $c7_to_c4$
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
 TRUE
 SETGLOB 7
 
@@ -2185,10 +2188,10 @@ PUSHCONT {
 	TRUE
 	SETGLOB 1
 	;; init state var: settings_burn_min_msg_value
-	PUSHINT 2000000000
+	PUSHINT 1000000000
 	SETGLOB 17
 	;; init state var: settings_deploy_wallet_grams
-	PUSHINT 100000000
+	PUSHINT 50000000
 	SETGLOB 18
 	;; init state var: error_message_sender_is_not_my_owner
 	PUSHINT 100
