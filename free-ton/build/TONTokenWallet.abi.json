@@ -74,6 +74,14 @@
 			]
 		},
 		{
+			"name": "getDetails",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"name","type":"bytes"},{"name":"symbol","type":"bytes"},{"name":"decimals","type":"uint8"},{"name":"root_address","type":"address"},{"name":"code","type":"cell"},{"name":"wallet_public_key","type":"uint256"},{"name":"owner_address","type":"address"},{"name":"balance","type":"uint128"}],"name":"value0","type":"tuple"}
+			]
+		},
+		{
 			"name": "accept",
 			"inputs": [
 				{"name":"tokens","type":"uint128"}
@@ -157,6 +165,14 @@
 				{"name":"tokens","type":"uint128"},
 				{"name":"callback_address","type":"address"},
 				{"name":"callback_payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "destruct",
+			"inputs": [
+				{"name":"gas_dest","type":"address"}
 			],
 			"outputs": [
 			]

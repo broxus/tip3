@@ -427,6 +427,87 @@ IF
 TRUE
 SETGLOB 7
 
+.globl	getDetails
+.public	getDetails
+.type	getDetails, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; function getDetails
+;; return
+;; push identifier name_
+GETGLOB 11
+;; push identifier symbol_
+GETGLOB 12
+;; push identifier decimals_
+GETGLOB 13
+;; push identifier wallet_code_
+GETGLOB 14
+;; push identifier root_public_key_
+GETGLOB 15
+;; push identifier root_owner_address_
+GETGLOB 16
+;; push identifier total_supply_
+GETGLOB 17
+TUPLE 7
+;; emitting 1 value(s)
+PUSH S1
+EQINT -1
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 1
+	NEWC
+	STSLICECONST x86fc2afd
+	PUSH S2
+	UNTUPLE 7
+	BLKSWAP 1, 7
+	PUSH S7
+	STREFR
+	PUSH S6
+	STREFR
+	PUSH S5
+	STUR 8
+	PUSH S4
+	STREFR
+	PUSH S3
+	STUR 256
+	PUSH S2
+	STSLICER
+	PUSH S1
+	STUR 128
+	XCHG s7
+	BLKDROP 7
+	STBREFR
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+}
+IF
+DROP
+; end function getDetails
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
+TRUE
+SETGLOB 7
+
 .globl	getWalletAddress
 .public	getWalletAddress
 .type	getWalletAddress, @function
@@ -983,32 +1064,6 @@ PUSHCONT {
 }
 IF
 ;; end if
-;; return
-;; emitting 1 value(s)
-PUSH S6
-EQINT -1
-PUSHCONT {
-	PUSH S8
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xe6211c6f
-	PUSH S1
-	STSLICER
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
 DROP
 ; end function deployWallet
 BLKDROP 5
@@ -1219,11 +1274,11 @@ ENDC
 PUSHINT 1
 SENDRAWMSG
 NIP
-;; decl: walletAddress
+DROP
 ;; if
 ;; get member value
 ;; push identifier gas_back_address
-PUSH S1
+DUP
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1231,7 +1286,7 @@ NEQINT 0
 PUSHCONT {
 	;; transfer()
 	;; push identifier gas_back_address
-	PUSH S1
+	DUP
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -1260,35 +1315,7 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
-;; return
-XCHG s4
 BLKDROP 4
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xd42b1672
-	PUSH S1
-	STSLICER
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
 ; end function deployEmptyWallet
 CALL $c7_to_c4$
 TRUE
