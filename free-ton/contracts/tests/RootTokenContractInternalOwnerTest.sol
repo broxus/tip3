@@ -17,7 +17,7 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
 
     address root_address_;
 
-    uint128 start_balance_;
+    uint128 start_gas_balance_;
 
     uint8 error_message_sender_is_not_my_owner = 100;
     uint8 error_message_sender_is_not_my_root = 102;
@@ -28,7 +28,7 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
     constructor() public {
         tvm.accept();
         root_address_ = address.makeAddrStd(0, 0);
-        start_balance_ = address(this).balance;
+        start_gas_balance_ = address(this).balance;
     }
 
     function setRootAddressOnce(address root_address) external onlyOwner {
@@ -128,6 +128,6 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
     function mint(uint128 tokens, address addr) external view onlyOwner {
         require(root_address_.value != 0);
         tvm.accept();
-        IRootTokenContract(root_address_).mint(tokens, addr);
+        IRootTokenContract(root_address_).mint{value: 0.1 ton}(tokens, addr);
     }
 }

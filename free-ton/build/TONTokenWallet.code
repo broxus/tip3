@@ -513,7 +513,9 @@ GETGLOB 15
 GETGLOB 16
 ;; push identifier balance_
 GETGLOB 17
-TUPLE 8
+;; push identifier start_gas_balance_
+GETGLOB 30
+TUPLE 9
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -532,28 +534,30 @@ PUSHCONT {
 	STSLICECONST 0
 	STSLICECONST 1
 	NEWC
-	STSLICECONST x9c3b3f70
+	STSLICECONST xf6752a4b
 	PUSH S2
-	UNTUPLE 8
-	BLKSWAP 1, 8
+	UNTUPLE 9
+	BLKSWAP 1, 9
+	PUSH S9
+	STREFR
 	PUSH S8
 	STREFR
 	PUSH S7
-	STREFR
-	PUSH S6
 	STUR 8
-	PUSH S5
+	PUSH S6
 	STSLICER
-	PUSH S4
+	PUSH S5
 	STREFR
-	PUSH S3
+	PUSH S4
 	STUR 256
-	PUSH S2
+	PUSH S3
 	STSLICER
 	NEWC
+	PUSH S3
+	STUR 128
 	PUSH S2
 	STUR 128
-	BLKDROP2 8, 2
+	BLKDROP2 9, 2
 	STBREFR
 	STBREFR
 	ENDC
@@ -1050,19 +1054,6 @@ PUSHCONT {
 }
 IFNOT
 THROWANYIFNOT
-ACCEPT
-;; push identifier tokens
-PUSH S1
-; expValue
-;; fetch balance_
-GETGLOB 17
-; end expValue
-SWAP
-SUB
-UFITS 128
-; colValue
-SETGLOB 17
-; end colValue
 ;; if
 ;; get member value
 ;; push identifier owner_address_
@@ -1072,7 +1063,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier start_balance_
+	;; push identifier start_gas_balance_
 	GETGLOB 30
 	;; get member balance
 	GETPARAM 7
@@ -1085,6 +1076,18 @@ PUSHCONT {
 	MAX
 	PUSHINT 2
 	RAWRESERVE
+	;; push identifier tokens
+	PUSH S1
+	; expValue
+	;; fetch balance_
+	GETGLOB 17
+	; end expValue
+	SWAP
+	SUB
+	UFITS 128
+	; colValue
+	SETGLOB 17
+	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier to
 	PUSH S2
@@ -1123,6 +1126,19 @@ PUSHCONT {
 	SENDRAWMSG
 }
 PUSHCONT {
+	ACCEPT
+	;; push identifier tokens
+	PUSH S1
+	; expValue
+	;; fetch balance_
+	GETGLOB 17
+	; end expValue
+	SWAP
+	SUB
+	UFITS 128
+	; colValue
+	SETGLOB 17
+	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier grams
 	DUP
@@ -1347,7 +1363,6 @@ PUSHCONT {
 }
 IFNOT
 THROWANYIFNOT
-ACCEPT
 ;; if
 ;; get member value
 ;; push identifier owner_address_
@@ -1357,7 +1372,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier start_balance_
+	;; push identifier start_gas_balance_
 	GETGLOB 30
 	;; get member balance
 	GETPARAM 7
@@ -1400,6 +1415,7 @@ PUSHCONT {
 	SENDRAWMSG
 }
 PUSHCONT {
+	ACCEPT
 	;; Remote call ITONTokenWallet.internalTransferFrom
 	;; push identifier grams
 	DUP
@@ -1977,19 +1993,6 @@ PUSHCONT {
 }
 IFNOT
 THROWANYIFNOT
-ACCEPT
-;; push identifier tokens
-PUSH S3
-; expValue
-;; fetch balance_
-GETGLOB 17
-; end expValue
-SWAP
-SUB
-UFITS 128
-; colValue
-SETGLOB 17
-; end colValue
 ;; if
 ;; get member value
 ;; push identifier owner_address_
@@ -1999,7 +2002,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier start_balance_
+	;; push identifier start_gas_balance_
 	GETGLOB 30
 	;; get member balance
 	GETPARAM 7
@@ -2012,6 +2015,18 @@ PUSHCONT {
 	MAX
 	PUSHINT 2
 	RAWRESERVE
+	;; push identifier tokens
+	PUSH S3
+	; expValue
+	;; fetch balance_
+	GETGLOB 17
+	; end expValue
+	SWAP
+	SUB
+	UFITS 128
+	; colValue
+	SETGLOB 17
+	; end colValue
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier root_address_
 	GETGLOB 13
@@ -2050,6 +2065,19 @@ PUSHCONT {
 	SENDRAWMSG
 }
 PUSHCONT {
+	ACCEPT
+	;; push identifier tokens
+	PUSH S3
+	; expValue
+	;; fetch balance_
+	GETGLOB 17
+	; end expValue
+	SWAP
+	SUB
+	UFITS 128
+	; colValue
+	SETGLOB 17
+	; end colValue
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier grams
 	PUSH S2
@@ -2165,7 +2193,6 @@ GETGLOB 17
 ;; <=
 LEQ
 THROWANYIFNOT
-ACCEPT
 ;; push identifier tokens
 PUSH S2
 ; expValue
@@ -2221,9 +2248,9 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
-.globl	destruct
-.public	destruct
-.type	destruct, @function
+.globl	destroy
+.public	destroy
+.type	destroy, @function
 GETGLOB 1
 ISNULL
 PUSHCONT {
@@ -2293,7 +2320,7 @@ PUSHCONT {
 IFNOT
 ; end function isOwner
 THROWANYIFNOT
-; function destruct
+; function destroy
 ;; push identifier balance_
 GETGLOB 17
 EQINT 0
@@ -2310,15 +2337,15 @@ STSLICECONST 0
 ENDC
 PUSHINT 160
 SENDRAWMSG
-; end function destruct
+; end function destroy
 DROP
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
-.globl	destruct_internal
-.type	destruct_internal, @function
+.globl	destroy_internal
+.type	destroy_internal, @function
 ;; param: gas_dest
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
@@ -2378,7 +2405,7 @@ PUSHCONT {
 IFNOT
 ; end function isOwner
 THROWANYIFNOT
-; function destruct
+; function destroy
 ;; push identifier balance_
 GETGLOB 17
 EQINT 0
@@ -2395,7 +2422,7 @@ STSLICECONST 0
 ENDC
 PUSHINT 160
 SENDRAWMSG
-; end function destruct
+; end function destroy
 DROP
 ; end modifier onlyOwner
 
@@ -2740,7 +2767,7 @@ PUSHCONT {
 	; init error_low_message_value
 	PUSHINT 0
 	SETGLOB 29
-	; init start_balance_
+	; init start_gas_balance_
 	PUSHINT 0
 	SETGLOB 30
 	; init latest_bounced_tokens

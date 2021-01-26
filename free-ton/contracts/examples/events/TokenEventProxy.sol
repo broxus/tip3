@@ -28,7 +28,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
     uint128 settings_burn_min_msg_value = 1 ton;
     uint128 settings_deploy_wallet_grams = 0.05 ton;
 
-    uint128 start_balance_;
+    uint128 start_gas_balance_;
     uint128 burned_count;
 
     uint8 error_message_sender_is_not_my_owner = 100;
@@ -46,7 +46,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         ethereum_event_deploy_pubkey = 0;
         ethereum_event_configuration_address = address.makeAddrStd(0, 0);
         token_root_address = address.makeAddrStd(0, 0);
-        start_balance_ = address(this).balance;
+        start_gas_balance_ = address(this).balance;
     }
 
     function broxusBridgeCallback(
@@ -62,7 +62,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         require(token_root_address.value != 0);
 
         tvm.accept();
-        tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
         (uint128 tokens, int8 wid, uint256 owner_addr, uint256 owner_pubkey) =
             eventData.eventData.toSlice().decode(uint128, int8, uint256, uint256);
@@ -98,7 +98,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
     ) override external onlyRoot {
 
         tvm.accept();
-        tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
         burned_count += tokens;
 
@@ -119,7 +119,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         require(msg.sender.value != 0);
         require(msg.value >= settings_burn_min_msg_value);
         tvm.accept();
-        tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
         TvmBuilder builder;
         builder.store(ethereum_address);
@@ -138,7 +138,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         require(msg.sender.value != 0);
         require(msg.value >= settings_burn_min_msg_value);
         tvm.accept();
-        tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
         IBurnableByRootTokenRootContract(token_root_address).proxyBurn{value: 0, flag: 128}(
             tokens,
             msg.sender,
