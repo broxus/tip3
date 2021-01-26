@@ -14,6 +14,7 @@ interface ITONTokenWallet is AllowanceInfoStructure {
         uint256 wallet_public_key;
         address owner_address;
         uint128 balance;
+        uint128 start_gas_balance;
     }
 
     function getName() external view returns (bytes);

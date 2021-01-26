@@ -11,6 +11,7 @@ interface IRootTokenContract {
         uint256 root_public_key;
         address root_owner_address;
         uint128 total_supply;
+        uint128 start_gas_balance;
     }
 
     function getName() external view returns (bytes);

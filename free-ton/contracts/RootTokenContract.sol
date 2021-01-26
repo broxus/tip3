@@ -23,7 +23,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
     uint128 total_supply_;
 
-    uint128 start_balance_;
+    uint128 start_gas_balance_;
 
     uint8 error_message_sender_is_not_my_owner = 100;
     uint8 error_not_enough_balance = 101;
@@ -38,7 +38,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         total_supply_ = 0;
 
-        start_balance_ = address(this).balance;
+        start_gas_balance_ = address(this).balance;
     }
 
     function getName() override external view returns (bytes) {
@@ -77,7 +77,8 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
             wallet_code_,
             root_public_key_,
             root_owner_address_,
-            total_supply_
+            total_supply_,
+            start_gas_balance_
         );
     }
 
@@ -101,10 +102,10 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
                 owner_address.value == 0 && wallet_public_key != 0,
                 error_define_wallet_public_key_or_owner_address);
 
-        tvm.accept();
-
-        if(root_owner_address_.value != 0) {
-            tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        if(root_owner_address_.value == 0) {
+            tvm.accept();
+        } else {
+            tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
         }
 
         address wallet = new TONTokenWallet{
@@ -145,9 +146,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
                 owner_address.value == 0 && wallet_public_key != 0,
                 error_define_wallet_public_key_or_owner_address);
 
-        tvm.accept();
-
-        tvm.rawReserve(math.max(start_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
         new TONTokenWallet{
             value: grams,
@@ -172,11 +171,19 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     }
 
     function mint(uint128 tokens, address to) override external onlyOwner {
-        tvm.accept();
+        if(root_owner_address_.value == 0) {
+            tvm.accept();
+        } else {
+            tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        }
+
+        total_supply_ += tokens;
 
         ITONTokenWallet(to).accept(tokens);
 
-        total_supply_ += tokens;
+        if(root_owner_address_.value != 0) {
+            root_owner_address_.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+        }
     }
 
 
@@ -186,9 +193,9 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         address callback_address,
         TvmCell callback_payload
     ) override external onlyInternalOwner {
-        tvm.accept();
+        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
         address expectedWalletAddress = getExpectedWalletAddress(0, sender_address);
-        IBurnableByRootTokenWallet(expectedWalletAddress).burnByRoot{value: 0, flag: 64}(
+        IBurnableByRootTokenWallet(expectedWalletAddress).burnByRoot{value: 0, flag: 128}( //SEND_ALL_GAS
             tokens,
             callback_address,
             callback_payload
@@ -207,11 +214,11 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         require(msg.sender == expectedWalletAddress, error_message_sender_is_not_good_wallet);
 
-        tvm.accept();
+        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
         total_supply_ -= tokens;
 
-        IBurnTokensCallback(callback_address).burnCallback{value: 0, flag: 64}(
+        IBurnTokensCallback(callback_address).burnCallback{value: 0, flag: 128}( //SEND_ALL_GAS
             tokens,
             callback_payload,
             sender_public_key,

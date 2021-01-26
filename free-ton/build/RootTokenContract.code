@@ -454,7 +454,9 @@ GETGLOB 15
 GETGLOB 16
 ;; push identifier total_supply_
 GETGLOB 17
-TUPLE 7
+;; push identifier start_gas_balance_
+GETGLOB 18
+TUPLE 8
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -473,26 +475,28 @@ PUSHCONT {
 	STSLICECONST 0
 	STSLICECONST 1
 	NEWC
-	STSLICECONST x86fc2afd
+	STSLICECONST xcf792f5e
 	PUSH S2
-	UNTUPLE 7
-	BLKSWAP 1, 7
+	UNTUPLE 8
+	BLKSWAP 1, 8
+	PUSH S8
+	STREFR
 	PUSH S7
 	STREFR
 	PUSH S6
-	STREFR
-	PUSH S5
 	STUR 8
-	PUSH S4
+	PUSH S5
 	STREFR
-	PUSH S3
+	PUSH S4
 	STUR 256
-	PUSH S2
+	PUSH S3
 	STSLICER
+	PUSH S2
+	STUR 128
 	PUSH S1
 	STUR 128
-	XCHG s7
-	BLKDROP 7
+	XCHG s8
+	BLKDROP 8
 	STBREFR
 	ENDC
 	PUSHINT 1
@@ -865,7 +869,6 @@ PUSHCONT {
 }
 IFNOT
 THROWANYIFNOT
-ACCEPT
 ;; if
 ;; get member value
 ;; push identifier root_owner_address_
@@ -873,8 +876,12 @@ GETGLOB 16
 PARSEMSGADDR
 INDEX 3
 PLDU 256
+EQINT 0
 PUSHCONT {
-	;; push identifier start_balance_
+	ACCEPT
+}
+PUSHCONT {
+	;; push identifier start_gas_balance_
 	GETGLOB 18
 	;; get member balance
 	GETPARAM 7
@@ -888,7 +895,7 @@ PUSHCONT {
 	PUSHINT 2
 	RAWRESERVE
 }
-IF
+IFELSE
 ;; end if
 NEWDICT
 ;; push identifier wallet_public_key
@@ -1168,8 +1175,7 @@ PUSHCONT {
 }
 IFNOT
 THROWANYIFNOT
-ACCEPT
-;; push identifier start_balance_
+;; push identifier start_gas_balance_
 GETGLOB 18
 ;; get member balance
 GETPARAM 7
@@ -1405,7 +1411,46 @@ IFNOT
 ; end function isOwner
 THROWANYIFNOT
 ; function mint
-ACCEPT
+;; if
+;; get member value
+;; push identifier root_owner_address_
+GETGLOB 16
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+EQINT 0
+PUSHCONT {
+	ACCEPT
+}
+PUSHCONT {
+	;; push identifier start_gas_balance_
+	GETGLOB 18
+	;; get member balance
+	GETPARAM 7
+	INDEX 0
+	;; get member value
+	CALL $message_balance_macro$
+	;; -
+	SUB
+	UFITS 128
+	MAX
+	PUSHINT 2
+	RAWRESERVE
+}
+IFELSE
+;; end if
+;; push identifier tokens
+PUSH S1
+; expValue
+;; fetch total_supply_
+GETGLOB 17
+; end expValue
+SWAP
+ADD
+UFITS 128
+; colValue
+SETGLOB 17
+; end colValue
 ;; Remote call ITONTokenWallet.accept
 ;; push identifier to
 DUP
@@ -1424,18 +1469,30 @@ STUR 128
 ENDC
 PUSHINT 1
 SENDRAWMSG
-;; push identifier tokens
-PUSH S1
-; expValue
-;; fetch total_supply_
-GETGLOB 17
-; end expValue
-SWAP
-ADD
-UFITS 128
-; colValue
-SETGLOB 17
-; end colValue
+;; if
+;; get member value
+;; push identifier root_owner_address_
+GETGLOB 16
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+PUSHCONT {
+	;; transfer()
+	;; push identifier root_owner_address_
+	GETGLOB 16
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+IF
+;; end if
 ; end function mint
 DROP2
 ; end modifier onlyOwner
@@ -1516,7 +1573,19 @@ IF
 ; end function isInternalOwner
 THROWANYIFNOT
 ; function proxyBurn
-ACCEPT
+;; push identifier start_gas_balance_
+GETGLOB 18
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+MAX
+PUSHINT 2
+RAWRESERVE
 PUSHINT 0
 ;; push identifier sender_address
 PUSH S3
@@ -1626,7 +1695,7 @@ STSLICER
 PUSH S2
 STREFR
 ENDC
-PUSHINT 64
+PUSHINT 128
 SENDRAWMSG
 DROP
 ; end function proxyBurn
@@ -1789,7 +1858,19 @@ GETGLOB 9
 PUSH S2
 SDEQ
 THROWANYIFNOT
-ACCEPT
+;; push identifier start_gas_balance_
+GETGLOB 18
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+MAX
+PUSHINT 2
+RAWRESERVE
 ;; push identifier tokens
 PUSH S5
 ; expValue
@@ -1836,7 +1917,7 @@ PUSH S2
 STSLICER
 STBREFR
 ENDC
-PUSHINT 64
+PUSHINT 128
 SENDRAWMSG
 BLKDROP 6
 ; end function tokensBurned
@@ -2056,7 +2137,7 @@ PUSHCONT {
 	; init total_supply_
 	PUSHINT 0
 	SETGLOB 17
-	; init start_balance_
+	; init start_gas_balance_
 	PUSHINT 0
 	SETGLOB 18
 	; init error_message_sender_is_not_my_owner

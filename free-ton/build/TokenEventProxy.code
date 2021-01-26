@@ -257,7 +257,7 @@ PLDU 256
 NEQINT 0
 THROWIFNOT 100
 ACCEPT
-;; push identifier start_balance_
+;; push identifier start_gas_balance_
 GETGLOB 19
 ;; get member balance
 GETPARAM 7
@@ -517,7 +517,7 @@ PLDU 256
 NEQINT 0
 THROWIFNOT 100
 ACCEPT
-;; push identifier start_balance_
+;; push identifier start_gas_balance_
 GETGLOB 19
 ;; get member balance
 GETPARAM 7
@@ -833,7 +833,7 @@ SDEQ
 THROWANYIFNOT
 ; function burnCallback
 ACCEPT
-;; push identifier start_balance_
+;; push identifier start_gas_balance_
 GETGLOB 19
 ;; get member balance
 GETPARAM 7
@@ -982,7 +982,7 @@ GETGLOB 17
 GEQ
 THROWIFNOT 100
 ACCEPT
-;; push identifier start_balance_
+;; push identifier start_gas_balance_
 GETGLOB 19
 ;; get member balance
 GETPARAM 7
@@ -1104,7 +1104,7 @@ GETGLOB 17
 GEQ
 THROWIFNOT 100
 ACCEPT
-;; push identifier start_balance_
+;; push identifier start_gas_balance_
 GETGLOB 19
 ;; get member balance
 GETPARAM 7
@@ -2155,7 +2155,7 @@ PUSHCONT {
 	; init settings_deploy_wallet_grams
 	PUSHINT 0
 	SETGLOB 18
-	; init start_balance_
+	; init start_gas_balance_
 	PUSHINT 0
 	SETGLOB 19
 	; init burned_count
