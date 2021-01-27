@@ -1573,8 +1573,6 @@ IF
 ; end function isInternalOwner
 THROWANYIFNOT
 ; function proxyBurn
-;; push identifier start_gas_balance_
-GETGLOB 18
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -1583,7 +1581,6 @@ CALL $message_balance_macro$
 ;; -
 SUB
 UFITS 128
-MAX
 PUSHINT 2
 RAWRESERVE
 PUSHINT 0
@@ -1858,8 +1855,6 @@ GETGLOB 9
 PUSH S2
 SDEQ
 THROWANYIFNOT
-;; push identifier start_gas_balance_
-GETGLOB 18
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -1868,7 +1863,6 @@ CALL $message_balance_macro$
 ;; -
 SUB
 UFITS 128
-MAX
 PUSHINT 2
 RAWRESERVE
 ;; push identifier tokens

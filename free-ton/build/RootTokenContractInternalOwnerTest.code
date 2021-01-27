@@ -253,7 +253,16 @@ SDEQ
 ; end function isRoot
 THROWANYIFNOT
 ; function burnCallback
-ACCEPT
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+PUSHINT 2
+RAWRESERVE
 ;; push identifier tokens
 PUSH S4
 ; expValue
@@ -293,7 +302,7 @@ PUSHCONT {
 	STSLICECONST 0
 	STSLICECONST 0
 	ENDC
-	PUSHINT 64
+	PUSHINT 128
 	SENDRAWMSG
 }
 PUSHCONT {
@@ -308,7 +317,7 @@ PUSHCONT {
 	STSLICECONST 0
 	STSLICECONST 0
 	ENDC
-	PUSHINT 64
+	PUSHINT 128
 	SENDRAWMSG
 }
 IFELSE
@@ -373,7 +382,16 @@ GETGLOB 17
 ;; >=
 GEQ
 THROWIFNOT 100
-ACCEPT
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+PUSHINT 2
+RAWRESERVE
 ;; Remote call IBurnableByRootTokenRootContract.proxyBurn
 ;; push identifier root_address_
 GETGLOB 13
@@ -404,7 +422,7 @@ PUSH S2
 STREFR
 STBREFR
 ENDC
-PUSHINT 64
+PUSHINT 128
 SENDRAWMSG
 BLKDROP 3
 ; end function burnMyTokens
