@@ -898,7 +898,7 @@ describe('Test Fungible Tokens', function () {
                 {
                     tokens: 100,
                     to: notExistsWalletAddress,
-                    grams: freeton.utils.convertCrystal('0.1', 'nano')
+                    grams: freeton.utils.convertCrystal('0.3', 'nano')
                 },
                 tonWrapper.keys[2]
             ).catch(e => console.log(e));
