@@ -246,7 +246,7 @@ describe('Test Fungible Tokens', function () {
                 'deployEmptyWallet',
                 {
                     root_address: RootTokenContractInternalOwner.address,
-                    grams: freeton.utils.convertCrystal('5', 'nano')
+                    grams: freeton.utils.convertCrystal('0.02', 'nano')
                 },
                 tonWrapper.keys[5]
             ).catch(e => console.log(e));
@@ -433,6 +433,78 @@ describe('Test Fungible Tokens', function () {
             logger.log(`Actual TONTokenWalletHack address: ${TONTokenWalletHack.address}`);
             assert.notEqual(expectedAddress, TONTokenWalletHack.address, 'Wallets address equals');
         });
+    });
+
+    describe('Test BarWallet#Internal target_gas_balance on internalTransfer', async function () {
+        it('Transfer tokens to address must compensate gas balance to `target_gas_balance`', async () => {
+            logger.log('######################################################');
+            logger.log('BarWallet#6 transfer 1000 to BarWallet#Internal');
+
+            bw6address = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key: `0x${tonWrapper.keys[6].public}`,
+                    owner_address: ZERO_ADDRESS,
+                });
+
+            BarWallet6 = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bw6address
+            );
+
+            bwInternalAddress = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key: `0x0`,
+                    owner_address: TONTokenWalletInternalOwnerTest.address,
+                });
+
+            BarWalletInternal = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bwInternalAddress
+            );
+
+            const bwInternalStartBalance = await BarWalletInternal.runLocal('getBalance', {});
+            const bw6StartBalance = await BarWallet6.runLocal('getBalance', {});
+
+            const bwInternalStartGrams = await tonWrapper.getBalance(BarWalletInternal.address);
+            const bw6StartGrams = await tonWrapper.getBalance(BarWallet6.address);
+
+            logger.log(`BarWallet#6 start balance: ${bw6StartBalance} BAR`);
+            logger.log(`BarWallet#Internal start balance: ${bwInternalStartBalance} BAR`);
+
+            await BarWallet6.run(
+                'transfer',
+                {
+                    tokens: 1000,
+                    to: bwInternalAddress,
+                    grams: freeton.utils.convertCrystal('0.5', 'nano')
+                },
+                tonWrapper.keys[6]
+            ).catch(e => console.log(e));
+
+            const bwInternalEndBalance = await BarWalletInternal.runLocal('getBalance', {});
+            const bw6EndBalance = await BarWallet6.runLocal('getBalance', {});
+
+            const bwInternalEndGrams = await tonWrapper.getBalance(BarWalletInternal.address);
+            const bw6EndGrams = await tonWrapper.getBalance(BarWallet6.address);
+
+            logger.log(`BarWallet#6 end balance: ${bw6EndBalance} BAR`);
+            logger.log(`BarWallet#Internal end balance: ${bwInternalEndBalance} BAR`);
+
+            const bwInternalEndGramsChange =  new BigNumber(bwInternalEndGrams).minus(bwInternalStartGrams).div(1000000000);
+
+            logger.log(`BarWallet#6 GRAMS change:
+                ${new BigNumber(bw6EndGrams).minus(bw6StartGrams).div(1000000000).toFixed(9)}`);
+
+            logger.log(`BarWallet#Internal GRAMS change: ${bwInternalEndGramsChange.toFixed(9)}`);
+
+            assert.equal(bwInternalEndGramsChange.gt(0.07), true, 'BarWallet#Internal GRAMS change less then +0.07');
+
+        });
+
     });
 
     describe('Test mint/burn', async function () {
