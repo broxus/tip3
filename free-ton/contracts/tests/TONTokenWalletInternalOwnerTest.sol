@@ -44,8 +44,8 @@ contract TONTokenWalletInternalOwnerTest {
 
     function deployEmptyWallet(address root_address, uint128 grams) external view onlyExternalOwner {
         tvm.accept();
-        IRootTokenContract(root_address).deployEmptyWallet{value: grams}(
-            0.1 ton,
+        IRootTokenContract(root_address).deployEmptyWallet{value: 1 ton}(
+            grams,
             0,
             address(this),
             address.makeAddrStd(0, 0)

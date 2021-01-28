@@ -82,6 +82,21 @@
 			],
 			"outputs": [
 			]
+		},
+		{
+			"name": "sendGramsToRoot",
+			"inputs": [
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "testWithdrawExtraGas",
+			"inputs": [
+			],
+			"outputs": [
+			]
 		}
 	],
 	"data": [

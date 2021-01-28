@@ -21,8 +21,8 @@ contract DeployEmptyWalletFor {
         tvm.accept();
         latest_pubkey = pubkey;
         latest_addr = addr;
-        IRootTokenContract(root).deployEmptyWallet{value: 2 ton}(
-            1 ton,
+        IRootTokenContract(root).deployEmptyWallet{value: 0.5 ton}(
+            0.1 ton,
             pubkey,
             addr,
             address.makeAddrStd(0, 0)

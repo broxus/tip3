@@ -339,23 +339,20 @@ THROWANYIFNOT
 ; function deployEmptyWallet
 ACCEPT
 ;; Remote call IRootTokenContract.deployEmptyWallet
-;; push identifier grams
-DUP
 ;; push identifier root_address
-PUSH S2
+PUSH S1
 NEWC
 STSLICECONST x62_
 STSLICE
-SWAP
-STGRAMS
-PUSHINT 105
-STZEROES
+PUSHSLICE x43b9aca00000000000000000000000000004_
+STSLICER
 STSLICECONST 0
 STSLICECONST 1
 NEWC
 STSLICECONST x76406336
 ;; grams
-PUSHINT 100000000
+;; push identifier grams
+PUSH S2
 STUR 128
 ;; wallet_public_key
 PUSHINT 0

@@ -121,7 +121,7 @@ const tonWrapper = new freeton.TonWrapper({
       root: RootTokenContractExternalOwner.address
     },
     _randomNonce: true,
-    initialBalance: freeton.utils.convertCrystal('2.301', 'nano')
+    initialBalance: freeton.utils.convertCrystal('4.301', 'nano')
   }).catch(e => console.log(e));
 
   const TONTokenWalletHack = await freeton.requireContract(tonWrapper, 'TONTokenWalletHack');

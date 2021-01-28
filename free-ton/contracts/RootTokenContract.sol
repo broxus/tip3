@@ -105,7 +105,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         if(root_owner_address_.value == 0) {
             tvm.accept();
         } else {
-            tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+            tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); 
         }
 
         address wallet = new TONTokenWallet{
@@ -129,9 +129,9 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         if (root_owner_address_.value != 0) {
             if (gas_back_address.value != 0) {
-                gas_back_address.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+                gas_back_address.transfer({ value: 0, flag: 128 }); 
             } else {
-                msg.sender.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+                msg.sender.transfer({ value: 0, flag: 128 }); 
             }
         }
     }
@@ -146,7 +146,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
                 owner_address.value == 0 && wallet_public_key != 0,
                 error_define_wallet_public_key_or_owner_address);
 
-        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); 
 
         new TONTokenWallet{
             value: grams,
@@ -164,9 +164,9 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         }();
 
         if (gas_back_address.value != 0) {
-            gas_back_address.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+            gas_back_address.transfer({ value: 0, flag: 128 }); 
         } else {
-            msg.sender.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+            msg.sender.transfer({ value: 0, flag: 128 }); 
         }
     }
 
@@ -174,7 +174,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         if(root_owner_address_.value == 0) {
             tvm.accept();
         } else {
-            tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+            tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); 
         }
 
         total_supply_ += tokens;
@@ -182,7 +182,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         ITONTokenWallet(to).accept(tokens);
 
         if(root_owner_address_.value != 0) {
-            root_owner_address_.transfer({ value: 0, flag: 128 }); //SEND_ALL_GAS
+            root_owner_address_.transfer({ value: 0, flag: 128 }); 
         }
     }
 
@@ -193,9 +193,9 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         address callback_address,
         TvmCell callback_payload
     ) override external onlyInternalOwner {
-        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        tvm.rawReserve(address(this).balance - msg.value, 2); 
         address expectedWalletAddress = getExpectedWalletAddress(0, sender_address);
-        IBurnableByRootTokenWallet(expectedWalletAddress).burnByRoot{value: 0, flag: 128}( //SEND_ALL_GAS
+        IBurnableByRootTokenWallet(expectedWalletAddress).burnByRoot{value: 0, flag: 128}( 
             tokens,
             callback_address,
             callback_payload
@@ -214,11 +214,11 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         require(msg.sender == expectedWalletAddress, error_message_sender_is_not_good_wallet);
 
-        tvm.rawReserve(math.max(start_gas_balance_, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        tvm.rawReserve(address(this).balance - msg.value, 2); 
 
         total_supply_ -= tokens;
 
-        IBurnTokensCallback(callback_address).burnCallback{value: 0, flag: 128}( //SEND_ALL_GAS
+        IBurnTokensCallback(callback_address).burnCallback{value: 0, flag: 128}( 
             tokens,
             callback_payload,
             sender_public_key,
@@ -226,6 +226,11 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
             expectedWalletAddress
         );
 
+    }
+
+    function withdrawExtraGas() override external onlyInternalOwner {
+        tvm.rawReserve(start_gas_balance_, 2);
+        root_owner_address_.transfer({ value: 0, flag: 128 });
     }
 
 // =============== Support functions ==================

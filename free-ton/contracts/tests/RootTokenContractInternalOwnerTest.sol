@@ -49,15 +49,15 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
         address wallet_address
     ) override external onlyRoot {
 
-        tvm.accept();
+        tvm.rawReserve(address(this).balance - msg.value, 2);
 
         burned_count += tokens;
         latest_payload = payload;
 
         if (sender_address.value == 0) {
-            wallet_address.transfer({ value: 0, flag: 64 });
+            wallet_address.transfer({ value: 0, flag: 128 });
         } else {
-            sender_address.transfer({ value: 0, flag: 64 });
+            sender_address.transfer({ value: 0, flag: 128 });
         }
     }
 
@@ -65,8 +65,8 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
         require(root_address_.value != 0);
         require(msg.sender.value != 0);
         require(msg.value >= settings_burn_min_value);
-        tvm.accept();
-        IBurnableByRootTokenRootContract(root_address_).proxyBurn{value: 0, flag: 64}(
+        tvm.rawReserve(address(this).balance - msg.value, 2);
+        IBurnableByRootTokenRootContract(root_address_).proxyBurn{value: 0, flag: 128}(
             tokens,
             msg.sender,
             callback_address,
@@ -129,5 +129,15 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
         require(root_address_.value != 0);
         tvm.accept();
         IRootTokenContract(root_address_).mint{value: 0.1 ton}(tokens, addr);
+    }
+
+    function sendGramsToRoot(uint128 grams) external view onlyOwner {
+        tvm.accept();
+        root_address_.transfer({ value: grams });
+}
+
+    function testWithdrawExtraGas() external view onlyOwner {
+        tvm.accept();
+        IRootTokenContract(root_address_).withdrawExtraGas();
     }
 }
