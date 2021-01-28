@@ -228,6 +228,11 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
     }
 
+    function withdrawExtraGas() override external onlyInternalOwner {
+        tvm.rawReserve(start_gas_balance_, 2);
+        root_owner_address_.transfer({ value: 0, flag: 128 });
+    }
+
 // =============== Support functions ==================
 
     modifier onlyOwner() {

@@ -43,4 +43,6 @@ interface IRootTokenContract {
     ) external;
 
     function mint(uint128 tokens, address to) external;
+
+    function withdrawExtraGas() external;
 }

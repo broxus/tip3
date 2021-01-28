@@ -71,8 +71,6 @@ contract EthereumEvent is IEvent, ErrorCodes {
             executeProxyNotification();
 
             status = Status.Confirmed;
-
-            initData.ethereumEventConfiguration.transfer({ value: address(this).balance - 1.5 ton });
         }
     }
 
@@ -97,12 +95,12 @@ contract EthereumEvent is IEvent, ErrorCodes {
         if (rejectRelays.length >= initData.requiredRejects) {
             status = Status.Rejected;
 
-            initData.ethereumEventConfiguration.transfer({ value: address(this).balance - 0.1 ton });
+            initData.ethereumEventConfiguration.transfer({ value: 0, flag: 128 });
         }
     }
 
     function executeProxyNotification() internal view {
-        IProxy(initData.proxyAddress).broxusBridgeNotification{value: 0.00001 ton}(initData);
+        IProxy(initData.proxyAddress).broxusBridgeNotification{value: 0.001 ton}(initData);
     }
 
     /*
@@ -110,10 +108,12 @@ contract EthereumEvent is IEvent, ErrorCodes {
         @dev Called internally, after required amount of confirmations received
     */
     function executeProxyCallback() public eventConfirmed {
-        require(msg.value > 0.1 ton);
+        require(msg.value > 1 ton, TOO_LOW_MSG_VALUE);
         status = Status.Executed;
 
-        IProxy(initData.proxyAddress).broxusBridgeCallback{value: msg.value - 0.1 ton}(initData, msg.sender);
+        IProxy(initData.proxyAddress).broxusBridgeCallback{value: msg.value}(initData, msg.sender);
+
+        initData.ethereumEventConfiguration.transfer({ value: 0, flag: 128 });
     }
 
     /*

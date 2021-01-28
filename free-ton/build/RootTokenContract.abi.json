@@ -137,6 +137,13 @@
 			],
 			"outputs": [
 			]
+		},
+		{
+			"name": "withdrawExtraGas",
+			"inputs": [
+			],
+			"outputs": [
+			]
 		}
 	],
 	"data": [

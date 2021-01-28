@@ -70,15 +70,7 @@ LDU 32
 ;; decode TvmCell
 LDREF
 ;; decode EthereumEventInitData.eventBlockNumber
-LDUQ 256
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 256
-}
-IFNOT
+LDU 32
 ;; decode EthereumEventInitData.eventBlock
 LDUQ 256
 PUSHCONT {
@@ -100,23 +92,23 @@ PUSHCONT {
 }
 IFNOT
 ;; decode EthereumEventInitData.requiredConfirmations
-LDUQ 256
+LDUQ 16
 PUSHCONT {
 	;; load next cell
 	LDREF
 	ENDS
 	CTOS
-	LDU 256
+	LDU 16
 }
 IFNOT
 ;; decode EthereumEventInitData.requiredRejects
-LDUQ 256
+LDUQ 16
 PUSHCONT {
 	;; load next cell
 	LDREF
 	ENDS
 	CTOS
-	LDU 256
+	LDU 16
 }
 IFNOT
 ;; decode EthereumEventInitData.proxyAddress
@@ -165,14 +157,6 @@ PUSH S1
 UNTUPLE 9
 NEWC
 NEWC
-PUSH S5
-STSLICER
-PUSH S4
-STUR 256
-PUSH S3
-STUR 256
-STBREFR
-NEWC
 PUSH S2
 STSLICER
 STBREFR
@@ -183,9 +167,15 @@ STUR 32
 PUSH S7
 STREFR
 PUSH S6
-STUR 256
+STUR 32
 PUSH S5
 STUR 256
+PUSH S4
+STSLICER
+PUSH S3
+STUR 16
+PUSH S2
+STUR 16
 XCHG s9
 BLKDROP 9
 ENDC
@@ -425,14 +415,6 @@ PUSH S1
 UNTUPLE 9
 NEWC
 NEWC
-PUSH S5
-STSLICER
-PUSH S4
-STUR 256
-PUSH S3
-STUR 256
-STBREFR
-NEWC
 PUSH S2
 STSLICER
 STBREFR
@@ -443,9 +425,15 @@ STUR 32
 PUSH S7
 STREFR
 PUSH S6
-STUR 256
+STUR 32
 PUSH S5
 STUR 256
+PUSH S4
+STSLICER
+PUSH S3
+STUR 16
+PUSH S2
+STUR 16
 XCHG s9
 BLKDROP 9
 ENDC
@@ -679,15 +667,7 @@ LDU 32
 ;; decode TvmCell
 LDREF
 ;; decode EthereumEventInitData.eventBlockNumber
-LDUQ 256
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 256
-}
-IFNOT
+LDU 32
 ;; decode EthereumEventInitData.eventBlock
 LDUQ 256
 PUSHCONT {
@@ -709,23 +689,23 @@ PUSHCONT {
 }
 IFNOT
 ;; decode EthereumEventInitData.requiredConfirmations
-LDUQ 256
+LDUQ 16
 PUSHCONT {
 	;; load next cell
 	LDREF
 	ENDS
 	CTOS
-	LDU 256
+	LDU 16
 }
 IFNOT
 ;; decode EthereumEventInitData.requiredRejects
-LDUQ 256
+LDUQ 16
 PUSHCONT {
 	;; load next cell
 	LDREF
 	ENDS
 	CTOS
-	LDU 256
+	LDU 16
 }
 IFNOT
 ;; decode EthereumEventInitData.proxyAddress
@@ -1393,6 +1373,100 @@ PUSHCONT {
 IF
 DROP
 ; end function getDeployWalletGrams
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
+TRUE
+SETGLOB 7
+
+.globl	withdrawExtraGasFromTokenRoot
+.public	withdrawExtraGasFromTokenRoot
+.type	withdrawExtraGasFromTokenRoot, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; modifier onlyOwner
+;; push identifier error_message_sender_is_not_my_owner
+GETGLOB 21
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+; function isOwner
+;; return
+; function isInternalOwner
+;; return
+;; get member value
+;; push identifier internal_owner_address
+GETGLOB 12
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+;; short-circuiting &&
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier internal_owner_address
+	GETGLOB 12
+	;; get member sender
+	GETGLOB 9
+	SDEQ
+}
+IF
+; end function isInternalOwner
+;; short-circuiting ||
+DUP
+PUSHCONT {
+	DROP
+	; function isExternalOwner
+	;; return
+	;; push identifier external_owner_pubkey
+	GETGLOB 11
+	NEQINT 0
+	;; short-circuiting &&
+	DUP
+	PUSHCONT {
+		DROP
+		;; push identifier external_owner_pubkey
+		GETGLOB 11
+		GETGLOB 2
+		;; ==
+		EQUAL
+	}
+	IF
+	; end function isExternalOwner
+}
+IFNOT
+; end function isOwner
+THROWANYIFNOT
+; function withdrawExtraGasFromTokenRoot
+ACCEPT
+;; Remote call IRootTokenContract.withdrawExtraGas
+;; push identifier token_root_address
+GETGLOB 16
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000004_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x159edb3d
+ENDC
+PUSHINT 1
+SENDRAWMSG
+; end function withdrawExtraGasFromTokenRoot
+; end modifier onlyOwner
 PUSHCONT {
 	CALL $c7_to_c4$
 }

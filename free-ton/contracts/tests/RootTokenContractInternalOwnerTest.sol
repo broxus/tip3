@@ -130,4 +130,14 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
         tvm.accept();
         IRootTokenContract(root_address_).mint{value: 0.1 ton}(tokens, addr);
     }
+
+    function sendGramsToRoot(uint128 grams) external view onlyOwner {
+        tvm.accept();
+        root_address_.transfer({ value: grams });
+}
+
+    function testWithdrawExtraGas() external view onlyOwner {
+        tvm.accept();
+        IRootTokenContract(root_address_).withdrawExtraGas();
+    }
 }

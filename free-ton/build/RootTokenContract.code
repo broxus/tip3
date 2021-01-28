@@ -1919,6 +1919,73 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
+.globl	withdrawExtraGas
+.public	withdrawExtraGas
+.type	withdrawExtraGas, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; modifier onlyInternalOwner
+;; push identifier error_message_sender_is_not_my_owner
+GETGLOB 19
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+; function isInternalOwner
+;; return
+;; get member value
+;; push identifier root_owner_address_
+GETGLOB 16
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+;; short-circuiting &&
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier root_owner_address_
+	GETGLOB 16
+	;; get member sender
+	GETGLOB 9
+	SDEQ
+}
+IF
+; end function isInternalOwner
+THROWANYIFNOT
+; function withdrawExtraGas
+;; push identifier start_gas_balance_
+GETGLOB 18
+PUSHINT 2
+RAWRESERVE
+;; transfer()
+;; push identifier root_owner_address_
+GETGLOB 16
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 0
+ENDC
+PUSHINT 128
+SENDRAWMSG
+; end function withdrawExtraGas
+; end modifier onlyInternalOwner
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
 .globl	c7_to_c4
 .type	c7_to_c4, @function
 GETGLOB 2

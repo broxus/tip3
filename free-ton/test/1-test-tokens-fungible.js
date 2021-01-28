@@ -566,6 +566,51 @@ describe('Test Fungible Tokens', function () {
                 'Total supply wrong');
         });
 
+        it('Internal call RootTokenContract.withdrawExtraGas from RootTokenContractInternalOwnerTest', async () => {
+            logger.log('######################################################');
+            logger.log('Check current balance and details');
+
+            const startRootBalance = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+            const startRootOwnerBalance = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+
+            const startDetails = await RootTokenContractInternalOwner.runLocal('getDetails', {});
+
+            logger.log(`Start RootTokenContractInternalOwner balance: ${startRootBalance.div(1000000000).toFixed(9)} TON`);
+            logger.log(`Start RootTokenContractInternalOwnerTest balance: ${startRootOwnerBalance.div(1000000000).toFixed(9)} TON`);
+            logger.log(`RootTokenContractInternalOwner start_gas_balance_ = ${startDetails.start_gas_balance.div(1000000000).toFixed(9)} TON`);
+
+            logger.log(`Send 1 TON from RootTokenContractInternalOwnerTest to RootTokenContractInternalOwner`);
+
+            await RootTokenContractInternalOwnerTest.run(
+                'sendGramsToRoot',
+                {
+                    grams: freeton.utils.convertCrystal('1', 'nano')
+                },
+                tonWrapper.keys[0]
+            ).catch(e => console.log(e));
+
+            const currentRootBalance = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+            const currentRootOwnerBalance = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+
+            logger.log(`Current RootTokenContractInternalOwner balance: ${currentRootBalance.div(1000000000).toFixed(9)} TON`);
+            logger.log(`Current RootTokenContractInternalOwnerTest balance: ${currentRootOwnerBalance.div(1000000000).toFixed(9)} TON`);
+
+            logger.log(`Call RootTokenContract.withdrawExtraGas`);
+
+            await RootTokenContractInternalOwnerTest.run(
+                'testWithdrawExtraGas',
+                {},
+                tonWrapper.keys[0]
+            ).catch(e => console.log(e));
+
+            const endRootBalance = await tonWrapper.getBalance(RootTokenContractInternalOwner.address);
+            const endRootOwnerBalance = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
+            logger.log(`End RootTokenContractInternalOwner balance: ${endRootBalance.div(1000000000).toFixed(9)} TON`);
+            logger.log(`End RootTokenContractInternalOwnerTest balance: ${endRootOwnerBalance.div(1000000000).toFixed(9)} TON`);
+
+            assert.ok(endRootOwnerBalance.gte(currentRootOwnerBalance));
+        });
+
         it('External call TONTokenWallet.burnByOwner', async () => {
             logger.log('######################################################');
             logger.log('BurnByOwner 5.000 tokens from BarWallet#3');
@@ -855,7 +900,7 @@ describe('Test Fungible Tokens', function () {
                 {
                     tokens: 1000,
                     to: fw1address,
-                    grams: freeton.utils.convertCrystal('0.1', 'nano')
+                    grams: freeton.utils.convertCrystal('0.3', 'nano')
                 },
                 tonWrapper.keys[2]
             ).catch(e => console.log(e));

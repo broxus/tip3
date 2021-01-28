@@ -167,6 +167,11 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         return settings_deploy_wallet_grams;
     }
 
+    function withdrawExtraGasFromTokenRoot() external view onlyOwner {
+        tvm.accept();
+        IRootTokenContract(token_root_address).withdrawExtraGas();
+    }
+
     // =============== Settings ==================
 
     function setTokenRootAddressOnce(address value) external onlyOwner {
