@@ -108,8 +108,8 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
         uint128 transfer_grams
     ) override external onlyOwner {
         require(tokens <= balance, error_not_enough_balance);
-        require((recipient_owner_address.value != 0 && recipient_public_key == 0) ||
-                (recipient_owner_address.value == 0 && recipient_public_key != 0),
+        require((recipient_address.value != 0 && recipient_public_key == 0) ||
+                (recipient_address.value == 0 && recipient_public_key != 0),
                 error_define_wallet_public_key_or_owner_address);
 
         if (owner_address.value != 0 ) {
@@ -131,7 +131,7 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
                 root_address: root_address,
                 code: code,
                 wallet_public_key: recipient_public_key,
-                owner_address: recipient_owner_address
+                owner_address: recipient_address
             },
             pubkey: recipient_public_key,
             code: code

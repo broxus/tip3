@@ -629,9 +629,9 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
-.globl	transferByOwner
-.public	transferByOwner
-.type	transferByOwner, @function
+.globl	transferToRecipient
+.public	transferToRecipient
+.type	transferToRecipient, @function
 GETGLOB 1
 ISNULL
 PUSHCONT {
@@ -641,7 +641,7 @@ IF
 ; Decode input parameters
 ; Decode recipient_public_key
 LDU 256
-; Decode recipient_owner_address
+; Decode recipient_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -683,7 +683,7 @@ PUSHCONT {
 IFNOT
 ENDS
 ;; param: recipient_public_key
-;; param: recipient_owner_address
+;; param: recipient_address
 ;; param: tokens
 ;; param: deploy_grams
 ;; param: transfer_grams
@@ -745,7 +745,7 @@ PUSHCONT {
 IFNOT
 ; end function isOwner
 THROWANYIFNOT
-; function transferByOwner
+; function transferToRecipient
 ;; push identifier error_not_enough_balance
 GETGLOB 20
 DUP
@@ -772,7 +772,7 @@ PUSHCONT {
 }
 IF
 ;; get member value
-;; push identifier recipient_owner_address
+;; push identifier recipient_address
 PUSH S4
 PARSEMSGADDR
 INDEX 3
@@ -792,7 +792,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; get member value
-	;; push identifier recipient_owner_address
+	;; push identifier recipient_address
 	PUSH S4
 	PARSEMSGADDR
 	INDEX 3
@@ -956,7 +956,7 @@ PUSHINT 6
 ROT
 PUSHINT 64
 DICTUSETB
-;; push identifier recipient_owner_address
+;; push identifier recipient_address
 PUSH S4
 PUSHINT 7
 ROT
@@ -1143,7 +1143,7 @@ PUSHCONT {
 IFELSE
 ;; end if
 DROP2
-; end function transferByOwner
+; end function transferToRecipient
 BLKDROP 5
 ; end modifier onlyOwner
 CALL $c7_to_c4$
