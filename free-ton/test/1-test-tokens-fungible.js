@@ -979,6 +979,73 @@ describe('Test Fungible Tokens', function () {
 
         });
 
+
+        it('Transfer by owner (with deploy)', async () => {
+            logger.log('######################################################');
+            logger.log('BarWallet#6 transfer 1000 to BarWallet#7 (not deployed)');
+
+            bw6address = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x${tonWrapper.keys[6].public}`,
+                    owner_address_: ZERO_ADDRESS,
+                });
+
+            BarWallet6 = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bw6address
+            );
+
+            const bw7address = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x${tonWrapper.keys[7].public}`,
+                    owner_address_: ZERO_ADDRESS,
+                });
+
+            const bw6StartBalance = await BarWallet6.runLocal('balance', {});
+            const bw6StartGrams = await tonWrapper.getBalance(BarWallet6.address);
+
+            logger.log(`BarWallet#6 start balance: ${bw6StartBalance} BAR`);
+
+            await BarWallet6.run(
+                'transferByOwner',
+                {
+                    recipient_public_key: `0x${tonWrapper.keys[7].public}`,
+                    recipient_owner_address: ZERO_ADDRESS,
+                    tokens: 1000,
+                    deploy_grams: freeton.utils.convertCrystal('0.05', 'nano'),
+                    transfer_grams: freeton.utils.convertCrystal('0.5', 'nano')
+                },
+                tonWrapper.keys[6]
+            ).catch(e => console.log(e));
+
+            const BarWallet7 = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bw7address
+            );
+
+            const bw7EndBalance = await BarWallet7.runLocal('balance', {});
+            const bw6EndBalance = await BarWallet6.runLocal('balance', {});
+
+            const bw7EndGrams = await tonWrapper.getBalance(BarWallet7.address);
+            const bw6EndGrams = await tonWrapper.getBalance(BarWallet6.address);
+
+            logger.log(`BarWallet#6 GRAMS change:
+                ${new BigNumber(bw6EndGrams).minus(bw6StartGrams).div(1000000000).toFixed(9)}`);
+
+            logger.log(`BarWallet#7:
+                address = ${bw7Address},
+                tokens = ${bw7EndBalance} BAR,
+                grams = ${new BigNumber(bw7EndGrams).div(1000000000).toFixed(9)} TON`);
+
+            assert.equal(bw6EndBalance.toNumber(), bw6StartBalance.minus(1000).toNumber(), 'BarWallet#6 balance wrong');
+            assert.equal(bw7EndBalance.gte(1000), true, 'BarWallet#7 balance wrong');
+
+        });
+
         it('onBounce for TONTokenWallet.internalTransfer must increase balance', async () => {
             logger.log('######################################################');
             logger.log('Transfer 100 FOO from FooWallet#2 to non-exists address FooWallet#44 (must be bounced)');
