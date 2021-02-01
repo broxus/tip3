@@ -10,70 +10,6 @@
 			]
 		},
 		{
-			"name": "getName",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"value0","type":"bytes"}
-			]
-		},
-		{
-			"name": "getSymbol",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"value0","type":"bytes"}
-			]
-		},
-		{
-			"name": "getDecimals",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"value0","type":"uint8"}
-			]
-		},
-		{
-			"name": "getRootAddress",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"value0","type":"address"}
-			]
-		},
-		{
-			"name": "getOwnerAddress",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"value0","type":"address"}
-			]
-		},
-		{
-			"name": "getWalletPublicKey",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"value0","type":"uint256"}
-			]
-		},
-		{
-			"name": "getBalance",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"value0","type":"uint128"}
-			]
-		},
-		{
-			"name": "allowance",
-			"inputs": [
-			],
-			"outputs": [
-				{"components":[{"name":"remaining_tokens","type":"uint128"},{"name":"spender","type":"address"}],"name":"value0","type":"tuple"}
-			]
-		},
-		{
 			"name": "getDetails",
 			"inputs": [
 			],
@@ -87,6 +23,14 @@
 				{"name":"tokens","type":"uint128"}
 			],
 			"outputs": [
+			]
+		},
+		{
+			"name": "allowance",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"remaining_tokens","type":"uint128"},{"name":"spender","type":"address"}],"name":"value0","type":"tuple"}
 			]
 		},
 		{
@@ -176,16 +120,72 @@
 			],
 			"outputs": [
 			]
+		},
+		{
+			"name": "name",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"name","type":"bytes"}
+			]
+		},
+		{
+			"name": "symbol",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"symbol","type":"bytes"}
+			]
+		},
+		{
+			"name": "decimals",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"decimals","type":"uint8"}
+			]
+		},
+		{
+			"name": "root_address",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"root_address","type":"address"}
+			]
+		},
+		{
+			"name": "code",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"code","type":"cell"}
+			]
+		},
+		{
+			"name": "balance",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"balance","type":"uint128"}
+			]
+		},
+		{
+			"name": "target_gas_balance",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"target_gas_balance","type":"uint128"}
+			]
 		}
 	],
 	"data": [
-		{"key":1,"name":"name_","type":"bytes"},
-		{"key":2,"name":"symbol_","type":"bytes"},
-		{"key":3,"name":"decimals_","type":"uint8"},
-		{"key":4,"name":"root_address_","type":"address"},
-		{"key":5,"name":"code_","type":"cell"},
-		{"key":6,"name":"wallet_public_key_","type":"uint256"},
-		{"key":7,"name":"owner_address_","type":"address"}
+		{"key":1,"name":"name","type":"bytes"},
+		{"key":2,"name":"symbol","type":"bytes"},
+		{"key":3,"name":"decimals","type":"uint8"},
+		{"key":4,"name":"root_address","type":"address"},
+		{"key":5,"name":"code","type":"cell"},
+		{"key":6,"name":"wallet_public_key","type":"uint256"},
+		{"key":7,"name":"owner_address","type":"address"}
 	],
 	"events": [
 	]

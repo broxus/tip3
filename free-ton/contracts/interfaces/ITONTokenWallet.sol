@@ -16,19 +16,11 @@ interface ITONTokenWallet is AllowanceInfoStructure {
         uint128 balance;
     }
 
-    function getName() external view returns (bytes);
-    function getSymbol() external view returns (bytes);
-    function getDecimals() external view returns (uint8);
-    function getRootAddress() external view returns (address);
-    function getOwnerAddress() external view returns (address);
-    function getWalletPublicKey() external view returns (uint256);
-    function getBalance() external view returns (uint128);
-    function allowance() external view returns (AllowanceInfo);
-
     function getDetails() external view returns (ITONTokenWalletDetails);
 
     function accept(uint128 tokens) external;
 
+    function allowance() external view returns (AllowanceInfo);
     function approve(address spender, uint128 remaining_tokens, uint128 tokens) external;
     function disapprove() external;
 

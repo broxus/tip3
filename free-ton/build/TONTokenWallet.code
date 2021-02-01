@@ -16,7 +16,7 @@ SETGLOB 6
 ; Decode input parameters
 ENDS
 ; constructor TONTokenWallet
-;; push identifier wallet_public_key_
+;; push identifier wallet_public_key
 GETGLOB 15
 NEQINT 0
 ;; short-circuiting &&
@@ -24,7 +24,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; get member value
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	PARSEMSGADDR
 	INDEX 3
@@ -36,7 +36,7 @@ IF
 DUP
 PUSHCONT {
 	DROP
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	EQINT 0
 	;; short-circuiting &&
@@ -44,7 +44,7 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; get member value
-		;; push identifier owner_address_
+		;; push identifier owner_address
 		GETGLOB 16
 		PARSEMSGADDR
 		INDEX 3
@@ -61,421 +61,6 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
-.globl	getName
-.public	getName
-.type	getName, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; function getName
-;; return
-;; push identifier name_
-GETGLOB 10
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xcc0a1dda
-	PUSH S1
-	STREFR
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
-; end function getName
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	getSymbol
-.public	getSymbol
-.type	getSymbol, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; function getSymbol
-;; return
-;; push identifier symbol_
-GETGLOB 11
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xdc7fbe43
-	PUSH S1
-	STREFR
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
-; end function getSymbol
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	getDecimals
-.public	getDecimals
-.type	getDecimals, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; function getDecimals
-;; return
-;; push identifier decimals_
-GETGLOB 12
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST x89981cd7
-	PUSH S1
-	STUR 8
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
-; end function getDecimals
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	getRootAddress
-.public	getRootAddress
-.type	getRootAddress, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; function getRootAddress
-;; return
-;; push identifier root_address_
-GETGLOB 13
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xca241106
-	PUSH S1
-	STSLICER
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
-; end function getRootAddress
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	getOwnerAddress
-.public	getOwnerAddress
-.type	getOwnerAddress, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; function getOwnerAddress
-;; return
-;; push identifier owner_address_
-GETGLOB 16
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xdf44da40
-	PUSH S1
-	STSLICER
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
-; end function getOwnerAddress
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	getWalletPublicKey
-.public	getWalletPublicKey
-.type	getWalletPublicKey, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; function getWalletPublicKey
-;; return
-;; push identifier wallet_public_key_
-GETGLOB 15
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST x9c61fede
-	PUSH S1
-	STUR 256
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
-; end function getWalletPublicKey
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	getBalance
-.public	getBalance
-.type	getBalance, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; function getBalance
-;; return
-;; push identifier balance_
-GETGLOB 17
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xa6276871
-	PUSH S1
-	STUR 128
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
-; end function getBalance
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	allowance
-.public	allowance
-.type	allowance, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; function allowance
-;; return
-;; push identifier allowance_
-GETGLOB 18
-ISNULL
-NOT
-PUSHCONT {
-	;; push identifier allowance_
-	GETGLOB 18
-	DUP
-	ISNULL
-	THROWIF 63
-}
-PUSHCONT {
-	PUSHINT 0
-	;; address.makeAddrStd()
-	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	TUPLE 2
-}
-IFELSE
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xaf8570e6
-	PUSH S1
-	UNTUPLE 2
-	ROT
-	PUSH S2
-	STUR 128
-	PUSH S1
-	STSLICER
-	NIP
-	NIP
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
-; end function allowance
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
 .globl	getDetails
 .public	getDetails
 .type	getDetails, @function
@@ -489,21 +74,21 @@ IF
 ENDS
 ; function getDetails
 ;; return
-;; push identifier name_
+;; push identifier name
 GETGLOB 10
-;; push identifier symbol_
+;; push identifier symbol
 GETGLOB 11
-;; push identifier decimals_
+;; push identifier decimals
 GETGLOB 12
-;; push identifier root_address_
+;; push identifier root_address
 GETGLOB 13
-;; push identifier code_
+;; push identifier code
 GETGLOB 14
-;; push identifier wallet_public_key_
+;; push identifier wallet_public_key
 GETGLOB 15
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
-;; push identifier balance_
+;; push identifier balance
 GETGLOB 17
 TUPLE 8
 ;; emitting 1 value(s)
@@ -588,7 +173,7 @@ PUSHCONT {
 IF
 ; function isRoot
 ;; return
-;; push identifier root_address_
+;; push identifier root_address
 GETGLOB 13
 ;; get member sender
 GETGLOB 9
@@ -599,7 +184,7 @@ THROWANYIFNOT
 ;; push identifier tokens
 DUP
 ; expValue
-;; fetch balance_
+;; fetch balance
 GETGLOB 17
 ; end expValue
 SWAP
@@ -612,6 +197,78 @@ SETGLOB 17
 DROP
 ; end modifier onlyRoot
 CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	allowance
+.public	allowance
+.type	allowance, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; function allowance
+;; return
+;; push identifier allowance_
+GETGLOB 18
+ISNULL
+NOT
+PUSHCONT {
+	;; push identifier allowance_
+	GETGLOB 18
+	DUP
+	ISNULL
+	THROWIF 63
+}
+PUSHCONT {
+	PUSHINT 0
+	;; address.makeAddrStd()
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	TUPLE 2
+}
+IFELSE
+;; emitting 1 value(s)
+PUSH S1
+EQINT -1
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xaf8570e6
+	PUSH S1
+	UNTUPLE 2
+	ROT
+	PUSH S2
+	STUR 128
+	PUSH S1
+	STSLICER
+	NIP
+	NIP
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+}
+IF
+DROP
+; end function allowance
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
 TRUE
 SETGLOB 7
 
@@ -666,7 +323,7 @@ IF
 ; function isInternalOwner
 ;; return
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -676,7 +333,7 @@ NEQINT 0
 DUP
 PUSHCONT {
 	DROP
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	;; get member sender
 	GETGLOB 9
@@ -690,14 +347,14 @@ PUSHCONT {
 	DROP
 	; function isExternalOwner
 	;; return
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
-		;; push identifier wallet_public_key_
+		;; push identifier wallet_public_key
 		GETGLOB 15
 		GETGLOB 2
 		;; ==
@@ -712,7 +369,7 @@ THROWANYIFNOT
 ; function approve
 ;; if
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -800,7 +457,7 @@ IFELSE
 ;; end if
 ;; if
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -855,7 +512,7 @@ IF
 ; function isInternalOwner
 ;; return
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -865,7 +522,7 @@ NEQINT 0
 DUP
 PUSHCONT {
 	DROP
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	;; get member sender
 	GETGLOB 9
@@ -879,14 +536,14 @@ PUSHCONT {
 	DROP
 	; function isExternalOwner
 	;; return
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
-		;; push identifier wallet_public_key_
+		;; push identifier wallet_public_key
 		GETGLOB 15
 		GETGLOB 2
 		;; ==
@@ -901,7 +558,7 @@ THROWANYIFNOT
 ; function disapprove
 ;; if
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -935,7 +592,7 @@ SETGLOB 18
 ; end colValue
 ;; if
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1014,7 +671,7 @@ IF
 ; function isInternalOwner
 ;; return
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1024,7 +681,7 @@ NEQINT 0
 DUP
 PUSHCONT {
 	DROP
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	;; get member sender
 	GETGLOB 9
@@ -1038,14 +695,14 @@ PUSHCONT {
 	DROP
 	; function isExternalOwner
 	;; return
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
-		;; push identifier wallet_public_key_
+		;; push identifier wallet_public_key
 		GETGLOB 15
 		GETGLOB 2
 		;; ==
@@ -1069,7 +726,7 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S2
-;; push identifier balance_
+;; push identifier balance
 GETGLOB 17
 ;; <=
 LEQ
@@ -1092,7 +749,7 @@ PUSHCONT {
 }
 IF
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1112,7 +769,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; get member value
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	PARSEMSGADDR
 	INDEX 3
@@ -1145,7 +802,7 @@ IFNOT
 THROWANYIFNOT
 ;; if
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1193,7 +850,7 @@ PUSHCONT {
 	;; push identifier tokens
 	PUSH S2
 	; expValue
-	;; fetch balance_
+	;; fetch balance
 	GETGLOB 17
 	; end expValue
 	SWAP
@@ -1223,15 +880,15 @@ PUSHCONT {
 	PUSH S4
 	STUR 128
 	;; sender_public_key
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	STUR 256
 	;; sender_address
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	STSLICER
 	;; send_gas_to
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	STSLICER
 	STBREFR
@@ -1278,7 +935,7 @@ PUSHCONT {
 	;; push identifier tokens
 	PUSH S1
 	; expValue
-	;; fetch balance_
+	;; fetch balance
 	GETGLOB 17
 	; end expValue
 	SWAP
@@ -1312,11 +969,11 @@ PUSHCONT {
 	PUSH S3
 	STUR 128
 	;; sender_public_key
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	STUR 256
 	;; sender_address
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	STSLICER
 	;; send_gas_to
@@ -1398,7 +1055,7 @@ IF
 ; function isInternalOwner
 ;; return
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1408,7 +1065,7 @@ NEQINT 0
 DUP
 PUSHCONT {
 	DROP
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	;; get member sender
 	GETGLOB 9
@@ -1422,14 +1079,14 @@ PUSHCONT {
 	DROP
 	; function isExternalOwner
 	;; return
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
-		;; push identifier wallet_public_key_
+		;; push identifier wallet_public_key
 		GETGLOB 15
 		GETGLOB 2
 		;; ==
@@ -1460,7 +1117,7 @@ PUSHCONT {
 }
 IF
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1480,7 +1137,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; get member value
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	PARSEMSGADDR
 	INDEX 3
@@ -1513,7 +1170,7 @@ IFNOT
 THROWANYIFNOT
 ;; if
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1583,7 +1240,7 @@ PUSHCONT {
 	PUSH S4
 	STUR 128
 	;; send_gas_to
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	STSLICER
 	STBREFR
@@ -1724,11 +1381,11 @@ ENDS
 PUSH S2
 ;; push identifier sender_address
 PUSH S2
-;; param: wallet_public_key
-;; param: owner_address
+;; param: wallet_public_key_
+;; param: owner_address_
 ; function getExpectedAddress
 NEWDICT
-;; push identifier wallet_public_key
+;; push identifier wallet_public_key_
 PUSH S2
 NEWC
 STU 256
@@ -1736,19 +1393,19 @@ PUSHINT 0
 ROT
 PUSHINT 64
 DICTUSETB
-;; push identifier name_
+;; push identifier name
 GETGLOB 10
 PUSHINT 1
 ROT
 PUSHINT 64
 DICTUSETREF
-;; push identifier symbol_
+;; push identifier symbol
 GETGLOB 11
 PUSHINT 2
 ROT
 PUSHINT 64
 DICTUSETREF
-;; push identifier decimals_
+;; push identifier decimals
 GETGLOB 12
 NEWC
 STU 8
@@ -1756,19 +1413,19 @@ PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSETB
-;; push identifier root_address_
+;; push identifier root_address
 GETGLOB 13
 PUSHINT 4
 ROT
 PUSHINT 64
 DICTUSET
-;; push identifier code_
+;; push identifier code
 GETGLOB 14
 PUSHINT 5
 ROT
 PUSHINT 64
 DICTUSETREF
-;; push identifier wallet_public_key
+;; push identifier wallet_public_key_
 PUSH S2
 NEWC
 STU 256
@@ -1776,7 +1433,7 @@ PUSHINT 6
 ROT
 PUSHINT 64
 DICTUSETB
-;; push identifier owner_address
+;; push identifier owner_address_
 PUSH S1
 PUSHINT 7
 ROT
@@ -1785,7 +1442,7 @@ DICTUSET
 NEWC
 STDICT
 ENDC
-;; push identifier code_
+;; push identifier code
 GETGLOB 14
 NEWC
 STSLICECONST x2_
@@ -1824,7 +1481,7 @@ SDEQ
 THROWANYIFNOT
 ;; if
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1883,7 +1540,7 @@ IFELSE
 ;; push identifier tokens
 PUSH S4
 ; expValue
-;; fetch balance_
+;; fetch balance
 GETGLOB 17
 ; end expValue
 SWAP
@@ -2014,14 +1671,14 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S2
-;; push identifier balance_
+;; push identifier balance
 GETGLOB 17
 ;; <=
 LEQ
 THROWANYIFNOT
 ;; if
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -2114,7 +1771,7 @@ IFELSE
 ;; push identifier tokens
 PUSH S1
 ; expValue
-;; fetch balance_
+;; fetch balance
 GETGLOB 17
 ; end expValue
 SWAP
@@ -2169,11 +1826,11 @@ STSLICECONST x375d2297
 PUSH S3
 STUR 128
 ;; sender_public_key
-;; push identifier wallet_public_key_
+;; push identifier wallet_public_key
 GETGLOB 15
 STUR 256
 ;; sender_address
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 STSLICER
 ;; send_gas_to
@@ -2237,7 +1894,7 @@ IF
 ; function isInternalOwner
 ;; return
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -2247,7 +1904,7 @@ NEQINT 0
 DUP
 PUSHCONT {
 	DROP
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	;; get member sender
 	GETGLOB 9
@@ -2261,14 +1918,14 @@ PUSHCONT {
 	DROP
 	; function isExternalOwner
 	;; return
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
-		;; push identifier wallet_public_key_
+		;; push identifier wallet_public_key
 		GETGLOB 15
 		GETGLOB 2
 		;; ==
@@ -2292,7 +1949,7 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S4
-;; push identifier balance_
+;; push identifier balance
 GETGLOB 17
 ;; <=
 LEQ
@@ -2307,7 +1964,7 @@ PUSHCONT {
 }
 IF
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -2327,7 +1984,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; get member value
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	PARSEMSGADDR
 	INDEX 3
@@ -2360,7 +2017,7 @@ IFNOT
 THROWANYIFNOT
 ;; if
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -2383,7 +2040,7 @@ PUSHCONT {
 	;; push identifier tokens
 	PUSH S3
 	; expValue
-	;; fetch balance_
+	;; fetch balance
 	GETGLOB 17
 	; end expValue
 	SWAP
@@ -2393,7 +2050,7 @@ PUSHCONT {
 	SETGLOB 17
 	; end colValue
 	;; Remote call IBurnableTokenRootContract.tokensBurned
-	;; push identifier root_address_
+	;; push identifier root_address
 	GETGLOB 13
 	NEWC
 	STSLICECONST x62_
@@ -2409,11 +2066,11 @@ PUSHCONT {
 	PUSH S5
 	STUR 128
 	;; sender_public_key
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	STUR 256
 	;; sender_address
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	STSLICER
 	;; callback_address
@@ -2434,7 +2091,7 @@ PUSHCONT {
 	;; push identifier tokens
 	PUSH S3
 	; expValue
-	;; fetch balance_
+	;; fetch balance
 	GETGLOB 17
 	; end expValue
 	SWAP
@@ -2446,7 +2103,7 @@ PUSHCONT {
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier grams
 	PUSH S2
-	;; push identifier root_address_
+	;; push identifier root_address
 	GETGLOB 13
 	NEWC
 	STSLICECONST x62_
@@ -2464,11 +2121,11 @@ PUSHCONT {
 	PUSH S5
 	STUR 128
 	;; sender_public_key
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	STUR 256
 	;; sender_address
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	STSLICER
 	;; callback_address
@@ -2534,7 +2191,7 @@ PUSHCONT {
 IF
 ; function isRoot
 ;; return
-;; push identifier root_address_
+;; push identifier root_address
 GETGLOB 13
 ;; get member sender
 GETGLOB 9
@@ -2553,7 +2210,7 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S3
-;; push identifier balance_
+;; push identifier balance
 GETGLOB 17
 ;; <=
 LEQ
@@ -2571,7 +2228,7 @@ RAWRESERVE
 ;; push identifier tokens
 PUSH S2
 ; expValue
-;; fetch balance_
+;; fetch balance
 GETGLOB 17
 ; end expValue
 SWAP
@@ -2581,7 +2238,7 @@ UFITS 128
 SETGLOB 17
 ; end colValue
 ;; Remote call IBurnableTokenRootContract.tokensBurned
-;; push identifier root_address_
+;; push identifier root_address
 GETGLOB 13
 NEWC
 STSLICECONST x62_
@@ -2597,11 +2254,11 @@ STSLICECONST x32501101
 PUSH S4
 STUR 128
 ;; sender_public_key
-;; push identifier wallet_public_key_
+;; push identifier wallet_public_key
 GETGLOB 15
 STUR 256
 ;; sender_address
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 STSLICER
 ;; callback_address
@@ -2652,7 +2309,7 @@ IF
 ; function isInternalOwner
 ;; return
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -2662,7 +2319,7 @@ NEQINT 0
 DUP
 PUSHCONT {
 	DROP
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	;; get member sender
 	GETGLOB 9
@@ -2676,14 +2333,14 @@ PUSHCONT {
 	DROP
 	; function isExternalOwner
 	;; return
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
-		;; push identifier wallet_public_key_
+		;; push identifier wallet_public_key
 		GETGLOB 15
 		GETGLOB 2
 		;; ==
@@ -2696,7 +2353,7 @@ IFNOT
 ; end function isOwner
 THROWANYIFNOT
 ; function destroy
-;; push identifier balance_
+;; push identifier balance
 GETGLOB 17
 EQINT 0
 THROWIFNOT 100
@@ -2738,7 +2395,7 @@ IF
 ; function isInternalOwner
 ;; return
 ;; get member value
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -2748,7 +2405,7 @@ NEQINT 0
 DUP
 PUSHCONT {
 	DROP
-	;; push identifier owner_address_
+	;; push identifier owner_address
 	GETGLOB 16
 	;; get member sender
 	GETGLOB 9
@@ -2762,14 +2419,14 @@ PUSHCONT {
 	DROP
 	; function isExternalOwner
 	;; return
-	;; push identifier wallet_public_key_
+	;; push identifier wallet_public_key
 	GETGLOB 15
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
-		;; push identifier wallet_public_key_
+		;; push identifier wallet_public_key
 		GETGLOB 15
 		GETGLOB 2
 		;; ==
@@ -2782,7 +2439,7 @@ IFNOT
 ; end function isOwner
 THROWANYIFNOT
 ; function destroy
-;; push identifier balance_
+;; push identifier balance
 GETGLOB 17
 EQINT 0
 THROWIFNOT 100
@@ -3020,7 +2677,7 @@ PUSHCONT {
 }
 PUSHCONT {
 	PLDDICT   ; D
-	; init name_
+	; init name
 	PUSHINT 1
 	PUSH S1
 	PUSHINT 64
@@ -3031,7 +2688,7 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 10
-	; init symbol_
+	; init symbol
 	PUSHINT 2
 	PUSH S1
 	PUSHINT 64
@@ -3042,7 +2699,7 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 11
-	; init decimals_
+	; init decimals
 	PUSHINT 3
 	PUSH S1
 	PUSHINT 64
@@ -3055,7 +2712,7 @@ PUSHCONT {
 	}
 	IFELSE
 	SETGLOB 12
-	; init root_address_
+	; init root_address
 	PUSHINT 4
 	PUSH S1
 	PUSHINT 64
@@ -3065,7 +2722,7 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 13
-	; init code_
+	; init code
 	PUSHINT 5
 	PUSH S1
 	PUSHINT 64
@@ -3076,7 +2733,7 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 14
-	; init wallet_public_key_
+	; init wallet_public_key
 	PUSHINT 6
 	PUSH S1
 	PUSHINT 64
@@ -3089,7 +2746,7 @@ PUSHCONT {
 	}
 	IFELSE
 	SETGLOB 15
-	; init owner_address_
+	; init owner_address
 	PUSHINT 7
 	PUSH S1
 	PUSHINT 64
@@ -3099,7 +2756,7 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 16
-	; init balance_
+	; init balance
 	PUSHINT 0
 	SETGLOB 17
 	; init allowance_
@@ -3243,7 +2900,7 @@ PUSHCONT {
 		POP S3
 		; end colValue
 		; expValue
-		;; fetch balance_
+		;; fetch balance
 		GETGLOB 17
 		; end expValue
 		SWAP
@@ -3333,4 +2990,137 @@ PUSHCONT {
 	DROP
 }
 IF
+
+.globl	name
+.public	name
+.type	name, @function
+CALL $c4_to_c7$
+GETGLOB 10
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xf985b3f4
+PUSH S1
+STREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	symbol
+.public	symbol
+.type	symbol, @function
+CALL $c4_to_c7$
+GETGLOB 11
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xc5b3bdfd
+PUSH S1
+STREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	decimals
+.public	decimals
+.type	decimals, @function
+CALL $c4_to_c7$
+GETGLOB 12
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x95005b07
+PUSH S1
+STUR 8
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	root_address
+.public	root_address
+.type	root_address, @function
+CALL $c4_to_c7$
+GETGLOB 13
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xbd6d13f5
+PUSH S1
+STSLICER
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	code
+.public	code
+.type	code, @function
+CALL $c4_to_c7$
+GETGLOB 14
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xffbb70d7
+PUSH S1
+STREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	balance
+.public	balance
+.type	balance, @function
+CALL $c4_to_c7$
+GETGLOB 17
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x866db788
+PUSH S1
+STUR 128
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	target_gas_balance
+.public	target_gas_balance
+.type	target_gas_balance, @function
+CALL $c4_to_c7$
+GETGLOB 30
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x9ae2890b
+PUSH S1
+STUR 128
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
 

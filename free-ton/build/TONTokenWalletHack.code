@@ -85,11 +85,11 @@ STSLICECONST x375d2297
 PUSH S3
 STUR 128
 ;; sender_public_key
-;; push identifier wallet_public_key_
+;; push identifier wallet_public_key
 GETGLOB 15
 STUR 256
 ;; sender_address
-;; push identifier owner_address_
+;; push identifier owner_address
 GETGLOB 16
 STSLICER
 ;; send_gas_to
@@ -197,7 +197,7 @@ PUSHCONT {
 }
 PUSHCONT {
 	PLDDICT   ; D
-	; init name_
+	; init name
 	PUSHINT 1
 	PUSH S1
 	PUSHINT 64
@@ -208,7 +208,7 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 10
-	; init symbol_
+	; init symbol
 	PUSHINT 2
 	PUSH S1
 	PUSHINT 64
@@ -219,7 +219,7 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 11
-	; init decimals_
+	; init decimals
 	PUSHINT 3
 	PUSH S1
 	PUSHINT 64
@@ -232,7 +232,7 @@ PUSHCONT {
 	}
 	IFELSE
 	SETGLOB 12
-	; init root_address_
+	; init root_address
 	PUSHINT 4
 	PUSH S1
 	PUSHINT 64
@@ -242,7 +242,7 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 13
-	; init code_
+	; init code
 	PUSHINT 5
 	PUSH S1
 	PUSHINT 64
@@ -253,7 +253,7 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 14
-	; init wallet_public_key_
+	; init wallet_public_key
 	PUSHINT 6
 	PUSH S1
 	PUSHINT 64
@@ -266,7 +266,7 @@ PUSHCONT {
 	}
 	IFELSE
 	SETGLOB 15
-	; init owner_address_
+	; init owner_address
 	PUSHINT 7
 	PUSH S1
 	PUSHINT 64
@@ -382,4 +382,137 @@ PUSHCONT {
 	THROW 60
 }
 IF
+
+.globl	name
+.public	name
+.type	name, @function
+CALL $c4_to_c7$
+GETGLOB 10
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xf985b3f4
+PUSH S1
+STREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	symbol
+.public	symbol
+.type	symbol, @function
+CALL $c4_to_c7$
+GETGLOB 11
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xc5b3bdfd
+PUSH S1
+STREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	decimals
+.public	decimals
+.type	decimals, @function
+CALL $c4_to_c7$
+GETGLOB 12
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x95005b07
+PUSH S1
+STUR 8
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	root_address
+.public	root_address
+.type	root_address, @function
+CALL $c4_to_c7$
+GETGLOB 13
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xbd6d13f5
+PUSH S1
+STSLICER
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	code
+.public	code
+.type	code, @function
+CALL $c4_to_c7$
+GETGLOB 14
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xffbb70d7
+PUSH S1
+STREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	wallet_public_key
+.public	wallet_public_key
+.type	wallet_public_key, @function
+CALL $c4_to_c7$
+GETGLOB 15
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xe4f8a61e
+PUSH S1
+STUR 256
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
+
+.globl	owner_address
+.public	owner_address
+.type	owner_address, @function
+CALL $c4_to_c7$
+GETGLOB 16
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xda4604cb
+PUSH S1
+STSLICER
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
 
