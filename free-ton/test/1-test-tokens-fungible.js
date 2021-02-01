@@ -26,6 +26,8 @@ let bw3address;
 let BarWallet3;
 let bw6address;
 let BarWallet6;
+let bw7address;
+let BarWallet7;
 
 
 const tonWrapper = new freeton.TonWrapper({
@@ -980,7 +982,7 @@ describe('Test Fungible Tokens', function () {
         });
 
 
-        it('Transfer by owner (with deploy)', async () => {
+        it('Transfer to recipient (with deploy)', async () => {
             logger.log('######################################################');
             logger.log('BarWallet#6 transfer 1000 to BarWallet#7 (not deployed)');
 
@@ -997,7 +999,7 @@ describe('Test Fungible Tokens', function () {
                 bw6address
             );
 
-            const bw7address = await RootTokenContractInternalOwner.runLocal(
+            bw7address = await RootTokenContractInternalOwner.runLocal(
                 'getWalletAddress',
                 {
                     wallet_public_key_: `0x${tonWrapper.keys[7].public}`,
@@ -1010,10 +1012,10 @@ describe('Test Fungible Tokens', function () {
             logger.log(`BarWallet#6 start balance: ${bw6StartBalance} BAR`);
 
             await BarWallet6.run(
-                'transferByOwner',
+                'transferToRecipient',
                 {
                     recipient_public_key: `0x${tonWrapper.keys[7].public}`,
-                    recipient_owner_address: ZERO_ADDRESS,
+                    recipient_address: ZERO_ADDRESS,
                     tokens: 1000,
                     deploy_grams: freeton.utils.convertCrystal('0.05', 'nano'),
                     transfer_grams: freeton.utils.convertCrystal('0.5', 'nano')
@@ -1021,7 +1023,7 @@ describe('Test Fungible Tokens', function () {
                 tonWrapper.keys[6]
             ).catch(e => console.log(e));
 
-            const BarWallet7 = await freeton.requireContract(
+            BarWallet7 = await freeton.requireContract(
                 tonWrapper,
                 'TONTokenWallet',
                 bw7address
@@ -1037,7 +1039,7 @@ describe('Test Fungible Tokens', function () {
                 ${new BigNumber(bw6EndGrams).minus(bw6StartGrams).div(1000000000).toFixed(9)}`);
 
             logger.log(`BarWallet#7:
-                address = ${bw7Address},
+                address = ${bw7address},
                 tokens = ${bw7EndBalance} BAR,
                 grams = ${new BigNumber(bw7EndGrams).div(1000000000).toFixed(9)} TON`);
 
@@ -1137,7 +1139,7 @@ describe('Test Fungible Tokens', function () {
                 {
                     tokens: 1000,
                     to: fw1address,
-                    grams: freeton.utils.convertCrystal('0.1', 'nano')
+                    grams: freeton.utils.convertCrystal('0.4', 'nano')
                 },
                 tonWrapper.keys[3]
             ).catch(e => console.log(3));

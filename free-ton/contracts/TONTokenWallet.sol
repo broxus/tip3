@@ -100,9 +100,9 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
             msg.sender.transfer({ value: 0, flag: 128 });
         }
     }
-    function transferByOwner(
+    function transferToRecipient(
         uint256 recipient_public_key,
-        address recipient_owner_address,
+        address recipient_address,
         uint128 tokens,
         uint128 deploy_grams,
         uint128 transfer_grams
