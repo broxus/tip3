@@ -54,9 +54,6 @@ const tonWrapper = new freeton.TonWrapper({
     contract: TONTokenWallet,
     constructorParams: {},
     initParams: {
-      name: freeton.utils.stringToBytesArray('FooToken'),
-      symbol: freeton.utils.stringToBytesArray('FOO'),
-      decimals: 0,
       root_address: RootTokenContractExternalOwner.address,
       code: TONTokenWallet.code,
       wallet_public_key: `0x${tonWrapper.keys[4].public}`,

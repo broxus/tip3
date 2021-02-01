@@ -17,7 +17,7 @@ SETGLOB 6
 ENDS
 ; constructor TONTokenWallet
 ;; push identifier error_define_wallet_public_key_or_owner_address
-GETGLOB 30
+GETGLOB 27
 DUP
 LESSINT 2
 PUSHCONT {
@@ -26,7 +26,7 @@ PUSHCONT {
 }
 IF
 ;; push identifier wallet_public_key
-GETGLOB 15
+GETGLOB 12
 NEQINT 0
 ;; short-circuiting &&
 DUP
@@ -34,7 +34,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -46,7 +46,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	EQINT 0
 	;; short-circuiting &&
 	DUP
@@ -54,7 +54,7 @@ PUSHCONT {
 		DROP
 		;; get member value
 		;; push identifier owner_address
-		GETGLOB 16
+		GETGLOB 13
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -83,23 +83,19 @@ IF
 ENDS
 ; function getDetails
 ;; return
-;; push identifier name
-GETGLOB 10
-;; push identifier symbol
-GETGLOB 11
-;; push identifier decimals
-GETGLOB 12
 ;; push identifier root_address
-GETGLOB 13
+GETGLOB 10
 ;; push identifier code
-GETGLOB 14
+GETGLOB 11
 ;; push identifier wallet_public_key
-GETGLOB 15
+GETGLOB 12
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 ;; push identifier balance
-GETGLOB 17
-TUPLE 8
+GETGLOB 14
+;; push identifier target_gas_balance
+GETGLOB 28
+TUPLE 6
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -118,28 +114,24 @@ PUSHCONT {
 	STSLICECONST 0
 	STSLICECONST 1
 	NEWC
-	STSLICECONST x9c3b3f70
+	STSLICECONST xacc333d1
 	PUSH S2
-	UNTUPLE 8
-	BLKSWAP 1, 8
-	PUSH S8
-	STREFR
-	PUSH S7
-	STREFR
+	UNTUPLE 6
+	BLKSWAP 1, 6
 	PUSH S6
-	STUR 8
+	STSLICER
 	PUSH S5
-	STSLICER
-	PUSH S4
 	STREFR
-	PUSH S3
+	PUSH S4
 	STUR 256
-	PUSH S2
+	PUSH S3
 	STSLICER
+	PUSH S2
+	STUR 128
 	NEWC
 	PUSH S2
 	STUR 128
-	BLKDROP2 8, 2
+	BLKDROP2 6, 2
 	STBREFR
 	STBREFR
 	ENDC
@@ -172,7 +164,7 @@ ENDS
 ;; param: tokens
 ; modifier onlyRoot
 ;; push identifier error_message_sender_is_not_my_root
-GETGLOB 21
+GETGLOB 18
 DUP
 LESSINT 2
 PUSHCONT {
@@ -183,7 +175,7 @@ IF
 ; function isRoot
 ;; return
 ;; push identifier root_address
-GETGLOB 13
+GETGLOB 10
 ;; get member sender
 GETGLOB 9
 SDEQ
@@ -194,13 +186,13 @@ THROWANYIFNOT
 DUP
 ; expValue
 ;; fetch balance
-GETGLOB 17
+GETGLOB 14
 ; end expValue
 SWAP
 ADD
 UFITS 128
 ; colValue
-SETGLOB 17
+SETGLOB 14
 ; end colValue
 ; end function accept
 DROP
@@ -223,12 +215,12 @@ ENDS
 ; function allowance
 ;; return
 ;; push identifier allowance_
-GETGLOB 18
+GETGLOB 15
 ISNULL
 NOT
 PUSHCONT {
 	;; push identifier allowance_
-	GETGLOB 18
+	GETGLOB 15
 	DUP
 	ISNULL
 	THROWIF 63
@@ -319,7 +311,7 @@ ENDS
 ;; param: tokens
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
+GETGLOB 16
 DUP
 LESSINT 2
 PUSHCONT {
@@ -333,7 +325,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -343,7 +335,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -357,14 +349,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 15
+		GETGLOB 12
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -379,14 +371,14 @@ THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -406,14 +398,14 @@ IFELSE
 ;; end if
 ;; if
 ;; push identifier allowance_
-GETGLOB 18
+GETGLOB 15
 ISNULL
 NOT
 PUSHCONT {
 	;; if
 	;; get member remaining_tokens
 	;; push identifier allowance_
-	GETGLOB 18
+	GETGLOB 15
 	DUP
 	ISNULL
 	THROWIF 63
@@ -431,7 +423,7 @@ PUSHCONT {
 		PUSH S3
 		TUPLE 2
 		; colValue
-		SETGLOB 18
+		SETGLOB 15
 		; end colValue
 	}
 	IF
@@ -439,7 +431,7 @@ PUSHCONT {
 }
 PUSHCONT {
 	;; push identifier error_non_zero_remaining
-	GETGLOB 25
+	GETGLOB 22
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -459,7 +451,7 @@ PUSHCONT {
 	PUSH S3
 	TUPLE 2
 	; colValue
-	SETGLOB 18
+	SETGLOB 15
 	; end colValue
 }
 IFELSE
@@ -467,7 +459,7 @@ IFELSE
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -508,7 +500,7 @@ IF
 ENDS
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
+GETGLOB 16
 DUP
 LESSINT 2
 PUSHCONT {
@@ -522,7 +514,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -532,7 +524,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -546,14 +538,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 15
+		GETGLOB 12
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -568,14 +560,14 @@ THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -597,12 +589,12 @@ IFELSE
 ; end expValue
 NULL
 ; colValue
-SETGLOB 18
+SETGLOB 15
 ; end colValue
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -689,7 +681,7 @@ ENDS
 ;; param: transfer_grams
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
+GETGLOB 16
 DUP
 LESSINT 2
 PUSHCONT {
@@ -703,7 +695,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -713,7 +705,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -727,14 +719,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 15
+		GETGLOB 12
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -747,7 +739,7 @@ IFNOT
 THROWANYIFNOT
 ; function transferToRecipient
 ;; push identifier error_not_enough_balance
-GETGLOB 20
+GETGLOB 17
 DUP
 LESSINT 2
 PUSHCONT {
@@ -758,12 +750,12 @@ IF
 ;; push identifier tokens
 PUSH S3
 ;; push identifier balance
-GETGLOB 17
+GETGLOB 14
 ;; <=
 LEQ
 THROWANYIFNOT
 ;; push identifier error_define_wallet_public_key_or_owner_address
-GETGLOB 30
+GETGLOB 27
 DUP
 LESSINT 2
 PUSHCONT {
@@ -813,14 +805,14 @@ THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -832,7 +824,7 @@ PUSHCONT {
 	MAX
 	;; decl: reserve
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -846,7 +838,7 @@ PUSHCONT {
 	;; push identifier reserve
 	PUSH S2
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; +
 	ADD
 	UFITS 128
@@ -866,7 +858,7 @@ PUSHCONT {
 }
 PUSHCONT {
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -888,7 +880,7 @@ PUSHCONT {
 	GREATER
 	THROWANYIFNOT
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -899,7 +891,7 @@ PUSHCONT {
 	;; push identifier transfer_grams
 	PUSH S1
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; >
 	GREATER
 	THROWANYIFNOT
@@ -916,35 +908,15 @@ PUSHINT 0
 ROT
 PUSHINT 64
 DICTUSETB
-;; push identifier name
+;; push identifier root_address
 GETGLOB 10
 PUSHINT 1
 ROT
 PUSHINT 64
-DICTUSETREF
-;; push identifier symbol
-GETGLOB 11
-PUSHINT 2
-ROT
-PUSHINT 64
-DICTUSETREF
-;; push identifier decimals
-GETGLOB 12
-NEWC
-STU 8
-PUSHINT 3
-ROT
-PUSHINT 64
-DICTUSETB
-;; push identifier root_address
-GETGLOB 13
-PUSHINT 4
-ROT
-PUSHINT 64
 DICTUSET
 ;; push identifier code
-GETGLOB 14
-PUSHINT 5
+GETGLOB 11
+PUSHINT 2
 ROT
 PUSHINT 64
 DICTUSETREF
@@ -952,13 +924,13 @@ DICTUSETREF
 PUSH S5
 NEWC
 STU 256
-PUSHINT 6
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier recipient_address
 PUSH S4
-PUSHINT 7
+PUSHINT 4
 ROT
 PUSHINT 64
 DICTUSET
@@ -966,7 +938,7 @@ NEWC
 STDICT
 ENDC
 ;; push identifier code
-GETGLOB 14
+GETGLOB 11
 NEWC
 STSLICECONST x2_
 STOPTREF
@@ -1032,7 +1004,7 @@ IF
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1042,13 +1014,13 @@ PUSHCONT {
 	PUSH S4
 	; expValue
 	;; fetch balance
-	GETGLOB 17
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 17
+	SETGLOB 14
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier to
@@ -1072,15 +1044,15 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	STSLICER
 	;; send_gas_to
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	STSLICER
 	STBREFR
 	ENDC
@@ -1092,13 +1064,13 @@ PUSHCONT {
 	PUSH S4
 	; expValue
 	;; fetch balance
-	GETGLOB 17
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 17
+	SETGLOB 14
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier transfer_grams
@@ -1126,11 +1098,11 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	STSLICER
 	;; send_gas_to
 	MYADDR
@@ -1188,7 +1160,7 @@ ENDS
 ;; param: grams
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
+GETGLOB 16
 DUP
 LESSINT 2
 PUSHCONT {
@@ -1202,7 +1174,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1212,7 +1184,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -1226,14 +1198,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 15
+		GETGLOB 12
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -1246,7 +1218,7 @@ IFNOT
 THROWANYIFNOT
 ; function transfer
 ;; push identifier error_not_enough_balance
-GETGLOB 20
+GETGLOB 17
 DUP
 LESSINT 2
 PUSHCONT {
@@ -1257,7 +1229,7 @@ IF
 ;; push identifier tokens
 PUSH S2
 ;; push identifier balance
-GETGLOB 17
+GETGLOB 14
 ;; <=
 LEQ
 THROWANYIFNOT
@@ -1272,14 +1244,14 @@ THROWIFNOT 100
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -1291,7 +1263,7 @@ PUSHCONT {
 	MAX
 	;; decl: reserve
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -1305,7 +1277,7 @@ PUSHCONT {
 	;; push identifier reserve
 	PUSH S2
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; +
 	ADD
 	UFITS 128
@@ -1320,13 +1292,13 @@ PUSHCONT {
 	PUSH S2
 	; expValue
 	;; fetch balance
-	GETGLOB 17
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 17
+	SETGLOB 14
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier to
@@ -1350,15 +1322,15 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	STSLICER
 	;; send_gas_to
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	STSLICER
 	STBREFR
 	ENDC
@@ -1368,7 +1340,7 @@ PUSHCONT {
 }
 PUSHCONT {
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -1385,7 +1357,7 @@ PUSHCONT {
 	GREATER
 	THROWANYIFNOT
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -1396,7 +1368,7 @@ PUSHCONT {
 	;; push identifier grams
 	PUSH S1
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; >
 	GREATER
 	THROWANYIFNOT
@@ -1405,13 +1377,13 @@ PUSHCONT {
 	PUSH S1
 	; expValue
 	;; fetch balance
-	GETGLOB 17
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 17
+	SETGLOB 14
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier grams
@@ -1439,11 +1411,11 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	STSLICER
 	;; send_gas_to
 	MYADDR
@@ -1511,7 +1483,7 @@ ENDS
 ;; param: grams
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
+GETGLOB 16
 DUP
 LESSINT 2
 PUSHCONT {
@@ -1525,7 +1497,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1535,7 +1507,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -1549,14 +1521,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 15
+		GETGLOB 12
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -1579,14 +1551,14 @@ THROWIFNOT 100
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -1598,7 +1570,7 @@ PUSHCONT {
 	MAX
 	;; decl: reserve
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -1612,7 +1584,7 @@ PUSHCONT {
 	;; push identifier reserve
 	PUSH S2
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	PUSHINT 2
 	;; *
 	MUL
@@ -1649,7 +1621,7 @@ PUSHCONT {
 	STUR 128
 	;; send_gas_to
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	STSLICER
 	STBREFR
 	ENDC
@@ -1659,7 +1631,7 @@ PUSHCONT {
 }
 PUSHCONT {
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -1676,7 +1648,7 @@ PUSHCONT {
 	GREATER
 	THROWANYIFNOT
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -1687,7 +1659,7 @@ PUSHCONT {
 	;; push identifier grams
 	PUSH S1
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	PUSHINT 2
 	;; *
 	MUL
@@ -1801,35 +1773,15 @@ PUSHINT 0
 ROT
 PUSHINT 64
 DICTUSETB
-;; push identifier name
+;; push identifier root_address
 GETGLOB 10
 PUSHINT 1
 ROT
 PUSHINT 64
-DICTUSETREF
-;; push identifier symbol
-GETGLOB 11
-PUSHINT 2
-ROT
-PUSHINT 64
-DICTUSETREF
-;; push identifier decimals
-GETGLOB 12
-NEWC
-STU 8
-PUSHINT 3
-ROT
-PUSHINT 64
-DICTUSETB
-;; push identifier root_address
-GETGLOB 13
-PUSHINT 4
-ROT
-PUSHINT 64
 DICTUSET
 ;; push identifier code
-GETGLOB 14
-PUSHINT 5
+GETGLOB 11
+PUSHINT 2
 ROT
 PUSHINT 64
 DICTUSETREF
@@ -1837,13 +1789,13 @@ DICTUSETREF
 PUSH S2
 NEWC
 STU 256
-PUSHINT 6
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address_
 PUSH S1
-PUSHINT 7
+PUSHINT 4
 ROT
 PUSHINT 64
 DICTUSET
@@ -1851,7 +1803,7 @@ NEWC
 STDICT
 ENDC
 ;; push identifier code
-GETGLOB 14
+GETGLOB 11
 NEWC
 STSLICECONST x2_
 STOPTREF
@@ -1873,7 +1825,7 @@ BLKDROP 3
 ; end function getExpectedAddress
 ;; decl: expectedSenderAddress
 ;; push identifier error_message_sender_is_not_good_wallet
-GETGLOB 22
+GETGLOB 19
 DUP
 LESSINT 2
 PUSHCONT {
@@ -1890,14 +1842,14 @@ THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -1909,7 +1861,7 @@ PUSHCONT {
 	MAX
 	;; decl: reserve
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -1949,13 +1901,13 @@ IFELSE
 PUSH S4
 ; expValue
 ;; fetch balance
-GETGLOB 17
+GETGLOB 14
 ; end expValue
 SWAP
 ADD
 UFITS 128
 ; colValue
-SETGLOB 17
+SETGLOB 14
 ; end colValue
 ;; transfer()
 ;; push identifier send_gas_to
@@ -2014,7 +1966,7 @@ ENDS
 ;; param: send_gas_to
 ; function internalTransferFrom
 ;; push identifier error_no_allowance_set
-GETGLOB 26
+GETGLOB 23
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2023,12 +1975,12 @@ PUSHCONT {
 }
 IF
 ;; push identifier allowance_
-GETGLOB 18
+GETGLOB 15
 ISNULL
 NOT
 THROWANYIFNOT
 ;; push identifier error_wrong_spender
-GETGLOB 27
+GETGLOB 24
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2040,7 +1992,7 @@ IF
 GETGLOB 9
 ;; get member spender
 ;; push identifier allowance_
-GETGLOB 18
+GETGLOB 15
 DUP
 ISNULL
 THROWIF 63
@@ -2048,7 +2000,7 @@ INDEX 1
 SDEQ
 THROWANYIFNOT
 ;; push identifier error_not_enough_allowance
-GETGLOB 28
+GETGLOB 25
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2060,7 +2012,7 @@ IF
 PUSH S2
 ;; get member remaining_tokens
 ;; push identifier allowance_
-GETGLOB 18
+GETGLOB 15
 DUP
 ISNULL
 THROWIF 63
@@ -2069,7 +2021,7 @@ INDEX 0
 LEQ
 THROWANYIFNOT
 ;; push identifier error_not_enough_balance
-GETGLOB 20
+GETGLOB 17
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2080,21 +2032,21 @@ IF
 ;; push identifier tokens
 PUSH S2
 ;; push identifier balance
-GETGLOB 17
+GETGLOB 14
 ;; <=
 LEQ
 THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2106,7 +2058,7 @@ PUSHCONT {
 	MAX
 	;; decl: reserve
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -2120,7 +2072,7 @@ PUSHCONT {
 	;; push identifier reserve
 	PUSH S2
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; +
 	ADD
 	UFITS 128
@@ -2132,7 +2084,7 @@ PUSHCONT {
 	PUSHINT 2
 	RAWRESERVE
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2148,7 +2100,7 @@ PUSHCONT {
 }
 PUSHCONT {
 	;; push identifier error_low_message_value
-	GETGLOB 29
+	GETGLOB 26
 	DUP
 	LESSINT 2
 	PUSHCONT {
@@ -2159,7 +2111,7 @@ PUSHCONT {
 	;; get member value
 	CALL $message_balance_macro$
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; >
 	GREATER
 	THROWANYIFNOT
@@ -2180,19 +2132,19 @@ IFELSE
 PUSH S1
 ; expValue
 ;; fetch balance
-GETGLOB 17
+GETGLOB 14
 ; end expValue
 SWAP
 SUB
 UFITS 128
 ; colValue
-SETGLOB 17
+SETGLOB 14
 ; end colValue
 ; expValue
 ; end expValue
 ;; get member remaining_tokens
 ;; push identifier allowance_
-GETGLOB 18
+GETGLOB 15
 DUP
 ISNULL
 THROWIF 63
@@ -2204,14 +2156,14 @@ SUB
 UFITS 128
 ;; get member spender
 ;; push identifier allowance_
-GETGLOB 18
+GETGLOB 15
 DUP
 ISNULL
 THROWIF 63
 INDEX 1
 TUPLE 2
 ; colValue
-SETGLOB 18
+SETGLOB 15
 ; end colValue
 ;; Remote call ITONTokenWallet.internalTransfer
 ;; push identifier to
@@ -2235,11 +2187,11 @@ PUSH S3
 STUR 128
 ;; sender_public_key
 ;; push identifier wallet_public_key
-GETGLOB 15
+GETGLOB 12
 STUR 256
 ;; sender_address
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 STSLICER
 ;; send_gas_to
 ;; push identifier send_gas_to
@@ -2289,7 +2241,7 @@ ENDS
 ;; param: callback_payload
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
+GETGLOB 16
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2303,7 +2255,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2313,7 +2265,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -2327,14 +2279,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 15
+		GETGLOB 12
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -2347,7 +2299,7 @@ IFNOT
 THROWANYIFNOT
 ; function burnByOwner
 ;; push identifier error_not_enough_balance
-GETGLOB 20
+GETGLOB 17
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2358,12 +2310,12 @@ IF
 ;; push identifier tokens
 PUSH S4
 ;; push identifier balance
-GETGLOB 17
+GETGLOB 14
 ;; <=
 LEQ
 THROWANYIFNOT
 ;; push identifier error_low_message_value
-GETGLOB 29
+GETGLOB 26
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2373,7 +2325,7 @@ PUSHCONT {
 IF
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2393,7 +2345,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -2426,14 +2378,14 @@ THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 31
+	GETGLOB 28
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2449,17 +2401,17 @@ PUSHCONT {
 	PUSH S3
 	; expValue
 	;; fetch balance
-	GETGLOB 17
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 17
+	SETGLOB 14
 	; end colValue
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier root_address
-	GETGLOB 13
+	GETGLOB 10
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -2475,11 +2427,11 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	STSLICER
 	;; callback_address
 	;; push identifier callback_address
@@ -2500,19 +2452,19 @@ PUSHCONT {
 	PUSH S3
 	; expValue
 	;; fetch balance
-	GETGLOB 17
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 17
+	SETGLOB 14
 	; end colValue
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier grams
 	PUSH S2
 	;; push identifier root_address
-	GETGLOB 13
+	GETGLOB 10
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -2530,11 +2482,11 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	STSLICER
 	;; callback_address
 	;; push identifier callback_address
@@ -2589,7 +2541,7 @@ ENDS
 ;; param: callback_payload
 ; modifier onlyRoot
 ;; push identifier error_message_sender_is_not_my_root
-GETGLOB 21
+GETGLOB 18
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2600,7 +2552,7 @@ IF
 ; function isRoot
 ;; return
 ;; push identifier root_address
-GETGLOB 13
+GETGLOB 10
 ;; get member sender
 GETGLOB 9
 SDEQ
@@ -2608,7 +2560,7 @@ SDEQ
 THROWANYIFNOT
 ; function burnByRoot
 ;; push identifier error_not_enough_balance
-GETGLOB 20
+GETGLOB 17
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2619,7 +2571,7 @@ IF
 ;; push identifier tokens
 PUSH S3
 ;; push identifier balance
-GETGLOB 17
+GETGLOB 14
 ;; <=
 LEQ
 THROWANYIFNOT
@@ -2637,17 +2589,17 @@ RAWRESERVE
 PUSH S2
 ; expValue
 ;; fetch balance
-GETGLOB 17
+GETGLOB 14
 ; end expValue
 SWAP
 SUB
 UFITS 128
 ; colValue
-SETGLOB 17
+SETGLOB 14
 ; end colValue
 ;; Remote call IBurnableTokenRootContract.tokensBurned
 ;; push identifier root_address
-GETGLOB 13
+GETGLOB 10
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -2663,11 +2615,11 @@ PUSH S4
 STUR 128
 ;; sender_public_key
 ;; push identifier wallet_public_key
-GETGLOB 15
+GETGLOB 12
 STUR 256
 ;; sender_address
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 STSLICER
 ;; callback_address
 ;; push identifier callback_address
@@ -2704,7 +2656,7 @@ ENDS
 ;; param: gas_dest
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
+GETGLOB 16
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2718,7 +2670,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2728,7 +2680,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -2742,14 +2694,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 15
+		GETGLOB 12
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -2762,7 +2714,7 @@ IFNOT
 THROWANYIFNOT
 ; function destroy
 ;; push identifier balance
-GETGLOB 17
+GETGLOB 14
 EQINT 0
 THROWIFNOT 100
 ACCEPT
@@ -2790,7 +2742,7 @@ SETGLOB 7
 ;; param: gas_dest
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
+GETGLOB 16
 DUP
 LESSINT 2
 PUSHCONT {
@@ -2804,7 +2756,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 16
+GETGLOB 13
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2814,7 +2766,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 16
+	GETGLOB 13
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -2828,14 +2780,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier wallet_public_key
-	GETGLOB 15
+	GETGLOB 12
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 15
+		GETGLOB 12
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -2848,7 +2800,7 @@ IFNOT
 THROWANYIFNOT
 ; function destroy
 ;; push identifier balance
-GETGLOB 17
+GETGLOB 14
 EQINT 0
 THROWIFNOT 100
 ACCEPT
@@ -2878,8 +2830,10 @@ STUR 64
 GETGLOB 6
 STUR 1
 NEWC
-GETGLOB 16
+GETGLOB 13
+GETGLOB 17
 GETGLOB 18
+GETGLOB 19
 GETGLOB 20
 GETGLOB 21
 GETGLOB 22
@@ -2889,11 +2843,32 @@ GETGLOB 25
 GETGLOB 26
 GETGLOB 27
 GETGLOB 28
-GETGLOB 29
-GETGLOB 30
-GETGLOB 31
-REVERSE 15, 0
+REVERSE 14, 0
 STSLICE
+STU 8
+STU 8
+STU 8
+STU 8
+STU 8
+STU 8
+STU 8
+STU 8
+STU 8
+STU 8
+STU 8
+STU 128
+GETGLOB 10
+GETGLOB 11
+GETGLOB 12
+GETGLOB 14
+GETGLOB 15
+GETGLOB 16
+REVERSE 8, 0
+STBREF
+STSLICE
+STREF
+STU 256
+STU 128
 SWAP
 DUP
 ISNULL
@@ -2920,35 +2895,6 @@ PUSHCONT {
 }
 IFELSE
 STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 128
-GETGLOB 10
-GETGLOB 11
-GETGLOB 12
-GETGLOB 13
-GETGLOB 14
-GETGLOB 15
-GETGLOB 17
-GETGLOB 19
-REVERSE 10, 0
-STBREF
-STREF
-STREF
-STU 8
-STSLICE
-STREF
-STU 256
-STU 128
-STU 8
 ENDC
 POP C4
 
@@ -2961,17 +2907,6 @@ LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
 LDREFRTOS
 LDMSGADDR
-LDOPTREF
-SWAP
-DUP
-ISNULL
-PUSHCONT {
-	CTOS
-	LDU 128
-	TUPLE 2
-}
-IFNOT
-SETGLOB 18
 LDU 8
 LDU 8
 LDU 8
@@ -2984,9 +2919,6 @@ LDU 8
 LDU 8
 LDU 8
 PLDU 128
-SETGLOB 31
-SETGLOB 30
-SETGLOB 29
 SETGLOB 28
 SETGLOB 27
 SETGLOB 26
@@ -2996,20 +2928,28 @@ SETGLOB 23
 SETGLOB 22
 SETGLOB 21
 SETGLOB 20
-SETGLOB 16
-LDREF
-LDREF
-LDU 8
+SETGLOB 19
+SETGLOB 18
+SETGLOB 17
+SETGLOB 13
 LDMSGADDR
 LDREF
 LDU 256
 LDU 128
-PLDU 8
-SETGLOB 19
-SETGLOB 17
+LDOPTREF
+SWAP
+DUP
+ISNULL
+PUSHCONT {
+	CTOS
+	LDU 128
+	TUPLE 2
+}
+IFNOT
 SETGLOB 15
+PLDU 8
+SETGLOB 16
 SETGLOB 14
-SETGLOB 13
 SETGLOB 12
 SETGLOB 11
 SETGLOB 10
@@ -3031,17 +2971,6 @@ PUSHCONT {
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
 	LDREFRTOS
 	LDMSGADDR
-	LDOPTREF
-	SWAP
-	DUP
-	ISNULL
-	PUSHCONT {
-		CTOS
-		LDU 128
-		TUPLE 2
-	}
-	IFNOT
-	SETGLOB 18
 	LDU 8
 	LDU 8
 	LDU 8
@@ -3054,9 +2983,6 @@ PUSHCONT {
 	LDU 8
 	LDU 8
 	PLDU 128
-	SETGLOB 31
-	SETGLOB 30
-	SETGLOB 29
 	SETGLOB 28
 	SETGLOB 27
 	SETGLOB 26
@@ -3066,20 +2992,28 @@ PUSHCONT {
 	SETGLOB 22
 	SETGLOB 21
 	SETGLOB 20
-	SETGLOB 16
-	LDREF
-	LDREF
-	LDU 8
+	SETGLOB 19
+	SETGLOB 18
+	SETGLOB 17
+	SETGLOB 13
 	LDMSGADDR
 	LDREF
 	LDU 256
 	LDU 128
-	PLDU 8
-	SETGLOB 19
-	SETGLOB 17
+	LDOPTREF
+	SWAP
+	DUP
+	ISNULL
+	PUSHCONT {
+		CTOS
+		LDU 128
+		TUPLE 2
+	}
+	IFNOT
 	SETGLOB 15
+	PLDU 8
+	SETGLOB 16
 	SETGLOB 14
-	SETGLOB 13
 	SETGLOB 12
 	SETGLOB 11
 	SETGLOB 10
@@ -3091,18 +3025,17 @@ PUSHCONT {
 }
 PUSHCONT {
 	PLDDICT   ; D
-	; init name
+	; init root_address
 	PUSHINT 1
 	PUSH S1
 	PUSHINT 64
-	DICTUGETREF
+	DICTUGET
 	PUSHCONT {
-		NEWC
-		ENDC
+		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	}
 	IFNOT
 	SETGLOB 10
-	; init symbol
+	; init code
 	PUSHINT 2
 	PUSH S1
 	PUSHINT 64
@@ -3113,42 +3046,8 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 11
-	; init decimals
-	PUSHINT 3
-	PUSH S1
-	PUSHINT 64
-	DICTUGET
-	PUSHCONT {
-		PLDU 8
-	}
-	PUSHCONT {
-		PUSHINT 0
-	}
-	IFELSE
-	SETGLOB 12
-	; init root_address
-	PUSHINT 4
-	PUSH S1
-	PUSHINT 64
-	DICTUGET
-	PUSHCONT {
-		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	}
-	IFNOT
-	SETGLOB 13
-	; init code
-	PUSHINT 5
-	PUSH S1
-	PUSHINT 64
-	DICTUGETREF
-	PUSHCONT {
-		NEWC
-		ENDC
-	}
-	IFNOT
-	SETGLOB 14
 	; init wallet_public_key
-	PUSHINT 6
+	PUSHINT 3
 	PUSH S1
 	PUSHINT 64
 	DICTUGET
@@ -3159,9 +3058,9 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IFELSE
-	SETGLOB 15
+	SETGLOB 12
 	; init owner_address
-	PUSHINT 7
+	PUSHINT 4
 	PUSH S1
 	PUSHINT 64
 	DICTUGET
@@ -3169,52 +3068,52 @@ PUSHCONT {
 		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	}
 	IFNOT
-	SETGLOB 16
+	SETGLOB 13
 	; init balance
 	PUSHINT 0
-	SETGLOB 17
+	SETGLOB 14
 	; init allowance_
 	NULL
-	SETGLOB 18
+	SETGLOB 15
 	; init error_message_sender_is_not_my_owner
 	PUSHINT 0
-	SETGLOB 19
+	SETGLOB 16
 	; init error_not_enough_balance
 	PUSHINT 0
-	SETGLOB 20
+	SETGLOB 17
 	; init error_message_sender_is_not_my_root
 	PUSHINT 0
-	SETGLOB 21
+	SETGLOB 18
 	; init error_message_sender_is_not_good_wallet
 	PUSHINT 0
-	SETGLOB 22
+	SETGLOB 19
 	; init error_wrong_bounced_header
 	PUSHINT 0
-	SETGLOB 23
+	SETGLOB 20
 	; init error_wrong_bounced_args
 	PUSHINT 0
-	SETGLOB 24
+	SETGLOB 21
 	; init error_non_zero_remaining
 	PUSHINT 0
-	SETGLOB 25
+	SETGLOB 22
 	; init error_no_allowance_set
 	PUSHINT 0
-	SETGLOB 26
+	SETGLOB 23
 	; init error_wrong_spender
 	PUSHINT 0
-	SETGLOB 27
+	SETGLOB 24
 	; init error_not_enough_allowance
 	PUSHINT 0
-	SETGLOB 28
+	SETGLOB 25
 	; init error_low_message_value
 	PUSHINT 0
-	SETGLOB 29
+	SETGLOB 26
 	; init error_define_wallet_public_key_or_owner_address
 	PUSHINT 0
-	SETGLOB 30
+	SETGLOB 27
 	; init target_gas_balance
 	PUSHINT 0
-	SETGLOB 31
+	SETGLOB 28
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -3231,43 +3130,43 @@ PUSHCONT {
 	SETGLOB 1
 	;; init state var: error_message_sender_is_not_my_owner
 	PUSHINT 100
-	SETGLOB 19
+	SETGLOB 16
 	;; init state var: error_not_enough_balance
 	PUSHINT 101
-	SETGLOB 20
+	SETGLOB 17
 	;; init state var: error_message_sender_is_not_my_root
 	PUSHINT 102
-	SETGLOB 21
+	SETGLOB 18
 	;; init state var: error_message_sender_is_not_good_wallet
 	PUSHINT 103
-	SETGLOB 22
+	SETGLOB 19
 	;; init state var: error_wrong_bounced_header
 	PUSHINT 104
-	SETGLOB 23
+	SETGLOB 20
 	;; init state var: error_wrong_bounced_args
 	PUSHINT 105
-	SETGLOB 24
+	SETGLOB 21
 	;; init state var: error_non_zero_remaining
 	PUSHINT 106
-	SETGLOB 25
+	SETGLOB 22
 	;; init state var: error_no_allowance_set
 	PUSHINT 107
-	SETGLOB 26
+	SETGLOB 23
 	;; init state var: error_wrong_spender
 	PUSHINT 108
-	SETGLOB 27
+	SETGLOB 24
 	;; init state var: error_not_enough_allowance
 	PUSHINT 109
-	SETGLOB 28
+	SETGLOB 25
 	;; init state var: error_low_message_value
 	PUSHINT 110
-	SETGLOB 29
+	SETGLOB 26
 	;; init state var: error_define_wallet_public_key_or_owner_address
 	PUSHINT 111
-	SETGLOB 30
+	SETGLOB 27
 	;; init state var: target_gas_balance
 	PUSHINT 100000000
-	SETGLOB 31
+	SETGLOB 28
 }
 IFELSE
 
@@ -3321,13 +3220,13 @@ PUSHCONT {
 		; end colValue
 		; expValue
 		;; fetch balance
-		GETGLOB 17
+		GETGLOB 14
 		; end expValue
 		SWAP
 		ADD
 		UFITS 128
 		; colValue
-		SETGLOB 17
+		SETGLOB 14
 		; end colValue
 	}
 	IF
@@ -3411,85 +3310,9 @@ PUSHCONT {
 }
 IF
 
-.globl	name
-.public	name
-.type	name, @function
-CALL $c4_to_c7$
-GETGLOB 10
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
-STSLICECONST xf985b3f4
-PUSH S1
-STREFR
-ENDC
-PUSHINT 1
-SENDRAWMSG
-TRUE
-SETGLOB 7
-
-.globl	symbol
-.public	symbol
-.type	symbol, @function
-CALL $c4_to_c7$
-GETGLOB 11
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
-STSLICECONST xc5b3bdfd
-PUSH S1
-STREFR
-ENDC
-PUSHINT 1
-SENDRAWMSG
-TRUE
-SETGLOB 7
-
-.globl	decimals
-.public	decimals
-.type	decimals, @function
-CALL $c4_to_c7$
-GETGLOB 12
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
-STSLICECONST x95005b07
-PUSH S1
-STUR 8
-ENDC
-PUSHINT 1
-SENDRAWMSG
-TRUE
-SETGLOB 7
-
-.globl	root_address
-.public	root_address
-.type	root_address, @function
-CALL $c4_to_c7$
-GETGLOB 13
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
-STSLICECONST xbd6d13f5
-PUSH S1
-STSLICER
-ENDC
-PUSHINT 1
-SENDRAWMSG
-TRUE
-SETGLOB 7
-
-.globl	code
-.public	code
-.type	code, @function
+.globl	balance
+.public	balance
+.type	balance, @function
 CALL $c4_to_c7$
 GETGLOB 14
 NEWC
@@ -3497,45 +3320,7 @@ PUSHSLICE xc0000000000000000000000002_
 STSLICER
 STSLICECONST 0
 STSLICECONST 0
-STSLICECONST xffbb70d7
-PUSH S1
-STREFR
-ENDC
-PUSHINT 1
-SENDRAWMSG
-TRUE
-SETGLOB 7
-
-.globl	balance
-.public	balance
-.type	balance, @function
-CALL $c4_to_c7$
-GETGLOB 17
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
 STSLICECONST x866db788
-PUSH S1
-STUR 128
-ENDC
-PUSHINT 1
-SENDRAWMSG
-TRUE
-SETGLOB 7
-
-.globl	target_gas_balance
-.public	target_gas_balance
-.type	target_gas_balance, @function
-CALL $c4_to_c7$
-GETGLOB 31
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
-STSLICECONST x9ae2890b
 PUSH S1
 STUR 128
 ENDC

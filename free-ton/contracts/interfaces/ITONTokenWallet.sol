@@ -6,14 +6,12 @@ import "./AllowanceInfoStructure.sol";
 interface ITONTokenWallet is AllowanceInfoStructure {
 
     struct ITONTokenWalletDetails {
-        bytes name;
-        bytes symbol;
-        uint8 decimals;
         address root_address;
         TvmCell code;
         uint256 wallet_public_key;
         address owner_address;
         uint128 balance;
+        uint128 target_gas_balance;
     }
 
     function getDetails() external view returns (ITONTokenWalletDetails);

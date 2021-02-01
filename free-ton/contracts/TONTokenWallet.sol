@@ -9,11 +9,8 @@ import "./interfaces/IBurnableTokenRootContract.sol";
 
 contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet {
 
-    bytes public static name;
-    bytes public static symbol;
-    uint8 public static decimals;
-    address public static root_address;
-    TvmCell public static code;
+    address static root_address;
+    TvmCell static code;
     //for external owner
     uint256 static wallet_public_key;
     //for internal owner
@@ -35,7 +32,7 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
     uint8 error_low_message_value                         = 110;
     uint8 error_define_wallet_public_key_or_owner_address = 111;
 
-    uint128 public target_gas_balance             = 0.1 ton;
+    uint128 target_gas_balance                            = 0.1 ton;
 
     constructor() public {
         require((wallet_public_key != 0 && owner_address.value == 0) ||
@@ -46,14 +43,12 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
 
     function getDetails() override external view returns (ITONTokenWalletDetails){
         return ITONTokenWalletDetails(
-            name,
-            symbol,
-            decimals,
             root_address,
             code,
             wallet_public_key,
             owner_address,
-            balance
+            balance,
+            target_gas_balance
         );
     }
 
@@ -125,9 +120,6 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
         TvmCell stateInit = tvm.buildStateInit({
             contr: TONTokenWallet,
             varInit: {
-                name: name,
-                symbol: symbol,
-                decimals: decimals,
                 root_address: root_address,
                 code: code,
                 wallet_public_key: recipient_public_key,
@@ -331,9 +323,6 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
         TvmCell stateInit = tvm.buildStateInit({
             contr: TONTokenWallet,
             varInit: {
-                name: name,
-                symbol: symbol,
-                decimals: decimals,
                 root_address: root_address,
                 code: code,
                 wallet_public_key: wallet_public_key_,

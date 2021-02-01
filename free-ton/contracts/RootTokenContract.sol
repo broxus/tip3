@@ -85,9 +85,6 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
             code: wallet_code,
             pubkey: wallet_public_key_,
             varInit: {
-                name: name,
-                symbol: symbol,
-                decimals: decimals,
                 root_address: address(this),
                 code: wallet_code,
                 wallet_public_key: wallet_public_key_,
@@ -125,9 +122,6 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
             code: wallet_code,
             pubkey: wallet_public_key_,
             varInit: {
-                name: name,
-                symbol: symbol,
-                decimals: decimals,
                 root_address: address(this),
                 code: wallet_code,
                 wallet_public_key: wallet_public_key_,
@@ -233,9 +227,6 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         TvmCell stateInit = tvm.buildStateInit({
             contr: TONTokenWallet,
             varInit: {
-                name: name,
-                symbol: symbol,
-                decimals: decimals,
                 root_address: address(this),
                 code: wallet_code,
                 wallet_public_key: wallet_public_key_,
