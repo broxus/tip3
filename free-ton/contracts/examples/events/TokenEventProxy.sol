@@ -92,7 +92,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
     function burnCallback(
         uint128 tokens,
         TvmCell payload,
-        uint256 sender_public_key,
+        uint256,
         address sender_address,
         address wallet_address
     ) override external onlyRoot {
@@ -114,6 +114,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
     }
 
     function transferMyTokensToEthereum(uint128 tokens, bytes ethereum_address) external view {
+        require(tokens > 0);
         require(ethereum_address.length  == 20);
         require(token_root_address.value != 0);
         require(msg.sender.value != 0);
@@ -134,6 +135,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
     }
 
     function burnMyTokens(uint128 tokens, address callback_address, TvmCell callback_payload) override external {
+        require(tokens > 0);
         require(token_root_address.value != 0);
         require(msg.sender.value != 0);
         require(msg.value >= settings_burn_min_msg_value);

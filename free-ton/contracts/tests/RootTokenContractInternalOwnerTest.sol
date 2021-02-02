@@ -44,7 +44,7 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
     function burnCallback(
         uint128 tokens,
         TvmCell payload,
-        uint256 sender_public_key,
+        uint256,
         address sender_address,
         address wallet_address
     ) override external onlyRoot {

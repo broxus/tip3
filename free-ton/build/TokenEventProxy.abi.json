@@ -31,7 +31,7 @@
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
 				{"name":"payload","type":"cell"},
-				{"name":"sender_public_key","type":"uint256"},
+				{"name":"value2","type":"uint256"},
 				{"name":"sender_address","type":"address"},
 				{"name":"wallet_address","type":"address"}
 			],

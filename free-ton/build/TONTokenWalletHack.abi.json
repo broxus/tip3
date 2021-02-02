@@ -18,16 +18,45 @@
 			],
 			"outputs": [
 			]
+		},
+		{
+			"name": "root_address",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"root_address","type":"address"}
+			]
+		},
+		{
+			"name": "code",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"code","type":"cell"}
+			]
+		},
+		{
+			"name": "wallet_public_key",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"wallet_public_key","type":"uint256"}
+			]
+		},
+		{
+			"name": "owner_address",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"owner_address","type":"address"}
+			]
 		}
 	],
 	"data": [
-		{"key":1,"name":"name_","type":"bytes"},
-		{"key":2,"name":"symbol_","type":"bytes"},
-		{"key":3,"name":"decimals_","type":"uint8"},
-		{"key":4,"name":"root_address_","type":"address"},
-		{"key":5,"name":"code_","type":"cell"},
-		{"key":6,"name":"wallet_public_key_","type":"uint256"},
-		{"key":7,"name":"owner_address_","type":"address"}
+		{"key":1,"name":"root_address","type":"address"},
+		{"key":2,"name":"code","type":"cell"},
+		{"key":3,"name":"wallet_public_key","type":"uint256"},
+		{"key":4,"name":"owner_address","type":"address"}
 	],
 	"events": [
 	]

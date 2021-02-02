@@ -14,15 +14,6 @@ interface IRootTokenContract {
         uint128 start_gas_balance;
     }
 
-    function getName() external view returns (bytes);
-    function getSymbol() external view returns (bytes);
-    function getDecimals() external view returns (uint8);
-    function getRootPublicKey() external view returns (uint256);
-    function getRootOwnerAddress() external view returns (address);
-    function getWalletCode() external view returns (TvmCell);
-
-    function getTotalSupply() external view returns (uint128);
-
     function getDetails() external view returns (IRootTokenContractDetails);
 
     function getWalletAddress(uint256 wallet_public_key, address owner_address) external returns (address);

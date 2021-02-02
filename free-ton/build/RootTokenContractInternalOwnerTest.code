@@ -197,7 +197,7 @@ LDU 128
 ; Decode payload
 ;; decode TvmCell
 LDREF
-; Decode sender_public_key
+; Decode 
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -230,7 +230,7 @@ IFNOT
 ENDS
 ;; param: tokens
 ;; param: payload
-;; param: sender_public_key
+;; param: 
 ;; param: sender_address
 ;; param: wallet_address
 ; modifier onlyRoot
