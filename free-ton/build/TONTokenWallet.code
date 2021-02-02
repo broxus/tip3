@@ -1215,16 +1215,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode notify_receiver
-LDIQ 1
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDI 1
-}
-IFNOT
 ; Decode payload
 ;; decode TvmCell
 LDREF
@@ -1234,7 +1224,6 @@ ENDS
 ;; param: tokens
 ;; param: deploy_grams
 ;; param: transfer_grams
-;; param: notify_receiver
 ;; param: payload
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
@@ -1296,17 +1285,16 @@ IFNOT
 THROWANYIFNOT
 ; function transferToRecipientWithNotify
 ;; push identifier recipient_public_key
-PUSH S6
+PUSH S5
 ;; push identifier recipient_address
-PUSH S6
+PUSH S5
 ;; push identifier tokens
-PUSH S6
+PUSH S5
 ;; push identifier deploy_grams
-PUSH S6
+PUSH S5
 ;; push identifier transfer_grams
-PUSH S6
-;; push identifier notify_receiver
-PUSH S6
+PUSH S5
+TRUE
 ;; push identifier payload
 PUSH S6
 ;; param: recipient_public_key
@@ -1716,7 +1704,7 @@ IFELSE
 BLKDROP 9
 ; end function _transferToRecipient
 ; end function transferToRecipientWithNotify
-BLKDROP 7
+BLKDROP 6
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE
@@ -2107,16 +2095,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode notify_receiver
-LDIQ 1
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDI 1
-}
-IFNOT
 ; Decode payload
 ;; decode TvmCell
 LDREF
@@ -2124,7 +2102,6 @@ ENDS
 ;; param: to
 ;; param: tokens
 ;; param: grams
-;; param: notify_receiver
 ;; param: payload
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
@@ -2186,13 +2163,12 @@ IFNOT
 THROWANYIFNOT
 ; function transferWithNotify
 ;; push identifier to
-PUSH S4
+PUSH S3
 ;; push identifier tokens
-PUSH S4
+PUSH S3
 ;; push identifier grams
-PUSH S4
-;; push identifier notify_receiver
-PUSH S4
+PUSH S3
+TRUE
 ;; push identifier payload
 PUSH S4
 ;; param: to
@@ -2434,7 +2410,7 @@ IFELSE
 BLKDROP 5
 ; end function _transfer
 ; end function transferWithNotify
-BLKDROP 5
+BLKDROP 4
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE
@@ -2801,16 +2777,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode notify_receiver
-LDIQ 1
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDI 1
-}
-IFNOT
 ; Decode payload
 ;; decode TvmCell
 LDREF
@@ -2819,7 +2785,6 @@ ENDS
 ;; param: to
 ;; param: tokens
 ;; param: grams
-;; param: notify_receiver
 ;; param: payload
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
@@ -2881,15 +2846,14 @@ IFNOT
 THROWANYIFNOT
 ; function transferFromWithNotify
 ;; push identifier from
-PUSH S5
+PUSH S4
 ;; push identifier to
-PUSH S5
+PUSH S4
 ;; push identifier tokens
-PUSH S5
+PUSH S4
 ;; push identifier grams
-PUSH S5
-;; push identifier notify_receiver
-PUSH S5
+PUSH S4
+TRUE
 ;; push identifier payload
 PUSH S5
 ;; param: from
@@ -3084,7 +3048,7 @@ IFELSE
 BLKDROP 6
 ; end function _transferFrom
 ; end function transferFromWithNotify
-BLKDROP 6
+BLKDROP 5
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE

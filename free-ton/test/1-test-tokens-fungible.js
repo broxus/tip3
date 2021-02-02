@@ -20,8 +20,10 @@ let fw1address;
 let FooWallet1;
 let fw2address;
 let FooWallet2;
+let FooWalletInternal;
 let bwInternalAddress;
 let BarWalletInternal;
+let BarWallet2;
 let bw3address;
 let BarWallet3;
 let bw6address;
@@ -51,13 +53,17 @@ describe('Test Fungible Tokens', function () {
         RootTokenContractInternalOwnerTest = await freeton.requireContract(tonWrapper, 'RootTokenContractInternalOwnerTest');
         TONTokenWalletInternalOwnerTest = await freeton.requireContract(tonWrapper, 'TONTokenWalletInternalOwnerTest');
         SelfDeployedWallet = await freeton.requireContract(tonWrapper, 'TONTokenWallet');
+        FooWalletInternal = await freeton.requireContract(tonWrapper, 'TONTokenWallet');
+        BarWallet2 = await freeton.requireContract(tonWrapper, 'TONTokenWallet');
         TONTokenWalletHack = await freeton.requireContract(tonWrapper, 'TONTokenWalletHack');
         DeployEmptyWalletFor = await freeton.requireContract(tonWrapper, 'DeployEmptyWalletFor');
         await RootTokenContractExternalOwner.loadMigration('RootTokenContractExternalOwner');
         await RootTokenContractInternalOwner.loadMigration('RootTokenContractInternalOwner');
         await RootTokenContractInternalOwnerTest.loadMigration();
         await TONTokenWalletInternalOwnerTest.loadMigration();
-        await SelfDeployedWallet.loadMigration();
+        await SelfDeployedWallet.loadMigration('SelfDeployedWallet');
+        await FooWalletInternal.loadMigration('FooWalletInternal');
+        await BarWallet2.loadMigration('BarWallet2');
         await TONTokenWalletHack.loadMigration();
         await DeployEmptyWalletFor.loadMigration();
 
@@ -66,6 +72,8 @@ describe('Test Fungible Tokens', function () {
         logger.log(`RootTokenContractInternalOwnerTest address: ${RootTokenContractInternalOwnerTest.address}`);
         logger.log(`TONTokenWalletInternalOwnerTest address: ${TONTokenWalletInternalOwnerTest.address}`);
         logger.log(`SelfDeployedWallet (FooWallet#4) address: ${SelfDeployedWallet.address}`);
+        logger.log(`FooWalletInternal address: ${FooWalletInternal.address}`);
+        logger.log(`BarWallet2 address: ${BarWallet2.address}`);
         logger.log(`TONTokenWalletHack address: ${TONTokenWalletHack.address}`);
         logger.log(`DeployEmptyWalletFor address: ${DeployEmptyWalletFor.address}`);
     });
@@ -192,7 +200,7 @@ describe('Test Fungible Tokens', function () {
                 'deployWallet',
                 {
                     tokens: 20000,
-                    grams: freeton.utils.convertCrystal('1', 'nano'),
+                    grams: freeton.utils.convertCrystal('5', 'nano'),
                     wallet_public_key_: `0x${tonWrapper.keys[2].public}`,
                     owner_address_: ZERO_ADDRESS,
                     gas_back_address: ZERO_ADDRESS,
@@ -677,11 +685,11 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+            logger.log(`RootTokenContractInternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change:
                 ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`BarWallet3 GRAMS change: 
+            logger.log(`BarWallet3 GRAMS change:
                 ${new BigNumber(bw3EndGrams).minus(bw3StartGrams).div(1000000000).toFixed(9)} TON`);
 
             logger.log(`GAS used: ${totalGas} TON`);
@@ -768,13 +776,13 @@ describe('Test Fungible Tokens', function () {
                 .div(1000000000)
                 .toNumber();
 
-            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change: 
+            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change:
                 ${new BigNumber(tokensInternalOwnerEndGrams).minus(tokensInternalOwnerStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`BarWalletInternal GRAMS change: 
+            logger.log(`BarWalletInternal GRAMS change:
                 ${new BigNumber(bwInternalEndGrams).minus(bwInternalStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`RootTokenContractInternalOwnerTest GRAMS change: 
+            logger.log(`RootTokenContractInternalOwnerTest GRAMS change:
                 ${new BigNumber(rootOwnerEndGrams).minus(rootOwnerStartGrams).div(1000000000).toFixed(9)} TON`);
-            logger.log(`RootTokenContractInternalOwner GRAMS change: 
+            logger.log(`RootTokenContractInternalOwner GRAMS change:
                 ${new BigNumber(rootEndGrams).minus(rootStartGrams).div(1000000000).toFixed(9)} TON`);
 
             logger.log(`GAS used: ${totalGas} TON`);
@@ -1167,6 +1175,20 @@ describe('Test Fungible Tokens', function () {
 
         it('External call TONTokenWallet.disapprove', async () => {
             logger.log('######################################################');
+
+            bw6address = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x${tonWrapper.keys[6].public}`,
+                    owner_address_: ZERO_ADDRESS,
+                });
+
+            BarWallet6 = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bw6address
+            );
+
             logger.log('BarWallet#6 disapprove');
             const allowanceStart = await BarWallet6.runLocal('allowance', {});
             logger.log(`Start allowance:
@@ -1198,6 +1220,33 @@ describe('Test Fungible Tokens', function () {
         });
 
         it('External call TONTokenWallet.approve', async () => {
+
+            bw6address = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x${tonWrapper.keys[6].public}`,
+                    owner_address_: ZERO_ADDRESS,
+                });
+
+            BarWallet6 = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bw6address
+            );
+
+            bwInternalAddress = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x0`,
+                    owner_address_: TONTokenWalletInternalOwnerTest.address,
+                });
+
+            BarWalletInternal = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bwInternalAddress
+            );
+
             logger.log('######################################################');
             logger.log('BarWallet#6 approve 10000 to wallet of TONTokenWalletInternalOwnerTest');
             const allowanceStart = await BarWallet6.runLocal('allowance', {});
@@ -1236,6 +1285,46 @@ describe('Test Fungible Tokens', function () {
         it('Internal call TONTokenWallet.transferFrom by TONTokenWalletInternalOwnerTest', async () => {
             logger.log('######################################################');
             logger.log('TONTokenWalletInternalOwnerTest transfer 5000 from BarWallet#6 to BarWallet#3');
+
+            bw6address = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x${tonWrapper.keys[6].public}`,
+                    owner_address_: ZERO_ADDRESS,
+                });
+
+            BarWallet6 = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bw6address
+            );
+
+            bw3address = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x${tonWrapper.keys[3].public}`,
+                    owner_address_: ZERO_ADDRESS,
+                });
+
+            BarWallet3 = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bw3address
+            );
+
+            bwInternalAddress = await RootTokenContractInternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x0`,
+                    owner_address_: TONTokenWalletInternalOwnerTest.address,
+                });
+
+            BarWalletInternal = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                bwInternalAddress
+            );
+
             const allowanceStart = await BarWallet6.runLocal('allowance', {});
             const bw3balanceStart = await BarWallet3.runLocal('balance', {});
             const bw6balanceStart = await BarWallet6.runLocal('balance', {});
@@ -1308,6 +1397,90 @@ describe('Test Fungible Tokens', function () {
 
         });
 
+
+        it('Test transferWithNotify', async () => {
+            logger.log('######################################################');
+            logger.log('External call TONTokenWalletInternalOwnerTest.subscribeForTransfers(FooWalletInternal.address, BarWalletInternal.address)');
+            await TONTokenWalletInternalOwnerTest.run(
+                'subscribeForTransfers',
+                {
+                    wallet1: FooWalletInternal.address,
+                    wallet2: BarWalletInternal.address
+                },
+                tonWrapper.keys[5]
+            ).catch(e => console.log(e));
+
+            const fw2StartBalance = await FooWallet2.runLocal('balance', {});
+            const bw2StartBalance = await BarWallet2.runLocal('balance', {});
+            logger.log(`FooWallet#2 start balance: ${fw2StartBalance}`);
+            logger.log(`BarWallet#2 start balance: ${bw2StartBalance}`);
+            const fwInternalStartBalance = await FooWalletInternal.runLocal('balance', {});
+            const bwInternalStartBalance = await BarWalletInternal.runLocal('balance', {});
+            logger.log(`FooWallet#Internal start balance: ${fwInternalStartBalance}`);
+            logger.log(`BarWallet#Internal start balance: ${bwInternalStartBalance}`);
+            const tokensInternalOwnerStartGrams = await tonWrapper.getBalance(TONTokenWalletInternalOwnerTest.address);
+            const fw2StartGrams = await tonWrapper.getBalance(FooWallet2.address);
+            const bw2StartGrams = await tonWrapper.getBalance(BarWallet2.address);
+            const fwInternalStartGrams = await tonWrapper.getBalance(FooWalletInternal.address);
+            const bwInternalStartGrams = await tonWrapper.getBalance(BarWalletInternal.address);
+
+            logger.log('External call transferWithNotify from FooWallet#2 to FooWallet#Internal. ' +
+                       'That triggers TONTokenWalletInternalOwnerTest.tokensReceivedCallback(...) and ' +
+                       'TONTokenWalletInternalOwnerTest send 1:1 BAR tokens to BarWallet#2');
+            await FooWallet2.run(
+                'transferWithNotify',
+                {
+                    tokens: 1000,
+                    to: FooWalletInternal.address,
+                    grams: freeton.utils.convertCrystal('2', 'nano'),
+                    payload: 'te6ccgEBAQEAAgAAAA==' //empty TvmCell
+                },
+                tonWrapper.keys[2]
+            ).catch(e => console.log(e));
+
+            const fw2EndBalance = await FooWallet2.runLocal('balance', {});
+            const bw2EndBalance = await BarWallet2.runLocal('balance', {});
+            logger.log(`FooWallet#2 end balance: ${fw2EndBalance}`);
+            logger.log(`BarWallet#2 end balance: ${bw2EndBalance}`);
+            const fwInternalEndBalance = await FooWalletInternal.runLocal('balance', {});
+            const bwInternalEndBalance = await BarWalletInternal.runLocal('balance', {});
+            logger.log(`FooWallet#Internal end balance: ${fwInternalEndBalance}`);
+            logger.log(`BarWallet#Internal end balance: ${bwInternalEndBalance}`);
+            const tokensInternalOwnerEndGrams = await tonWrapper.getBalance(TONTokenWalletInternalOwnerTest.address);
+            const fw2EndGrams = await tonWrapper.getBalance(FooWallet2.address);
+            const bw2EndGrams = await tonWrapper.getBalance(BarWallet2.address);
+            const fwInternalEndGrams = await tonWrapper.getBalance(FooWalletInternal.address);
+            const bwInternalEndGrams = await tonWrapper.getBalance(BarWalletInternal.address);
+
+            logger.log(`TONTokenWalletInternalOwnerTest GRAMS change:
+                ${new BigNumber(tokensInternalOwnerEndGrams).minus(tokensInternalOwnerStartGrams).div(1000000000).toFixed(9)} TON`);
+            logger.log(`FooWallet#2 GRAMS change:
+                ${new BigNumber(fw2EndGrams).minus(fw2StartGrams).div(1000000000).toFixed(9)} TON`);
+            logger.log(`BarWallet#2 GRAMS change:
+                ${new BigNumber(bw2EndGrams).minus(bw2StartGrams).div(1000000000).toFixed(9)} TON`);
+            logger.log(`FooWallet#Internal GRAMS change:
+                ${new BigNumber(fwInternalEndGrams).minus(fwInternalStartGrams).div(1000000000).toFixed(9)} TON`);
+            logger.log(`BarWallet#Internal GRAMS change:
+                ${new BigNumber(bwInternalEndGrams).minus(bwInternalStartGrams).div(1000000000).toFixed(9)} TON`);
+
+            assert.equal(
+                new BigNumber(fw2StartBalance).minus(1000).toNumber(),
+                new BigNumber(fw2EndBalance).toNumber(),
+                'FooWallet#2 balance wrong');
+            assert.equal(
+                new BigNumber(bw2StartBalance).plus(1000).toNumber(),
+                new BigNumber(bw2EndBalance).toNumber(),
+                'BarWallet#2 balance wrong');
+            assert.equal(
+                new BigNumber(fwInternalStartBalance).plus(1000).toNumber(),
+                new BigNumber(fwInternalEndBalance).toNumber(),
+                'FooWallet#Internal balance wrong');
+            assert.equal(
+                new BigNumber(bwInternalStartBalance).minus(1000).toNumber(),
+                new BigNumber(bwInternalEndBalance).toNumber(),
+                'BarWallet#Internal balance wrong');
+
+        });
     });
 
 });

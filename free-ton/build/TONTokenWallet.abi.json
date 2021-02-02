@@ -70,7 +70,6 @@
 				{"name":"tokens","type":"uint128"},
 				{"name":"deploy_grams","type":"uint128"},
 				{"name":"transfer_grams","type":"uint128"},
-				{"name":"notify_receiver","type":"bool"},
 				{"name":"payload","type":"cell"}
 			],
 			"outputs": [
@@ -92,7 +91,6 @@
 				{"name":"to","type":"address"},
 				{"name":"tokens","type":"uint128"},
 				{"name":"grams","type":"uint128"},
-				{"name":"notify_receiver","type":"bool"},
 				{"name":"payload","type":"cell"}
 			],
 			"outputs": [
@@ -116,7 +114,6 @@
 				{"name":"to","type":"address"},
 				{"name":"tokens","type":"uint128"},
 				{"name":"grams","type":"uint128"},
-				{"name":"notify_receiver","type":"bool"},
 				{"name":"payload","type":"cell"}
 			],
 			"outputs": [

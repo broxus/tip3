@@ -124,7 +124,6 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
         uint128 tokens,
         uint128 deploy_grams,
         uint128 transfer_grams,
-        bool notify_receiver,
         TvmCell payload
     ) override external onlyOwner {
         _transferToRecipient(
@@ -133,7 +132,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
             tokens,
             deploy_grams,
             transfer_grams,
-            notify_receiver,
+            true,
             payload
         );
     }
@@ -217,10 +216,9 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
         address to,
         uint128 tokens,
         uint128 grams,
-        bool notify_receiver,
         TvmCell payload
     ) override external onlyOwner {
-        _transfer(to, tokens, grams, notify_receiver, payload);
+        _transfer(to, tokens, grams, true, payload);
     }
 
     function _transfer(
@@ -278,10 +276,9 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
         address to,
         uint128 tokens,
         uint128 grams,
-        bool notify_receiver,
         TvmCell payload
     ) override external onlyOwner {
-        _transferFrom(from, to, tokens, grams, notify_receiver, payload);
+        _transferFrom(from, to, tokens, grams, true, payload);
     }
 
     function _transferFrom(

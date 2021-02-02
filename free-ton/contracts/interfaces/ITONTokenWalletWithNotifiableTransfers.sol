@@ -9,7 +9,6 @@ interface ITONTokenWalletWithNotifiableTransfers {
         address to,
         uint128 tokens,
         uint128 grams,
-        bool notify_receiver,
         TvmCell payload
     ) external;
 
@@ -18,7 +17,6 @@ interface ITONTokenWalletWithNotifiableTransfers {
         address to,
         uint128 tokens,
         uint128 grams,
-        bool notify_receiver,
         TvmCell payload
     ) external;
 
@@ -28,7 +26,6 @@ interface ITONTokenWalletWithNotifiableTransfers {
         uint128 tokens,
         uint128 deploy_grams,
         uint128 transfer_grams,
-        bool notify_receiver,
         TvmCell payload
     ) external;
 }

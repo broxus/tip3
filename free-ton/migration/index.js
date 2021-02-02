@@ -45,7 +45,7 @@ const tonWrapper = new freeton.TonWrapper({
       root_public_key: `0x${tonWrapper.keys[0].public}`,
       root_owner_address: ZERO_ADDRESS
     },
-    initialBalance: freeton.utils.convertCrystal('7.654', 'nano'),
+    initialBalance: freeton.utils.convertCrystal('17.654', 'nano'),
     _randomNonce: true,
     alias: 'RootTokenContractExternalOwner'
   });
@@ -61,7 +61,8 @@ const tonWrapper = new freeton.TonWrapper({
     },
     _randomNonce: false,
     initialBalance: freeton.utils.convertCrystal('2.001', 'nano'),
-    keyPair: tonWrapper.keys[4]
+    keyPair: tonWrapper.keys[4],
+    alias: 'SelfDeployedWallet'
   }).catch(e => console.log(e));
 
   const RootTokenContractInternalOwnerTest = await freeton.requireContract(tonWrapper, 'RootTokenContractInternalOwnerTest');
@@ -108,6 +109,36 @@ const tonWrapper = new freeton.TonWrapper({
     initialBalance: freeton.utils.convertCrystal('20.001', 'nano'),
     _randomNonce: true,
     keyPair: tonWrapper.keys[5]
+  }).catch(e => console.log(e));
+
+  await migration.deploy({
+    contract: TONTokenWallet,
+    constructorParams: {},
+    initParams: {
+      root_address: RootTokenContractExternalOwner.address,
+      code: TONTokenWallet.code,
+      wallet_public_key: `0x0`,
+      owner_address: TONTokenWalletInternalOwnerTest.address
+    },
+    _randomNonce: false,
+    initialBalance: freeton.utils.convertCrystal('0.1', 'nano'),
+    keyPair: tonWrapper.keys[0],
+    alias: 'FooWalletInternal'
+  }).catch(e => console.log(e));
+
+  await migration.deploy({
+    contract: TONTokenWallet,
+    constructorParams: {},
+    initParams: {
+      root_address: RootTokenContractInternalOwner.address,
+      code: TONTokenWallet.code,
+      wallet_public_key: `0x${tonWrapper.keys[2].public}`,
+      owner_address: ZERO_ADDRESS
+    },
+    _randomNonce: false,
+    initialBalance: freeton.utils.convertCrystal('0.1', 'nano'),
+    keyPair: tonWrapper.keys[2],
+    alias: 'BarWallet2'
   }).catch(e => console.log(e));
 
   const DeployEmptyWalletFor = await freeton.requireContract(tonWrapper, 'DeployEmptyWalletFor');
