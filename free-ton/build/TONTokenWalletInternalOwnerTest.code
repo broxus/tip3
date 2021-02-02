@@ -22,6 +22,310 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
+.globl	tokensReceivedCallback
+.public	tokensReceivedCallback
+.type	tokensReceivedCallback, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode token_wallet
+LDMSGADDR
+; Decode 
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode amount
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+; Decode sender_public_key
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+; Decode sender_address
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode 
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode original_gas_to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode 
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+; Decode 
+;; decode TvmCell
+LDREF
+ENDS
+;; param: token_wallet
+;; param: 
+;; param: amount
+;; param: sender_public_key
+;; param: sender_address
+;; param: 
+;; param: original_gas_to
+;; param: 
+;; param: 
+; function tokensReceivedCallback
+;; map.exists
+;; push identifier token_wallet
+PUSH S8
+;; push identifier change_directions
+GETGLOB 13
+PUSHINT 267
+DICTGET
+DUP
+PUSHCONT {
+	NIP
+}
+IF
+THROWIFNOT 100
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+PUSHINT 2
+RAWRESERVE
+;; Remote call ITONTokenWallet.transferToRecipient
+;; map.at
+;; push identifier token_wallet
+PUSH S8
+;; push identifier change_directions
+GETGLOB 13
+PUSHINT 267
+DICTGET
+THROWIFNOT 50
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x40ee6b280000000000000000000000000004_
+STSLICER
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x156fd4fb
+;; recipient_public_key
+;; push identifier sender_public_key
+PUSH S7
+STUR 256
+;; recipient_address
+;; push identifier sender_address
+PUSH S6
+STSLICER
+;; tokens
+;; push identifier amount
+PUSH S8
+STUR 128
+;; deploy_grams
+PUSHINT 50000000
+STUR 128
+;; transfer_grams
+PUSHINT 0
+STUR 128
+STBREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+;; transfer()
+;; push identifier original_gas_to
+PUSH S2
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 0
+ENDC
+PUSHINT 128
+SENDRAWMSG
+BLKDROP 9
+; end function tokensReceivedCallback
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	subscribeForTransfers
+.public	subscribeForTransfers
+.type	subscribeForTransfers, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode wallet1
+LDMSGADDR
+; Decode wallet2
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+;; param: wallet1
+;; param: wallet2
+; modifier onlyExternalOwner
+;; push identifier error_message_sender_is_not_my_owner
+GETGLOB 12
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+; function isExternalOwner
+;; return
+;; push identifier external_owner_pubkey_
+GETGLOB 11
+NEQINT 0
+;; short-circuiting &&
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier external_owner_pubkey_
+	GETGLOB 11
+	GETGLOB 2
+	;; ==
+	EQUAL
+}
+IF
+; end function isExternalOwner
+THROWANYIFNOT
+; function subscribeForTransfers
+ACCEPT
+; expValue
+;; fetch change_directions
+GETGLOB 13
+;; push identifier wallet1
+PUSH S2
+SWAP
+; end expValue
+;; push identifier wallet2
+PUSH S2
+; colValue
+ROTREV
+PUSHINT 267
+DICTSET
+SETGLOB 13
+; end colValue
+; expValue
+;; fetch change_directions
+GETGLOB 13
+;; push identifier wallet2
+PUSH S1
+SWAP
+; end expValue
+;; push identifier wallet1
+PUSH S3
+; colValue
+ROTREV
+PUSHINT 267
+DICTSET
+SETGLOB 13
+; end colValue
+;; Remote call ITONTokenWalletWithNotifiableTransfers.setReceiveCallback
+;; push identifier wallet1
+PUSH S1
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000004_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x3f5860fb
+;; receive_callback_
+MYADDR
+STSLICER
+ENDC
+PUSHINT 1
+SENDRAWMSG
+;; Remote call ITONTokenWalletWithNotifiableTransfers.setReceiveCallback
+;; push identifier wallet2
+DUP
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000004_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x3f5860fb
+;; receive_callback_
+MYADDR
+STSLICER
+ENDC
+PUSHINT 1
+SENDRAWMSG
+; end function subscribeForTransfers
+DROP2
+; end modifier onlyExternalOwner
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
 .globl	burnMyTokens
 .public	burnMyTokens
 .type	burnMyTokens, @function
@@ -574,10 +878,12 @@ STUR 1
 GETGLOB 10
 GETGLOB 11
 GETGLOB 12
-REVERSE 4, 0
+GETGLOB 13
+REVERSE 5, 0
 STU 256
 STU 256
 STU 8
+STDICT
 ENDC
 POP C4
 
@@ -590,7 +896,9 @@ LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
 LDU 256
 LDU 256
-PLDU 8
+LDU 8
+PLDDICT
+SETGLOB 13
 SETGLOB 12
 SETGLOB 11
 SETGLOB 10
@@ -612,7 +920,9 @@ PUSHCONT {
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
 	LDU 256
 	LDU 256
-	PLDU 8
+	LDU 8
+	PLDDICT
+	SETGLOB 13
 	SETGLOB 12
 	SETGLOB 11
 	SETGLOB 10
@@ -653,6 +963,9 @@ PUSHCONT {
 	; init error_message_sender_is_not_my_owner
 	PUSHINT 0
 	SETGLOB 12
+	; init change_directions
+	NEWDICT
+	SETGLOB 13
 	; set contract pubkey
 	PUSHINT 0
 	SWAP

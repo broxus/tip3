@@ -10,6 +10,31 @@
 			]
 		},
 		{
+			"name": "tokensReceivedCallback",
+			"inputs": [
+				{"name":"token_wallet","type":"address"},
+				{"name":"value1","type":"address"},
+				{"name":"amount","type":"uint128"},
+				{"name":"sender_public_key","type":"uint256"},
+				{"name":"sender_address","type":"address"},
+				{"name":"value5","type":"address"},
+				{"name":"original_gas_to","type":"address"},
+				{"name":"value7","type":"uint128"},
+				{"name":"value8","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "subscribeForTransfers",
+			"inputs": [
+				{"name":"wallet1","type":"address"},
+				{"name":"wallet2","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "burnMyTokens",
 			"inputs": [
 				{"name":"tokens","type":"uint128"},

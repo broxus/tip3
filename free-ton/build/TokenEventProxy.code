@@ -756,7 +756,7 @@ LDU 128
 ; Decode payload
 ;; decode TvmCell
 LDREF
-; Decode sender_public_key
+; Decode 
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -789,7 +789,7 @@ IFNOT
 ENDS
 ;; param: tokens
 ;; param: payload
-;; param: sender_public_key
+;; param: 
 ;; param: sender_address
 ;; param: wallet_address
 ; modifier onlyRoot
@@ -930,6 +930,10 @@ ENDS
 ;; param: tokens
 ;; param: ethereum_address
 ; function transferMyTokensToEthereum
+;; push identifier tokens
+PUSH S1
+GTINT 0
+THROWIFNOT 100
 ;; get member length
 ;; push identifier ethereum_address
 DUP
@@ -1060,6 +1064,10 @@ ENDS
 ;; param: callback_address
 ;; param: callback_payload
 ; function burnMyTokens
+;; push identifier tokens
+PUSH S2
+GTINT 0
+THROWIFNOT 100
 ;; get member value
 ;; push identifier token_root_address
 GETGLOB 16

@@ -6,8 +6,10 @@ pragma AbiHeader expire;
 import "../interfaces/ITokensBurner.sol";
 import "../interfaces/IRootTokenContract.sol";
 import "../interfaces/ITONTokenWallet.sol";
+import "../interfaces/ITokensReceivedCallback.sol";
+import "../interfaces/ITONTokenWalletWithNotifiableTransfers.sol";
 
-contract TONTokenWalletInternalOwnerTest {
+contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
 
     uint256 static _randomNonce;
 
@@ -17,6 +19,34 @@ contract TONTokenWalletInternalOwnerTest {
 
     constructor() public {
         tvm.accept();
+    }
+
+    mapping(address => address) change_directions;
+
+    function tokensReceivedCallback(
+        address token_wallet,
+        address,
+        uint128 amount,
+        uint256 sender_public_key,
+        address sender_address,
+        address,
+        address original_gas_to,
+        uint128,
+        TvmCell
+    ) override external {
+        require(change_directions.exists(token_wallet));
+        tvm.rawReserve(address(this).balance - msg.value, 2);
+        ITONTokenWallet(change_directions.at(token_wallet))
+            .transferToRecipient{value: 0.25 ton}(sender_public_key, sender_address, amount, 0.05 ton, 0);
+        original_gas_to.transfer({ value: 0, flag: 128 });
+    }
+
+    function subscribeForTransfers(address wallet1, address wallet2) external onlyExternalOwner {
+        tvm.accept();
+        change_directions[wallet1] = wallet2;
+        change_directions[wallet2] = wallet1;
+        ITONTokenWalletWithNotifiableTransfers(wallet1).setReceiveCallback(address(this));
+        ITONTokenWalletWithNotifiableTransfers(wallet2).setReceiveCallback(address(this));
     }
 
     function burnMyTokens(
@@ -58,11 +88,7 @@ contract TONTokenWalletInternalOwnerTest {
         bool bounce,
         uint8 flags,
         TvmCell payload
-    )
-        public
-        view
-        onlyExternalOwner
-    {
+    ) public view onlyExternalOwner {
         tvm.accept();
         dest.transfer(value, bounce, flags, payload);
     }
