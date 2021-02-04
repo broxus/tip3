@@ -82,13 +82,6 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         );
     }
 
-    function broxusBridgeNotification(
-        IEvent.EthereumEventInitData _eventData
-    ) override public view {
-        // Do nothing need for handy monitoring confirmed events
-        // So someone can call them after with any gas
-    }
-
     function burnCallback(
         uint128 tokens,
         TvmCell payload,

@@ -121,9 +121,24 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-;; build struct EthereumEventInitData ss:10
-BLKSWAP 9, 1
-TUPLE 9
+;; decode EthereumEventInitData.configurationMeta
+;; decode TvmCell
+DUP
+SBITREFS
+EQINT 1
+SWAP
+EQINT 0
+AND
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDREF
+;; build struct EthereumEventInitData ss:11
+BLKSWAP 10, 1
+TUPLE 10
 SWAP
 ; Decode gasBackAddress
 LDMSGADDRQ
@@ -154,30 +169,32 @@ PUSHINT 64
 DICTUSETB
 ;; push identifier initData
 PUSH S1
-UNTUPLE 9
+UNTUPLE 10
 NEWC
 NEWC
+PUSH S3
+STSLICER
 PUSH S2
-STSLICER
-STBREFR
-PUSH S9
-STUR 256
-PUSH S8
-STUR 32
-PUSH S7
 STREFR
-PUSH S6
-STUR 32
-PUSH S5
+STBREFR
+PUSH S10
 STUR 256
-PUSH S4
+PUSH S9
+STUR 32
+PUSH S8
+STREFR
+PUSH S7
+STUR 32
+PUSH S6
+STUR 256
+PUSH S5
 STSLICER
+PUSH S4
+STUR 16
 PUSH S3
 STUR 16
-PUSH S2
-STUR 16
-XCHG s9
-BLKDROP 9
+XCHG s10
+BLKDROP 10
 ENDC
 PUSHINT 1
 ROT
@@ -412,30 +429,32 @@ PUSHINT 64
 DICTUSETB
 ;; push identifier initData
 PUSH S1
-UNTUPLE 9
+UNTUPLE 10
 NEWC
 NEWC
+PUSH S3
+STSLICER
 PUSH S2
-STSLICER
-STBREFR
-PUSH S9
-STUR 256
-PUSH S8
-STUR 32
-PUSH S7
 STREFR
-PUSH S6
-STUR 32
-PUSH S5
+STBREFR
+PUSH S10
 STUR 256
-PUSH S4
+PUSH S9
+STUR 32
+PUSH S8
+STREFR
+PUSH S7
+STUR 32
+PUSH S6
+STUR 256
+PUSH S5
 STSLICER
+PUSH S4
+STUR 16
 PUSH S3
 STUR 16
-PUSH S2
-STUR 16
-XCHG s9
-BLKDROP 9
+XCHG s10
+BLKDROP 10
 ENDC
 PUSHINT 1
 ROT
@@ -646,100 +665,6 @@ PUSHINT 128
 SENDRAWMSG
 BLKDROP 8
 ; end function broxusBridgeCallback
-
-.globl	broxusBridgeNotification
-.public	broxusBridgeNotification
-.type	broxusBridgeNotification, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-; Decode _eventData
-;; decode struct EthereumEventInitData _eventData
-;; decode EthereumEventInitData.eventTransaction
-LDU 256
-;; decode EthereumEventInitData.eventIndex
-LDU 32
-;; decode EthereumEventInitData.eventData
-;; decode TvmCell
-LDREF
-;; decode EthereumEventInitData.eventBlockNumber
-LDU 32
-;; decode EthereumEventInitData.eventBlock
-LDUQ 256
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 256
-}
-IFNOT
-;; decode EthereumEventInitData.ethereumEventConfiguration
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-;; decode EthereumEventInitData.requiredConfirmations
-LDUQ 16
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 16
-}
-IFNOT
-;; decode EthereumEventInitData.requiredRejects
-LDUQ 16
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 16
-}
-IFNOT
-;; decode EthereumEventInitData.proxyAddress
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-;; build struct EthereumEventInitData ss:10
-BLKSWAP 9, 1
-TUPLE 9
-SWAP
-ENDS
-;; param: _eventData
-; function broxusBridgeNotification
-DROP
-; end function broxusBridgeNotification
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	broxusBridgeNotification_internal
-.type	broxusBridgeNotification_internal, @function
-;; param: _eventData
-; function broxusBridgeNotification
-DROP
-; end function broxusBridgeNotification
 
 .globl	burnCallback
 .public	burnCallback

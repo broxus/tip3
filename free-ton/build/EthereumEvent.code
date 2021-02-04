@@ -19,7 +19,6 @@ LDMSGADDR
 ENDS
 ;; param: relay
 ; constructor EthereumEvent
-ACCEPT
 ; expValue
 ;; fetch initData
 GETGLOB 26
@@ -37,6 +36,7 @@ PUSHINT 0
 ; colValue
 SETGLOB 27
 ; end colValue
+CALL $notifyEventStatusChanged_internal$
 ;; push identifier relay
 DUP
 CALL $confirm_internal$
@@ -45,6 +45,55 @@ DROP
 CALL $c7_to_c4$
 TRUE
 SETGLOB 7
+
+.globl	notifyEventStatusChanged_internal
+.type	notifyEventStatusChanged_internal, @function
+; function notifyEventStatusChanged
+;; get member eventData
+;; push identifier initData
+GETGLOB 26
+INDEX 2
+CTOS
+LDU 128
+LDI 8
+LDU 256
+LDU 256
+; colValue
+DROP
+;; decl: wid
+;; decl: owner_addr
+;; address.makeAddrStd()
+;; push identifier owner_addr
+PUSH S1
+;; push identifier wid
+PUSH S3
+NEWC
+STSLICECONST x9_
+STI 8
+STU 256
+ENDC
+CTOS
+;; decl: owner_address
+;; Remote call IEventNotificationReceiver.notifyEthereumEventStatusChanged
+;; push identifier owner_address
+DUP
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x30186a0000000000000000000000000004_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x4cf1699a
+;; status
+;; push identifier status
+GETGLOB 27
+STUR 8
+ENDC
+PUSHINT 1
+SENDRAWMSG
+BLKDROP 5
+; end function notifyEventStatusChanged
 
 .globl	confirm
 .public	confirm
@@ -176,7 +225,6 @@ INDEX 6
 ;; >=
 GEQ
 PUSHCONT {
-	CALL $executeProxyNotification_internal$
 	; expValue
 	; end expValue
 	;; get member Confirmed
@@ -184,6 +232,12 @@ PUSHCONT {
 	; colValue
 	SETGLOB 27
 	; end colValue
+	CALL $notifyEventStatusChanged_internal$
+	;; get member ethereumEventConfiguration
+	;; push identifier initData
+	GETGLOB 26
+	INDEX 5
+	CALL $transferAll_internal$
 }
 IF
 ;; end if
@@ -314,7 +368,6 @@ INDEX 6
 ;; >=
 GEQ
 PUSHCONT {
-	CALL $executeProxyNotification_internal$
 	; expValue
 	; end expValue
 	;; get member Confirmed
@@ -322,6 +375,12 @@ PUSHCONT {
 	; colValue
 	SETGLOB 27
 	; end colValue
+	CALL $notifyEventStatusChanged_internal$
+	;; get member ethereumEventConfiguration
+	;; push identifier initData
+	GETGLOB 26
+	INDEX 5
+	CALL $transferAll_internal$
 }
 IF
 ;; end if
@@ -467,21 +526,12 @@ PUSHCONT {
 	; colValue
 	SETGLOB 27
 	; end colValue
-	;; transfer()
+	CALL $notifyEventStatusChanged_internal$
 	;; get member ethereumEventConfiguration
 	;; push identifier initData
 	GETGLOB 26
 	INDEX 5
-	NEWC
-	STSLICECONST x62_
-	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	ENDC
-	PUSHINT 128
-	SENDRAWMSG
+	CALL $transferAll_internal$
 }
 IF
 ;; end if
@@ -619,21 +669,12 @@ PUSHCONT {
 	; colValue
 	SETGLOB 27
 	; end colValue
-	;; transfer()
+	CALL $notifyEventStatusChanged_internal$
 	;; get member ethereumEventConfiguration
 	;; push identifier initData
 	GETGLOB 26
 	INDEX 5
-	NEWC
-	STSLICECONST x62_
-	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	ENDC
-	PUSHINT 128
-	SENDRAWMSG
+	CALL $transferAll_internal$
 }
 IF
 ;; end if
@@ -641,55 +682,6 @@ IF
 ; end modifier eventInProcess
 DROP2
 ; end modifier onlyEventConfiguration
-
-.globl	executeProxyNotification_internal
-.type	executeProxyNotification_internal, @function
-; function executeProxyNotification
-;; Remote call IProxy.broxusBridgeNotification
-;; get member proxyAddress
-;; push identifier initData
-GETGLOB 26
-INDEX 8
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x30f4240000000000000000000000000004_
-STSLICER
-STSLICECONST 0
-STSLICECONST 1
-NEWC
-STSLICECONST x0eaeedc6
-;; eventData
-;; push identifier initData
-GETGLOB 26
-UNTUPLE 9
-BLKSWAP 1, 9
-PUSH S9
-STUR 256
-PUSH S8
-STUR 32
-PUSH S7
-STREFR
-PUSH S6
-STUR 32
-PUSH S5
-STUR 256
-PUSH S4
-STSLICER
-PUSH S3
-STUR 16
-PUSH S2
-STUR 16
-NEWC
-PUSH S2
-STSLICER
-BLKDROP2 9, 2
-STBREFR
-STBREFR
-ENDC
-PUSHINT 1
-SENDRAWMSG
-; end function executeProxyNotification
 
 .globl	executeProxyCallback
 .public	executeProxyCallback
@@ -742,9 +734,8 @@ PUSHINT 2
 ; colValue
 SETGLOB 27
 ; end colValue
+CALL $notifyEventStatusChanged_internal$
 ;; Remote call IProxy.broxusBridgeCallback
-;; get member value
-CALL $message_balance_macro$
 ;; get member proxyAddress
 ;; push identifier initData
 GETGLOB 26
@@ -752,39 +743,39 @@ INDEX 8
 NEWC
 STSLICECONST x62_
 STSLICE
-SWAP
-STGRAMS
-PUSHINT 105
+PUSHINT 109
 STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x7f6c165c
+STSLICECONST x4869cd0d
 ;; eventData
 ;; push identifier initData
 GETGLOB 26
-UNTUPLE 9
-BLKSWAP 1, 9
+UNTUPLE 10
+BLKSWAP 1, 10
+PUSH S10
+STUR 256
 PUSH S9
-STUR 256
+STUR 32
 PUSH S8
-STUR 32
-PUSH S7
 STREFR
-PUSH S6
+PUSH S7
 STUR 32
-PUSH S5
+PUSH S6
 STUR 256
-PUSH S4
+PUSH S5
 STSLICER
+PUSH S4
+STUR 16
 PUSH S3
 STUR 16
-PUSH S2
-STUR 16
 NEWC
-PUSH S2
+PUSH S3
 STSLICER
-BLKDROP2 9, 2
+PUSH S2
+STREFR
+BLKDROP2 10, 2
 ;; gasBackAddress
 ;; get member sender
 GETGLOB 9
@@ -792,22 +783,7 @@ STSLICER
 STBREFR
 STBREFR
 ENDC
-PUSHINT 1
-SENDRAWMSG
-;; transfer()
-;; get member ethereumEventConfiguration
-;; push identifier initData
-GETGLOB 26
-INDEX 5
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 0
-ENDC
-PUSHINT 128
+PUSHINT 64
 SENDRAWMSG
 ; end function executeProxyCallback
 ; end modifier eventConfirmed
@@ -857,9 +833,8 @@ PUSHINT 2
 ; colValue
 SETGLOB 27
 ; end colValue
+CALL $notifyEventStatusChanged_internal$
 ;; Remote call IProxy.broxusBridgeCallback
-;; get member value
-CALL $message_balance_macro$
 ;; get member proxyAddress
 ;; push identifier initData
 GETGLOB 26
@@ -867,39 +842,39 @@ INDEX 8
 NEWC
 STSLICECONST x62_
 STSLICE
-SWAP
-STGRAMS
-PUSHINT 105
+PUSHINT 109
 STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x7f6c165c
+STSLICECONST x4869cd0d
 ;; eventData
 ;; push identifier initData
 GETGLOB 26
-UNTUPLE 9
-BLKSWAP 1, 9
+UNTUPLE 10
+BLKSWAP 1, 10
+PUSH S10
+STUR 256
 PUSH S9
-STUR 256
+STUR 32
 PUSH S8
-STUR 32
-PUSH S7
 STREFR
-PUSH S6
+PUSH S7
 STUR 32
-PUSH S5
+PUSH S6
 STUR 256
-PUSH S4
+PUSH S5
 STSLICER
+PUSH S4
+STUR 16
 PUSH S3
 STUR 16
-PUSH S2
-STUR 16
 NEWC
-PUSH S2
+PUSH S3
 STSLICER
-BLKDROP2 9, 2
+PUSH S2
+STREFR
+BLKDROP2 10, 2
 ;; gasBackAddress
 ;; get member sender
 GETGLOB 9
@@ -907,22 +882,7 @@ STSLICER
 STBREFR
 STBREFR
 ENDC
-PUSHINT 1
-SENDRAWMSG
-;; transfer()
-;; get member ethereumEventConfiguration
-;; push identifier initData
-GETGLOB 26
-INDEX 5
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 0
-ENDC
-PUSHINT 128
+PUSHINT 64
 SENDRAWMSG
 ; end function executeProxyCallback
 ; end modifier eventConfirmed
@@ -950,7 +910,9 @@ PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 PUSHINT 0
 PUSHINT 0
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-TUPLE 9
+NEWC
+ENDC
+TUPLE 10
 ;; ret param: _status
 PUSHINT 0
 ;; ret param: _confirmRelays
@@ -989,30 +951,32 @@ PUSHCONT {
 	STSLICECONST 0
 	STSLICECONST 1
 	NEWC
-	STSLICECONST xefe16a9c
+	STSLICECONST xe0ecbde3
 	PUSH S5
-	UNTUPLE 9
-	BLKSWAP 1, 9
+	UNTUPLE 10
+	BLKSWAP 1, 10
+	PUSH S10
+	STUR 256
 	PUSH S9
-	STUR 256
+	STUR 32
 	PUSH S8
-	STUR 32
-	PUSH S7
 	STREFR
-	PUSH S6
+	PUSH S7
 	STUR 32
-	PUSH S5
+	PUSH S6
 	STUR 256
-	PUSH S4
+	PUSH S5
 	STSLICER
+	PUSH S4
+	STUR 16
 	PUSH S3
 	STUR 16
-	PUSH S2
-	STUR 16
 	NEWC
-	PUSH S2
+	PUSH S3
 	STSLICER
-	BLKDROP2 9, 2
+	PUSH S2
+	STREFR
+	BLKDROP2 10, 2
 	PUSH S5
 	STUR 8
 	PUSH S4
@@ -1055,7 +1019,9 @@ PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 PUSHINT 0
 PUSHINT 0
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-TUPLE 9
+NEWC
+ENDC
+TUPLE 10
 ;; ret param: _status
 PUSHINT 0
 ;; ret param: _confirmRelays
@@ -1077,6 +1043,241 @@ GETGLOB 28
 GETGLOB 29
 BLKDROP2 4, 4
 ; end function getDetails
+
+.globl	getDecodedData
+.public	getDecodedData
+.type	getDecodedData, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; function getDecodedData
+;; ret param: rootToken
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+;; ret param: tokens
+PUSHINT 0
+;; ret param: wid
+PUSHINT 0
+;; ret param: owner_addr
+PUSHINT 0
+;; ret param: owner_address
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+;; ret param: owner_pubkey
+PUSHINT 0
+;; get member configurationMeta
+;; push identifier initData
+GETGLOB 26
+INDEX 9
+CTOS
+;; decode address
+LDMSGADDR
+; colValue
+DROP
+; expValue
+; end expValue
+; colValue
+POP S6
+; end colValue
+;; get member eventData
+;; push identifier initData
+GETGLOB 26
+INDEX 2
+CTOS
+LDU 128
+LDI 8
+LDU 256
+LDU 256
+; colValue
+DROP
+REVERSE 4, 0
+; expValue
+; end expValue
+; colValue
+POP S8
+; end colValue
+; expValue
+; end expValue
+; colValue
+POP S6
+; end colValue
+; expValue
+; end expValue
+; colValue
+POP S4
+; end colValue
+; expValue
+; end expValue
+; colValue
+NIP
+; end colValue
+;; address.makeAddrStd()
+;; push identifier owner_addr
+PUSH S2
+;; push identifier wid
+PUSH S4
+NEWC
+STSLICECONST x9_
+STI 8
+STU 256
+; expValue
+; end expValue
+; colValue
+ENDC
+CTOS
+POP S2
+; end colValue
+;; returning named params
+;; emitting 6 value(s)
+PUSH S6
+EQINT -1
+PUSHCONT {
+	PUSH S8
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 1
+	NEWC
+	STSLICECONST xf0ac9328
+	PUSH S7
+	STSLICER
+	PUSH S6
+	STUR 128
+	PUSH S5
+	STIR 8
+	PUSH S4
+	STUR 256
+	NEWC
+	PUSH S4
+	STSLICER
+	PUSH S3
+	STUR 256
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+}
+IF
+BLKDROP 6
+; end function getDecodedData
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
+TRUE
+SETGLOB 7
+
+.globl	getDecodedData_internal
+.type	getDecodedData_internal, @function
+; function getDecodedData
+;; ret param: rootToken
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+;; ret param: tokens
+PUSHINT 0
+;; ret param: wid
+PUSHINT 0
+;; ret param: owner_addr
+PUSHINT 0
+;; ret param: owner_address
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+;; ret param: owner_pubkey
+PUSHINT 0
+;; get member configurationMeta
+;; push identifier initData
+GETGLOB 26
+INDEX 9
+CTOS
+;; decode address
+LDMSGADDR
+; colValue
+DROP
+; expValue
+; end expValue
+; colValue
+POP S6
+; end colValue
+;; get member eventData
+;; push identifier initData
+GETGLOB 26
+INDEX 2
+CTOS
+LDU 128
+LDI 8
+LDU 256
+LDU 256
+; colValue
+DROP
+REVERSE 4, 0
+; expValue
+; end expValue
+; colValue
+POP S8
+; end colValue
+; expValue
+; end expValue
+; colValue
+POP S6
+; end colValue
+; expValue
+; end expValue
+; colValue
+POP S4
+; end colValue
+; expValue
+; end expValue
+; colValue
+NIP
+; end colValue
+;; address.makeAddrStd()
+;; push identifier owner_addr
+PUSH S2
+;; push identifier wid
+PUSH S4
+NEWC
+STSLICECONST x9_
+STI 8
+STU 256
+; expValue
+; end expValue
+; colValue
+ENDC
+CTOS
+POP S2
+; end colValue
+;; returning named params
+; end function getDecodedData
+
+.globl	transferAll_internal
+.type	transferAll_internal, @function
+;; param: receiver
+; function transferAll
+;; transfer()
+;; push identifier receiver
+DUP
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 0
+ENDC
+PUSHINT 128
+SENDRAWMSG
+DROP
+; end function transferAll
 
 .globl	c7_to_c4
 .type	c7_to_c4, @function
@@ -1129,30 +1330,32 @@ STU 16
 STU 16
 STU 16
 SWAP
-UNTUPLE 9
+UNTUPLE 10
 NEWC
 NEWC
+PUSH S3
+STSLICER
 PUSH S2
-STSLICER
-STBREFR
-PUSH S9
-STUR 256
-PUSH S8
-STUR 32
-PUSH S7
 STREFR
-PUSH S6
-STUR 32
-PUSH S5
+STBREFR
+PUSH S10
 STUR 256
-PUSH S4
+PUSH S9
+STUR 32
+PUSH S8
+STREFR
+PUSH S7
+STUR 32
+PUSH S6
+STUR 256
+PUSH S5
 STSLICER
+PUSH S4
+STUR 16
 PUSH S3
 STUR 16
-PUSH S2
-STUR 16
-XCHG s9
-BLKDROP 9
+XCHG s10
+BLKDROP 10
 STBREFR
 STU 8
 STU 32
@@ -1197,7 +1400,9 @@ LDU 16
 PLDU 16
 BLKSWAP 1, 8
 CTOS
-TUPLE 9
+LDMSGADDR
+PLDREF
+TUPLE 10
 SETGLOB 26
 LDU 8
 LDU 32
@@ -1270,7 +1475,9 @@ PUSHCONT {
 	PLDU 16
 	BLKSWAP 1, 8
 	CTOS
-	TUPLE 9
+	LDMSGADDR
+	PLDREF
+	TUPLE 10
 	SETGLOB 26
 	LDU 8
 	LDU 32
@@ -1325,7 +1532,9 @@ PUSHCONT {
 		PLDU 16
 		BLKSWAP 1, 8
 		CTOS
-		TUPLE 9
+		LDMSGADDR
+		PLDREF
+		TUPLE 10
 	}
 	PUSHCONT {
 		PUSHINT 0
@@ -1338,7 +1547,9 @@ PUSHCONT {
 		PUSHINT 0
 		PUSHINT 0
 		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-		TUPLE 9
+		NEWC
+		ENDC
+		TUPLE 10
 	}
 	IFELSE
 	SETGLOB 26
