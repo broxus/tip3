@@ -361,7 +361,15 @@ PUSHCONT {
 }
 IFNOT
 ; Decode ethereum_address
-LDREF
+LDUQ 160
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 160
+}
+IFNOT
 ENDS
 ;; param: tokens
 ;; param: grams
@@ -397,13 +405,9 @@ IF
 ; end function isExternalOwner
 THROWANYIFNOT
 ; function burnMyTokens
-;; get member length
 ;; push identifier ethereum_address
 DUP
-CTOS
-SBITS
-RSHIFT 3
-EQINT 20
+NEQINT 0
 THROWIFNOT 100
 ACCEPT
 NEWC
@@ -413,7 +417,7 @@ DUP
 ; end expValue
 ;; push identifier ethereum_address
 PUSH S2
-STREFR
+STUR 160
 ; colValue
 NIP
 ; end colValue

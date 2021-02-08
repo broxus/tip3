@@ -766,8 +766,7 @@ SETGLOB 20
 ;; push identifier payload
 PUSH S3
 CTOS
-;; decode bytes
-LDREF
+LDU 160
 ; colValue
 DROP
 ;; decl: ethereum_address
@@ -777,7 +776,22 @@ PUSHSLICE xc0000000000000000000000002_
 STSLICER
 STSLICECONST 0
 STSLICECONST 0
-STSLICECONST x54ce9eb5
+STSLICECONST x67ce8b37
+;; wid
+;; get member wid
+;; push identifier sender_address
+PUSH S3
+PARSEMSGADDR
+INDEX 2
+STIR 8
+;; addr
+;; get member value
+;; push identifier sender_address
+PUSH S3
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+STUR 256
 ;; tokens
 ;; push identifier tokens
 PUSH S6
@@ -785,7 +799,7 @@ STUR 128
 ;; ethereum_address
 ;; push identifier ethereum_address
 PUSH S1
-STREFR
+STUR 160
 ENDC
 PUSHINT 1
 SENDRAWMSG
@@ -850,7 +864,7 @@ IF
 ; Decode tokens
 LDU 128
 ; Decode ethereum_address
-LDREF
+LDU 160
 ENDS
 ;; param: tokens
 ;; param: ethereum_address
@@ -859,13 +873,9 @@ ENDS
 PUSH S1
 GTINT 0
 THROWIFNOT 100
-;; get member length
 ;; push identifier ethereum_address
 DUP
-CTOS
-SBITS
-RSHIFT 3
-EQINT 20
+NEQINT 20
 THROWIFNOT 100
 ;; get member value
 ;; push identifier token_root_address
@@ -911,7 +921,7 @@ DUP
 ; end expValue
 ;; push identifier ethereum_address
 PUSH S2
-STREFR
+STUR 160
 ; colValue
 NIP
 ; end colValue

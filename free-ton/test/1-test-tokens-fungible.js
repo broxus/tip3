@@ -4,6 +4,7 @@ const logger = require('mocha-logger');
 const assert = require('assert');
 const freeton = require('ton-testing-suite');
 const BigNumber = require('bignumber.js');
+BigNumber.config({ EXPONENTIAL_AT: 257 });
 
 const ZERO_ADDRESS = '0:0000000000000000000000000000000000000000000000000000000000000000';
 
@@ -746,7 +747,7 @@ describe('Test Fungible Tokens', function () {
                     grams: freeton.utils.convertCrystal('3', 'nano'),
                     burner_address: RootTokenContractInternalOwnerTest.address,
                     callback_address: RootTokenContractInternalOwnerTest.address,
-                    ethereum_address: 'c227CE9EdCc60a725DE66A1132171a22ae62a64F'
+                    ethereum_address: new BigNumber('0xFE2022DCF9abAf36E21a2F747d0FEf13D10Fbd30'.toLowerCase(), 16).toString()
                 },
                 tonWrapper.keys[5]
             ).catch(e => console.log(e));

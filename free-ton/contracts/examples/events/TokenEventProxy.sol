@@ -37,8 +37,10 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
     uint8 error_message_not_valid_payload = 104;
 
     event TokenBurn(
+        int8 wid,
+        uint256 addr,
         uint128 tokens,
-        bytes ethereum_address
+        uint160 ethereum_address
     );
 
     constructor() public {
@@ -95,9 +97,9 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
 
         burned_count += tokens;
 
-        (bytes ethereum_address) = payload.toSlice().decode(bytes);
+        (uint160 ethereum_address) = payload.toSlice().decode(uint160);
 
-        emit TokenBurn(tokens, ethereum_address);
+        emit TokenBurn(sender_address.wid, sender_address.value, tokens, ethereum_address);
 
         if (sender_address.value == 0) {
             wallet_address.transfer({ value: 0, flag: 128 });
@@ -106,9 +108,9 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner {
         }
     }
 
-    function transferMyTokensToEthereum(uint128 tokens, bytes ethereum_address) external view {
+    function transferMyTokensToEthereum(uint128 tokens, uint160 ethereum_address) external view {
         require(tokens > 0);
-        require(ethereum_address.length  == 20);
+        require(ethereum_address != 20);
         require(token_root_address.value != 0);
         require(msg.sender.value != 0);
         require(msg.value >= settings_burn_min_msg_value);

@@ -9,8 +9,10 @@ import "./../interfaces/IEventNotificationReceiver.sol";
 import "./../utils/ErrorCodes.sol";
 import "./../utils/TransferUtils.sol";
 
+import "./../additional/CellEncoder.sol";
 
-contract EthereumEvent is IEvent, ErrorCodes, TransferUtils {
+
+contract EthereumEvent is IEvent, ErrorCodes, TransferUtils, CellEncoder {
     EthereumEventInitData static initData;
 
     EthereumEventStatus status;
@@ -39,11 +41,12 @@ contract EthereumEvent is IEvent, ErrorCodes, TransferUtils {
         @dev In this example, notification receiver is derived from the configuration meta
     */
     function notifyEventStatusChanged() internal view {
-        (, int8 wid, uint256 owner_addr,) = initData.eventData.toSlice().decode(uint128, int8, uint256, uint256);
+        (,,,,,address owner_address) = getDecodedData();
 
-        address owner_address = address.makeAddrStd(wid, owner_addr);
-
-        IEventNotificationReceiver(owner_address).notifyEthereumEventStatusChanged{value: 0.0001 ton}(status);
+        // TODO: discuss minimum value of the notification
+        if (owner_address.value != 0) {
+            IEventNotificationReceiver(owner_address).notifyEthereumEventStatusChanged{value: 0.00001 ton}(status);
+        }
     }
 
     /*
@@ -84,6 +87,7 @@ contract EthereumEvent is IEvent, ErrorCodes, TransferUtils {
             status = EthereumEventStatus.Confirmed;
 
             notifyEventStatusChanged();
+//            TODO: fix problem with freezing contract after emptying balance
             transferAll(initData.ethereumEventConfiguration);
         }
     }
@@ -153,17 +157,17 @@ contract EthereumEvent is IEvent, ErrorCodes, TransferUtils {
         uint128 tokens,
         int8 wid,
         uint256 owner_addr,
-        address owner_address,
-        uint256 owner_pubkey
+        uint256 owner_pubkey,
+        address owner_address
     ) {
-        (rootToken) = initData.configurationMeta.toSlice().decode(address);
+        (rootToken) = decodeConfigurationMeta(initData.configurationMeta);
 
         (
             tokens,
             wid,
             owner_addr,
             owner_pubkey
-        ) = initData.eventData.toSlice().decode(uint128, int8, uint256, uint256);
+        ) = decodeEthereumEventData(initData.eventData);
 
         owner_address = address.makeAddrStd(wid, owner_addr);
     }

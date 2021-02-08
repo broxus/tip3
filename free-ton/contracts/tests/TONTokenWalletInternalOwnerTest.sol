@@ -54,9 +54,9 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
         uint128 grams,
         address burner_address,
         address callback_address,
-        bytes ethereum_address
+        uint160 ethereum_address
     ) external view onlyExternalOwner {
-        require(ethereum_address.length  == 20);
+        require(ethereum_address  != 0);
 
         tvm.accept();
 

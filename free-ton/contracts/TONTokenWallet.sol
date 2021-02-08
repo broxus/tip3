@@ -7,6 +7,7 @@ import "./interfaces/ITONTokenWalletWithNotifiableTransfers.sol";
 import "./interfaces/IBurnableByOwnerTokenWallet.sol";
 import "./interfaces/IBurnableByRootTokenWallet.sol";
 import "./interfaces/IBurnableTokenRootContract.sol";
+import "./interfaces/ITokenWalletDeployedCallback.sol";
 import "./interfaces/ITokensReceivedCallback.sol";
 
 contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfers, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet {
@@ -43,6 +44,9 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
                 (wallet_public_key == 0 && owner_address.value != 0),
                 error_define_wallet_public_key_or_owner_address);
         tvm.accept();
+        if (owner_address.value != 0) {
+            ITokenWalletDeployedCallback(owner_address).notifyWalletDeployed{value: 0.00001 ton}(root_address);
+        }
     }
 
     function getDetails() override external view returns (ITONTokenWalletDetails){
