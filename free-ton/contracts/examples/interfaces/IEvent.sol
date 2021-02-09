@@ -10,6 +10,7 @@ interface IEvent {
         address tonEventConfiguration;
         uint16 requiredConfirmations;
         uint16 requiredRejects;
+        TvmCell configurationMeta;
     }
 
     // for confirming/rejecting TON event
@@ -31,6 +32,7 @@ interface IEvent {
         uint16 requiredConfirmations;
         uint16 requiredRejects;
         address proxyAddress;
+        TvmCell configurationMeta;
     }
 
     // for confirming/rejecting ETH event
@@ -41,4 +43,8 @@ interface IEvent {
         uint32 eventBlockNumber;
         uint eventBlock;
     }
+
+    enum EthereumEventStatus { InProcess, Confirmed, Executed, Rejected }
+    enum TonEventStatus { InProcess, Confirmed, Rejected }
 }
+

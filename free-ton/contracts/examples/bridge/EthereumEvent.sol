@@ -4,32 +4,49 @@ pragma AbiHeader expire;
 
 import "./../interfaces/IProxy.sol";
 import "./../interfaces/IEvent.sol";
-import "../utils/ErrorCodes.sol";
+import "./../interfaces/IEventNotificationReceiver.sol";
+
+import "./../utils/ErrorCodes.sol";
+import "./../utils/TransferUtils.sol";
+
+import "./../additional/CellEncoder.sol";
 
 
-contract EthereumEvent is IEvent, ErrorCodes {
+contract EthereumEvent is IEvent, ErrorCodes, TransferUtils, CellEncoder {
     EthereumEventInitData static initData;
 
-    enum Status { InProcess, Confirmed, Executed, Rejected }
-    Status status;
+    EthereumEventStatus status;
 
     address[] confirmRelays;
     address[] rejectRelays;
 
 
     modifier eventInProcess() {
-        require(status == Status.InProcess, EVENT_NOT_IN_PROGRESS);
+        require(status == EthereumEventStatus.InProcess, EVENT_NOT_IN_PROGRESS);
         _;
     }
 
     modifier eventConfirmed() {
-        require(status == Status.Confirmed, EVENT_NOT_CONFIRMED);
+        require(status == EthereumEventStatus.Confirmed, EVENT_NOT_CONFIRMED);
         _;
     }
 
     modifier onlyEventConfiguration(address configuration) {
         require(msg.sender == configuration, SENDER_NOT_EVENT_CONFIGURATION);
         _;
+    }
+
+    /*
+        Notify specific contract that event contract status has been changed
+        @dev In this example, notification receiver is derived from the configuration meta
+    */
+    function notifyEventStatusChanged() internal view {
+        (,,,,,address owner_address) = getDecodedData();
+
+        // TODO: discuss minimum value of the notification
+        if (owner_address.value != 0) {
+            IEventNotificationReceiver(owner_address).notifyEthereumEventStatusChanged{value: 0.00001 ton}(status);
+        }
     }
 
     /*
@@ -40,11 +57,10 @@ contract EthereumEvent is IEvent, ErrorCodes {
     constructor(
         address relay
     ) public {
-        // TODO: discuss deployer set in the constructor
-        tvm.accept();
-
         initData.ethereumEventConfiguration = msg.sender;
-        status = Status.InProcess;
+        status = EthereumEventStatus.InProcess;
+
+        notifyEventStatusChanged();
 
         confirm(relay);
     }
@@ -68,9 +84,11 @@ contract EthereumEvent is IEvent, ErrorCodes {
         confirmRelays.push(relay);
 
         if (confirmRelays.length >= initData.requiredConfirmations) {
-            executeProxyNotification();
+            status = EthereumEventStatus.Confirmed;
 
-            status = Status.Confirmed;
+            notifyEventStatusChanged();
+//            TODO: fix problem with freezing contract after emptying balance
+            transferAll(initData.ethereumEventConfiguration);
         }
     }
 
@@ -93,27 +111,24 @@ contract EthereumEvent is IEvent, ErrorCodes {
         rejectRelays.push(relay);
 
         if (rejectRelays.length >= initData.requiredRejects) {
-            status = Status.Rejected;
+            status = EthereumEventStatus.Rejected;
 
-            initData.ethereumEventConfiguration.transfer({ value: 0, flag: 128 });
+            notifyEventStatusChanged();
+            transferAll(initData.ethereumEventConfiguration);
         }
-    }
-
-    function executeProxyNotification() internal view {
-        IProxy(initData.proxyAddress).broxusBridgeNotification{value: 0.001 ton}(initData);
     }
 
     /*
         Execute callback on proxy contract
-        @dev Called internally, after required amount of confirmations received
+        @dev Anyone can call this in case event is in Confirmed status
+        @dev May be called only once, because status will be changed to Executed
     */
     function executeProxyCallback() public eventConfirmed {
         require(msg.value > 1 ton, TOO_LOW_MSG_VALUE);
-        status = Status.Executed;
+        status = EthereumEventStatus.Executed;
 
-        IProxy(initData.proxyAddress).broxusBridgeCallback{value: msg.value}(initData, msg.sender);
-
-        initData.ethereumEventConfiguration.transfer({ value: 0, flag: 128 });
+        notifyEventStatusChanged();
+        IProxy(initData.proxyAddress).broxusBridgeCallback{value: 0, flag: 64}(initData, msg.sender);
     }
 
     /*
@@ -125,7 +140,7 @@ contract EthereumEvent is IEvent, ErrorCodes {
     */
     function getDetails() public view returns (
         EthereumEventInitData _initData,
-        Status _status,
+        EthereumEventStatus _status,
         address[] _confirmRelays,
         address[] _rejectRelays
     ) {
@@ -135,5 +150,25 @@ contract EthereumEvent is IEvent, ErrorCodes {
             confirmRelays,
             rejectRelays
         );
+    }
+
+    function getDecodedData() public view returns (
+        address rootToken,
+        uint128 tokens,
+        int8 wid,
+        uint256 owner_addr,
+        uint256 owner_pubkey,
+        address owner_address
+    ) {
+        (rootToken) = decodeConfigurationMeta(initData.configurationMeta);
+
+        (
+            tokens,
+            wid,
+            owner_addr,
+            owner_pubkey
+        ) = decodeEthereumEventData(initData.eventData);
+
+        owner_address = address.makeAddrStd(wid, owner_addr);
     }
 }

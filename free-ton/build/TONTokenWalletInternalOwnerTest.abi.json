@@ -41,7 +41,7 @@
 				{"name":"grams","type":"uint128"},
 				{"name":"burner_address","type":"address"},
 				{"name":"callback_address","type":"address"},
-				{"name":"ethereum_address","type":"bytes"}
+				{"name":"ethereum_address","type":"uint160"}
 			],
 			"outputs": [
 			]

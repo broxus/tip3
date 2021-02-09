@@ -65,6 +65,35 @@ PUSHCONT {
 IFNOT
 THROWANYIFNOT
 ACCEPT
+;; if
+;; get member value
+;; push identifier owner_address
+GETGLOB 13
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+PUSHCONT {
+	;; Remote call ITokenWalletDeployedCallback.notifyWalletDeployed
+	;; push identifier owner_address
+	GETGLOB 13
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHSLICE x22710000000000000000000000000004_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST x4853bb37
+	;; root
+	;; push identifier root_address
+	GETGLOB 10
+	STSLICER
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+}
+IF
+;; end if
 ; end constructor TONTokenWallet
 CALL $c7_to_c4$
 TRUE
