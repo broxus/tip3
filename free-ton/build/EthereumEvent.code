@@ -1734,35 +1734,40 @@ NEWC
 ENDC
 NEWC
 ;; decl: builder
+PUSHINT 0
+;; decl: zero_event_id
 ; expValue
-DUP
+PUSH S1
 ; end expValue
+;; push identifier zero_event_id
+PUSH S1
+STUR 32
 ;; push identifier wid
-PUSH S6
+PUSH S7
 STIR 8
 ;; push identifier addr
-PUSH S5
+PUSH S6
 STUR 256
 ;; push identifier tokens
-PUSH S4
+PUSH S5
 STUR 128
 ;; push identifier ethereum_address
-PUSH S3
+PUSH S4
 STUR 160
 ; colValue
-NIP
+POP S2
 ; end colValue
 ;; push identifier builder
-DUP
+PUSH S1
 ENDC
 ; expValue
 ; end expValue
 ; colValue
-POP S2
+POP S3
 ; end colValue
 ;; returning named params
-BLKSWAP 4, 2
-BLKDROP 5
+BLKSWAP 4, 3
+BLKDROP 6
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -1809,35 +1814,40 @@ NEWC
 ENDC
 NEWC
 ;; decl: builder
+PUSHINT 0
+;; decl: zero_event_id
 ; expValue
-DUP
+PUSH S1
 ; end expValue
+;; push identifier zero_event_id
+PUSH S1
+STUR 32
 ;; push identifier wid
-PUSH S6
+PUSH S7
 STIR 8
 ;; push identifier addr
-PUSH S5
+PUSH S6
 STUR 256
 ;; push identifier tokens
-PUSH S4
+PUSH S5
 STUR 128
 ;; push identifier ethereum_address
-PUSH S3
+PUSH S4
 STUR 160
 ; colValue
-NIP
+POP S2
 ; end colValue
 ;; push identifier builder
-DUP
+PUSH S1
 ENDC
 ; expValue
 ; end expValue
 ; colValue
-POP S2
+POP S3
 ; end colValue
 ;; returning named params
-BLKSWAP 4, 2
-BLKDROP 5
+BLKSWAP 4, 3
+BLKDROP 6
 ; end function encodeTonEventData
 
 .globl	decodeTonEventData
@@ -1861,13 +1871,15 @@ PUSHINT 0
 ;; push identifier data
 PUSH S4
 CTOS
+LDU 32
 LDI 8
 LDU 256
 LDU 128
 LDU 160
 ; colValue
 DROP
-REVERSE 4, 0
+REVERSE 5, 0
+DROP
 ; expValue
 ; end expValue
 ; colValue
@@ -1946,13 +1958,15 @@ PUSHINT 0
 ;; push identifier data
 PUSH S4
 CTOS
+LDU 32
 LDI 8
 LDU 256
 LDU 128
 LDU 160
 ; colValue
 DROP
-REVERSE 4, 0
+REVERSE 5, 0
+DROP
 ; expValue
 ; end expValue
 ; colValue
