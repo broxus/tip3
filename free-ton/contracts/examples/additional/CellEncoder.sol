@@ -70,7 +70,9 @@ contract CellEncoder {
     ) {
         TvmBuilder builder;
 
-        builder.store(wid, addr, tokens, ethereum_address);
+        uint32 zero_event_id = 0;
+
+        builder.store(zero_event_id, wid, addr, tokens, ethereum_address);
 
         data = builder.toCell();
     }
@@ -84,10 +86,11 @@ contract CellEncoder {
         uint160 ethereum_address
     ) {
         (
+            , // event_id
             wid,
             addr,
             tokens,
             ethereum_address
-        ) = data.toSlice().decode(int8, uint, uint128, uint160);
+        ) = data.toSlice().decode(uint32, int8, uint, uint128, uint160);
     }
 }
