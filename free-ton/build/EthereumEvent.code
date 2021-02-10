@@ -771,7 +771,7 @@ STSLICER
 STBREFR
 STBREFR
 ENDC
-PUSHINT 64
+PUSHINT 128
 SENDRAWMSG
 ; end function executeProxyCallback
 ; end modifier eventConfirmed
@@ -870,7 +870,7 @@ STSLICER
 STBREFR
 STBREFR
 ENDC
-PUSHINT 64
+PUSHINT 128
 SENDRAWMSG
 ; end function executeProxyCallback
 ; end modifier eventConfirmed

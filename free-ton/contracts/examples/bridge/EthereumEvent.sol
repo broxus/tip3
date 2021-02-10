@@ -128,7 +128,7 @@ contract EthereumEvent is IEvent, ErrorCodes, TransferUtils, CellEncoder {
         status = EthereumEventStatus.Executed;
 
         notifyEventStatusChanged();
-        IProxy(initData.proxyAddress).broxusBridgeCallback{value: 0, flag: 64}(initData, msg.sender);
+        IProxy(initData.proxyAddress).broxusBridgeCallback{value: 0, flag: 128}(initData, msg.sender);
     }
 
     /*
