@@ -444,7 +444,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
         balance -= tokens;
 
         IBurnableTokenRootContract(root_address)
-            .tokensBurned{ value: 0, flag: 128 }(
+            .tokensBurned{ value: 0, flag: 128, bounce: true }(
                 tokens,
                 wallet_public_key,
                 owner_address,
