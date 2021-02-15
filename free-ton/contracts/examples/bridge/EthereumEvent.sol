@@ -20,6 +20,7 @@ contract EthereumEvent is IEvent, ErrorCodes, TransferUtils, CellEncoder {
     address[] confirmRelays;
     address[] rejectRelays;
 
+    address executor;
 
     modifier eventInProcess() {
         require(status == EthereumEventStatus.InProcess, EVENT_NOT_IN_PROGRESS);
@@ -128,7 +129,8 @@ contract EthereumEvent is IEvent, ErrorCodes, TransferUtils, CellEncoder {
         status = EthereumEventStatus.Executed;
 
         notifyEventStatusChanged();
-        IProxy(initData.proxyAddress).broxusBridgeCallback{value: 0, flag: 128}(initData, msg.sender);
+        executor = msg.sender;
+        IProxy(initData.proxyAddress).broxusBridgeCallback{value: 0, flag: 128}(initData, executor);
     }
 
     /*
@@ -170,5 +172,16 @@ contract EthereumEvent is IEvent, ErrorCodes, TransferUtils, CellEncoder {
         ) = decodeEthereumEventData(initData.eventData);
 
         owner_address = address.makeAddrStd(wid, owner_addr);
+    }
+
+    onBounce(TvmSlice body) external {
+        uint32 functionId = body.decode(uint32);
+        if (functionId == tvm.functionId(IProxy.broxusBridgeCallback)) {
+            if (msg.sender == initData.proxyAddress && status == EthereumEventStatus.Executed) {
+                status = EthereumEventStatus.Confirmed;
+                notifyEventStatusChanged();
+                executor.transfer({ flag: 128, value: 0 });
+            }
+        }
     }
 }

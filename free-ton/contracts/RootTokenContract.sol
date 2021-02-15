@@ -9,8 +9,11 @@ import "./interfaces/IBurnTokensCallback.sol";
 import "./interfaces/IRootTokenContract.sol";
 import "./interfaces/ITONTokenWallet.sol";
 import "./TONTokenWallet.sol";
+import "./interfaces/IPausable.sol";
+import "./interfaces/IPausedCallback.sol";
+import "./interfaces/ITransferOwner.sol";
 
-contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IBurnableByRootTokenRootContract {
+contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IBurnableByRootTokenRootContract, IPausable, ITransferOwner {
 
     uint256 static _randomNonce;
 
@@ -18,25 +21,32 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     bytes public static symbol;
     uint8 public static decimals;
     TvmCell public static wallet_code;
-    uint256 static root_public_key;
-    address static root_owner_address;
 
     uint128 public total_supply;
 
-    uint128 public start_gas_balance;
+    uint256 root_public_key;
+    address root_owner_address;
+    uint128 start_gas_balance;
 
     uint8 error_message_sender_is_not_my_owner = 100;
     uint8 error_not_enough_balance = 101;
     uint8 error_message_sender_is_not_good_wallet = 103;
-    uint8 error_define_wallet_public_key_or_owner_address = 106;
+    uint8 error_define_public_key_or_owner_address = 106;
+    uint8 error_paused = 107;
 
-    constructor() public {
-        require((root_public_key != 0 && root_owner_address.value == 0) ||
-                (root_public_key == 0 && root_owner_address.value != 0),
-                error_define_wallet_public_key_or_owner_address);
+    bool public paused;
+
+    constructor(uint256 root_public_key_, address root_owner_address_) public {
+        require((root_public_key_ != 0 && root_owner_address_.value == 0) ||
+                (root_public_key_ == 0 && root_owner_address_.value != 0),
+                error_define_public_key_or_owner_address);
         tvm.accept();
 
+        root_public_key = root_public_key_;
+        root_owner_address = root_owner_address_;
+
         total_supply = 0;
+        paused = false;
 
         start_gas_balance = address(this).balance;
     }
@@ -50,14 +60,15 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
             root_public_key,
             root_owner_address,
             total_supply,
-            start_gas_balance
+            start_gas_balance,
+            paused
         );
     }
 
     function getWalletAddress(uint256 wallet_public_key_, address owner_address_) override external returns (address) {
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
-                error_define_wallet_public_key_or_owner_address);
+                error_define_public_key_or_owner_address);
         address walletAddress = getExpectedWalletAddress(wallet_public_key_, owner_address_);
         return walletAddress;
     }
@@ -72,7 +83,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         require(tokens >= 0);
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
-                error_define_wallet_public_key_or_owner_address);
+                error_define_public_key_or_owner_address);
 
         if(root_owner_address.value == 0) {
             tvm.accept();
@@ -113,7 +124,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     ) override external {
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
-                error_define_wallet_public_key_or_owner_address);
+                error_define_public_key_or_owner_address);
 
         tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); 
 
@@ -176,6 +187,8 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         TvmCell callback_payload
     ) override external {
 
+        require(!paused, error_paused);
+
         address expectedWalletAddress = getExpectedWalletAddress(sender_public_key, sender_address);
 
         require(msg.sender == expectedWalletAddress, error_message_sender_is_not_good_wallet);
@@ -199,7 +212,30 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         root_owner_address.transfer({ value: 0, flag: 128 });
     }
 
-// =============== Support functions ==================
+    // =============== IPausable ==================
+
+    function setPaused(bool value) override external onlyOwner {
+        tvm.accept();
+        paused = value;
+    }
+
+    function sendPausedCallbackTo(uint64 callback_id, address callback_addr) override external {
+        tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        IPausedCallback(callback_addr).pausedCallback{ value: 0, flag: 128 }(callback_id, paused);
+    }
+
+    // =============== Transfer owner ==================
+
+    function transferOwner(uint256 root_public_key_, address root_owner_address_) override external onlyOwner {
+        require((root_public_key_ != 0 && root_owner_address_.value == 0) ||
+                (root_public_key_ == 0 && root_owner_address_.value != 0),
+                error_define_public_key_or_owner_address);
+        tvm.accept();
+        root_public_key = root_public_key_;
+        root_owner_address = root_owner_address_;
+    }
+
+    // =============== Support functions ==================
 
     modifier onlyOwner() {
         require(isOwner(), error_message_sender_is_not_my_owner);

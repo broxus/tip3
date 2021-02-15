@@ -36,14 +36,15 @@ const tonWrapper = new freeton.TonWrapper({
   const RootTokenContractExternalOwner = await freeton.requireContract(tonWrapper, 'RootTokenContract');
   await migration.deploy({
     contract: RootTokenContractExternalOwner,
-    constructorParams: {},
+    constructorParams: {
+        root_public_key_: `0x${tonWrapper.keys[0].public}`,
+        root_owner_address_: ZERO_ADDRESS
+    },
     initParams: {
       name: freeton.utils.stringToBytesArray('FooToken'),
       symbol: freeton.utils.stringToBytesArray('FOO'),
       decimals: 0,
-      wallet_code: TONTokenWallet.code,
-      root_public_key: `0x${tonWrapper.keys[0].public}`,
-      root_owner_address: ZERO_ADDRESS
+      wallet_code: TONTokenWallet.code
     },
     initialBalance: freeton.utils.convertCrystal('17.654', 'nano'),
     _randomNonce: true,
@@ -81,14 +82,15 @@ const tonWrapper = new freeton.TonWrapper({
   const RootTokenContractInternalOwner = await freeton.requireContract(tonWrapper, 'RootTokenContract');
   await migration.deploy({
     contract: RootTokenContractInternalOwner,
-    constructorParams: {},
+    constructorParams: {
+        root_public_key_: `0x0`,
+        root_owner_address_: RootTokenContractInternalOwnerTest.address
+    },
     initParams: {
       name: freeton.utils.stringToBytesArray('BarToken'),
       symbol: freeton.utils.stringToBytesArray('BAR'),
       decimals: 0,
-      wallet_code: TONTokenWallet.code,
-      root_public_key: `0x0`,
-      root_owner_address: RootTokenContractInternalOwnerTest.address
+      wallet_code: TONTokenWallet.code
     },
     initialBalance: freeton.utils.convertCrystal('2.201', 'nano'),
     _randomNonce: true,

@@ -14,9 +14,23 @@ PUSHINT 1
 SETGLOB 6
 ;; end constructor protection
 ; Decode input parameters
+; Decode root_public_key_
+LDU 256
+; Decode root_owner_address_
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
+;; param: root_public_key_
+;; param: root_owner_address_
 ; constructor RootTokenContract
-;; push identifier error_define_wallet_public_key_or_owner_address
+;; push identifier error_define_public_key_or_owner_address
 GETGLOB 22
 DUP
 LESSINT 2
@@ -25,16 +39,16 @@ PUSHCONT {
 	PUSHINT 100
 }
 IF
-;; push identifier root_public_key
-GETGLOB 15
+;; push identifier root_public_key_
+PUSH S2
 NEQINT 0
 ;; short-circuiting &&
 DUP
 PUSHCONT {
 	DROP
 	;; get member value
-	;; push identifier root_owner_address
-	GETGLOB 16
+	;; push identifier root_owner_address_
+	PUSH S1
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -45,16 +59,16 @@ IF
 DUP
 PUSHCONT {
 	DROP
-	;; push identifier root_public_key
-	GETGLOB 15
+	;; push identifier root_public_key_
+	PUSH S2
 	EQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; get member value
-		;; push identifier root_owner_address
-		GETGLOB 16
+		;; push identifier root_owner_address_
+		PUSH S1
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -67,9 +81,29 @@ THROWANYIFNOT
 ACCEPT
 ; expValue
 ; end expValue
-PUSHINT 0
+;; push identifier root_public_key_
+PUSH S1
+; colValue
+SETGLOB 16
+; end colValue
+; expValue
+; end expValue
+;; push identifier root_owner_address_
+DUP
 ; colValue
 SETGLOB 17
+; end colValue
+; expValue
+; end expValue
+PUSHINT 0
+; colValue
+SETGLOB 15
+; end colValue
+; expValue
+; end expValue
+FALSE
+; colValue
+SETGLOB 24
 ; end colValue
 ;; get member balance
 GETPARAM 7
@@ -79,6 +113,7 @@ INDEX 0
 ; colValue
 SETGLOB 18
 ; end colValue
+DROP2
 ; end constructor RootTokenContract
 CALL $c7_to_c4$
 TRUE
@@ -106,14 +141,16 @@ GETGLOB 13
 ;; push identifier wallet_code
 GETGLOB 14
 ;; push identifier root_public_key
-GETGLOB 15
-;; push identifier root_owner_address
 GETGLOB 16
-;; push identifier total_supply
+;; push identifier root_owner_address
 GETGLOB 17
+;; push identifier total_supply
+GETGLOB 15
 ;; push identifier start_gas_balance
 GETGLOB 18
-TUPLE 8
+;; push identifier paused
+GETGLOB 24
+TUPLE 9
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -132,28 +169,30 @@ PUSHCONT {
 	STSLICECONST 0
 	STSLICECONST 1
 	NEWC
-	STSLICECONST xcf792f5e
+	STSLICECONST xbeb3749e
 	PUSH S2
-	UNTUPLE 8
-	BLKSWAP 1, 8
+	UNTUPLE 9
+	BLKSWAP 1, 9
+	PUSH S9
+	STREFR
 	PUSH S8
 	STREFR
 	PUSH S7
-	STREFR
-	PUSH S6
 	STUR 8
-	PUSH S5
+	PUSH S6
 	STREFR
-	PUSH S4
+	PUSH S5
 	STUR 256
-	PUSH S3
+	PUSH S4
 	STSLICER
+	PUSH S3
+	STUR 128
 	PUSH S2
 	STUR 128
 	PUSH S1
-	STUR 128
-	XCHG s8
-	BLKDROP 8
+	STIR 1
+	XCHG s9
+	BLKDROP 9
 	STBREFR
 	ENDC
 	PUSHINT 1
@@ -195,7 +234,7 @@ ENDS
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ; function getWalletAddress
-;; push identifier error_define_wallet_public_key_or_owner_address
+;; push identifier error_define_public_key_or_owner_address
 GETGLOB 22
 DUP
 LESSINT 2
@@ -409,7 +448,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier root_owner_address
-GETGLOB 16
+GETGLOB 17
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -419,7 +458,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier root_owner_address
-	GETGLOB 16
+	GETGLOB 17
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -433,14 +472,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier root_public_key
-	GETGLOB 15
+	GETGLOB 16
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier root_public_key
-		GETGLOB 15
+		GETGLOB 16
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -458,7 +497,7 @@ PUSHINT 0
 ;; >=
 GEQ
 THROWIFNOT 100
-;; push identifier error_define_wallet_public_key_or_owner_address
+;; push identifier error_define_public_key_or_owner_address
 GETGLOB 22
 DUP
 LESSINT 2
@@ -509,7 +548,7 @@ THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier root_owner_address
-GETGLOB 16
+GETGLOB 17
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -629,18 +668,18 @@ SENDRAWMSG
 PUSH S5
 ; expValue
 ;; fetch total_supply
-GETGLOB 17
+GETGLOB 15
 ; end expValue
 SWAP
 ADD
 UFITS 128
 ; colValue
-SETGLOB 17
+SETGLOB 15
 ; end colValue
 ;; if
 ;; get member value
 ;; push identifier root_owner_address
-GETGLOB 16
+GETGLOB 17
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -744,7 +783,7 @@ ENDS
 ;; param: owner_address_
 ;; param: gas_back_address
 ; function deployEmptyWallet
-;; push identifier error_define_wallet_public_key_or_owner_address
+;; push identifier error_define_public_key_or_owner_address
 GETGLOB 22
 DUP
 LESSINT 2
@@ -965,7 +1004,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier root_owner_address
-GETGLOB 16
+GETGLOB 17
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -975,7 +1014,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier root_owner_address
-	GETGLOB 16
+	GETGLOB 17
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -989,14 +1028,14 @@ PUSHCONT {
 	; function isExternalOwner
 	;; return
 	;; push identifier root_public_key
-	GETGLOB 15
+	GETGLOB 16
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier root_public_key
-		GETGLOB 15
+		GETGLOB 16
 		GETGLOB 2
 		;; ==
 		EQUAL
@@ -1011,7 +1050,7 @@ THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier root_owner_address
-GETGLOB 16
+GETGLOB 17
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1040,13 +1079,13 @@ IFELSE
 PUSH S1
 ; expValue
 ;; fetch total_supply
-GETGLOB 17
+GETGLOB 15
 ; end expValue
 SWAP
 ADD
 UFITS 128
 ; colValue
-SETGLOB 17
+SETGLOB 15
 ; end colValue
 ;; Remote call ITONTokenWallet.accept
 ;; push identifier to
@@ -1069,14 +1108,14 @@ SENDRAWMSG
 ;; if
 ;; get member value
 ;; push identifier root_owner_address
-GETGLOB 16
+GETGLOB 17
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 PUSHCONT {
 	;; transfer()
 	;; push identifier root_owner_address
-	GETGLOB 16
+	GETGLOB 17
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -1151,7 +1190,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier root_owner_address
-GETGLOB 16
+GETGLOB 17
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1161,7 +1200,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier root_owner_address
-	GETGLOB 16
+	GETGLOB 17
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -1331,6 +1370,20 @@ ENDS
 ;; param: callback_address
 ;; param: callback_payload
 ; function tokensBurned
+;; push identifier error_paused
+GETGLOB 23
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; !
+;; push identifier paused
+GETGLOB 24
+NOT
+THROWANYIFNOT
 ;; push identifier sender_public_key
 PUSH S3
 ;; push identifier sender_address
@@ -1426,13 +1479,13 @@ RAWRESERVE
 PUSH S5
 ; expValue
 ;; fetch total_supply
-GETGLOB 17
+GETGLOB 15
 ; end expValue
 SWAP
 SUB
 UFITS 128
 ; colValue
-SETGLOB 17
+SETGLOB 15
 ; end colValue
 ;; Remote call IBurnTokensCallback.burnCallback
 ;; push identifier callback_address
@@ -1501,7 +1554,7 @@ IF
 ;; return
 ;; get member value
 ;; push identifier root_owner_address
-GETGLOB 16
+GETGLOB 17
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1511,7 +1564,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier root_owner_address
-	GETGLOB 16
+	GETGLOB 17
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -1526,7 +1579,7 @@ PUSHINT 2
 RAWRESERVE
 ;; transfer()
 ;; push identifier root_owner_address
-GETGLOB 16
+GETGLOB 17
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -1543,6 +1596,307 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
+.globl	setPaused
+.public	setPaused
+.type	setPaused, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode value
+LDI 1
+ENDS
+;; param: value
+; modifier onlyOwner
+;; push identifier error_message_sender_is_not_my_owner
+GETGLOB 19
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+; function isOwner
+;; return
+; function isInternalOwner
+;; return
+;; get member value
+;; push identifier root_owner_address
+GETGLOB 17
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+;; short-circuiting &&
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier root_owner_address
+	GETGLOB 17
+	;; get member sender
+	GETGLOB 9
+	SDEQ
+}
+IF
+; end function isInternalOwner
+;; short-circuiting ||
+DUP
+PUSHCONT {
+	DROP
+	; function isExternalOwner
+	;; return
+	;; push identifier root_public_key
+	GETGLOB 16
+	NEQINT 0
+	;; short-circuiting &&
+	DUP
+	PUSHCONT {
+		DROP
+		;; push identifier root_public_key
+		GETGLOB 16
+		GETGLOB 2
+		;; ==
+		EQUAL
+	}
+	IF
+	; end function isExternalOwner
+}
+IFNOT
+; end function isOwner
+THROWANYIFNOT
+; function setPaused
+ACCEPT
+; expValue
+; end expValue
+;; push identifier value
+DUP
+; colValue
+SETGLOB 24
+; end colValue
+; end function setPaused
+DROP
+; end modifier onlyOwner
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	sendPausedCallbackTo
+.public	sendPausedCallbackTo
+.type	sendPausedCallbackTo, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode callback_id
+LDU 64
+; Decode callback_addr
+LDMSGADDR
+ENDS
+;; param: callback_id
+;; param: callback_addr
+; function sendPausedCallbackTo
+;; push identifier start_gas_balance
+GETGLOB 18
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+MAX
+PUSHINT 2
+RAWRESERVE
+;; Remote call IPausedCallback.pausedCallback
+;; push identifier callback_addr
+DUP
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x7386f0e8
+;; callback_id
+;; push identifier callback_id
+PUSH S2
+STUR 64
+;; value
+;; push identifier paused
+GETGLOB 24
+STIR 1
+ENDC
+PUSHINT 128
+SENDRAWMSG
+DROP2
+; end function sendPausedCallbackTo
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	transferOwner
+.public	transferOwner
+.type	transferOwner, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode root_public_key_
+LDU 256
+; Decode root_owner_address_
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+;; param: root_public_key_
+;; param: root_owner_address_
+; modifier onlyOwner
+;; push identifier error_message_sender_is_not_my_owner
+GETGLOB 19
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+; function isOwner
+;; return
+; function isInternalOwner
+;; return
+;; get member value
+;; push identifier root_owner_address
+GETGLOB 17
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+;; short-circuiting &&
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier root_owner_address
+	GETGLOB 17
+	;; get member sender
+	GETGLOB 9
+	SDEQ
+}
+IF
+; end function isInternalOwner
+;; short-circuiting ||
+DUP
+PUSHCONT {
+	DROP
+	; function isExternalOwner
+	;; return
+	;; push identifier root_public_key
+	GETGLOB 16
+	NEQINT 0
+	;; short-circuiting &&
+	DUP
+	PUSHCONT {
+		DROP
+		;; push identifier root_public_key
+		GETGLOB 16
+		GETGLOB 2
+		;; ==
+		EQUAL
+	}
+	IF
+	; end function isExternalOwner
+}
+IFNOT
+; end function isOwner
+THROWANYIFNOT
+; function transferOwner
+;; push identifier error_define_public_key_or_owner_address
+GETGLOB 22
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; push identifier root_public_key_
+PUSH S2
+NEQINT 0
+;; short-circuiting &&
+DUP
+PUSHCONT {
+	DROP
+	;; get member value
+	;; push identifier root_owner_address_
+	PUSH S1
+	PARSEMSGADDR
+	INDEX 3
+	PLDU 256
+	EQINT 0
+}
+IF
+;; short-circuiting ||
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier root_public_key_
+	PUSH S2
+	EQINT 0
+	;; short-circuiting &&
+	DUP
+	PUSHCONT {
+		DROP
+		;; get member value
+		;; push identifier root_owner_address_
+		PUSH S1
+		PARSEMSGADDR
+		INDEX 3
+		PLDU 256
+		NEQINT 0
+	}
+	IF
+}
+IFNOT
+THROWANYIFNOT
+ACCEPT
+; expValue
+; end expValue
+;; push identifier root_public_key_
+PUSH S1
+; colValue
+SETGLOB 16
+; end colValue
+; expValue
+; end expValue
+;; push identifier root_owner_address_
+DUP
+; colValue
+SETGLOB 17
+; end colValue
+; end function transferOwner
+DROP2
+; end modifier onlyOwner
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
 .globl	c7_to_c4
 .type	c7_to_c4, @function
 GETGLOB 2
@@ -1553,7 +1907,7 @@ STUR 64
 GETGLOB 6
 STUR 1
 NEWC
-GETGLOB 16
+GETGLOB 17
 GETGLOB 18
 XCHG s2
 STSLICE
@@ -1564,24 +1918,28 @@ GETGLOB 12
 GETGLOB 13
 GETGLOB 14
 GETGLOB 15
-GETGLOB 17
+GETGLOB 16
 GETGLOB 19
 GETGLOB 20
 GETGLOB 21
 GETGLOB 22
-REVERSE 13, 0
+GETGLOB 23
+GETGLOB 24
+REVERSE 15, 0
 STBREF
 STU 256
 STREF
 STREF
 STU 8
 STREF
-STU 256
 STU 128
+STU 256
 STU 8
 STU 8
 STU 8
 STU 8
+STU 8
+STI 1
 ENDC
 POP C4
 
@@ -1596,23 +1954,27 @@ LDREFRTOS
 LDMSGADDR
 PLDU 128
 SETGLOB 18
-SETGLOB 16
+SETGLOB 17
 LDU 256
 LDREF
 LDREF
 LDU 8
 LDREF
-LDU 256
 LDU 128
+LDU 256
 LDU 8
 LDU 8
 LDU 8
-PLDU 8
+LDU 8
+LDU 8
+PLDI 1
+SETGLOB 24
+SETGLOB 23
 SETGLOB 22
 SETGLOB 21
 SETGLOB 20
 SETGLOB 19
-SETGLOB 17
+SETGLOB 16
 SETGLOB 15
 SETGLOB 14
 SETGLOB 13
@@ -1639,23 +2001,27 @@ PUSHCONT {
 	LDMSGADDR
 	PLDU 128
 	SETGLOB 18
-	SETGLOB 16
+	SETGLOB 17
 	LDU 256
 	LDREF
 	LDREF
 	LDU 8
 	LDREF
-	LDU 256
 	LDU 128
+	LDU 256
 	LDU 8
 	LDU 8
 	LDU 8
-	PLDU 8
+	LDU 8
+	LDU 8
+	PLDI 1
+	SETGLOB 24
+	SETGLOB 23
 	SETGLOB 22
 	SETGLOB 21
 	SETGLOB 20
 	SETGLOB 19
-	SETGLOB 17
+	SETGLOB 16
 	SETGLOB 15
 	SETGLOB 14
 	SETGLOB 13
@@ -1729,31 +2095,14 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 14
-	; init root_public_key
-	PUSHINT 6
-	PUSH S1
-	PUSHINT 64
-	DICTUGET
-	PUSHCONT {
-		PLDU 256
-	}
-	PUSHCONT {
-		PUSHINT 0
-	}
-	IFELSE
-	SETGLOB 15
-	; init root_owner_address
-	PUSHINT 7
-	PUSH S1
-	PUSHINT 64
-	DICTUGET
-	PUSHCONT {
-		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	}
-	IFNOT
-	SETGLOB 16
 	; init total_supply
 	PUSHINT 0
+	SETGLOB 15
+	; init root_public_key
+	PUSHINT 0
+	SETGLOB 16
+	; init root_owner_address
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	SETGLOB 17
 	; init start_gas_balance
 	PUSHINT 0
@@ -1767,9 +2116,15 @@ PUSHCONT {
 	; init error_message_sender_is_not_good_wallet
 	PUSHINT 0
 	SETGLOB 21
-	; init error_define_wallet_public_key_or_owner_address
+	; init error_define_public_key_or_owner_address
 	PUSHINT 0
 	SETGLOB 22
+	; init error_paused
+	PUSHINT 0
+	SETGLOB 23
+	; init paused
+	PUSHINT 0
+	SETGLOB 24
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -1793,9 +2148,12 @@ PUSHCONT {
 	;; init state var: error_message_sender_is_not_good_wallet
 	PUSHINT 103
 	SETGLOB 21
-	;; init state var: error_define_wallet_public_key_or_owner_address
+	;; init state var: error_define_public_key_or_owner_address
 	PUSHINT 106
 	SETGLOB 22
+	;; init state var: error_paused
+	PUSHINT 107
+	SETGLOB 23
 }
 IFELSE
 
@@ -1852,13 +2210,13 @@ PUSHCONT {
 		DUP
 		; expValue
 		;; fetch total_supply
-		GETGLOB 17
+		GETGLOB 15
 		; end expValue
 		SWAP
 		SUB
 		UFITS 128
 		; colValue
-		SETGLOB 17
+		SETGLOB 15
 		; end colValue
 		DROP
 	}
@@ -2023,7 +2381,7 @@ SETGLOB 7
 .public	total_supply
 .type	total_supply, @function
 CALL $c4_to_c7$
-GETGLOB 17
+GETGLOB 15
 NEWC
 PUSHSLICE xc0000000000000000000000002_
 STSLICER
@@ -2038,19 +2396,19 @@ SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	start_gas_balance
-.public	start_gas_balance
-.type	start_gas_balance, @function
+.globl	paused
+.public	paused
+.type	paused, @function
 CALL $c4_to_c7$
-GETGLOB 18
+GETGLOB 24
 NEWC
 PUSHSLICE xc0000000000000000000000002_
 STSLICER
 STSLICECONST 0
 STSLICECONST 0
-STSLICECONST xf26e937f
+STSLICECONST xb08d66d1
 PUSH S1
-STUR 128
+STIR 1
 ENDC
 PUSHINT 1
 SENDRAWMSG
