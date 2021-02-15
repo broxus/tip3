@@ -410,7 +410,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
             tvm.rawReserve(math.max(target_gas_balance, address(this).balance - msg.value), 2);
             balance -= tokens;
             IBurnableTokenRootContract(root_address)
-                .tokensBurned{ value: 0, flag: 128 }(
+                .tokensBurned{ value: 0, flag: 128, bounce: true }(
                     tokens,
                     wallet_public_key,
                     owner_address,
@@ -421,7 +421,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
             tvm.accept();
             balance -= tokens;
             IBurnableTokenRootContract(root_address)
-                .tokensBurned{ value: grams }(
+                .tokensBurned{ value: grams, bounce: true }(
                     tokens,
                     wallet_public_key,
                     owner_address,
@@ -518,6 +518,8 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
         tvm.accept();
         uint32 functionId = body.decode(uint32);
         if (functionId == tvm.functionId(ITONTokenWallet.internalTransfer)) {
+            balance += body.decode(uint128);
+        } else if (functionId == tvm.functionId(IBurnableTokenRootContract.tokensBurned)) {
             balance += body.decode(uint128);
         }
     }

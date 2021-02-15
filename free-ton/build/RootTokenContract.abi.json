@@ -5,6 +5,8 @@
 		{
 			"name": "constructor",
 			"inputs": [
+				{"name":"root_public_key_","type":"uint256"},
+				{"name":"root_owner_address_","type":"address"}
 			],
 			"outputs": [
 			]
@@ -14,7 +16,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"name","type":"bytes"},{"name":"symbol","type":"bytes"},{"name":"decimals","type":"uint8"},{"name":"wallet_code","type":"cell"},{"name":"root_public_key","type":"uint256"},{"name":"root_owner_address","type":"address"},{"name":"total_supply","type":"uint128"},{"name":"start_gas_balance","type":"uint128"}],"name":"value0","type":"tuple"}
+				{"components":[{"name":"name","type":"bytes"},{"name":"symbol","type":"bytes"},{"name":"decimals","type":"uint8"},{"name":"wallet_code","type":"cell"},{"name":"root_public_key","type":"uint256"},{"name":"root_owner_address","type":"address"},{"name":"total_supply","type":"uint128"},{"name":"start_gas_balance","type":"uint128"},{"name":"paused","type":"bool"}],"name":"value0","type":"tuple"}
 			]
 		},
 		{
@@ -90,6 +92,32 @@
 			]
 		},
 		{
+			"name": "setPaused",
+			"inputs": [
+				{"name":"value","type":"bool"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "sendPausedCallbackTo",
+			"inputs": [
+				{"name":"callback_id","type":"uint64"},
+				{"name":"callback_addr","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "transferOwner",
+			"inputs": [
+				{"name":"root_public_key_","type":"uint256"},
+				{"name":"root_owner_address_","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "name",
 			"inputs": [
 			],
@@ -130,11 +158,11 @@
 			]
 		},
 		{
-			"name": "start_gas_balance",
+			"name": "paused",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"start_gas_balance","type":"uint128"}
+				{"name":"paused","type":"bool"}
 			]
 		}
 	],
@@ -143,9 +171,7 @@
 		{"key":2,"name":"name","type":"bytes"},
 		{"key":3,"name":"symbol","type":"bytes"},
 		{"key":4,"name":"decimals","type":"uint8"},
-		{"key":5,"name":"wallet_code","type":"cell"},
-		{"key":6,"name":"root_public_key","type":"uint256"},
-		{"key":7,"name":"root_owner_address","type":"address"}
+		{"key":5,"name":"wallet_code","type":"cell"}
 	],
 	"events": [
 	]

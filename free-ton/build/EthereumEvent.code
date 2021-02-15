@@ -723,6 +723,13 @@ PUSHINT 2
 SETGLOB 28
 ; end colValue
 CALL $notifyEventStatusChanged_internal$
+; expValue
+; end expValue
+;; get member sender
+GETGLOB 9
+; colValue
+SETGLOB 31
+; end colValue
 ;; Remote call IProxy.broxusBridgeCallback
 ;; get member proxyAddress
 ;; push identifier initData
@@ -765,8 +772,8 @@ PUSH S2
 STREFR
 BLKDROP2 10, 2
 ;; gasBackAddress
-;; get member sender
-GETGLOB 9
+;; push identifier executor
+GETGLOB 31
 STSLICER
 STBREFR
 STBREFR
@@ -822,6 +829,13 @@ PUSHINT 2
 SETGLOB 28
 ; end colValue
 CALL $notifyEventStatusChanged_internal$
+; expValue
+; end expValue
+;; get member sender
+GETGLOB 9
+; colValue
+SETGLOB 31
+; end colValue
 ;; Remote call IProxy.broxusBridgeCallback
 ;; get member proxyAddress
 ;; push identifier initData
@@ -864,8 +878,8 @@ PUSH S2
 STREFR
 BLKDROP2 10, 2
 ;; gasBackAddress
-;; get member sender
-GETGLOB 9
+;; push identifier executor
+GETGLOB 31
 STSLICER
 STBREFR
 STBREFR
@@ -2044,7 +2058,8 @@ GETGLOB 29
 UNTUPLE 2
 GETGLOB 30
 UNTUPLE 2
-PUSHINT 24
+GETGLOB 31
+PUSHINT 25
 PUSHINT 0
 REVX
 STU 16
@@ -2097,6 +2112,7 @@ STU 32
 STDICT
 STU 32
 STDICT
+STSLICE
 ENDC
 POP C4
 
@@ -2147,9 +2163,11 @@ ROTREV
 PAIR
 SETGLOB 29
 LDU 32
-PLDDICT
+LDDICT
+ROTREV
 PAIR
 SETGLOB 30
+SETGLOB 31
 SETGLOB 28
 SETGLOB 26
 SETGLOB 25
@@ -2224,9 +2242,11 @@ PUSHCONT {
 	PAIR
 	SETGLOB 29
 	LDU 32
-	PLDDICT
+	LDDICT
+	ROTREV
 	PAIR
 	SETGLOB 30
+	SETGLOB 31
 	SETGLOB 28
 	SETGLOB 26
 	SETGLOB 25
@@ -2305,6 +2325,9 @@ PUSHCONT {
 	NEWDICT
 	PAIR
 	SETGLOB 30
+	; init executor
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	SETGLOB 31
 	; init _randomNonce
 	PUSHINT 2
 	PUSH S1
@@ -2447,7 +2470,83 @@ LDMSGADDR   ; bounced src tail
 DROP
 SETGLOB 9
 MODPOW2 1
-IFRET
+PUSHCONT {
+	PUSH S1
+	LDSLICE 32
+	NIP
+	PUSHINT 1
+	CALL 1
+	CALL $c4_to_c7$
+	;; param: body
+	; function onBounce
+	; expValue
+	DUP
+	; end expValue
+	LDU 32
+	; colValue
+	POP S2
+	; end colValue
+	;; decl: functionId
+	;; if
+	;; push identifier functionId
+	DUP
+	PUSHINT 1214893325
+	;; ==
+	EQUAL
+	PUSHCONT {
+		;; if
+		;; get member sender
+		GETGLOB 9
+		;; get member proxyAddress
+		;; push identifier initData
+		GETGLOB 27
+		INDEX 8
+		SDEQ
+		;; short-circuiting &&
+		DUP
+		PUSHCONT {
+			DROP
+			;; push identifier status
+			GETGLOB 28
+			;; get member Executed
+			PUSHINT 2
+			;; ==
+			EQUAL
+		}
+		IF
+		PUSHCONT {
+			; expValue
+			; end expValue
+			;; get member Confirmed
+			PUSHINT 1
+			; colValue
+			SETGLOB 28
+			; end colValue
+			CALL $notifyEventStatusChanged_internal$
+			;; transfer()
+			;; push identifier executor
+			GETGLOB 31
+			NEWC
+			STSLICECONST x62_
+			STSLICE
+			PUSHINT 109
+			STZEROES
+			STSLICECONST 0
+			STSLICECONST 0
+			ENDC
+			PUSHINT 128
+			SENDRAWMSG
+		}
+		IF
+		;; end if
+	}
+	IF
+	;; end if
+	DROP2
+	; end function onBounce
+	CALL $c7_to_c4$
+}
+IFJMP
 PUSH S1    ; body
 SEMPTY     ; isEmpty
 IFRET

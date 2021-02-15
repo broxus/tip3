@@ -3909,8 +3909,12 @@ PUSHCONT {
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier root_address
 	GETGLOB 10
+	TRUE
 	NEWC
-	STSLICECONST x62_
+	STSLICECONST x6_
+	STI 1
+	PUSHINT 3
+	STZEROES
 	STSLICE
 	PUSHINT 109
 	STZEROES
@@ -3962,8 +3966,12 @@ PUSHCONT {
 	PUSH S2
 	;; push identifier root_address
 	GETGLOB 10
+	TRUE
 	NEWC
-	STSLICECONST x62_
+	STSLICECONST x6_
+	STI 1
+	PUSHINT 3
+	STZEROES
 	STSLICE
 	SWAP
 	STGRAMS
@@ -4831,7 +4839,36 @@ PUSHCONT {
 		SETGLOB 14
 		; end colValue
 	}
-	IF
+	PUSHCONT {
+		;; if
+		;; push identifier functionId
+		DUP
+		PUSHINT 844108033
+		;; ==
+		EQUAL
+		PUSHCONT {
+			; expValue
+			PUSH S1
+			; end expValue
+			LDU 128
+			; colValue
+			POP S3
+			; end colValue
+			; expValue
+			;; fetch balance
+			GETGLOB 14
+			; end expValue
+			SWAP
+			ADD
+			UFITS 128
+			; colValue
+			SETGLOB 14
+			; end colValue
+		}
+		IF
+		;; end if
+	}
+	IFELSE
 	;; end if
 	DROP2
 	; end function onBounce
