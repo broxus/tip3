@@ -79,6 +79,55 @@ describe('Test Fungible Tokens', function () {
         logger.log(`DeployEmptyWalletFor address: ${DeployEmptyWalletFor.address}`);
     });
 
+    describe('Transfer owner', async function() {
+
+        it(`Transfer root owner from external #0 to #1`, async function() {
+
+            let startRootDetails = await RootTokenContractExternalOwner.runLocal('getDetails', {});
+
+            logger.log('start root_public_key', startRootDetails.root_public_key.toString(16));
+            logger.log('start root_owner_address', startRootDetails.root_owner_address);
+
+            await RootTokenContractExternalOwner.run(
+                'transferOwner',
+                {
+                    root_public_key_: `0x${tonWrapper.keys[1].public}`,
+                    root_owner_address_: ZERO_ADDRESS,
+                },
+                tonWrapper.keys[0]
+            );
+
+            let endRootDetails = await RootTokenContractExternalOwner.runLocal('getDetails', {});
+
+            logger.log('end root_public_key', endRootDetails.root_public_key.toString(16));
+            logger.log('end root_owner_address', endRootDetails.root_owner_address);
+
+        });
+
+        it(`Transfer root owner from external #1 to #0`, async function() {
+
+            let startRootDetails = await RootTokenContractExternalOwner.runLocal('getDetails', {});
+
+            logger.log('start root_public_key', startRootDetails.root_public_key.toString(16));
+            logger.log('start root_owner_address', startRootDetails.root_owner_address);
+
+            await RootTokenContractExternalOwner.run(
+                'transferOwner',
+                {
+                    root_public_key_: `0x${tonWrapper.keys[0].public}`,
+                    root_owner_address_: ZERO_ADDRESS,
+                },
+                tonWrapper.keys[1]
+            );
+
+            let endRootDetails = await RootTokenContractExternalOwner.runLocal('getDetails', {});
+
+            logger.log('end root_public_key', endRootDetails.root_public_key.toString(16));
+            logger.log('end root_owner_address', endRootDetails.root_owner_address);
+
+        });
+    });
+
     describe('Test deploy wallets', async function () {
         it('Internal call RootTokenContractExternalOwner.deployEmptyWallet by DeployEmptyWalletFor', async () => {
             logger.log('######################################################');
