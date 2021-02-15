@@ -1,6 +1,6 @@
 pragma solidity >= 0.6.0;
 
-pragma AbiHeader time;
+pragma AbiHeader pubkey;
 pragma AbiHeader expire;
 
 import "../interfaces/IRootTokenContract.sol";
@@ -97,7 +97,7 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
     }
 
     function isExternalOwner() private inline view returns (bool) {
-        return external_owner_pubkey_ != 0 && external_owner_pubkey_ == tvm.pubkey();
+        return external_owner_pubkey_ != 0 && external_owner_pubkey_ == msg.pubkey();
     }
 
     //only for tests

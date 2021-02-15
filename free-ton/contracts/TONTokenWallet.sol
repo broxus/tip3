@@ -1,6 +1,7 @@
 pragma solidity >= 0.6.0;
-pragma AbiHeader time;
+
 pragma AbiHeader expire;
+pragma AbiHeader pubkey;
 
 import "./interfaces/ITONTokenWallet.sol";
 import "./interfaces/ITONTokenWalletWithNotifiableTransfers.sol";
@@ -494,7 +495,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
     }
 
     function isExternalOwner() private inline view returns (bool) {
-        return wallet_public_key != 0 && wallet_public_key == tvm.pubkey();
+        return wallet_public_key != 0 && wallet_public_key == msg.pubkey();
     }
 
     function getExpectedAddress(uint256 wallet_public_key_, address owner_address_) private inline view returns (address)  {

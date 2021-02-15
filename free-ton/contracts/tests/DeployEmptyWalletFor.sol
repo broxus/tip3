@@ -1,5 +1,5 @@
 pragma solidity >= 0.6.0;
-pragma AbiHeader time;
+
 pragma AbiHeader expire;
 
 import "../interfaces/IRootTokenContract.sol";
