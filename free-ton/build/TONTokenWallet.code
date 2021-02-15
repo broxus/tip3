@@ -5046,6 +5046,43 @@ PUSHCONT {
 		; colValue
 		SETGLOB 14
 		; end colValue
+		;; if
+		;; get member value
+		;; push identifier owner_address
+		GETGLOB 13
+		PARSEMSGADDR
+		INDEX 3
+		PLDU 256
+		PUSHCONT {
+			;; push identifier target_gas_balance
+			GETGLOB 29
+			;; get member balance
+			GETPARAM 7
+			INDEX 0
+			;; get member value
+			CALL $message_balance_macro$
+			;; -
+			SUB
+			UFITS 128
+			MAX
+			PUSHINT 2
+			RAWRESERVE
+			;; transfer()
+			;; push identifier owner_address
+			GETGLOB 13
+			NEWC
+			STSLICECONST x62_
+			STSLICE
+			PUSHINT 109
+			STZEROES
+			STSLICECONST 0
+			STSLICECONST 0
+			ENDC
+			PUSHINT 128
+			SENDRAWMSG
+		}
+		IF
+		;; end if
 	}
 	PUSHCONT {
 		;; if
@@ -5072,6 +5109,43 @@ PUSHCONT {
 			; colValue
 			SETGLOB 14
 			; end colValue
+			;; if
+			;; get member value
+			;; push identifier owner_address
+			GETGLOB 13
+			PARSEMSGADDR
+			INDEX 3
+			PLDU 256
+			PUSHCONT {
+				;; push identifier target_gas_balance
+				GETGLOB 29
+				;; get member balance
+				GETPARAM 7
+				INDEX 0
+				;; get member value
+				CALL $message_balance_macro$
+				;; -
+				SUB
+				UFITS 128
+				MAX
+				PUSHINT 2
+				RAWRESERVE
+				;; transfer()
+				;; push identifier owner_address
+				GETGLOB 13
+				NEWC
+				STSLICECONST x62_
+				STSLICE
+				PUSHINT 109
+				STZEROES
+				STSLICECONST 0
+				STSLICECONST 0
+				ENDC
+				PUSHINT 128
+				SENDRAWMSG
+			}
+			IF
+			;; end if
 		}
 		IF
 		;; end if
