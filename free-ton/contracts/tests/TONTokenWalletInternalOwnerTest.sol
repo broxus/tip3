@@ -1,7 +1,7 @@
 pragma solidity >= 0.6.0;
 
-pragma AbiHeader time;
 pragma AbiHeader expire;
+pragma AbiHeader pubkey;
 
 import "../interfaces/ITokensBurner.sol";
 import "../interfaces/IRootTokenContract.sol";
@@ -99,6 +99,6 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
     }
 
     function isExternalOwner() private inline view returns (bool) {
-        return external_owner_pubkey_ != 0 && external_owner_pubkey_ == tvm.pubkey();
+        return external_owner_pubkey_ != 0 && external_owner_pubkey_ == msg.pubkey();
     }
 }

@@ -33,7 +33,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode token_wallet
-LDMSGADDR
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ; Decode 
 LDMSGADDRQ
 PUSHCONT {
@@ -211,7 +219,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode wallet1
-LDMSGADDR
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ; Decode wallet2
 LDMSGADDRQ
 PUSHCONT {
@@ -246,7 +262,14 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
-	GETGLOB 2
+	GETGLOB 5
+	DUP
+	ISNULL
+	PUSHCONT {
+		DROP
+		PUSHINT 0
+	}
+	IF
 	;; ==
 	EQUAL
 }
@@ -337,9 +360,25 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode tokens
-LDU 128
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
 ; Decode grams
-LDU 128
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
 ; Decode burner_address
 LDMSGADDRQ
 PUSHCONT {
@@ -397,7 +436,14 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
-	GETGLOB 2
+	GETGLOB 5
+	DUP
+	ISNULL
+	PUSHCONT {
+		DROP
+		PUSHINT 0
+	}
+	IF
 	;; ==
 	EQUAL
 }
@@ -477,9 +523,25 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode tokens
-LDU 128
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
 ; Decode grams
-LDU 128
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
 ; Decode from
 LDMSGADDRQ
 PUSHCONT {
@@ -537,7 +599,14 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
-	GETGLOB 2
+	GETGLOB 5
+	DUP
+	ISNULL
+	PUSHCONT {
+		DROP
+		PUSHINT 0
+	}
+	IF
 	;; ==
 	EQUAL
 }
@@ -602,7 +671,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode root_address
-LDMSGADDR
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ; Decode grams
 LDUQ 128
 PUSHCONT {
@@ -637,7 +714,14 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
-	GETGLOB 2
+	GETGLOB 5
+	DUP
+	ISNULL
+	PUSHCONT {
+		DROP
+		PUSHINT 0
+	}
+	IF
 	;; ==
 	EQUAL
 }
@@ -697,7 +781,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode dest
-LDMSGADDR
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ; Decode value
 LDUQ 128
 PUSHCONT {
@@ -758,7 +850,14 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
-	GETGLOB 2
+	GETGLOB 5
+	DUP
+	ISNULL
+	PUSHCONT {
+		DROP
+		PUSHINT 0
+	}
+	IF
 	;; ==
 	EQUAL
 }
@@ -831,7 +930,14 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
-	GETGLOB 2
+	GETGLOB 5
+	DUP
+	ISNULL
+	PUSHCONT {
+		DROP
+		PUSHINT 0
+	}
+	IF
 	;; ==
 	EQUAL
 }
@@ -1044,12 +1150,30 @@ PUSHCONT {
 	LDSLICEX ; signatureSlice msgSlice
 	DUP      ; signatureSlice msgSlice msgSlice
 	HASHSU   ; signatureSlice msgSlice hashMsgSlice
-	ROT
-	GETGLOB 2
+	SWAP  ; signatureSlice hashMsgSlice msgSlice
+	LDU 1 ; signatureSlice hashMsgSlice havePubkey msgSlice
+	SWAP  ; signatureSlice hashMsgSlice msgSlice havePubkey
+	PUSHCONT {
+		LDU 256       ; signatureSlice hashMsgSlice pubkey msgSlice
+		XCHG s3
+		SWAP
+	}
+	PUSHCONT {
+		XCHG s2
+		GETGLOB 2
+	}
+	IFELSE
+	DUP
+	SETGLOB 5
 	CHKSIGNU      ; msgSlice isSigned
 	THROWIFNOT 40 ; msgSlice
 }
-IF
+PUSHCONT {
+	LDU 1      ; havePubkey msgSlice
+	SWAP       ; msgSlice havePubkey
+	THROWIF 58 ; msgSlice
+}
+IFELSE
 LDU 64                         ; timestamp msgSlice
 SWAP                           ; msgSlice timestamp
 CALL $replay_protection_macro$ ; msgSlice

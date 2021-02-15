@@ -1,6 +1,6 @@
 pragma solidity >= 0.6.0;
 
-pragma AbiHeader time;
+pragma AbiHeader pubkey;
 pragma AbiHeader expire;
 
 import '../interfaces/IProxy.sol';
@@ -271,7 +271,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausabl
     }
 
     function isExternalOwner() private inline view returns (bool) {
-        return external_owner_pubkey != 0 && external_owner_pubkey == tvm.pubkey();
+        return external_owner_pubkey != 0 && external_owner_pubkey == msg.pubkey();
     }
 
     function getExpectedEventAddress(IEvent.EthereumEventInitData initData) private inline view returns (address)  {

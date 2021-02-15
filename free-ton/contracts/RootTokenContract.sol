@@ -1,6 +1,6 @@
 pragma solidity >= 0.6.0;
-pragma AbiHeader time;
 pragma AbiHeader expire;
+pragma AbiHeader pubkey;
 
 import "./interfaces/IBurnableByRootTokenWallet.sol";
 import "./interfaces/IBurnableTokenRootContract.sol";
@@ -256,7 +256,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     }
 
     function isExternalOwner() private inline view returns (bool) {
-        return root_public_key != 0 && root_public_key == tvm.pubkey();
+        return root_public_key != 0 && root_public_key == msg.pubkey();
     }
 
     function getExpectedWalletAddress(uint256 wallet_public_key_, address owner_address_) private inline view returns (address)  {

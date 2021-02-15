@@ -15,7 +15,15 @@ SETGLOB 6
 ;; end constructor protection
 ; Decode input parameters
 ; Decode external_owner_pubkey_
-LDU 256
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
 ; Decode internal_owner_address_
 LDMSGADDRQ
 PUSHCONT {
@@ -140,14 +148,47 @@ IF
 ; Decode eventData
 ;; decode struct EthereumEventInitData eventData
 ;; decode EthereumEventInitData.eventTransaction
-LDU 256
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
 ;; decode EthereumEventInitData.eventIndex
-LDU 32
+LDUQ 32
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 32
+}
+IFNOT
 ;; decode EthereumEventInitData.eventData
 ;; decode TvmCell
+DUP
+SREFS
+EQINT 1
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
 LDREF
 ;; decode EthereumEventInitData.eventBlockNumber
-LDU 32
+LDUQ 32
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 32
+}
+IFNOT
 ;; decode EthereumEventInitData.eventBlock
 LDUQ 256
 PUSHCONT {
@@ -782,9 +823,29 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode tokens
-LDU 128
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
 ; Decode payload
 ;; decode TvmCell
+DUP
+SBITREFS
+EQINT 1
+SWAP
+EQINT 0
+AND
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
 LDREF
 ; Decode 
 LDUQ 256
@@ -967,9 +1028,25 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode tokens
-LDU 128
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
 ; Decode ethereum_address
-LDU 160
+LDUQ 160
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 160
+}
+IFNOT
 ENDS
 ;; param: tokens
 ;; param: ethereum_address
@@ -1099,7 +1176,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode tokens
-LDU 128
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
 ; Decode callback_address
 LDMSGADDRQ
 PUSHCONT {
@@ -1270,7 +1355,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -1437,7 +1529,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -1494,7 +1593,15 @@ IF
 ; Decode callback_id
 LDU 64
 ; Decode callback_addr
-LDMSGADDR
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
 ;; param: callback_id
 ;; param: callback_addr
@@ -1551,7 +1658,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode external_owner_pubkey_
-LDU 256
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
 ; Decode internal_owner_address_
 LDMSGADDRQ
 PUSHCONT {
@@ -1613,7 +1728,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -1705,7 +1827,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode target
-LDMSGADDR
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ; Decode external_owner_pubkey_
 LDUQ 256
 PUSHCONT {
@@ -1778,7 +1908,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -1883,7 +2020,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode value
-LDMSGADDR
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
 ;; param: value
 ; modifier onlyOwner
@@ -1934,7 +2079,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -1979,7 +2131,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode value
-LDU 256
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
 ENDS
 ;; param: value
 ; modifier onlyOwner
@@ -2030,7 +2190,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -2071,7 +2238,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode value
-LDMSGADDR
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
 ;; param: value
 ; modifier onlyOwner
@@ -2122,7 +2297,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -2167,7 +2349,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode value
-LDU 128
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
 ENDS
 ;; param: value
 ; modifier onlyOwner
@@ -2218,7 +2408,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -2255,7 +2452,15 @@ PUSHCONT {
 IF
 ; Decode input parameters
 ; Decode value
-LDU 128
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
 ENDS
 ;; param: value
 ; modifier onlyOwner
@@ -2306,7 +2511,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -2395,7 +2607,14 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 12
-		GETGLOB 2
+		GETGLOB 5
+		DUP
+		ISNULL
+		PUSHCONT {
+			DROP
+			PUSHINT 0
+		}
+		IF
 		;; ==
 		EQUAL
 	}
@@ -2758,12 +2977,30 @@ PUSHCONT {
 	LDSLICEX ; signatureSlice msgSlice
 	DUP      ; signatureSlice msgSlice msgSlice
 	HASHSU   ; signatureSlice msgSlice hashMsgSlice
-	ROT
-	GETGLOB 2
+	SWAP  ; signatureSlice hashMsgSlice msgSlice
+	LDU 1 ; signatureSlice hashMsgSlice havePubkey msgSlice
+	SWAP  ; signatureSlice hashMsgSlice msgSlice havePubkey
+	PUSHCONT {
+		LDU 256       ; signatureSlice hashMsgSlice pubkey msgSlice
+		XCHG s3
+		SWAP
+	}
+	PUSHCONT {
+		XCHG s2
+		GETGLOB 2
+	}
+	IFELSE
+	DUP
+	SETGLOB 5
 	CHKSIGNU      ; msgSlice isSigned
 	THROWIFNOT 40 ; msgSlice
 }
-IF
+PUSHCONT {
+	LDU 1      ; havePubkey msgSlice
+	SWAP       ; msgSlice havePubkey
+	THROWIF 58 ; msgSlice
+}
+IFELSE
 LDU 64                         ; timestamp msgSlice
 SWAP                           ; msgSlice timestamp
 CALL $replay_protection_macro$ ; msgSlice
