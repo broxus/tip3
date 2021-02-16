@@ -125,7 +125,7 @@ contract EthereumEvent is IEvent, ErrorCodes, TransferUtils, CellEncoder {
         @dev May be called only once, because status will be changed to Executed
     */
     function executeProxyCallback() public eventConfirmed {
-        require(msg.value > 1 ton, TOO_LOW_MSG_VALUE);
+        require(msg.value >= 1 ton, TOO_LOW_MSG_VALUE);
         status = EthereumEventStatus.Executed;
 
         notifyEventStatusChanged();

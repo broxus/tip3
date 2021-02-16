@@ -712,8 +712,8 @@ IF
 ;; get member value
 CALL $message_balance_macro$
 PUSHINT 1000000000
-;; >
-GREATER
+;; >=
+GEQ
 THROWANYIFNOT
 ; expValue
 ; end expValue
@@ -818,8 +818,8 @@ IF
 ;; get member value
 CALL $message_balance_macro$
 PUSHINT 1000000000
-;; >
-GREATER
+;; >=
+GEQ
 THROWANYIFNOT
 ; expValue
 ; end expValue
