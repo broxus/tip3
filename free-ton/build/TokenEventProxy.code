@@ -508,12 +508,12 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x31c32499
+STSLICECONST x66211c6f
 ;; tokens
 ;; push identifier tokens
 PUSH S6
 STUR 128
-;; grams
+;; deploy_grams
 ;; push identifier settings_deploy_wallet_grams
 GETGLOB 18
 STUR 128
@@ -782,12 +782,12 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x31c32499
+STSLICECONST x66211c6f
 ;; tokens
 ;; push identifier tokens
 PUSH S6
 STUR 128
-;; grams
+;; deploy_grams
 ;; push identifier settings_deploy_wallet_grams
 GETGLOB 18
 STUR 128
@@ -867,7 +867,17 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode wallet_address
+; Decode 
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -882,7 +892,8 @@ ENDS
 ;; param: payload
 ;; param: 
 ;; param: sender_address
-;; param: wallet_address
+;; param: 
+;; param: send_gas_to
 ; modifier onlyRoot
 ;; push identifier error_message_sender_is_not_my_root
 GETGLOB 23
@@ -918,7 +929,7 @@ MAX
 PUSHINT 2
 RAWRESERVE
 ;; push identifier tokens
-PUSH S4
+PUSH S5
 ; expValue
 ;; fetch burned_count
 GETGLOB 20
@@ -930,7 +941,7 @@ UFITS 128
 SETGLOB 20
 ; end colValue
 ;; push identifier payload
-PUSH S3
+PUSH S4
 CTOS
 LDU 160
 ; colValue
@@ -946,21 +957,21 @@ STSLICECONST x67ce8b37
 ;; wid
 ;; get member wid
 ;; push identifier sender_address
-PUSH S3
+PUSH S4
 PARSEMSGADDR
 INDEX 2
 STIR 8
 ;; addr
 ;; get member value
 ;; push identifier sender_address
-PUSH S3
+PUSH S4
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 STUR 256
 ;; tokens
 ;; push identifier tokens
-PUSH S6
+PUSH S7
 STUR 128
 ;; ethereum_address
 ;; push identifier ethereum_address
@@ -969,49 +980,22 @@ STUR 160
 ENDC
 PUSHINT 1
 SENDRAWMSG
-;; if
-;; get member value
-;; push identifier sender_address
-PUSH S2
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-EQINT 0
-PUSHCONT {
-	;; transfer()
-	;; push identifier wallet_address
-	PUSH S1
-	NEWC
-	STSLICECONST x62_
-	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	ENDC
-	PUSHINT 128
-	SENDRAWMSG
-}
-PUSHCONT {
-	;; transfer()
-	;; push identifier sender_address
-	PUSH S2
-	NEWC
-	STSLICECONST x62_
-	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	ENDC
-	PUSHINT 128
-	SENDRAWMSG
-}
-IFELSE
-;; end if
+;; transfer()
+;; push identifier send_gas_to
+PUSH S1
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 0
+ENDC
+PUSHINT 128
+SENDRAWMSG
 DROP
 ; end function burnCallback
-BLKDROP 5
+BLKDROP 6
 ; end modifier onlyRoot
 CALL $c7_to_c4$
 TRUE
@@ -1068,10 +1052,6 @@ THROWANYIFNOT
 ;; push identifier tokens
 PUSH S1
 GTINT 0
-THROWIFNOT 100
-;; push identifier ethereum_address
-DUP
-NEQINT 20
 THROWIFNOT 100
 ;; get member value
 ;; push identifier token_root_address
@@ -1136,7 +1116,7 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x6a63575c
+STSLICECONST x1df868a9
 ;; tokens
 ;; push identifier tokens
 PUSH S5
@@ -1145,13 +1125,19 @@ STUR 128
 ;; get member sender
 GETGLOB 9
 STSLICER
+;; send_gas_to
+;; get member sender
+GETGLOB 9
+STSLICER
+NEWC
 ;; callback_address
 MYADDR
 STSLICER
 ;; callback_payload
 ;; push identifier callback_payload
-PUSH S2
+PUSH S3
 STREFR
+STBREFR
 STBREFR
 ENDC
 PUSHINT 128
@@ -1185,6 +1171,16 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode send_gas_to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ; Decode callback_address
 LDMSGADDRQ
 PUSHCONT {
@@ -1200,6 +1196,7 @@ IFNOT
 LDREF
 ENDS
 ;; param: tokens
+;; param: send_gas_to
 ;; param: callback_address
 ;; param: callback_payload
 ; function burnMyTokens
@@ -1218,7 +1215,7 @@ GETGLOB 21
 NOT
 THROWANYIFNOT
 ;; push identifier tokens
-PUSH S2
+PUSH S3
 GTINT 0
 THROWIFNOT 100
 ;; get member value
@@ -1269,28 +1266,34 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x6a63575c
+STSLICECONST x1df868a9
 ;; tokens
 ;; push identifier tokens
-PUSH S4
+PUSH S5
 STUR 128
 ;; sender_address
 ;; get member sender
 GETGLOB 9
 STSLICER
+;; send_gas_to
+;; push identifier send_gas_to
+PUSH S4
+STSLICER
+NEWC
 ;; callback_address
 ;; push identifier callback_address
-PUSH S3
+PUSH S4
 STSLICER
 ;; callback_payload
 ;; push identifier callback_payload
-PUSH S2
+PUSH S3
 STREFR
+STBREFR
 STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-BLKDROP 3
+BLKDROP 4
 ; end function burnMyTokens
 CALL $c7_to_c4$
 TRUE
@@ -1306,7 +1309,18 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
+; Decode to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
+;; param: to
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 22
@@ -1374,7 +1388,7 @@ IFNOT
 THROWANYIFNOT
 ; function withdrawExtraGasFromTokenRoot
 ACCEPT
-;; Remote call IRootTokenContract.withdrawExtraGas
+;; Remote call ISendSurplusGas.sendSurplusGas
 ;; push identifier token_root_address
 GETGLOB 16
 NEWC
@@ -1384,82 +1398,17 @@ PUSHSLICE x3989680000000000000000000000000004_
 STSLICER
 STSLICECONST 0
 STSLICECONST 0
-STSLICECONST x159edb3d
+STSLICECONST x20ebc76d
+;; to
+;; push identifier to
+PUSH S1
+STSLICER
 ENDC
 PUSHINT 1
 SENDRAWMSG
 ; end function withdrawExtraGasFromTokenRoot
+DROP
 ; end modifier onlyOwner
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	withdrawExtraGas
-.public	withdrawExtraGas
-.type	withdrawExtraGas, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; modifier onlyInternalOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 22
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-; function isInternalOwner
-;; return
-;; get member value
-;; push identifier internal_owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-;; short-circuiting &&
-DUP
-PUSHCONT {
-	DROP
-	;; push identifier internal_owner_address
-	GETGLOB 13
-	;; get member sender
-	GETGLOB 9
-	SDEQ
-}
-IF
-; end function isInternalOwner
-THROWANYIFNOT
-; function withdrawExtraGas
-;; push identifier start_gas_balance
-GETGLOB 19
-PUSHINT 2
-RAWRESERVE
-;; transfer()
-;; push identifier internal_owner_address
-GETGLOB 13
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 0
-ENDC
-PUSHINT 128
-SENDRAWMSG
-; end function withdrawExtraGas
-; end modifier onlyInternalOwner
 PUSHCONT {
 	CALL $c7_to_c4$
 }

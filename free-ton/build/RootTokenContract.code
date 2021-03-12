@@ -398,6 +398,161 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
+.globl	sendExpectedWalletAddress
+.public	sendExpectedWalletAddress
+.type	sendExpectedWalletAddress, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode wallet_public_key_
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+; Decode owner_address_
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+;; param: wallet_public_key_
+;; param: owner_address_
+;; param: to
+; function sendExpectedWalletAddress
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+PUSHINT 2
+RAWRESERVE
+;; push identifier wallet_public_key_
+PUSH S2
+;; push identifier owner_address_
+PUSH S2
+;; param: wallet_public_key_
+;; param: owner_address_
+; function getExpectedWalletAddress
+NEWDICT
+;; push identifier wallet_public_key_
+PUSH S2
+NEWC
+STU 256
+PUSHINT 0
+ROT
+PUSHINT 64
+DICTUSETB
+MYADDR
+PUSHINT 1
+ROT
+PUSHINT 64
+DICTUSET
+;; push identifier wallet_code
+GETGLOB 14
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSETREF
+;; push identifier wallet_public_key_
+PUSH S2
+NEWC
+STU 256
+PUSHINT 3
+ROT
+PUSHINT 64
+DICTUSETB
+;; push identifier owner_address_
+PUSH S1
+PUSHINT 4
+ROT
+PUSHINT 64
+DICTUSET
+NEWC
+STDICT
+ENDC
+;; push identifier wallet_code
+GETGLOB 14
+NEWC
+STSLICECONST x2_
+STOPTREF
+STOPTREF
+STZERO
+ENDC
+;; decl: stateInit
+;; return
+;; push identifier stateInit
+DUP
+HASHCU
+NEWC
+STSLICECONST x801_
+STU 256
+ENDC
+CTOS
+XCHG s3
+BLKDROP 3
+; end function getExpectedWalletAddress
+;; decl: wallet
+;; Remote call IExpectedWalletAddressCallback.expectedWalletAddressCallback
+;; push identifier to
+PUSH S1
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x1173795c
+;; wallet
+;; push identifier wallet
+PUSH S2
+STSLICER
+;; wallet_public_key
+;; push identifier wallet_public_key_
+PUSH S5
+STUR 256
+;; owner_address
+;; push identifier owner_address_
+PUSH S4
+STSLICER
+STBREFR
+ENDC
+PUSHINT 128
+SENDRAWMSG
+BLKDROP 4
+; end function sendExpectedWalletAddress
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
 .globl	deployWallet
 .public	deployWallet
 .type	deployWallet, @function
@@ -418,7 +573,7 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode grams
+; Decode deploy_grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -460,7 +615,7 @@ PUSHCONT {
 IFNOT
 ENDS
 ;; param: tokens
-;; param: grams
+;; param: deploy_grams
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ;; param: gas_back_address
@@ -664,7 +819,7 @@ STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-;; push identifier grams
+;; push identifier deploy_grams
 PUSH S5
 PUSH S1
 NEWC
@@ -766,6 +921,32 @@ PUSHCONT {
 }
 IF
 ;; end if
+;; return
+;; emitting 1 value(s)
+PUSH S6
+EQINT -1
+PUSHCONT {
+	PUSH S8
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xe6211c6f
+	PUSH S1
+	STSLICER
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+}
+IF
 DROP
 ; end function deployWallet
 BLKDROP 5
@@ -784,7 +965,7 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
-; Decode grams
+; Decode deploy_grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -825,7 +1006,7 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-;; param: grams
+;; param: deploy_grams
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ;; param: gas_back_address
@@ -878,8 +1059,6 @@ PUSHCONT {
 }
 IFNOT
 THROWANYIFNOT
-;; push identifier start_gas_balance
-GETGLOB 18
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -888,7 +1067,6 @@ CALL $message_balance_macro$
 ;; -
 SUB
 UFITS 128
-MAX
 PUSHINT 2
 RAWRESERVE
 NEWDICT
@@ -943,7 +1121,7 @@ STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-;; push identifier grams
+;; push identifier deploy_grams
 PUSH S5
 PUSH S1
 NEWC
@@ -963,11 +1141,11 @@ ENDC
 PUSHINT 1
 SENDRAWMSG
 NIP
-DROP
+;; decl: wallet
 ;; if
 ;; get member value
 ;; push identifier gas_back_address
-DUP
+PUSH S1
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -975,7 +1153,7 @@ NEQINT 0
 PUSHCONT {
 	;; transfer()
 	;; push identifier gas_back_address
-	DUP
+	PUSH S1
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -1004,7 +1182,35 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
+;; return
+XCHG s4
 BLKDROP 4
+;; emitting 1 value(s)
+PUSH S1
+EQINT -1
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xd42b1672
+	PUSH S1
+	STSLICER
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+}
+IF
+DROP
 ; end function deployEmptyWallet
 CALL $c7_to_c4$
 TRUE
@@ -1040,9 +1246,20 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode gas_back_address
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
 ;; param: tokens
 ;; param: to
+;; param: gas_back_address
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 19
@@ -1138,7 +1355,7 @@ PUSHCONT {
 IFELSE
 ;; end if
 ;; push identifier tokens
-PUSH S1
+PUSH S2
 ; expValue
 ;; fetch total_supply
 GETGLOB 15
@@ -1151,7 +1368,7 @@ SETGLOB 15
 ; end colValue
 ;; Remote call ITONTokenWallet.accept
 ;; push identifier to
-DUP
+PUSH S1
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -1162,7 +1379,7 @@ STSLICECONST 0
 STSLICECONST x0b3fcf57
 ;; tokens
 ;; push identifier tokens
-PUSH S2
+PUSH S3
 STUR 128
 ENDC
 PUSHINT 1
@@ -1175,24 +1392,51 @@ PARSEMSGADDR
 INDEX 3
 PLDU 256
 PUSHCONT {
-	;; transfer()
-	;; push identifier root_owner_address
-	GETGLOB 17
-	NEWC
-	STSLICECONST x62_
-	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	ENDC
-	PUSHINT 128
-	SENDRAWMSG
+	;; if
+	;; get member value
+	;; push identifier gas_back_address
+	DUP
+	PARSEMSGADDR
+	INDEX 3
+	PLDU 256
+	NEQINT 0
+	PUSHCONT {
+		;; transfer()
+		;; push identifier gas_back_address
+		DUP
+		NEWC
+		STSLICECONST x62_
+		STSLICE
+		PUSHINT 109
+		STZEROES
+		STSLICECONST 0
+		STSLICECONST 0
+		ENDC
+		PUSHINT 128
+		SENDRAWMSG
+	}
+	PUSHCONT {
+		;; transfer()
+		;; push identifier root_owner_address
+		GETGLOB 17
+		NEWC
+		STSLICECONST x62_
+		STSLICE
+		PUSHINT 109
+		STZEROES
+		STSLICECONST 0
+		STSLICECONST 0
+		ENDC
+		PUSHINT 128
+		SENDRAWMSG
+	}
+	IFELSE
+	;; end if
 }
 IF
 ;; end if
 ; end function mint
-DROP2
+BLKDROP 3
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE
@@ -1228,6 +1472,16 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode send_gas_to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ; Decode callback_address
 LDMSGADDRQ
 PUSHCONT {
@@ -1244,6 +1498,7 @@ LDREF
 ENDS
 ;; param: tokens
 ;; param: sender_address
+;; param: send_gas_to
 ;; param: callback_address
 ;; param: callback_payload
 ; modifier onlyInternalOwner
@@ -1289,9 +1544,12 @@ SUB
 UFITS 128
 PUSHINT 2
 RAWRESERVE
+;; push identifier send_gas_to
+PUSH S2
+;; decl: send_gas_to_
 PUSHINT 0
 ;; push identifier sender_address
-PUSH S3
+PUSH S5
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ; function getExpectedWalletAddress
@@ -1354,6 +1612,24 @@ XCHG s3
 BLKDROP 3
 ; end function getExpectedWalletAddress
 ;; decl: expectedWalletAddress
+;; if
+;; get member value
+;; push identifier send_gas_to
+PUSH S4
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+PUSHCONT {
+	; expValue
+	; end expValue
+	;; push identifier sender_address
+	PUSH S5
+	; colValue
+	POP S2
+	; end colValue
+}
+IFNOT
+;; end if
 ;; Remote call IBurnableByRootTokenWallet.burnByRoot
 ;; push identifier expectedWalletAddress
 DUP
@@ -1363,26 +1639,32 @@ STSLICE
 PUSHINT 109
 STZEROES
 STSLICECONST 0
-STSLICECONST 0
-STSLICECONST x1165def5
+STSLICECONST 1
+NEWC
+STSLICECONST x0c2ff20d
 ;; tokens
 ;; push identifier tokens
-PUSH S5
+PUSH S8
 STUR 128
+;; send_gas_to
+;; push identifier send_gas_to_
+PUSH S3
+STSLICER
 ;; callback_address
 ;; push identifier callback_address
-PUSH S3
+PUSH S5
 STSLICER
 ;; callback_payload
 ;; push identifier callback_payload
-PUSH S2
+PUSH S4
 STREFR
+STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-DROP
+DROP2
 ; end function proxyBurn
-BLKDROP 4
+BLKDROP 5
 ; end modifier onlyInternalOwner
 CALL $c7_to_c4$
 TRUE
@@ -1428,6 +1710,16 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode send_gas_to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ; Decode callback_address
 LDMSGADDRQ
 PUSHCONT {
@@ -1445,6 +1737,7 @@ ENDS
 ;; param: tokens
 ;; param: sender_public_key
 ;; param: sender_address
+;; param: send_gas_to
 ;; param: callback_address
 ;; param: callback_payload
 ; function tokensBurned
@@ -1463,9 +1756,9 @@ GETGLOB 24
 NOT
 THROWANYIFNOT
 ;; push identifier sender_public_key
-PUSH S3
+PUSH S4
 ;; push identifier sender_address
-PUSH S3
+PUSH S4
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ; function getExpectedWalletAddress
@@ -1554,7 +1847,7 @@ UFITS 128
 PUSHINT 2
 RAWRESERVE
 ;; push identifier tokens
-PUSH S5
+PUSH S6
 ; expValue
 ;; fetch total_supply
 GETGLOB 15
@@ -1565,51 +1858,84 @@ UFITS 128
 ; colValue
 SETGLOB 15
 ; end colValue
-;; Remote call IBurnTokensCallback.burnCallback
+;; if
+;; get member value
 ;; push identifier callback_address
 PUSH S2
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 1
-NEWC
-STSLICECONST x71dd2774
-;; tokens
-;; push identifier tokens
-PUSH S7
-STUR 128
-;; payload
-;; push identifier callback_payload
-PUSH S3
-STREFR
-;; sender_public_key
-;; push identifier sender_public_key
-PUSH S6
-STUR 256
-;; sender_address
-;; push identifier sender_address
-PUSH S5
-STSLICER
-;; wallet_address
-;; push identifier expectedWalletAddress
-PUSH S2
-STSLICER
-STBREFR
-ENDC
-PUSHINT 128
-SENDRAWMSG
-BLKDROP 6
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+EQINT 0
+PUSHCONT {
+	;; transfer()
+	;; push identifier send_gas_to
+	PUSH S3
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+PUSHCONT {
+	;; Remote call IBurnTokensCallback.burnCallback
+	;; push identifier callback_address
+	PUSH S2
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 1
+	NEWC
+	STSLICECONST x3cc9103e
+	;; tokens
+	;; push identifier tokens
+	PUSH S8
+	STUR 128
+	;; payload
+	;; push identifier callback_payload
+	PUSH S3
+	STREFR
+	;; sender_public_key
+	;; push identifier sender_public_key
+	PUSH S7
+	STUR 256
+	;; sender_address
+	;; push identifier sender_address
+	PUSH S6
+	STSLICER
+	;; wallet_address
+	;; push identifier expectedWalletAddress
+	PUSH S2
+	STSLICER
+	NEWC
+	;; send_gas_to
+	;; push identifier send_gas_to
+	PUSH S6
+	STSLICER
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+IFELSE
+;; end if
+BLKDROP 7
 ; end function tokensBurned
 CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
-.globl	withdrawExtraGas
-.public	withdrawExtraGas
-.type	withdrawExtraGas, @function
+.globl	sendSurplusGas
+.public	sendSurplusGas
+.type	sendSurplusGas, @function
 GETGLOB 1
 ISNULL
 PUSHCONT {
@@ -1617,7 +1943,18 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
+; Decode to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
+;; param: to
 ; modifier onlyInternalOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 19
@@ -1650,14 +1987,14 @@ PUSHCONT {
 IF
 ; end function isInternalOwner
 THROWANYIFNOT
-; function withdrawExtraGas
+; function sendSurplusGas
 ;; push identifier start_gas_balance
 GETGLOB 18
 PUSHINT 2
 RAWRESERVE
-;; transfer()
-;; push identifier root_owner_address
-GETGLOB 17
+;; Remote call IReceiveSurplusGas.receiveSurplusGas
+;; push identifier to
+DUP
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -1665,10 +2002,12 @@ PUSHINT 109
 STZEROES
 STSLICECONST 0
 STSLICECONST 0
+STSLICECONST x0eedacfc
 ENDC
 PUSHINT 128
 SENDRAWMSG
-; end function withdrawExtraGas
+; end function sendSurplusGas
+DROP
 ; end modifier onlyInternalOwner
 CALL $c7_to_c4$
 TRUE
@@ -1795,8 +2134,6 @@ ENDS
 ;; param: callback_id
 ;; param: callback_addr
 ; function sendPausedCallbackTo
-;; push identifier start_gas_balance
-GETGLOB 18
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -1805,7 +2142,6 @@ CALL $message_balance_macro$
 ;; -
 SUB
 UFITS 128
-MAX
 PUSHINT 2
 RAWRESERVE
 ;; Remote call IPausedCallback.pausedCallback

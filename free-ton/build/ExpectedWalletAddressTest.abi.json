@@ -1,0 +1,36 @@
+{
+	"ABI version": 2,
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "expectedWalletAddressCallback",
+			"inputs": [
+				{"name":"wallet_","type":"address"},
+				{"name":"wallet_public_key","type":"uint256"},
+				{"name":"owner_address","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "wallet",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"wallet","type":"address"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"root_address","type":"address"}
+	],
+	"events": [
+	]
+}

@@ -149,10 +149,12 @@ SUB
 UFITS 128
 PUSHINT 2
 RAWRESERVE
+NEWC
+;; decl: b
 ;; Remote call ITONTokenWallet.transferToRecipient
 ;; map.at
 ;; push identifier token_wallet
-PUSH S8
+PUSH S9
 ;; push identifier change_directions
 GETGLOB 13
 PUSHINT 267
@@ -166,18 +168,18 @@ STSLICER
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x156fd4fb
+STSLICECONST x3f10d1ab
 ;; recipient_public_key
 ;; push identifier sender_public_key
-PUSH S7
+PUSH S8
 STUR 256
 ;; recipient_address
 ;; push identifier sender_address
-PUSH S6
+PUSH S7
 STSLICER
 ;; tokens
 ;; push identifier amount
-PUSH S8
+PUSH S9
 STUR 128
 ;; deploy_grams
 PUSHINT 50000000
@@ -185,24 +187,25 @@ STUR 128
 ;; transfer_grams
 PUSHINT 0
 STUR 128
+NEWC
+;; send_gas_to
+;; push identifier original_gas_to
+PUSH S6
+STSLICER
+;; notify_receiver
+FALSE
+STIR 1
+;; payload
+;; push identifier b
+PUSH S3
+ENDC
+STREFR
+STBREFR
 STBREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
-;; transfer()
-;; push identifier original_gas_to
-PUSH S2
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 0
-ENDC
-PUSHINT 128
-SENDRAWMSG
-BLKDROP 9
+BLKDROP 10
 ; end function tokensReceivedCallback
 CALL $c7_to_c4$
 TRUE
@@ -308,7 +311,7 @@ PUSHINT 267
 DICTSET
 SETGLOB 13
 ; end colValue
-;; Remote call ITONTokenWalletWithNotifiableTransfers.setReceiveCallback
+;; Remote call ITONTokenWallet.setReceiveCallback
 ;; push identifier wallet1
 PUSH S1
 NEWC
@@ -319,13 +322,13 @@ STSLICER
 STSLICECONST 0
 STSLICECONST 0
 STSLICECONST x3f5860fb
-;; receive_callback_
+;; receive_callback
 MYADDR
 STSLICER
 ENDC
 PUSHINT 1
 SENDRAWMSG
-;; Remote call ITONTokenWalletWithNotifiableTransfers.setReceiveCallback
+;; Remote call ITONTokenWallet.setReceiveCallback
 ;; push identifier wallet2
 DUP
 NEWC
@@ -336,7 +339,7 @@ STSLICER
 STSLICECONST 0
 STSLICECONST 0
 STSLICECONST x3f5860fb
-;; receive_callback_
+;; receive_callback
 MYADDR
 STSLICER
 ENDC
@@ -484,20 +487,25 @@ STGRAMS
 PUSHINT 105
 STZEROES
 STSLICECONST 0
-STSLICECONST 0
-STSLICECONST x17fa92d3
+STSLICECONST 1
+NEWC
+STSLICECONST x67a80dcf
 ;; tokens
 ;; push identifier tokens
-PUSH S7
+PUSH S8
 STUR 128
+;; send_gas_to
+MYADDR
+STSLICER
 ;; callback_address
 ;; push identifier callback_address
-PUSH S4
+PUSH S5
 STSLICER
 ;; callback_payload
 ;; push identifier callback_payload
-PUSH S1
+PUSH S2
 STREFR
+STBREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
@@ -615,11 +623,13 @@ IF
 THROWANYIFNOT
 ; function testTransferFrom
 ACCEPT
+NEWC
+;; decl: b
 ;; Remote call ITONTokenWallet.transferFrom
 ;; push identifier grams
-PUSH S3
+PUSH S4
 ;; push identifier wallet
-PUSH S1
+PUSH S2
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -630,26 +640,40 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x149c03b7
+STSLICECONST x29c4897e
 ;; from
 ;; push identifier from
-PUSH S4
+PUSH S5
 STSLICER
 ;; to
 ;; push identifier to
-PUSH S3
+PUSH S4
 STSLICER
 ;; tokens
 ;; push identifier tokens
-PUSH S6
+PUSH S7
 STUR 128
 ;; grams
 PUSHINT 0
 STUR 128
+NEWC
+;; send_gas_to
+MYADDR
+STSLICER
+;; notify_receiver
+TRUE
+STIR 1
+;; payload
+;; push identifier b
+PUSH S3
+ENDC
+STREFR
+STBREFR
 STBREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
+DROP
 ; end function testTransferFrom
 BLKDROP 5
 ; end modifier onlyExternalOwner
@@ -741,8 +765,8 @@ STSLICER
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x76406336
-;; grams
+STSLICECONST x542b1672
+;; deploy_grams
 ;; push identifier grams
 PUSH S2
 STUR 128

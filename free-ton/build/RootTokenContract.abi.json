@@ -30,33 +30,46 @@
 			]
 		},
 		{
-			"name": "deployWallet",
+			"name": "sendExpectedWalletAddress",
 			"inputs": [
-				{"name":"tokens","type":"uint128"},
-				{"name":"grams","type":"uint128"},
 				{"name":"wallet_public_key_","type":"uint256"},
 				{"name":"owner_address_","type":"address"},
-				{"name":"gas_back_address","type":"address"}
+				{"name":"to","type":"address"}
 			],
 			"outputs": [
 			]
 		},
 		{
-			"name": "deployEmptyWallet",
+			"name": "deployWallet",
 			"inputs": [
-				{"name":"grams","type":"uint128"},
+				{"name":"tokens","type":"uint128"},
+				{"name":"deploy_grams","type":"uint128"},
 				{"name":"wallet_public_key_","type":"uint256"},
 				{"name":"owner_address_","type":"address"},
 				{"name":"gas_back_address","type":"address"}
 			],
 			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "deployEmptyWallet",
+			"inputs": [
+				{"name":"deploy_grams","type":"uint128"},
+				{"name":"wallet_public_key_","type":"uint256"},
+				{"name":"owner_address_","type":"address"},
+				{"name":"gas_back_address","type":"address"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
 			]
 		},
 		{
 			"name": "mint",
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
-				{"name":"to","type":"address"}
+				{"name":"to","type":"address"},
+				{"name":"gas_back_address","type":"address"}
 			],
 			"outputs": [
 			]
@@ -66,6 +79,7 @@
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
 				{"name":"sender_address","type":"address"},
+				{"name":"send_gas_to","type":"address"},
 				{"name":"callback_address","type":"address"},
 				{"name":"callback_payload","type":"cell"}
 			],
@@ -78,6 +92,7 @@
 				{"name":"tokens","type":"uint128"},
 				{"name":"sender_public_key","type":"uint256"},
 				{"name":"sender_address","type":"address"},
+				{"name":"send_gas_to","type":"address"},
 				{"name":"callback_address","type":"address"},
 				{"name":"callback_payload","type":"cell"}
 			],
@@ -85,8 +100,9 @@
 			]
 		},
 		{
-			"name": "withdrawExtraGas",
+			"name": "sendSurplusGas",
 			"inputs": [
+				{"name":"to","type":"address"}
 			],
 			"outputs": [
 			]
