@@ -7,6 +7,7 @@ const BigNumber = require('bignumber.js');
 BigNumber.config({ EXPONENTIAL_AT: 257 });
 
 const ZERO_ADDRESS = '0:0000000000000000000000000000000000000000000000000000000000000000';
+const EMPTY_TVM_CELL = 'te6ccgEBAQEAAgAAAA==';
 
 let RootTokenContractExternalOwner;
 let RootTokenContractInternalOwner;
@@ -540,7 +541,10 @@ describe('Test Fungible Tokens', function () {
                 {
                     tokens: 1000,
                     to: bwInternalAddress,
-                    grams: freeton.utils.convertCrystal('0.5', 'nano')
+                    grams: freeton.utils.convertCrystal('0.5', 'nano'),
+                    send_gas_to: BarWallet6.address,
+                    notify_receiver: false,
+                    payload: EMPTY_TVM_CELL
                 },
                 tonWrapper.keys[6]
             ).catch(e => console.log(e));
@@ -960,7 +964,10 @@ describe('Test Fungible Tokens', function () {
                 {
                     tokens: 1000,
                     to: fw1address,
-                    grams: freeton.utils.convertCrystal('0.3', 'nano')
+                    grams: freeton.utils.convertCrystal('0.3', 'nano'),
+                    send_gas_to: FooWallet2.address,
+                    notify_receiver: false,
+                    payload: EMPTY_TVM_CELL
                 },
                 tonWrapper.keys[2]
             ).catch(e => console.log(e));
@@ -1011,7 +1018,10 @@ describe('Test Fungible Tokens', function () {
                 {
                     tokens: 1000,
                     to: SelfDeployedWallet.address,
-                    grams: freeton.utils.convertCrystal('0.2', 'nano')
+                    grams: freeton.utils.convertCrystal('0.2', 'nano'),
+                    send_gas_to: FooWallet1.address,
+                    notify_receiver: false,
+                    payload: EMPTY_TVM_CELL
                 },
                 tonWrapper.keys[1]
             ).catch(e => console.log(e));
@@ -1076,7 +1086,10 @@ describe('Test Fungible Tokens', function () {
                     recipient_address: ZERO_ADDRESS,
                     tokens: 1000,
                     deploy_grams: freeton.utils.convertCrystal('0.05', 'nano'),
-                    transfer_grams: freeton.utils.convertCrystal('0.5', 'nano')
+                    transfer_grams: freeton.utils.convertCrystal('0.5', 'nano'),
+                    send_gas_to: BarWallet6.address,
+                    notify_receiver: false,
+                    payload: EMPTY_TVM_CELL
                 },
                 tonWrapper.keys[6]
             ).catch(e => console.log(e));
@@ -1142,7 +1155,10 @@ describe('Test Fungible Tokens', function () {
                 {
                     tokens: 100,
                     to: notExistsWalletAddress,
-                    grams: freeton.utils.convertCrystal('0.3', 'nano')
+                    grams: freeton.utils.convertCrystal('0.3', 'nano'),
+                    send_gas_to: FooWallet2.address,
+                    notify_receiver: false,
+                    payload: EMPTY_TVM_CELL
                 },
                 tonWrapper.keys[2]
             ).catch(e => console.log(e));
@@ -1197,7 +1213,10 @@ describe('Test Fungible Tokens', function () {
                 {
                     tokens: 1000,
                     to: fw1address,
-                    grams: freeton.utils.convertCrystal('0.4', 'nano')
+                    grams: freeton.utils.convertCrystal('0.4', 'nano'),
+                    send_gas_to: BarWallet3.address,
+                    notify_receiver: false,
+                    payload: EMPTY_TVM_CELL
                 },
                 tonWrapper.keys[3]
             ).catch(e => console.log(3));
@@ -1474,16 +1493,18 @@ describe('Test Fungible Tokens', function () {
             const fwInternalStartGrams = await tonWrapper.getBalance(FooWalletInternal.address);
             const bwInternalStartGrams = await tonWrapper.getBalance(BarWalletInternal.address);
 
-            logger.log('External call transferWithNotify from FooWallet#2 to FooWallet#Internal. ' +
+            logger.log('External call transfer with notify from FooWallet#2 to FooWallet#Internal. ' +
                        'That triggers TONTokenWalletInternalOwnerTest.tokensReceivedCallback(...) and ' +
                        'TONTokenWalletInternalOwnerTest send 1:1 BAR tokens to BarWallet#2');
             await FooWallet2.run(
-                'transferWithNotify',
+                'transfer',
                 {
                     tokens: 1000,
                     to: FooWalletInternal.address,
                     grams: freeton.utils.convertCrystal('2', 'nano'),
-                    payload: 'te6ccgEBAQEAAgAAAA==' //empty TvmCell
+                    send_gas_to: FooWallet2.address,
+                    notify_receiver: true,
+                    payload: EMPTY_TVM_CELL
                 },
                 tonWrapper.keys[2]
             ).catch(e => console.log(e));
