@@ -4,11 +4,13 @@ pragma AbiHeader pubkey;
 pragma AbiHeader expire;
 
 import "../interfaces/IRootTokenContract.sol";
+import "../interfaces/IReceiveSurplusGas.sol";
+import "../interfaces/ISendSurplusGas.sol";
 import "../interfaces/IBurnTokensCallback.sol";
 import "../interfaces/ITokensBurner.sol";
 import "../interfaces/IBurnableByRootTokenRootContract.sol";
 
-contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurner {
+contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurner, IReceiveSurplusGas {
 
     uint256 static _randomNonce;
 
@@ -134,10 +136,14 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
     function sendGramsToRoot(uint128 grams) external view onlyOwner {
         tvm.accept();
         root_address_.transfer({ value: grams });
-}
+    }
 
     function testWithdrawExtraGas() external view onlyOwner {
         tvm.accept();
-        IRootTokenContract(root_address_).withdrawExtraGas();
+        ISendSurplusGas(root_address_).sendSurplusGas(address(this));
+    }
+
+    function receiveSurplusGas() override external {
+
     }
 }

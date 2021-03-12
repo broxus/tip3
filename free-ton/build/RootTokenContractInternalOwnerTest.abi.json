@@ -97,6 +97,13 @@
 			],
 			"outputs": [
 			]
+		},
+		{
+			"name": "receiveSurplusGas",
+			"inputs": [
+			],
+			"outputs": [
+			]
 		}
 	],
 	"data": [

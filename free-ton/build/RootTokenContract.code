@@ -398,6 +398,164 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
+.globl	sendExpectedWalletAddress
+.public	sendExpectedWalletAddress
+.type	sendExpectedWalletAddress, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode wallet_public_key_
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+; Decode owner_address_
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+;; param: wallet_public_key_
+;; param: owner_address_
+;; param: to
+; function sendExpectedWalletAddress
+;; push identifier start_gas_balance
+GETGLOB 18
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+MAX
+PUSHINT 2
+RAWRESERVE
+;; push identifier wallet_public_key_
+PUSH S2
+;; push identifier owner_address_
+PUSH S2
+;; param: wallet_public_key_
+;; param: owner_address_
+; function getExpectedWalletAddress
+NEWDICT
+;; push identifier wallet_public_key_
+PUSH S2
+NEWC
+STU 256
+PUSHINT 0
+ROT
+PUSHINT 64
+DICTUSETB
+MYADDR
+PUSHINT 1
+ROT
+PUSHINT 64
+DICTUSET
+;; push identifier wallet_code
+GETGLOB 14
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSETREF
+;; push identifier wallet_public_key_
+PUSH S2
+NEWC
+STU 256
+PUSHINT 3
+ROT
+PUSHINT 64
+DICTUSETB
+;; push identifier owner_address_
+PUSH S1
+PUSHINT 4
+ROT
+PUSHINT 64
+DICTUSET
+NEWC
+STDICT
+ENDC
+;; push identifier wallet_code
+GETGLOB 14
+NEWC
+STSLICECONST x2_
+STOPTREF
+STOPTREF
+STZERO
+ENDC
+;; decl: stateInit
+;; return
+;; push identifier stateInit
+DUP
+HASHCU
+NEWC
+STSLICECONST x801_
+STU 256
+ENDC
+CTOS
+XCHG s3
+BLKDROP 3
+; end function getExpectedWalletAddress
+;; decl: wallet
+;; Remote call IExpectedWalletAddressCallback.expectedWalletAddressCallback
+;; push identifier to
+PUSH S1
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x1173795c
+;; wallet
+;; push identifier wallet
+PUSH S2
+STSLICER
+;; wallet_public_key
+;; push identifier wallet_public_key_
+PUSH S5
+STUR 256
+;; owner_address
+;; push identifier owner_address_
+PUSH S4
+STSLICER
+STBREFR
+ENDC
+PUSHINT 128
+SENDRAWMSG
+BLKDROP 4
+; end function sendExpectedWalletAddress
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
 .globl	deployWallet
 .public	deployWallet
 .type	deployWallet, @function
@@ -1607,9 +1765,9 @@ CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
-.globl	withdrawExtraGas
-.public	withdrawExtraGas
-.type	withdrawExtraGas, @function
+.globl	sendSurplusGas
+.public	sendSurplusGas
+.type	sendSurplusGas, @function
 GETGLOB 1
 ISNULL
 PUSHCONT {
@@ -1617,7 +1775,18 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
+; Decode to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
+;; param: to
 ; modifier onlyInternalOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 19
@@ -1650,14 +1819,14 @@ PUSHCONT {
 IF
 ; end function isInternalOwner
 THROWANYIFNOT
-; function withdrawExtraGas
+; function sendSurplusGas
 ;; push identifier start_gas_balance
 GETGLOB 18
 PUSHINT 2
 RAWRESERVE
-;; transfer()
-;; push identifier root_owner_address
-GETGLOB 17
+;; Remote call IReceiveSurplusGas.receiveSurplusGas
+;; push identifier to
+DUP
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -1665,10 +1834,12 @@ PUSHINT 109
 STZEROES
 STSLICECONST 0
 STSLICECONST 0
+STSLICECONST x0eedacfc
 ENDC
 PUSHINT 128
 SENDRAWMSG
-; end function withdrawExtraGas
+; end function sendSurplusGas
+DROP
 ; end modifier onlyInternalOwner
 CALL $c7_to_c4$
 TRUE

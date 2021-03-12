@@ -4,14 +4,13 @@ pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
 import "./interfaces/ITONTokenWallet.sol";
-import "./interfaces/ITONTokenWalletWithNotifiableTransfers.sol";
 import "./interfaces/IBurnableByOwnerTokenWallet.sol";
 import "./interfaces/IBurnableByRootTokenWallet.sol";
 import "./interfaces/IBurnableTokenRootContract.sol";
 import "./interfaces/ITokenWalletDeployedCallback.sol";
 import "./interfaces/ITokensReceivedCallback.sol";
 
-contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfers, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet {
+contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet {
 
     address static root_address;
     TvmCell static code;
@@ -109,48 +108,11 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
         address recipient_address,
         uint128 tokens,
         uint128 deploy_grams,
-        uint128 transfer_grams
-    ) override external onlyOwner {
-        TvmBuilder builder;
-        _transferToRecipient(
-            recipient_public_key,
-            recipient_address,
-            tokens,
-            deploy_grams,
-            transfer_grams,
-            false,
-            builder.toCell()
-        );
-    }
-
-    function transferToRecipientWithNotify(
-        uint256 recipient_public_key,
-        address recipient_address,
-        uint128 tokens,
-        uint128 deploy_grams,
         uint128 transfer_grams,
-        TvmCell payload
-    ) override external onlyOwner {
-        _transferToRecipient(
-            recipient_public_key,
-            recipient_address,
-            tokens,
-            deploy_grams,
-            transfer_grams,
-            true,
-            payload
-        );
-    }
-
-    function _transferToRecipient(
-        uint256 recipient_public_key,
-        address recipient_address,
-        uint128 tokens,
-        uint128 deploy_grams,
-        uint128 transfer_grams,
+        address send_gas_to,
         bool notify_receiver,
         TvmCell payload
-    ) private inline {
+    ) override external onlyOwner {
         require(tokens > 0);
         require(tokens <= balance, error_not_enough_balance);
         require((recipient_address.value != 0 && recipient_public_key == 0) ||
@@ -191,7 +153,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
                 tokens,
                 wallet_public_key,
                 owner_address,
-                owner_address,
+                send_gas_to,
                 notify_receiver,
                 payload
             );
@@ -201,7 +163,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
                 tokens,
                 wallet_public_key,
                 owner_address,
-                address(this),
+                send_gas_to,
                 notify_receiver,
                 payload
             );
@@ -211,28 +173,11 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
     function transfer(
         address to,
         uint128 tokens,
-        uint128 grams
-    ) override external onlyOwner {
-        TvmBuilder builder;
-        _transfer(to, tokens, grams, false, builder.toCell());
-    }
-
-    function transferWithNotify(
-        address to,
-        uint128 tokens,
         uint128 grams,
-        TvmCell payload
-    ) override external onlyOwner {
-        _transfer(to, tokens, grams, true, payload);
-    }
-
-    function _transfer(
-        address to,
-        uint128 tokens,
-        uint128 grams,
+        address send_gas_to,
         bool notify_receiver,
         TvmCell payload
-    ) private inline {
+    ) override external onlyOwner {
         require(tokens > 0);
         require(tokens <= balance, error_not_enough_balance);
         require(to.value != 0);
@@ -246,7 +191,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
                 tokens,
                 wallet_public_key,
                 owner_address,
-                owner_address,
+                send_gas_to,
                 notify_receiver,
                 payload
             );
@@ -259,7 +204,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
                 tokens,
                 wallet_public_key,
                 owner_address,
-                address(this),
+                send_gas_to,
                 notify_receiver,
                 payload
             );
@@ -270,30 +215,11 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
         address from,
         address to,
         uint128 tokens,
-        uint128 grams
-    ) override external onlyOwner {
-        TvmBuilder builder;
-        _transferFrom(from, to, tokens, grams, false, builder.toCell());
-    }
-
-    function transferFromWithNotify(
-        address from,
-        address to,
-        uint128 tokens,
         uint128 grams,
-        TvmCell payload
-    ) override external onlyOwner {
-        _transferFrom(from, to, tokens, grams, true, payload);
-    }
-
-    function _transferFrom(
-        address from,
-        address to,
-        uint128 tokens,
-        uint128 grams,
+        address send_gas_to,
         bool notify_receiver,
         TvmCell payload
-    ) private inline view {
+    ) override external onlyOwner {
         require(to.value != 0);
         require(tokens > 0);
 
@@ -304,7 +230,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
             ITONTokenWallet(from).internalTransferFrom{ value: 0, flag: 128 }(
                 to,
                 tokens,
-                owner_address,
+                send_gas_to,
                 notify_receiver,
                 payload
             );
@@ -315,7 +241,7 @@ contract TONTokenWallet is ITONTokenWallet, ITONTokenWalletWithNotifiableTransfe
             ITONTokenWallet(from).internalTransferFrom{ value: grams }(
                 to,
                 tokens,
-                address(this),
+                send_gas_to,
                 notify_receiver,
                 payload
             );

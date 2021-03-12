@@ -1069,10 +1069,6 @@ THROWANYIFNOT
 PUSH S1
 GTINT 0
 THROWIFNOT 100
-;; push identifier ethereum_address
-DUP
-NEQINT 20
-THROWIFNOT 100
 ;; get member value
 ;; push identifier token_root_address
 GETGLOB 16
@@ -1306,7 +1302,18 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
+; Decode to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 ENDS
+;; param: to
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 22
@@ -1374,7 +1381,7 @@ IFNOT
 THROWANYIFNOT
 ; function withdrawExtraGasFromTokenRoot
 ACCEPT
-;; Remote call IRootTokenContract.withdrawExtraGas
+;; Remote call ISendSurplusGas.sendSurplusGas
 ;; push identifier token_root_address
 GETGLOB 16
 NEWC
@@ -1384,82 +1391,17 @@ PUSHSLICE x3989680000000000000000000000000004_
 STSLICER
 STSLICECONST 0
 STSLICECONST 0
-STSLICECONST x159edb3d
+STSLICECONST x20ebc76d
+;; to
+;; push identifier to
+PUSH S1
+STSLICER
 ENDC
 PUSHINT 1
 SENDRAWMSG
 ; end function withdrawExtraGasFromTokenRoot
+DROP
 ; end modifier onlyOwner
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	withdrawExtraGas
-.public	withdrawExtraGas
-.type	withdrawExtraGas, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; modifier onlyInternalOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 22
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-; function isInternalOwner
-;; return
-;; get member value
-;; push identifier internal_owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-;; short-circuiting &&
-DUP
-PUSHCONT {
-	DROP
-	;; push identifier internal_owner_address
-	GETGLOB 13
-	;; get member sender
-	GETGLOB 9
-	SDEQ
-}
-IF
-; end function isInternalOwner
-THROWANYIFNOT
-; function withdrawExtraGas
-;; push identifier start_gas_balance
-GETGLOB 19
-PUSHINT 2
-RAWRESERVE
-;; transfer()
-;; push identifier internal_owner_address
-GETGLOB 13
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 0
-ENDC
-PUSHINT 128
-SENDRAWMSG
-; end function withdrawExtraGas
-; end modifier onlyInternalOwner
 PUSHCONT {
 	CALL $c7_to_c4$
 }

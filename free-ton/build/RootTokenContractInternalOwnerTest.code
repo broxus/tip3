@@ -1091,7 +1091,7 @@ IFNOT
 THROWANYIFNOT
 ; function testWithdrawExtraGas
 ACCEPT
-;; Remote call IRootTokenContract.withdrawExtraGas
+;; Remote call ISendSurplusGas.sendSurplusGas
 ;; push identifier root_address_
 GETGLOB 13
 NEWC
@@ -1101,7 +1101,10 @@ PUSHSLICE x3989680000000000000000000000000004_
 STSLICER
 STSLICECONST 0
 STSLICECONST 0
-STSLICECONST x159edb3d
+STSLICECONST x20ebc76d
+;; to
+MYADDR
+STSLICER
 ENDC
 PUSHINT 1
 SENDRAWMSG
@@ -1111,6 +1114,23 @@ PUSHCONT {
 	CALL $c7_to_c4$
 }
 IF
+TRUE
+SETGLOB 7
+
+.globl	receiveSurplusGas
+.public	receiveSurplusGas
+.type	receiveSurplusGas, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; function receiveSurplusGas
+; end function receiveSurplusGas
+CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 

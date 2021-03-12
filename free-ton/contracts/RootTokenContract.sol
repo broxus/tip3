@@ -5,15 +5,18 @@ pragma AbiHeader pubkey;
 import "./interfaces/IBurnableByRootTokenWallet.sol";
 import "./interfaces/IBurnableTokenRootContract.sol";
 import "./interfaces/IBurnableByRootTokenRootContract.sol";
+import "./interfaces/IExpectedWalletAddressCallback.sol";
 import "./interfaces/IBurnTokensCallback.sol";
 import "./interfaces/IRootTokenContract.sol";
 import "./interfaces/ITONTokenWallet.sol";
+import "./interfaces/IReceiveSurplusGas.sol";
+import "./interfaces/ISendSurplusGas.sol";
 import "./TONTokenWallet.sol";
 import "./interfaces/IPausable.sol";
 import "./interfaces/IPausedCallback.sol";
 import "./interfaces/ITransferOwner.sol";
 
-contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IBurnableByRootTokenRootContract, IPausable, ITransferOwner {
+contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IBurnableByRootTokenRootContract, IPausable, ITransferOwner, ISendSurplusGas {
 
     uint256 static _randomNonce;
 
@@ -71,6 +74,16 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
                 error_define_public_key_or_owner_address);
         address walletAddress = getExpectedWalletAddress(wallet_public_key_, owner_address_);
         return walletAddress;
+    }
+
+    function sendExpectedWalletAddress(uint256 wallet_public_key_, address owner_address_, address to) override external {
+        tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2);
+        address wallet = getExpectedWalletAddress(wallet_public_key_, owner_address_);
+        IExpectedWalletAddressCallback(to).expectedWalletAddressCallback{value: 0, flag: 128}(
+            wallet,
+            wallet_public_key_,
+            owner_address_
+        );
     }
 
     function deployWallet(
@@ -207,9 +220,9 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
     }
 
-    function withdrawExtraGas() override external onlyInternalOwner {
+    function sendSurplusGas(address to) override external onlyInternalOwner {
         tvm.rawReserve(start_gas_balance, 2);
-        root_owner_address.transfer({ value: 0, flag: 128 });
+        IReceiveSurplusGas(to).receiveSurplusGas{ value: 0, flag: 128 }();
     }
 
     // =============== IPausable ==================

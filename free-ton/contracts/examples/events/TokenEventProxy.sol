@@ -6,6 +6,8 @@ pragma AbiHeader expire;
 import '../interfaces/IProxy.sol';
 import "../interfaces/IEvent.sol";
 import '../bridge/EthereumEvent.sol';
+import "../../interfaces/IReceiveSurplusGas.sol";
+import "../../interfaces/ISendSurplusGas.sol";
 import '../../interfaces/ITokensBurner.sol';
 import '../../interfaces/IBurnTokensCallback.sol';
 import '../../interfaces/IRootTokenContract.sol';
@@ -125,7 +127,6 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausabl
     function transferMyTokensToEthereum(uint128 tokens, uint160 ethereum_address) external view {
         require(!paused, error_paused);
         require(tokens > 0);
-        require(ethereum_address != 20);
         require(token_root_address.value != 0);
         require(msg.sender.value != 0);
         require(msg.value >= settings_burn_min_msg_value);
@@ -160,14 +161,9 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausabl
         );
     }
 
-    function withdrawExtraGasFromTokenRoot() external view onlyOwner {
+    function withdrawExtraGasFromTokenRoot(address to) external view onlyOwner {
         tvm.accept();
-        IRootTokenContract(token_root_address).withdrawExtraGas();
-    }
-
-    function withdrawExtraGas() external view onlyInternalOwner {
-        tvm.rawReserve(start_gas_balance, 2);
-        internal_owner_address.transfer({ value: 0, flag: 128 });
+        ISendSurplusGas(token_root_address).sendSurplusGas(to);
     }
 
     // =============== IPausable ==================

@@ -54,13 +54,7 @@
 		{
 			"name": "withdrawExtraGasFromTokenRoot",
 			"inputs": [
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "withdrawExtraGas",
-			"inputs": [
+				{"name":"to","type":"address"}
 			],
 			"outputs": [
 			]

@@ -7,7 +7,6 @@ import "../interfaces/ITokensBurner.sol";
 import "../interfaces/IRootTokenContract.sol";
 import "../interfaces/ITONTokenWallet.sol";
 import "../interfaces/ITokensReceivedCallback.sol";
-import "../interfaces/ITONTokenWalletWithNotifiableTransfers.sol";
 
 contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
 
@@ -36,17 +35,17 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
     ) override external {
         require(change_directions.exists(token_wallet));
         tvm.rawReserve(address(this).balance - msg.value, 2);
+        TvmBuilder b;
         ITONTokenWallet(change_directions.at(token_wallet))
-            .transferToRecipient{value: 0.25 ton}(sender_public_key, sender_address, amount, 0.05 ton, 0);
-        original_gas_to.transfer({ value: 0, flag: 128 });
+            .transferToRecipient{value: 0.25 ton}(sender_public_key, sender_address, amount, 0.05 ton, 0, original_gas_to, false, b.toCell());
     }
 
     function subscribeForTransfers(address wallet1, address wallet2) external onlyExternalOwner {
         tvm.accept();
         change_directions[wallet1] = wallet2;
         change_directions[wallet2] = wallet1;
-        ITONTokenWalletWithNotifiableTransfers(wallet1).setReceiveCallback(address(this));
-        ITONTokenWalletWithNotifiableTransfers(wallet2).setReceiveCallback(address(this));
+        ITONTokenWallet(wallet1).setReceiveCallback(address(this));
+        ITONTokenWallet(wallet2).setReceiveCallback(address(this));
     }
 
     function burnMyTokens(
@@ -69,7 +68,8 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
 
     function testTransferFrom(uint128 tokens, uint128 grams, address from, address to, address wallet) external view onlyExternalOwner {
         tvm.accept();
-        ITONTokenWallet(wallet).transferFrom{value: grams}(from, to, tokens, 0);
+        TvmBuilder b;
+        ITONTokenWallet(wallet).transferFrom{value: grams}(from, to, tokens, 0, address(this), true, b.toCell());
     }
 
     function deployEmptyWallet(address root_address, uint128 grams) external view onlyExternalOwner {

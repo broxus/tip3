@@ -30,6 +30,16 @@
 			]
 		},
 		{
+			"name": "sendExpectedWalletAddress",
+			"inputs": [
+				{"name":"wallet_public_key_","type":"uint256"},
+				{"name":"owner_address_","type":"address"},
+				{"name":"to","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "deployWallet",
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
@@ -85,8 +95,9 @@
 			]
 		},
 		{
-			"name": "withdrawExtraGas",
+			"name": "sendSurplusGas",
 			"inputs": [
+				{"name":"to","type":"address"}
 			],
 			"outputs": [
 			]

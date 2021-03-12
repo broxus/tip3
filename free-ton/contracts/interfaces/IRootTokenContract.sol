@@ -1,5 +1,4 @@
 pragma solidity >= 0.6.0;
-pragma AbiHeader expire;
 
 interface IRootTokenContract {
 
@@ -36,5 +35,5 @@ interface IRootTokenContract {
 
     function mint(uint128 tokens, address to) external;
 
-    function withdrawExtraGas() external;
+    function sendExpectedWalletAddress(uint256 wallet_public_key_, address owner_address_, address to) external;
 }

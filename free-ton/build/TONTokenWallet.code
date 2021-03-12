@@ -735,12 +735,38 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode send_gas_to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode notify_receiver
+LDIQ 1
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+; Decode payload
+;; decode TvmCell
+LDREF
 ENDS
 ;; param: recipient_public_key
 ;; param: recipient_address
 ;; param: tokens
 ;; param: deploy_grams
 ;; param: transfer_grams
+;; param: send_gas_to
+;; param: notify_receiver
+;; param: payload
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 17
@@ -807,32 +833,8 @@ IFNOT
 ; end function isOwner
 THROWANYIFNOT
 ; function transferToRecipient
-NEWC
-;; decl: builder
-;; push identifier recipient_public_key
-PUSH S5
-;; push identifier recipient_address
-PUSH S5
 ;; push identifier tokens
 PUSH S5
-;; push identifier deploy_grams
-PUSH S5
-;; push identifier transfer_grams
-PUSH S5
-FALSE
-;; push identifier builder
-PUSH S6
-ENDC
-;; param: recipient_public_key
-;; param: recipient_address
-;; param: tokens
-;; param: deploy_grams
-;; param: transfer_grams
-;; param: notify_receiver
-;; param: payload
-; function _transferToRecipient
-;; push identifier tokens
-PUSH S4
 GTINT 0
 THROWIFNOT 100
 ;; push identifier error_not_enough_balance
@@ -845,7 +847,7 @@ PUSHCONT {
 }
 IF
 ;; push identifier tokens
-PUSH S5
+PUSH S6
 ;; push identifier balance
 GETGLOB 14
 ;; <=
@@ -862,7 +864,7 @@ PUSHCONT {
 IF
 ;; get member value
 ;; push identifier recipient_address
-PUSH S6
+PUSH S7
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -872,7 +874,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier recipient_public_key
-	PUSH S7
+	PUSH S8
 	EQINT 0
 }
 IF
@@ -882,7 +884,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier recipient_address
-	PUSH S6
+	PUSH S7
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -892,7 +894,7 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; push identifier recipient_public_key
-		PUSH S7
+		PUSH S8
 		NEQINT 0
 	}
 	IF
@@ -940,7 +942,7 @@ PUSHCONT {
 	ADD
 	UFITS 128
 	;; push identifier deploy_grams
-	PUSH S7
+	PUSH S8
 	;; +
 	ADD
 	UFITS 128
@@ -967,9 +969,9 @@ PUSHCONT {
 	GETPARAM 7
 	INDEX 0
 	;; push identifier deploy_grams
-	PUSH S5
+	PUSH S6
 	;; push identifier transfer_grams
-	PUSH S5
+	PUSH S6
 	;; +
 	ADD
 	UFITS 128
@@ -986,7 +988,7 @@ PUSHCONT {
 	}
 	IF
 	;; push identifier transfer_grams
-	PUSH S3
+	PUSH S4
 	;; push identifier target_gas_balance
 	GETGLOB 29
 	;; >
@@ -998,7 +1000,7 @@ IFELSE
 ;; end if
 NEWDICT
 ;; push identifier recipient_public_key
-PUSH S7
+PUSH S8
 NEWC
 STU 256
 PUSHINT 0
@@ -1018,7 +1020,7 @@ ROT
 PUSHINT 64
 DICTUSETREF
 ;; push identifier recipient_public_key
-PUSH S7
+PUSH S8
 NEWC
 STU 256
 PUSHINT 3
@@ -1026,7 +1028,7 @@ ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier recipient_address
-PUSH S6
+PUSH S7
 PUSHINT 4
 ROT
 PUSHINT 64
@@ -1054,7 +1056,7 @@ CTOS
 ;; decl: to
 ;; if
 ;; push identifier deploy_grams
-PUSH S5
+PUSH S6
 GTINT 0
 PUSHCONT {
 	;; push identifier stateInit
@@ -1072,7 +1074,7 @@ PUSHCONT {
 	ENDC
 	CTOS
 	;; push identifier deploy_grams
-	PUSH S7
+	PUSH S8
 	PUSH S1
 	NEWC
 	STSLICECONST x62_
@@ -1108,7 +1110,7 @@ PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier tokens
-	PUSH S6
+	PUSH S7
 	; expValue
 	;; fetch balance
 	GETGLOB 14
@@ -1137,7 +1139,7 @@ PUSHCONT {
 	STSLICECONST x18d21702
 	;; tokens
 	;; push identifier tokens
-	PUSH S8
+	PUSH S9
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
@@ -1148,8 +1150,8 @@ PUSHCONT {
 	GETGLOB 13
 	STSLICER
 	;; send_gas_to
-	;; push identifier owner_address
-	GETGLOB 13
+	;; push identifier send_gas_to
+	PUSH S6
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
@@ -1166,7 +1168,7 @@ PUSHCONT {
 }
 PUSHCONT {
 	;; push identifier tokens
-	PUSH S6
+	PUSH S7
 	; expValue
 	;; fetch balance
 	GETGLOB 14
@@ -1179,7 +1181,7 @@ PUSHCONT {
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier transfer_grams
-	PUSH S4
+	PUSH S5
 	;; push identifier to
 	PUSH S1
 	TRUE
@@ -1199,7 +1201,7 @@ PUSHCONT {
 	STSLICECONST x18d21702
 	;; tokens
 	;; push identifier tokens
-	PUSH S8
+	PUSH S9
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
@@ -1210,7 +1212,8 @@ PUSHCONT {
 	GETGLOB 13
 	STSLICER
 	;; send_gas_to
-	MYADDR
+	;; push identifier send_gas_to
+	PUSH S6
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
@@ -1227,573 +1230,9 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
-BLKDROP 9
-; end function _transferToRecipient
-DROP
+DROP2
 ; end function transferToRecipient
-BLKDROP 5
-; end modifier onlyOwner
-CALL $c7_to_c4$
-TRUE
-SETGLOB 7
-
-.globl	transferToRecipientWithNotify
-.public	transferToRecipientWithNotify
-.type	transferToRecipientWithNotify, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-; Decode recipient_public_key
-LDUQ 256
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 256
-}
-IFNOT
-; Decode recipient_address
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-; Decode tokens
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-; Decode deploy_grams
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-; Decode transfer_grams
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-; Decode payload
-;; decode TvmCell
-LDREF
-ENDS
-;; param: recipient_public_key
-;; param: recipient_address
-;; param: tokens
-;; param: deploy_grams
-;; param: transfer_grams
-;; param: payload
-; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-; function isOwner
-;; return
-; function isInternalOwner
-;; return
-;; get member value
-;; push identifier owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-;; short-circuiting &&
-DUP
-PUSHCONT {
-	DROP
-	;; push identifier owner_address
-	GETGLOB 13
-	;; get member sender
-	GETGLOB 9
-	SDEQ
-}
-IF
-; end function isInternalOwner
-;; short-circuiting ||
-DUP
-PUSHCONT {
-	DROP
-	; function isExternalOwner
-	;; return
-	;; push identifier wallet_public_key
-	GETGLOB 12
-	NEQINT 0
-	;; short-circuiting &&
-	DUP
-	PUSHCONT {
-		DROP
-		;; push identifier wallet_public_key
-		GETGLOB 12
-		GETGLOB 5
-		DUP
-		ISNULL
-		PUSHCONT {
-			DROP
-			PUSHINT 0
-		}
-		IF
-		;; ==
-		EQUAL
-	}
-	IF
-	; end function isExternalOwner
-}
-IFNOT
-; end function isOwner
-THROWANYIFNOT
-; function transferToRecipientWithNotify
-;; push identifier recipient_public_key
-PUSH S5
-;; push identifier recipient_address
-PUSH S5
-;; push identifier tokens
-PUSH S5
-;; push identifier deploy_grams
-PUSH S5
-;; push identifier transfer_grams
-PUSH S5
-TRUE
-;; push identifier payload
-PUSH S6
-;; param: recipient_public_key
-;; param: recipient_address
-;; param: tokens
-;; param: deploy_grams
-;; param: transfer_grams
-;; param: notify_receiver
-;; param: payload
-; function _transferToRecipient
-;; push identifier tokens
-PUSH S4
-GTINT 0
-THROWIFNOT 100
-;; push identifier error_not_enough_balance
-GETGLOB 18
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-;; push identifier tokens
-PUSH S5
-;; push identifier balance
-GETGLOB 14
-;; <=
-LEQ
-THROWANYIFNOT
-;; push identifier error_define_wallet_public_key_or_owner_address
-GETGLOB 28
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-;; get member value
-;; push identifier recipient_address
-PUSH S6
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-;; short-circuiting &&
-DUP
-PUSHCONT {
-	DROP
-	;; push identifier recipient_public_key
-	PUSH S7
-	EQINT 0
-}
-IF
-;; short-circuiting ||
-DUP
-PUSHCONT {
-	DROP
-	;; get member value
-	;; push identifier recipient_address
-	PUSH S6
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
-	EQINT 0
-	;; short-circuiting &&
-	DUP
-	PUSHCONT {
-		DROP
-		;; push identifier recipient_public_key
-		PUSH S7
-		NEQINT 0
-	}
-	IF
-}
-IFNOT
-THROWANYIFNOT
-;; if
-;; get member value
-;; push identifier owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 29
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
-	;; -
-	SUB
-	UFITS 128
-	MAX
-	;; decl: reserve
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; push identifier reserve
-	PUSH S2
-	;; push identifier target_gas_balance
-	GETGLOB 29
-	;; +
-	ADD
-	UFITS 128
-	;; push identifier deploy_grams
-	PUSH S7
-	;; +
-	ADD
-	UFITS 128
-	;; >
-	GREATER
-	THROWANYIFNOT
-	;; push identifier reserve
-	DUP
-	PUSHINT 2
-	RAWRESERVE
-	DROP
-}
-PUSHCONT {
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; push identifier deploy_grams
-	PUSH S5
-	;; push identifier transfer_grams
-	PUSH S5
-	;; +
-	ADD
-	UFITS 128
-	;; >
-	GREATER
-	THROWANYIFNOT
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; push identifier transfer_grams
-	PUSH S3
-	;; push identifier target_gas_balance
-	GETGLOB 29
-	;; >
-	GREATER
-	THROWANYIFNOT
-	ACCEPT
-}
-IFELSE
-;; end if
-NEWDICT
-;; push identifier recipient_public_key
-PUSH S7
-NEWC
-STU 256
-PUSHINT 0
-ROT
-PUSHINT 64
-DICTUSETB
-;; push identifier root_address
-GETGLOB 10
-PUSHINT 1
-ROT
-PUSHINT 64
-DICTUSET
-;; push identifier code
-GETGLOB 11
-PUSHINT 2
-ROT
-PUSHINT 64
-DICTUSETREF
-;; push identifier recipient_public_key
-PUSH S7
-NEWC
-STU 256
-PUSHINT 3
-ROT
-PUSHINT 64
-DICTUSETB
-;; push identifier recipient_address
-PUSH S6
-PUSHINT 4
-ROT
-PUSHINT 64
-DICTUSET
-NEWC
-STDICT
-ENDC
-;; push identifier code
-GETGLOB 11
-NEWC
-STSLICECONST x2_
-STOPTREF
-STOPTREF
-STZERO
-ENDC
-;; decl: stateInit
-;; push identifier stateInit
-DUP
-HASHCU
-NEWC
-STSLICECONST x801_
-STU 256
-ENDC
-CTOS
-;; decl: to
-;; if
-;; push identifier deploy_grams
-PUSH S5
-GTINT 0
-PUSHCONT {
-	;; push identifier stateInit
-	PUSH S1
-	DUP
-	HASHCU
-	;; get member wid
-	MYADDR
-	PARSEMSGADDR
-	INDEX 2
-	NEWC
-	STSLICECONST x9_
-	STI 8
-	STU 256
-	ENDC
-	CTOS
-	;; push identifier deploy_grams
-	PUSH S7
-	PUSH S1
-	NEWC
-	STSLICECONST x62_
-	STSLICE
-	SWAP
-	STGRAMS
-	PUSHINT 105
-	STZEROES
-	STSLICECONST xc_
-	STSLICECONST 1
-	PUSH S2
-	STREFR
-	STSLICECONST 1
-	NEWC
-	STSLICECONST x68b55f3f
-	ENDC
-	STREFR
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-	NIP
-	DROP
-}
-IF
-;; end if
-;; if
-;; get member value
-;; push identifier owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-PUSHCONT {
-	;; push identifier tokens
-	PUSH S6
-	; expValue
-	;; fetch balance
-	GETGLOB 14
-	; end expValue
-	SWAP
-	SUB
-	UFITS 128
-	; colValue
-	SETGLOB 14
-	; end colValue
-	;; Remote call ITONTokenWallet.internalTransfer
-	;; push identifier to
-	DUP
-	TRUE
-	NEWC
-	STSLICECONST x6_
-	STI 1
-	PUSHINT 3
-	STZEROES
-	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
-	NEWC
-	STSLICECONST x18d21702
-	;; tokens
-	;; push identifier tokens
-	PUSH S8
-	STUR 128
-	;; sender_public_key
-	;; push identifier wallet_public_key
-	GETGLOB 12
-	STUR 256
-	;; sender_address
-	;; push identifier owner_address
-	GETGLOB 13
-	STSLICER
-	;; send_gas_to
-	;; push identifier owner_address
-	GETGLOB 13
-	STSLICER
-	;; notify_receiver
-	;; push identifier notify_receiver
-	PUSH S5
-	STIR 1
-	;; payload
-	;; push identifier payload
-	PUSH S4
-	STREFR
-	STBREFR
-	ENDC
-	PUSHINT 128
-	SENDRAWMSG
-}
-PUSHCONT {
-	;; push identifier tokens
-	PUSH S6
-	; expValue
-	;; fetch balance
-	GETGLOB 14
-	; end expValue
-	SWAP
-	SUB
-	UFITS 128
-	; colValue
-	SETGLOB 14
-	; end colValue
-	;; Remote call ITONTokenWallet.internalTransfer
-	;; push identifier transfer_grams
-	PUSH S4
-	;; push identifier to
-	PUSH S1
-	TRUE
-	NEWC
-	STSLICECONST x6_
-	STI 1
-	PUSHINT 3
-	STZEROES
-	STSLICE
-	SWAP
-	STGRAMS
-	PUSHINT 105
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
-	NEWC
-	STSLICECONST x18d21702
-	;; tokens
-	;; push identifier tokens
-	PUSH S8
-	STUR 128
-	;; sender_public_key
-	;; push identifier wallet_public_key
-	GETGLOB 12
-	STUR 256
-	;; sender_address
-	;; push identifier owner_address
-	GETGLOB 13
-	STSLICER
-	;; send_gas_to
-	MYADDR
-	STSLICER
-	;; notify_receiver
-	;; push identifier notify_receiver
-	PUSH S5
-	STIR 1
-	;; payload
-	;; push identifier payload
-	PUSH S4
-	STREFR
-	STBREFR
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IFELSE
-;; end if
-BLKDROP 9
-; end function _transferToRecipient
-; end function transferToRecipientWithNotify
-BLKDROP 6
+BLKDROP 8
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE
@@ -1839,10 +1278,36 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode send_gas_to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode notify_receiver
+LDIQ 1
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+; Decode payload
+;; decode TvmCell
+LDREF
 ENDS
 ;; param: to
 ;; param: tokens
 ;; param: grams
+;; param: send_gas_to
+;; param: notify_receiver
+;; param: payload
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 17
@@ -1909,26 +1374,8 @@ IFNOT
 ; end function isOwner
 THROWANYIFNOT
 ; function transfer
-NEWC
-;; decl: builder
-;; push identifier to
-PUSH S3
 ;; push identifier tokens
-PUSH S3
-;; push identifier grams
-PUSH S3
-FALSE
-;; push identifier builder
 PUSH S4
-ENDC
-;; param: to
-;; param: tokens
-;; param: grams
-;; param: notify_receiver
-;; param: payload
-; function _transfer
-;; push identifier tokens
-PUSH S3
 GTINT 0
 THROWIFNOT 100
 ;; push identifier error_not_enough_balance
@@ -1941,7 +1388,7 @@ PUSHCONT {
 }
 IF
 ;; push identifier tokens
-PUSH S4
+PUSH S5
 ;; push identifier balance
 GETGLOB 14
 ;; <=
@@ -1949,7 +1396,7 @@ LEQ
 THROWANYIFNOT
 ;; get member value
 ;; push identifier to
-PUSH S4
+PUSH S5
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2003,7 +1450,7 @@ PUSHCONT {
 	PUSHINT 2
 	RAWRESERVE
 	;; push identifier tokens
-	PUSH S4
+	PUSH S5
 	; expValue
 	;; fetch balance
 	GETGLOB 14
@@ -2016,7 +1463,7 @@ PUSHCONT {
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier to
-	PUSH S5
+	PUSH S6
 	TRUE
 	NEWC
 	STSLICECONST x6_
@@ -2032,7 +1479,7 @@ PUSHCONT {
 	STSLICECONST x18d21702
 	;; tokens
 	;; push identifier tokens
-	PUSH S6
+	PUSH S7
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
@@ -2043,8 +1490,8 @@ PUSHCONT {
 	GETGLOB 13
 	STSLICER
 	;; send_gas_to
-	;; push identifier owner_address
-	GETGLOB 13
+	;; push identifier send_gas_to
+	PUSH S5
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
@@ -2074,7 +1521,7 @@ PUSHCONT {
 	GETPARAM 7
 	INDEX 0
 	;; push identifier grams
-	PUSH S4
+	PUSH S5
 	;; >
 	GREATER
 	THROWANYIFNOT
@@ -2088,7 +1535,7 @@ PUSHCONT {
 	}
 	IF
 	;; push identifier grams
-	PUSH S3
+	PUSH S4
 	;; push identifier target_gas_balance
 	GETGLOB 29
 	;; >
@@ -2096,7 +1543,7 @@ PUSHCONT {
 	THROWANYIFNOT
 	ACCEPT
 	;; push identifier tokens
-	PUSH S3
+	PUSH S4
 	; expValue
 	;; fetch balance
 	GETGLOB 14
@@ -2109,9 +1556,9 @@ PUSHCONT {
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier grams
-	PUSH S2
+	PUSH S3
 	;; push identifier to
-	PUSH S5
+	PUSH S6
 	TRUE
 	NEWC
 	STSLICECONST x6_
@@ -2129,7 +1576,7 @@ PUSHCONT {
 	STSLICECONST x18d21702
 	;; tokens
 	;; push identifier tokens
-	PUSH S5
+	PUSH S6
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
@@ -2140,7 +1587,8 @@ PUSHCONT {
 	GETGLOB 13
 	STSLICER
 	;; send_gas_to
-	MYADDR
+	;; push identifier send_gas_to
+	PUSH S4
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
@@ -2157,379 +1605,8 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
-BLKDROP 5
-; end function _transfer
-DROP
 ; end function transfer
-BLKDROP 3
-; end modifier onlyOwner
-CALL $c7_to_c4$
-TRUE
-SETGLOB 7
-
-.globl	transferWithNotify
-.public	transferWithNotify
-.type	transferWithNotify, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-; Decode to
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-; Decode tokens
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-; Decode grams
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-; Decode payload
-;; decode TvmCell
-LDREF
-ENDS
-;; param: to
-;; param: tokens
-;; param: grams
-;; param: payload
-; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-; function isOwner
-;; return
-; function isInternalOwner
-;; return
-;; get member value
-;; push identifier owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-;; short-circuiting &&
-DUP
-PUSHCONT {
-	DROP
-	;; push identifier owner_address
-	GETGLOB 13
-	;; get member sender
-	GETGLOB 9
-	SDEQ
-}
-IF
-; end function isInternalOwner
-;; short-circuiting ||
-DUP
-PUSHCONT {
-	DROP
-	; function isExternalOwner
-	;; return
-	;; push identifier wallet_public_key
-	GETGLOB 12
-	NEQINT 0
-	;; short-circuiting &&
-	DUP
-	PUSHCONT {
-		DROP
-		;; push identifier wallet_public_key
-		GETGLOB 12
-		GETGLOB 5
-		DUP
-		ISNULL
-		PUSHCONT {
-			DROP
-			PUSHINT 0
-		}
-		IF
-		;; ==
-		EQUAL
-	}
-	IF
-	; end function isExternalOwner
-}
-IFNOT
-; end function isOwner
-THROWANYIFNOT
-; function transferWithNotify
-;; push identifier to
-PUSH S3
-;; push identifier tokens
-PUSH S3
-;; push identifier grams
-PUSH S3
-TRUE
-;; push identifier payload
-PUSH S4
-;; param: to
-;; param: tokens
-;; param: grams
-;; param: notify_receiver
-;; param: payload
-; function _transfer
-;; push identifier tokens
-PUSH S3
-GTINT 0
-THROWIFNOT 100
-;; push identifier error_not_enough_balance
-GETGLOB 18
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-;; push identifier tokens
-PUSH S4
-;; push identifier balance
-GETGLOB 14
-;; <=
-LEQ
-THROWANYIFNOT
-;; get member value
-;; push identifier to
-PUSH S4
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-THROWIFNOT 100
-;; if
-;; get member value
-;; push identifier owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 29
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
-	;; -
-	SUB
-	UFITS 128
-	MAX
-	;; decl: reserve
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; push identifier reserve
-	PUSH S2
-	;; push identifier target_gas_balance
-	GETGLOB 29
-	;; +
-	ADD
-	UFITS 128
-	;; >
-	GREATER
-	THROWANYIFNOT
-	;; push identifier reserve
-	DUP
-	PUSHINT 2
-	RAWRESERVE
-	;; push identifier tokens
-	PUSH S4
-	; expValue
-	;; fetch balance
-	GETGLOB 14
-	; end expValue
-	SWAP
-	SUB
-	UFITS 128
-	; colValue
-	SETGLOB 14
-	; end colValue
-	;; Remote call ITONTokenWallet.internalTransfer
-	;; push identifier to
-	PUSH S5
-	TRUE
-	NEWC
-	STSLICECONST x6_
-	STI 1
-	PUSHINT 3
-	STZEROES
-	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
-	NEWC
-	STSLICECONST x18d21702
-	;; tokens
-	;; push identifier tokens
-	PUSH S6
-	STUR 128
-	;; sender_public_key
-	;; push identifier wallet_public_key
-	GETGLOB 12
-	STUR 256
-	;; sender_address
-	;; push identifier owner_address
-	GETGLOB 13
-	STSLICER
-	;; send_gas_to
-	;; push identifier owner_address
-	GETGLOB 13
-	STSLICER
-	;; notify_receiver
-	;; push identifier notify_receiver
-	PUSH S4
-	STIR 1
-	;; payload
-	;; push identifier payload
-	PUSH S3
-	STREFR
-	STBREFR
-	ENDC
-	PUSHINT 128
-	SENDRAWMSG
-	DROP
-}
-PUSHCONT {
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; push identifier grams
-	PUSH S4
-	;; >
-	GREATER
-	THROWANYIFNOT
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; push identifier grams
-	PUSH S3
-	;; push identifier target_gas_balance
-	GETGLOB 29
-	;; >
-	GREATER
-	THROWANYIFNOT
-	ACCEPT
-	;; push identifier tokens
-	PUSH S3
-	; expValue
-	;; fetch balance
-	GETGLOB 14
-	; end expValue
-	SWAP
-	SUB
-	UFITS 128
-	; colValue
-	SETGLOB 14
-	; end colValue
-	;; Remote call ITONTokenWallet.internalTransfer
-	;; push identifier grams
-	PUSH S2
-	;; push identifier to
-	PUSH S5
-	TRUE
-	NEWC
-	STSLICECONST x6_
-	STI 1
-	PUSHINT 3
-	STZEROES
-	STSLICE
-	SWAP
-	STGRAMS
-	PUSHINT 105
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
-	NEWC
-	STSLICECONST x18d21702
-	;; tokens
-	;; push identifier tokens
-	PUSH S5
-	STUR 128
-	;; sender_public_key
-	;; push identifier wallet_public_key
-	GETGLOB 12
-	STUR 256
-	;; sender_address
-	;; push identifier owner_address
-	GETGLOB 13
-	STSLICER
-	;; send_gas_to
-	MYADDR
-	STSLICER
-	;; notify_receiver
-	;; push identifier notify_receiver
-	PUSH S3
-	STIR 1
-	;; payload
-	;; push identifier payload
-	PUSH S2
-	STREFR
-	STBREFR
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IFELSE
-;; end if
-BLKDROP 5
-; end function _transfer
-; end function transferWithNotify
-BLKDROP 4
+BLKDROP 6
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE
@@ -2585,11 +1662,37 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode send_gas_to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode notify_receiver
+LDIQ 1
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+; Decode payload
+;; decode TvmCell
+LDREF
 ENDS
 ;; param: from
 ;; param: to
 ;; param: tokens
 ;; param: grams
+;; param: send_gas_to
+;; param: notify_receiver
+;; param: payload
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 17
@@ -2656,37 +1759,16 @@ IFNOT
 ; end function isOwner
 THROWANYIFNOT
 ; function transferFrom
-NEWC
-;; decl: builder
-;; push identifier from
-PUSH S4
-;; push identifier to
-PUSH S4
-;; push identifier tokens
-PUSH S4
-;; push identifier grams
-PUSH S4
-FALSE
-;; push identifier builder
-PUSH S5
-ENDC
-;; param: from
-;; param: to
-;; param: tokens
-;; param: grams
-;; param: notify_receiver
-;; param: payload
-; function _transferFrom
 ;; get member value
 ;; push identifier to
-PUSH S4
+PUSH S5
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 THROWIFNOT 100
 ;; push identifier tokens
-PUSH S3
+PUSH S4
 GTINT 0
 THROWIFNOT 100
 ;; if
@@ -2742,7 +1824,7 @@ PUSHCONT {
 	RAWRESERVE
 	;; Remote call ITONTokenWallet.internalTransferFrom
 	;; push identifier from
-	PUSH S6
+	PUSH S7
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -2754,15 +1836,15 @@ PUSHCONT {
 	STSLICECONST x3f567951
 	;; to
 	;; push identifier to
-	PUSH S7
+	PUSH S8
 	STSLICER
 	;; tokens
 	;; push identifier tokens
-	PUSH S6
+	PUSH S7
 	STUR 128
 	;; send_gas_to
-	;; push identifier owner_address
-	GETGLOB 13
+	;; push identifier send_gas_to
+	PUSH S5
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
@@ -2792,7 +1874,7 @@ PUSHCONT {
 	GETPARAM 7
 	INDEX 0
 	;; push identifier grams
-	PUSH S4
+	PUSH S5
 	;; >
 	GREATER
 	THROWANYIFNOT
@@ -2806,7 +1888,7 @@ PUSHCONT {
 	}
 	IF
 	;; push identifier grams
-	PUSH S3
+	PUSH S4
 	;; push identifier target_gas_balance
 	GETGLOB 29
 	PUSHINT 2
@@ -2819,9 +1901,9 @@ PUSHCONT {
 	ACCEPT
 	;; Remote call ITONTokenWallet.internalTransferFrom
 	;; push identifier grams
-	PUSH S2
+	PUSH S3
 	;; push identifier from
-	PUSH S6
+	PUSH S7
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -2835,14 +1917,15 @@ PUSHCONT {
 	STSLICECONST x3f567951
 	;; to
 	;; push identifier to
-	PUSH S6
+	PUSH S7
 	STSLICER
 	;; tokens
 	;; push identifier tokens
-	PUSH S5
+	PUSH S6
 	STUR 128
 	;; send_gas_to
-	MYADDR
+	;; push identifier send_gas_to
+	PUSH S4
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
@@ -2859,345 +1942,8 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
-BLKDROP 6
-; end function _transferFrom
-DROP
 ; end function transferFrom
-BLKDROP 4
-; end modifier onlyOwner
-CALL $c7_to_c4$
-TRUE
-SETGLOB 7
-
-.globl	transferFromWithNotify
-.public	transferFromWithNotify
-.type	transferFromWithNotify, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-; Decode from
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-; Decode to
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-; Decode tokens
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-; Decode grams
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-; Decode payload
-;; decode TvmCell
-LDREF
-ENDS
-;; param: from
-;; param: to
-;; param: tokens
-;; param: grams
-;; param: payload
-; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-; function isOwner
-;; return
-; function isInternalOwner
-;; return
-;; get member value
-;; push identifier owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-;; short-circuiting &&
-DUP
-PUSHCONT {
-	DROP
-	;; push identifier owner_address
-	GETGLOB 13
-	;; get member sender
-	GETGLOB 9
-	SDEQ
-}
-IF
-; end function isInternalOwner
-;; short-circuiting ||
-DUP
-PUSHCONT {
-	DROP
-	; function isExternalOwner
-	;; return
-	;; push identifier wallet_public_key
-	GETGLOB 12
-	NEQINT 0
-	;; short-circuiting &&
-	DUP
-	PUSHCONT {
-		DROP
-		;; push identifier wallet_public_key
-		GETGLOB 12
-		GETGLOB 5
-		DUP
-		ISNULL
-		PUSHCONT {
-			DROP
-			PUSHINT 0
-		}
-		IF
-		;; ==
-		EQUAL
-	}
-	IF
-	; end function isExternalOwner
-}
-IFNOT
-; end function isOwner
-THROWANYIFNOT
-; function transferFromWithNotify
-;; push identifier from
-PUSH S4
-;; push identifier to
-PUSH S4
-;; push identifier tokens
-PUSH S4
-;; push identifier grams
-PUSH S4
-TRUE
-;; push identifier payload
-PUSH S5
-;; param: from
-;; param: to
-;; param: tokens
-;; param: grams
-;; param: notify_receiver
-;; param: payload
-; function _transferFrom
-;; get member value
-;; push identifier to
-PUSH S4
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-THROWIFNOT 100
-;; push identifier tokens
-PUSH S3
-GTINT 0
-THROWIFNOT 100
-;; if
-;; get member value
-;; push identifier owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 29
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
-	;; -
-	SUB
-	UFITS 128
-	MAX
-	;; decl: reserve
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; push identifier reserve
-	PUSH S2
-	;; push identifier target_gas_balance
-	GETGLOB 29
-	PUSHINT 2
-	;; *
-	MUL
-	UFITS 128
-	;; +
-	ADD
-	UFITS 128
-	;; >
-	GREATER
-	THROWANYIFNOT
-	;; push identifier reserve
-	DUP
-	PUSHINT 2
-	RAWRESERVE
-	;; Remote call ITONTokenWallet.internalTransferFrom
-	;; push identifier from
-	PUSH S6
-	NEWC
-	STSLICECONST x62_
-	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
-	NEWC
-	STSLICECONST x3f567951
-	;; to
-	;; push identifier to
-	PUSH S7
-	STSLICER
-	;; tokens
-	;; push identifier tokens
-	PUSH S6
-	STUR 128
-	;; send_gas_to
-	;; push identifier owner_address
-	GETGLOB 13
-	STSLICER
-	;; notify_receiver
-	;; push identifier notify_receiver
-	PUSH S4
-	STIR 1
-	;; payload
-	;; push identifier payload
-	PUSH S3
-	STREFR
-	STBREFR
-	ENDC
-	PUSHINT 128
-	SENDRAWMSG
-	DROP
-}
-PUSHCONT {
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; push identifier grams
-	PUSH S4
-	;; >
-	GREATER
-	THROWANYIFNOT
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; push identifier grams
-	PUSH S3
-	;; push identifier target_gas_balance
-	GETGLOB 29
-	PUSHINT 2
-	;; *
-	MUL
-	UFITS 128
-	;; >
-	GREATER
-	THROWANYIFNOT
-	ACCEPT
-	;; Remote call ITONTokenWallet.internalTransferFrom
-	;; push identifier grams
-	PUSH S2
-	;; push identifier from
-	PUSH S6
-	NEWC
-	STSLICECONST x62_
-	STSLICE
-	SWAP
-	STGRAMS
-	PUSHINT 105
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
-	NEWC
-	STSLICECONST x3f567951
-	;; to
-	;; push identifier to
-	PUSH S6
-	STSLICER
-	;; tokens
-	;; push identifier tokens
-	PUSH S5
-	STUR 128
-	;; send_gas_to
-	MYADDR
-	STSLICER
-	;; notify_receiver
-	;; push identifier notify_receiver
-	PUSH S3
-	STIR 1
-	;; payload
-	;; push identifier payload
-	PUSH S2
-	STREFR
-	STBREFR
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IFELSE
-;; end if
-BLKDROP 6
-; end function _transferFrom
-; end function transferFromWithNotify
-BLKDROP 5
+BLKDROP 7
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE
