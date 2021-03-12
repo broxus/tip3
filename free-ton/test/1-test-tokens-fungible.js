@@ -16,6 +16,7 @@ let TONTokenWalletInternalOwnerTest;
 let SelfDeployedWallet;
 let DeployEmptyWalletFor;
 let TONTokenWalletHack;
+let ExpectedWalletAddressTest;
 let fw0address;
 let FooWallet0;
 let fw1address;
@@ -59,6 +60,7 @@ describe('Test Fungible Tokens', function () {
         BarWallet2 = await freeton.requireContract(tonWrapper, 'TONTokenWallet');
         TONTokenWalletHack = await freeton.requireContract(tonWrapper, 'TONTokenWalletHack');
         DeployEmptyWalletFor = await freeton.requireContract(tonWrapper, 'DeployEmptyWalletFor');
+        ExpectedWalletAddressTest = await freeton.requireContract(tonWrapper, 'ExpectedWalletAddressTest');
         await RootTokenContractExternalOwner.loadMigration('RootTokenContractExternalOwner');
         await RootTokenContractInternalOwner.loadMigration('RootTokenContractInternalOwner');
         await RootTokenContractInternalOwnerTest.loadMigration();
@@ -68,6 +70,7 @@ describe('Test Fungible Tokens', function () {
         await BarWallet2.loadMigration('BarWallet2');
         await TONTokenWalletHack.loadMigration();
         await DeployEmptyWalletFor.loadMigration();
+        await ExpectedWalletAddressTest.loadMigration();
 
         logger.log(`RootTokenContractExternalOwner address: ${RootTokenContractExternalOwner.address}`);
         logger.log(`RootTokenContractInternalOwner address: ${RootTokenContractInternalOwner.address}`);
@@ -196,7 +199,7 @@ describe('Test Fungible Tokens', function () {
                 'deployWallet',
                 {
                     tokens: 10000,
-                    grams: freeton.utils.convertCrystal('1', 'nano'),
+                    deploy_grams: freeton.utils.convertCrystal('1', 'nano'),
                     wallet_public_key_: `0x${tonWrapper.keys[1].public}`,
                     owner_address_: ZERO_ADDRESS,
                     gas_back_address: ZERO_ADDRESS,
@@ -251,7 +254,7 @@ describe('Test Fungible Tokens', function () {
                 'deployWallet',
                 {
                     tokens: 20000,
-                    grams: freeton.utils.convertCrystal('5', 'nano'),
+                    deploy_grams: freeton.utils.convertCrystal('5', 'nano'),
                     wallet_public_key_: `0x${tonWrapper.keys[2].public}`,
                     owner_address_: ZERO_ADDRESS,
                     gas_back_address: ZERO_ADDRESS,
@@ -463,6 +466,32 @@ describe('Test Fungible Tokens', function () {
                 grams = ${new BigNumber(bw6EndGrams).div(1000000000).toFixed(9)} TON`);
             logger.log(`GAS used: ${totalGas} TON`);
             assert.ok(bw6address);
+        });
+
+        it('Check ExpectedWalletAddressTest address)', async () => {
+            logger.log('######################################################');
+            logger.log('Check ExpectedWalletAddressTest wallet address');
+            const expectedAddress = await RootTokenContractExternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x0`,
+                    owner_address_: ExpectedWalletAddressTest.address,
+                });
+
+            const callbackAddress = await ExpectedWalletAddressTest.runLocal('wallet', {});
+
+            const Wallet = await freeton.requireContract(
+                tonWrapper,
+                'TONTokenWallet',
+                callbackAddress
+            );
+
+            const balance = await Wallet.runLocal('balance', {});
+
+            logger.log(`Expected ExpectedWalletAddressTest address: ${expectedAddress}`);
+            logger.log(`Callback address: ${callbackAddress}`);
+            logger.log(`Balance: ${balance}`);
+            assert.equal(expectedAddress, callbackAddress, 'Wallets address not equals');
         });
 
         it('Check SelfDeployedWallet address (must be equals RootTokenContractExternalOwner.getWalletAddress(...))', async () => {
@@ -711,6 +740,7 @@ describe('Test Fungible Tokens', function () {
                 {
                     tokens: 5000,
                     grams: freeton.utils.convertCrystal('1.5', 'nano'),
+                    send_gas_to: ZERO_ADDRESS,
                     callback_address: RootTokenContractInternalOwnerTest.address,
                     callback_payload: startLatestPayload
                 },
@@ -876,7 +906,8 @@ describe('Test Fungible Tokens', function () {
                 'mint',
                 {
                     to: notExistsWalletAddress,
-                    tokens: 10000
+                    tokens: 10000,
+                    gas_back_address: ZERO_ADDRESS
                 },
                 tonWrapper.keys[0]
             ).catch(e => console.log(e));

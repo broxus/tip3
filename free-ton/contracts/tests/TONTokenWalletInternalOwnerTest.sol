@@ -63,7 +63,7 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
         builder.store(ethereum_address);
         TvmCell callback_payload = builder.toCell();
 
-        ITokensBurner(burner_address).burnMyTokens{value: grams}(tokens, callback_address, callback_payload);
+        ITokensBurner(burner_address).burnMyTokens{value: grams}(tokens, address(this), callback_address, callback_payload);
     }
 
     function testTransferFrom(uint128 tokens, uint128 grams, address from, address to, address wallet) external view onlyExternalOwner {

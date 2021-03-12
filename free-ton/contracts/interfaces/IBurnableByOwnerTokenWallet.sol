@@ -5,6 +5,7 @@ interface IBurnableByOwnerTokenWallet {
     function burnByOwner(
         uint128 tokens,
         uint128 grams,
+        address sender_address,
         address callback_address,
         TvmCell callback_payload
     ) external;

@@ -8,6 +8,7 @@ interface IBurnTokensCallback {
         TvmCell payload,
         uint256 sender_public_key,
         address sender_address,
-        address wallet_address
+        address wallet_address,
+        address send_gas_to
     ) external;
 }

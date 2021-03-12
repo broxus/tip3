@@ -105,7 +105,8 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausabl
         TvmCell payload,
         uint256,
         address sender_address,
-        address wallet_address
+        address,
+        address send_gas_to
     ) override external onlyRoot {
 
         tvm.accept();
@@ -117,11 +118,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausabl
 
         emit TokenBurn(sender_address.wid, sender_address.value, tokens, ethereum_address);
 
-        if (sender_address.value == 0) {
-            wallet_address.transfer({ value: 0, flag: 128 });
-        } else {
-            sender_address.transfer({ value: 0, flag: 128 });
-        }
+        send_gas_to.transfer({ value: 0, flag: 128 });
     }
 
     function transferMyTokensToEthereum(uint128 tokens, uint160 ethereum_address) external view {
@@ -140,12 +137,18 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausabl
         IBurnableByRootTokenRootContract(token_root_address).proxyBurn{value: 0, flag: 128}(
             tokens,
             msg.sender,
+            msg.sender,
             address(this),
             callback_payload
         );
     }
 
-    function burnMyTokens(uint128 tokens, address callback_address, TvmCell callback_payload) override external {
+    function burnMyTokens(
+        uint128 tokens,
+        address send_gas_to,
+        address callback_address,
+        TvmCell callback_payload
+    ) override external {
         require(!paused, error_paused);
         require(tokens > 0);
         require(token_root_address.value != 0);
@@ -156,6 +159,7 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausabl
         IBurnableByRootTokenRootContract(token_root_address).proxyBurn{value: 0, flag: 128}(
             tokens,
             msg.sender,
+            send_gas_to,
             callback_address,
             callback_payload
         );

@@ -16,24 +16,24 @@ interface IRootTokenContract {
 
     function getDetails() external view returns (IRootTokenContractDetails);
 
-    function getWalletAddress(uint256 wallet_public_key, address owner_address) external returns (address);
+    function getWalletAddress(uint256 wallet_public_key, address owner_address) external returns(address);
 
     function deployWallet(
         uint128 tokens,
-        uint128 grams,
+        uint128 deploy_grams,
         uint256 wallet_public_key,
         address owner_address,
         address gas_back_address
-    ) external;
+    ) external returns(address);
 
     function deployEmptyWallet(
-        uint128 grams,
+        uint128 deploy_grams,
         uint256 wallet_public_key,
         address owner_address,
         address gas_back_address
-    ) external;
+    ) external returns(address);
 
-    function mint(uint128 tokens, address to) external;
+    function mint(uint128 tokens, address to, address gas_back_address) external;
 
     function sendExpectedWalletAddress(uint256 wallet_public_key_, address owner_address_, address to) external;
 }

@@ -122,6 +122,7 @@
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
 				{"name":"grams","type":"uint128"},
+				{"name":"send_gas_to","type":"address"},
 				{"name":"callback_address","type":"address"},
 				{"name":"callback_payload","type":"cell"}
 			],
@@ -132,6 +133,7 @@
 			"name": "burnByRoot",
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
+				{"name":"send_gas_to","type":"address"},
 				{"name":"callback_address","type":"address"},
 				{"name":"callback_payload","type":"cell"}
 			],

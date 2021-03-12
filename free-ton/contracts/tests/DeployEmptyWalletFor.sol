@@ -40,4 +40,5 @@ contract DeployEmptyWalletFor {
     function getRoot() external view returns(address) {
         return root;
     }
+
 }

@@ -15,57 +15,11 @@ SETGLOB 6
 ;; end constructor protection
 ; Decode input parameters
 ENDS
-; constructor DeployEmptyWalletFor
+; constructor ExpectedWalletAddressTest
 ACCEPT
-; end constructor DeployEmptyWalletFor
-CALL $c7_to_c4$
-TRUE
-SETGLOB 7
-
-.globl	deployEmptyWalletFor
-.public	deployEmptyWalletFor
-.type	deployEmptyWalletFor, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-; Decode pubkey
-LDU 256
-; Decode addr
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-ENDS
-;; param: pubkey
-;; param: addr
-; function deployEmptyWalletFor
-ACCEPT
-; expValue
-; end expValue
-;; push identifier pubkey
-PUSH S1
-; colValue
-SETGLOB 12
-; end colValue
-; expValue
-; end expValue
-;; push identifier addr
-DUP
-; colValue
-SETGLOB 13
-; end colValue
 ;; Remote call IRootTokenContract.deployEmptyWallet
-;; push identifier root
-GETGLOB 11
+;; push identifier root_address
+GETGLOB 10
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -79,30 +33,51 @@ STSLICECONST x542b1672
 PUSHINT 100000000
 STUR 128
 ;; wallet_public_key
-;; push identifier pubkey
-PUSH S3
+PUSHINT 0
 STUR 256
 ;; owner_address
-;; push identifier addr
-PUSH S2
+MYADDR
 STSLICER
 ;; gas_back_address
-;; address.makeAddrStd()
-PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+MYADDR
 STSLICER
 STBREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
-DROP2
-; end function deployEmptyWalletFor
+;; Remote call IRootTokenContract.sendExpectedWalletAddress
+;; push identifier root_address
+GETGLOB 10
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x405f5e100000000000000000000000000004_
+STSLICER
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x55b3a9fb
+;; wallet_public_key_
+PUSHINT 0
+STUR 256
+;; owner_address_
+MYADDR
+STSLICER
+;; to
+MYADDR
+STSLICER
+STBREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+; end constructor ExpectedWalletAddressTest
 CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
-.globl	getLatestPublicKey
-.public	getLatestPublicKey
-.type	getLatestPublicKey, @function
+.globl	expectedWalletAddressCallback
+.public	expectedWalletAddressCallback
+.type	expectedWalletAddressCallback, @function
 GETGLOB 1
 ISNULL
 PUSHCONT {
@@ -110,140 +85,58 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
-ENDS
-; function getLatestPublicKey
-;; return
-;; push identifier latest_pubkey
-GETGLOB 12
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
+; Decode wallet_
+LDMSGADDR
+; Decode wallet_public_key
+LDUQ 256
 PUSHCONT {
-	PUSH S3
+	;; load next cell
+	LDREF
+	ENDS
 	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xc2b17540
-	PUSH S1
-	STUR 256
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
+	LDU 256
 }
-IF
-DROP
-; end function getLatestPublicKey
+IFNOT
+; Decode owner_address
+LDMSGADDRQ
 PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	getLatestAddr
-.public	getLatestAddr
-.type	getLatestAddr, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
-ENDS
-; function getLatestAddr
-;; return
-;; push identifier latest_addr
-GETGLOB 13
-;; emitting 1 value(s)
-PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
+	;; load next cell
+	LDREF
+	ENDS
 	CTOS
-	LDU 2
 	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xb990b063
-	PUSH S1
-	STSLICER
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
 }
-IF
-DROP
-; end function getLatestAddr
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
-TRUE
-SETGLOB 7
-
-.globl	getRoot
-.public	getRoot
-.type	getRoot, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
-; Decode input parameters
+IFNOT
 ENDS
-; function getRoot
-;; return
-;; push identifier root
-GETGLOB 11
-;; emitting 1 value(s)
+;; param: wallet_
+;; param: wallet_public_key
+;; param: owner_address
+; function expectedWalletAddressCallback
+;; get member sender
+GETGLOB 9
+;; push identifier root_address
+GETGLOB 10
+SDEQ
+THROWIFNOT 100
+;; push identifier wallet_public_key
 PUSH S1
-EQINT -1
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xab304069
-	PUSH S1
-	STSLICER
-	ENDC
-	PUSHINT 1
-	SENDRAWMSG
-}
-IF
-DROP
-; end function getRoot
-PUSHCONT {
-	CALL $c7_to_c4$
-}
-IF
+EQINT 0
+THROWIFNOT 100
+;; push identifier owner_address
+DUP
+MYADDR
+SDEQ
+THROWIFNOT 100
+; expValue
+; end expValue
+;; push identifier wallet_
+PUSH S2
+; colValue
+SETGLOB 11
+; end colValue
+BLKDROP 3
+; end function expectedWalletAddressCallback
+CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
@@ -256,17 +149,10 @@ GETGLOB 3
 STUR 64
 GETGLOB 6
 STUR 1
-NEWC
-GETGLOB 12
-GETGLOB 13
-XCHG s2
-STU 256
-STSLICE
 GETGLOB 10
 GETGLOB 11
-REVERSE 4, 0
-STBREF
-STU 256
+XCHG s2
+STSLICE
 STSLICE
 ENDC
 POP C4
@@ -278,13 +164,7 @@ CTOS        ; c4
 LDU 256      ; pubkey c4
 LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
-LDREFRTOS
-LDU 256
-SETGLOB 13
-SETGLOB 12
-LDU 256
 LDMSGADDR
-DROP
 SETGLOB 11
 SETGLOB 10
 TRUE
@@ -303,13 +183,7 @@ PUSHCONT {
 	LDU 256      ; pubkey c4
 	LDU 64      ; pubkey timestamp c4
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
-	LDREFRTOS
-	LDU 256
-	SETGLOB 13
-	SETGLOB 12
-	LDU 256
 	LDMSGADDR
-	DROP
 	SETGLOB 11
 	SETGLOB 10
 	TRUE
@@ -320,21 +194,8 @@ PUSHCONT {
 }
 PUSHCONT {
 	PLDDICT   ; D
-	; init _randomNonce
+	; init root_address
 	PUSHINT 1
-	PUSH S1
-	PUSHINT 64
-	DICTUGET
-	PUSHCONT {
-		PLDU 256
-	}
-	PUSHCONT {
-		PUSHINT 0
-	}
-	IFELSE
-	SETGLOB 10
-	; init root
-	PUSHINT 2
 	PUSH S1
 	PUSHINT 64
 	DICTUGET
@@ -342,13 +203,10 @@ PUSHCONT {
 		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	}
 	IFNOT
-	SETGLOB 11
-	; init latest_pubkey
-	PUSHINT 0
-	SETGLOB 12
-	; init latest_addr
+	SETGLOB 10
+	; init wallet
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 13
+	SETGLOB 11
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -377,7 +235,10 @@ IFELSE
 PUSHINT 0  ; main_external trans id
 PUSH S2
 CTOS
-PLDU 4
+LDU 4       ; bounced tail
+LDMSGADDR   ; bounced src tail
+DROP
+SETGLOB 9
 MODPOW2 1
 IFRET
 PUSH S1    ; body
@@ -411,6 +272,8 @@ IF
 .internal-alias :main_external,        -1
 .internal	:main_external
 PUSHINT -1 ; main_external trans id
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+SETGLOB 9
 PUSH S1
 CALL $c4_to_c7_with_init_storage$
 LDU 1 ; haveSign msgSlice
@@ -455,4 +318,23 @@ PUSHCONT {
 	THROW 60
 }
 IF
+
+.globl	wallet
+.public	wallet
+.type	wallet, @function
+CALL $c4_to_c7$
+GETGLOB 11
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x94870017
+PUSH S1
+STSLICER
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
 

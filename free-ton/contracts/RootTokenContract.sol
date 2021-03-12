@@ -77,7 +77,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     }
 
     function sendExpectedWalletAddress(uint256 wallet_public_key_, address owner_address_, address to) override external {
-        tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2);
+        tvm.rawReserve(address(this).balance - msg.value, 2);
         address wallet = getExpectedWalletAddress(wallet_public_key_, owner_address_);
         IExpectedWalletAddressCallback(to).expectedWalletAddressCallback{value: 0, flag: 128}(
             wallet,
@@ -88,11 +88,11 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
     function deployWallet(
         uint128 tokens,
-        uint128 grams,
+        uint128 deploy_grams,
         uint256 wallet_public_key_,
         address owner_address_,
         address gas_back_address
-    ) override external onlyOwner {
+    ) override external onlyOwner returns(address) {
         require(tokens >= 0);
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
@@ -105,7 +105,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         }
 
         address wallet = new TONTokenWallet{
-            value: grams,
+            value: deploy_grams,
             code: wallet_code,
             pubkey: wallet_public_key_,
             varInit: {
@@ -127,22 +127,24 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
                 msg.sender.transfer({ value: 0, flag: 128 }); 
             }
         }
+
+        return wallet;
     }
 
     function deployEmptyWallet(
-        uint128 grams,
+        uint128 deploy_grams,
         uint256 wallet_public_key_,
         address owner_address_,
         address gas_back_address
-    ) override external {
+    ) override external returns(address) {
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
                 error_define_public_key_or_owner_address);
 
-        tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); 
+        tvm.rawReserve(address(this).balance - msg.value, 2);
 
-        new TONTokenWallet{
-            value: grams,
+        address wallet = new TONTokenWallet{
+            value: deploy_grams,
             code: wallet_code,
             pubkey: wallet_public_key_,
             varInit: {
@@ -158,10 +160,12 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         } else {
             msg.sender.transfer({ value: 0, flag: 128 }); 
         }
+
+        return wallet;
     }
 
-    function mint(uint128 tokens, address to) override external onlyOwner {
-        if(root_owner_address.value == 0) {
+    function mint(uint128 tokens, address to, address gas_back_address) override external onlyOwner {
+        if (root_owner_address.value == 0) {
             tvm.accept();
         } else {
             tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); 
@@ -171,8 +175,12 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         ITONTokenWallet(to).accept(tokens);
 
-        if(root_owner_address.value != 0) {
-            root_owner_address.transfer({ value: 0, flag: 128 }); 
+        if (root_owner_address.value != 0) {
+            if (gas_back_address.value != 0) {
+                gas_back_address.transfer({ value: 0, flag: 128 });
+            } else {
+                root_owner_address.transfer({ value: 0, flag: 128 });
+            }
         }
     }
 
@@ -180,13 +188,19 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     function proxyBurn(
         uint128 tokens,
         address sender_address,
+        address send_gas_to,
         address callback_address,
         TvmCell callback_payload
     ) override external onlyInternalOwner {
-        tvm.rawReserve(address(this).balance - msg.value, 2); 
+        tvm.rawReserve(address(this).balance - msg.value, 2);
+        address send_gas_to_ = send_gas_to;
         address expectedWalletAddress = getExpectedWalletAddress(0, sender_address);
+        if (send_gas_to.value == 0) {
+            send_gas_to_ = sender_address;
+        }
         IBurnableByRootTokenWallet(expectedWalletAddress).burnByRoot{value: 0, flag: 128}( 
             tokens,
+            send_gas_to_,
             callback_address,
             callback_payload
         );
@@ -196,6 +210,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         uint128 tokens,
         uint256 sender_public_key,
         address sender_address,
+        address send_gas_to,
         address callback_address,
         TvmCell callback_payload
     ) override external {
@@ -210,13 +225,18 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         total_supply -= tokens;
 
-        IBurnTokensCallback(callback_address).burnCallback{value: 0, flag: 128}( 
-            tokens,
-            callback_payload,
-            sender_public_key,
-            sender_address,
-            expectedWalletAddress
-        );
+        if (callback_address.value == 0) {
+            send_gas_to.transfer({ value: 0, flag: 128 });
+        } else {
+            IBurnTokensCallback(callback_address).burnCallback{value: 0, flag: 128}(
+                tokens,
+                callback_payload,
+                sender_public_key,
+                sender_address,
+                expectedWalletAddress,
+                send_gas_to
+            );
+        }
 
     }
 
@@ -233,7 +253,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     }
 
     function sendPausedCallbackTo(uint64 callback_id, address callback_addr) override external {
-        tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        tvm.rawReserve(address(this).balance - msg.value, 2);
         IPausedCallback(callback_addr).pausedCallback{ value: 0, flag: 128 }(callback_id, paused);
     }
 

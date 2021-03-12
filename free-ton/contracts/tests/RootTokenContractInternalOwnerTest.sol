@@ -47,8 +47,9 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
         uint128 tokens,
         TvmCell payload,
         uint256,
-        address sender_address,
-        address wallet_address
+        address,
+        address,
+        address send_gas_to
     ) override external onlyRoot {
 
         tvm.rawReserve(address(this).balance - msg.value, 2);
@@ -56,14 +57,15 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
         burned_count += tokens;
         latest_payload = payload;
 
-        if (sender_address.value == 0) {
-            wallet_address.transfer({ value: 0, flag: 128 });
-        } else {
-            sender_address.transfer({ value: 0, flag: 128 });
-        }
+        send_gas_to.transfer({ value: 0, flag: 128 });
     }
 
-    function burnMyTokens(uint128 tokens, address callback_address, TvmCell callback_payload) override external {
+    function burnMyTokens(
+        uint128 tokens,
+        address send_gas_to,
+        address callback_address,
+        TvmCell callback_payload
+    ) override external {
         require(root_address_.value != 0);
         require(msg.sender.value != 0);
         require(msg.value >= settings_burn_min_value);
@@ -71,6 +73,7 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
         IBurnableByRootTokenRootContract(root_address_).proxyBurn{value: 0, flag: 128}(
             tokens,
             msg.sender,
+            send_gas_to,
             callback_address,
             callback_payload
         );
@@ -130,7 +133,7 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
     function mint(uint128 tokens, address addr) external view onlyOwner {
         require(root_address_.value != 0);
         tvm.accept();
-        IRootTokenContract(root_address_).mint{value: 0.1 ton}(tokens, addr);
+        IRootTokenContract(root_address_).mint{value: 0.1 ton}(tokens, addr, address(this));
     }
 
     function sendGramsToRoot(uint128 grams) external view onlyOwner {

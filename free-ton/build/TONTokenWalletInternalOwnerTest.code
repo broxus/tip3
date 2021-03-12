@@ -487,20 +487,25 @@ STGRAMS
 PUSHINT 105
 STZEROES
 STSLICECONST 0
-STSLICECONST 0
-STSLICECONST x17fa92d3
+STSLICECONST 1
+NEWC
+STSLICECONST x67a80dcf
 ;; tokens
 ;; push identifier tokens
-PUSH S7
+PUSH S8
 STUR 128
+;; send_gas_to
+MYADDR
+STSLICER
 ;; callback_address
 ;; push identifier callback_address
-PUSH S4
+PUSH S5
 STSLICER
 ;; callback_payload
 ;; push identifier callback_payload
-PUSH S1
+PUSH S2
 STREFR
+STBREFR
 ENDC
 PUSHINT 1
 SENDRAWMSG
@@ -760,8 +765,8 @@ STSLICER
 STSLICECONST 0
 STSLICECONST 1
 NEWC
-STSLICECONST x76406336
-;; grams
+STSLICECONST x542b1672
+;; deploy_grams
 ;; push identifier grams
 PUSH S2
 STUR 128
