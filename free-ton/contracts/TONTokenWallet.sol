@@ -41,7 +41,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     uint8 error_define_wallet_public_key_or_owner_address = 111;
     uint8 error_cant_transfer_to_self                     = 112;
 
-    uint128 public target_gas_balance                      = 0.1 ton;
+    uint128 public target_gas_balance                     = 0.05 ton;
 
     constructor() public {
         require((wallet_public_key != 0 && owner_address.value == 0) ||
