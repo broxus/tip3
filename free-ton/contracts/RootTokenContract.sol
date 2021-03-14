@@ -29,7 +29,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
     uint256 root_public_key;
     address root_owner_address;
-    uint128 start_gas_balance;
+    uint128 public start_gas_balance;
 
     uint8 error_message_sender_is_not_my_owner = 100;
     uint8 error_not_enough_balance = 101;
@@ -62,9 +62,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
             wallet_code,
             root_public_key,
             root_owner_address,
-            total_supply,
-            start_gas_balance,
-            paused
+            total_supply
         );
     }
 

@@ -163,8 +163,8 @@ THROWIFNOT 50
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x40ee6b280000000000000000000000000004_
-STSLICER
+PUSHINT 109
+STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
@@ -203,10 +203,90 @@ STREFR
 STBREFR
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 128
 SENDRAWMSG
 BLKDROP 10
 ; end function tokensReceivedCallback
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	tokensBouncedCallback
+.public	tokensBouncedCallback
+.type	tokensBouncedCallback, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode 
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode 
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode 
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+; Decode bounced_from
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode 
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+ENDS
+;; param: 
+;; param: 
+;; param: 
+;; param: bounced_from
+;; param: 
+; function tokensBouncedCallback
+; expValue
+; end expValue
+;; push identifier bounced_from
+PUSH S1
+; colValue
+SETGLOB 14
+; end colValue
+BLKDROP 5
+; end function tokensBouncedCallback
 CALL $c7_to_c4$
 TRUE
 SETGLOB 7
@@ -340,6 +420,40 @@ STSLICECONST 0
 STSLICECONST 0
 STSLICECONST x3f5860fb
 ;; receive_callback
+MYADDR
+STSLICER
+ENDC
+PUSHINT 1
+SENDRAWMSG
+;; Remote call ITONTokenWallet.setBouncedCallback
+;; push identifier wallet1
+PUSH S1
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000004_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x05c5000f
+;; bounced_callback
+MYADDR
+STSLICER
+ENDC
+PUSHINT 1
+SENDRAWMSG
+;; Remote call ITONTokenWallet.setBouncedCallback
+;; push identifier wallet2
+DUP
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000004_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x05c5000f
+;; bounced_callback
 MYADDR
 STSLICER
 ENDC
@@ -1009,11 +1123,16 @@ GETGLOB 3
 STUR 64
 GETGLOB 6
 STUR 1
+NEWC
+GETGLOB 14
+SWAP
+STSLICE
 GETGLOB 10
 GETGLOB 11
 GETGLOB 12
 GETGLOB 13
-REVERSE 5, 0
+REVERSE 6, 0
+STBREF
 STU 256
 STU 256
 STU 8
@@ -1028,6 +1147,8 @@ CTOS        ; c4
 LDU 256      ; pubkey c4
 LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
+LDREFRTOS
+SETGLOB 14
 LDU 256
 LDU 256
 LDU 8
@@ -1052,6 +1173,8 @@ PUSHCONT {
 	LDU 256      ; pubkey c4
 	LDU 64      ; pubkey timestamp c4
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
+	LDREFRTOS
+	SETGLOB 14
 	LDU 256
 	LDU 256
 	LDU 8
@@ -1100,6 +1223,9 @@ PUSHCONT {
 	; init change_directions
 	NEWDICT
 	SETGLOB 13
+	; init latest_bounced_from
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	SETGLOB 14
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -1227,4 +1353,23 @@ PUSHCONT {
 	THROW 60
 }
 IF
+
+.globl	latest_bounced_from
+.public	latest_bounced_from
+.type	latest_bounced_from, @function
+CALL $c4_to_c7$
+GETGLOB 14
+NEWC
+PUSHSLICE xc0000000000000000000000002_
+STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST xeeaff1af
+PUSH S1
+STSLICER
+ENDC
+PUSHINT 1
+SENDRAWMSG
+TRUE
+SETGLOB 7
 

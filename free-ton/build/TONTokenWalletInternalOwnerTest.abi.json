@@ -26,6 +26,18 @@
 			]
 		},
 		{
+			"name": "tokensBouncedCallback",
+			"inputs": [
+				{"name":"value0","type":"address"},
+				{"name":"value1","type":"address"},
+				{"name":"value2","type":"uint128"},
+				{"name":"bounced_from","type":"address"},
+				{"name":"value4","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "subscribeForTransfers",
 			"inputs": [
 				{"name":"wallet1","type":"address"},
@@ -77,6 +89,14 @@
 				{"name":"payload","type":"cell"}
 			],
 			"outputs": [
+			]
+		},
+		{
+			"name": "latest_bounced_from",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"latest_bounced_from","type":"address"}
 			]
 		}
 	],
