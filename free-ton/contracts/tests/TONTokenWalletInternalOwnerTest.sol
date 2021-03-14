@@ -7,8 +7,9 @@ import "../interfaces/ITokensBurner.sol";
 import "../interfaces/IRootTokenContract.sol";
 import "../interfaces/ITONTokenWallet.sol";
 import "../interfaces/ITokensReceivedCallback.sol";
+import "../interfaces/ITokensBouncedCallback.sol";
 
-contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
+contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback, ITokensBouncedCallback {
 
     uint256 static _randomNonce;
 
@@ -37,7 +38,19 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
         tvm.rawReserve(address(this).balance - msg.value, 2);
         TvmBuilder b;
         ITONTokenWallet(change_directions.at(token_wallet))
-            .transferToRecipient{value: 0.25 ton}(sender_public_key, sender_address, amount, 0.05 ton, 0, original_gas_to, false, b.toCell());
+            .transferToRecipient{value: 0, flag: 128}(sender_public_key, sender_address, amount, 0.05 ton, 0, original_gas_to, false, b.toCell());
+    }
+
+    address public latest_bounced_from;
+
+    function tokensBouncedCallback(
+        address,
+        address,
+        uint128,
+        address bounced_from,
+        uint128
+    ) override external {
+        latest_bounced_from = bounced_from;
     }
 
     function subscribeForTransfers(address wallet1, address wallet2) external onlyExternalOwner {
@@ -46,6 +59,8 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback {
         change_directions[wallet2] = wallet1;
         ITONTokenWallet(wallet1).setReceiveCallback(address(this));
         ITONTokenWallet(wallet2).setReceiveCallback(address(this));
+        ITONTokenWallet(wallet1).setBouncedCallback(address(this));
+        ITONTokenWallet(wallet2).setBouncedCallback(address(this));
     }
 
     function burnMyTokens(

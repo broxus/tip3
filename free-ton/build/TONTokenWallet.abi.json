@@ -149,6 +149,14 @@
 			]
 		},
 		{
+			"name": "setBouncedCallback",
+			"inputs": [
+				{"name":"bounced_callback_","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "destroy",
 			"inputs": [
 				{"name":"gas_dest","type":"address"}
@@ -170,6 +178,14 @@
 			],
 			"outputs": [
 				{"name":"receive_callback","type":"address"}
+			]
+		},
+		{
+			"name": "bounced_callback",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"bounced_callback","type":"address"}
 			]
 		},
 		{

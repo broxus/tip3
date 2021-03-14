@@ -9,6 +9,7 @@ import "./interfaces/IBurnableByRootTokenWallet.sol";
 import "./interfaces/IBurnableTokenRootContract.sol";
 import "./interfaces/ITokenWalletDeployedCallback.sol";
 import "./interfaces/ITokensReceivedCallback.sol";
+import "./interfaces/ITokensBouncedCallback.sol";
 
 contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet {
 
@@ -23,6 +24,7 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
     optional(AllowanceInfo) allowance_;
 
     address public receive_callback = address.makeAddrStd(0, 0);
+    address public bounced_callback = address.makeAddrStd(0, 0);
 
     uint8 error_message_sender_is_not_my_owner            = 100;
     uint8 error_not_enough_balance                        = 101;
@@ -423,6 +425,11 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
         receive_callback = receive_callback_;
     }
 
+    function setBouncedCallback(address bounced_callback_) override external onlyOwner {
+        tvm.accept();
+        bounced_callback = bounced_callback_;
+    }
+
     function destroy(address gas_dest) public onlyOwner {
         require(balance == 0);
         tvm.accept();
@@ -483,8 +490,18 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
         tvm.accept();
         uint32 functionId = body.decode(uint32);
         if (functionId == tvm.functionId(ITONTokenWallet.internalTransfer)) {
-            balance += body.decode(uint128);
-            if (owner_address.value != 0) {
+            uint128 tokens = body.decode(uint128);
+            balance += tokens;
+            if (receive_callback.value != 0) {
+                tvm.rawReserve(address(this).balance - msg.value, 2);
+                ITokensBouncedCallback(bounced_callback).tokensBouncedCallback{ value: 0, flag: 128 }(
+                    address(this),
+                    root_address,
+                    tokens,
+                    msg.sender,
+                    balance
+                );
+            } else if (owner_address.value != 0) {
                 tvm.rawReserve(math.max(target_gas_balance, address(this).balance - msg.value), 2);
                 owner_address.transfer({ value: 0, flag: 128 });
             }   

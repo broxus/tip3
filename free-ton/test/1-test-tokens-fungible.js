@@ -667,10 +667,11 @@ describe('Test Fungible Tokens', function () {
             const startRootOwnerBalance = await tonWrapper.getBalance(RootTokenContractInternalOwnerTest.address);
 
             const startDetails = await RootTokenContractInternalOwner.runLocal('getDetails', {});
+            const start_gas_balance = await RootTokenContractInternalOwner.runLocal('start_gas_balance', {});
 
             logger.log(`Start RootTokenContractInternalOwner balance: ${startRootBalance.div(1000000000).toFixed(9)} TON`);
             logger.log(`Start RootTokenContractInternalOwnerTest balance: ${startRootOwnerBalance.div(1000000000).toFixed(9)} TON`);
-            logger.log(`RootTokenContractInternalOwner start_gas_balance_ = ${startDetails.start_gas_balance.div(1000000000).toFixed(9)} TON`);
+            logger.log(`RootTokenContractInternalOwner start_gas_balance_ = ${start_gas_balance.div(1000000000).toFixed(9)} TON`);
 
             logger.log(`Send 1 TON from RootTokenContractInternalOwnerTest to RootTokenContractInternalOwner`);
 
@@ -1581,6 +1582,60 @@ describe('Test Fungible Tokens', function () {
                 new BigNumber(bwInternalStartBalance).minus(1000).toNumber(),
                 new BigNumber(bwInternalEndBalance).toNumber(),
                 'BarWallet#Internal balance wrong');
+
+        });
+
+        it('Test ITokensBouncedCallback', async () => {
+            logger.log('######################################################');
+            logger.log('Transfer 100 FOO from FooWallet#Internal to FooWallet#44');
+
+            const notExistsWalletAddress = await RootTokenContractExternalOwner.runLocal(
+                'getWalletAddress',
+                {
+                    wallet_public_key_: `0x${tonWrapper.keys[44].public}`,
+                    owner_address_: ZERO_ADDRESS,
+                });
+
+            logger.log(`Non-exists address FooWallet#44: ${notExistsWalletAddress}`);
+
+            const message = await tonWrapper.ton.abi.encode_message_body({
+                abi: {
+                    type: "Contract",
+                    value: FooWalletInternal.abi,
+                },
+                call_set: {
+                    function_name: "transfer",
+                    input: {
+                        to: notExistsWalletAddress,
+                        tokens: '100',
+                        grams: 0,
+                        send_gas_to: TONTokenWalletInternalOwnerTest.address,
+                        notify_receiver: false,
+                        payload: EMPTY_TVM_CELL
+                    },
+                },
+                signer: {
+                    type: 'None'
+                },
+                is_internal: true,
+            });
+
+            await TONTokenWalletInternalOwnerTest.run(
+                'sendTransaction',
+                {
+                    dest: FooWalletInternal.address,
+                    value: freeton.utils.convertCrystal('0.5', 'nano'),
+                    bounce: true,
+                    flags: 0,
+                    payload: message.body,
+                },
+                tonWrapper.keys[5]
+            ).catch(e => console.log(e));
+
+            const bouncedAddress = await TONTokenWalletInternalOwnerTest.runLocal('latest_bounced_from', {});
+            logger.log(`Bounced address: ${bouncedAddress}`);
+
+            assert.equal(bouncedAddress, notExistsWalletAddress, 'Wallets not equals');
 
         });
     });

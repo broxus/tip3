@@ -22,6 +22,7 @@ interface ITONTokenWallet is AllowanceInfoStructure {
     function disapprove() external;
 
     function setReceiveCallback(address receive_callback) external;
+    function setBouncedCallback(address bounced_callback) external;
 
     function transfer(
         address to,
