@@ -14,7 +14,7 @@ interface IRootTokenContract {
 
     function getDetails() external view returns (IRootTokenContractDetails);
 
-    function getWalletAddress(uint256 wallet_public_key, address owner_address) external returns(address);
+    function getWalletAddress(uint256 wallet_public_key, address owner_address) external view returns(address);
 
     function deployWallet(
         uint128 tokens,
