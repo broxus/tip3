@@ -254,16 +254,6 @@ ENDS
 ;; param: updated_balance
 ;; param: 
 ; function tokensReceivedCallback
-;; get member balance
-GETPARAM 7
-INDEX 0
-;; get member value
-CALL $message_balance_macro$
-;; -
-SUB
-UFITS 128
-PUSHINT 2
-RAWRESERVE
 ;; if
 ;; push identifier token_wallet
 PUSH S8
