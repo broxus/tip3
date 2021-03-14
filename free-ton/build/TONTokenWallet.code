@@ -425,7 +425,7 @@ PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -621,7 +621,7 @@ PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -901,6 +901,34 @@ PUSHCONT {
 }
 IFNOT
 THROWANYIFNOT
+;; push identifier error_cant_transfer_to_self
+GETGLOB 30
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; push identifier recipient_address
+PUSH S7
+;; push identifier recipient_address
+PUSH S8
+SDEQ
+NOT
+;; short-circuiting ||
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier recipient_public_key
+	PUSH S8
+	;; push identifier recipient_public_key
+	PUSH S9
+	;; !=
+	NEQ
+}
+IFNOT
+THROWANYIFNOT
 ;; push identifier send_gas_to
 PUSH S2
 ;; decl: send_gas_to_
@@ -914,7 +942,7 @@ PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -940,7 +968,7 @@ PUSHCONT {
 	;; push identifier reserve
 	PUSH S2
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; +
 	ADD
 	UFITS 128
@@ -993,7 +1021,7 @@ PUSHCONT {
 	;; push identifier transfer_grams
 	PUSH S5
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; >
 	GREATER
 	THROWANYIFNOT
@@ -1440,6 +1468,21 @@ INDEX 3
 PLDU 256
 NEQINT 0
 THROWIFNOT 100
+;; push identifier error_cant_transfer_to_self
+GETGLOB 30
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; push identifier to
+PUSH S6
+MYADDR
+SDEQ
+NOT
+THROWANYIFNOT
 ;; push identifier send_gas_to
 PUSH S2
 ;; decl: send_gas_to_
@@ -1453,7 +1496,7 @@ PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -1479,7 +1522,7 @@ PUSHCONT {
 	;; push identifier reserve
 	PUSH S2
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; +
 	ADD
 	UFITS 128
@@ -1596,7 +1639,7 @@ PUSHCONT {
 	;; push identifier grams
 	PUSH S5
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; >
 	GREATER
 	THROWANYIFNOT
@@ -1848,6 +1891,22 @@ THROWIFNOT 100
 PUSH S4
 GTINT 0
 THROWIFNOT 100
+;; push identifier error_cant_transfer_to_self
+GETGLOB 30
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; push identifier from
+PUSH S7
+;; push identifier to
+PUSH S7
+SDEQ
+NOT
+THROWANYIFNOT
 ;; push identifier send_gas_to
 PUSH S2
 ;; decl: send_gas_to_
@@ -1861,7 +1920,7 @@ PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -1887,7 +1946,7 @@ PUSHCONT {
 	;; push identifier reserve
 	PUSH S2
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	PUSHINT 2
 	;; *
 	MUL
@@ -1988,7 +2047,7 @@ PUSHCONT {
 	;; push identifier grams
 	PUSH S5
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	PUSHINT 2
 	;; *
 	MUL
@@ -2218,6 +2277,34 @@ GETGLOB 9
 PUSH S2
 SDEQ
 THROWANYIFNOT
+;; push identifier error_cant_transfer_to_self
+GETGLOB 30
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; push identifier sender_address
+PUSH S5
+;; push identifier owner_address
+GETGLOB 13
+SDEQ
+NOT
+;; short-circuiting ||
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier sender_public_key
+	PUSH S6
+	;; push identifier wallet_public_key
+	GETGLOB 12
+	;; !=
+	NEQ
+}
+IFNOT
+THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -2228,7 +2315,7 @@ PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2519,6 +2606,21 @@ THROWANYIFNOT
 PUSH S3
 GTINT 0
 THROWIFNOT 100
+;; push identifier error_cant_transfer_to_self
+GETGLOB 30
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; push identifier to
+PUSH S5
+MYADDR
+SDEQ
+NOT
+THROWANYIFNOT
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -2529,7 +2631,7 @@ PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2555,7 +2657,7 @@ PUSHCONT {
 	;; push identifier reserve
 	PUSH S2
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; +
 	ADD
 	UFITS 128
@@ -2567,7 +2669,7 @@ PUSHCONT {
 	PUSHINT 2
 	RAWRESERVE
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2594,7 +2696,7 @@ PUSHCONT {
 	;; get member value
 	CALL $message_balance_macro$
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; >
 	GREATER
 	THROWANYIFNOT
@@ -2917,7 +3019,7 @@ PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier target_gas_balance
-	GETGLOB 30
+	GETGLOB 31
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -3693,10 +3795,12 @@ GETGLOB 26
 GETGLOB 27
 GETGLOB 28
 GETGLOB 29
-REVERSE 15, 0
+GETGLOB 30
+REVERSE 16, 0
 STSLICE
 STSLICE
 STSLICE
+STU 8
 STU 8
 STU 8
 STU 8
@@ -3709,7 +3813,7 @@ STU 8
 STU 8
 STU 8
 NEWC
-GETGLOB 30
+GETGLOB 31
 SWAP
 STU 128
 GETGLOB 10
@@ -3775,7 +3879,9 @@ LDU 8
 LDU 8
 LDU 8
 LDU 8
+LDU 8
 PLDU 8
+SETGLOB 30
 SETGLOB 29
 SETGLOB 28
 SETGLOB 27
@@ -3792,7 +3898,7 @@ SETGLOB 16
 SETGLOB 13
 LDREFRTOS
 PLDU 128
-SETGLOB 30
+SETGLOB 31
 LDMSGADDR
 LDREF
 LDU 256
@@ -3844,7 +3950,9 @@ PUSHCONT {
 	LDU 8
 	LDU 8
 	LDU 8
+	LDU 8
 	PLDU 8
+	SETGLOB 30
 	SETGLOB 29
 	SETGLOB 28
 	SETGLOB 27
@@ -3861,7 +3969,7 @@ PUSHCONT {
 	SETGLOB 13
 	LDREFRTOS
 	PLDU 128
-	SETGLOB 30
+	SETGLOB 31
 	LDMSGADDR
 	LDREF
 	LDU 256
@@ -3983,9 +4091,12 @@ PUSHCONT {
 	; init error_define_wallet_public_key_or_owner_address
 	PUSHINT 0
 	SETGLOB 29
-	; init target_gas_balance
+	; init error_cant_transfer_to_self
 	PUSHINT 0
 	SETGLOB 30
+	; init target_gas_balance
+	PUSHINT 0
+	SETGLOB 31
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -4044,9 +4155,12 @@ PUSHCONT {
 	;; init state var: error_define_wallet_public_key_or_owner_address
 	PUSHINT 111
 	SETGLOB 29
+	;; init state var: error_cant_transfer_to_self
+	PUSHINT 112
+	SETGLOB 30
 	;; init state var: target_gas_balance
 	PUSHINT 100000000
-	SETGLOB 30
+	SETGLOB 31
 }
 IFELSE
 
@@ -4178,7 +4292,7 @@ PUSHCONT {
 			PLDU 256
 			PUSHCONT {
 				;; push identifier target_gas_balance
-				GETGLOB 30
+				GETGLOB 31
 				;; get member balance
 				GETPARAM 7
 				INDEX 0
@@ -4245,7 +4359,7 @@ PUSHCONT {
 			PLDU 256
 			PUSHCONT {
 				;; push identifier target_gas_balance
-				GETGLOB 30
+				GETGLOB 31
 				;; get member balance
 				GETPARAM 7
 				INDEX 0
@@ -4437,7 +4551,7 @@ SETGLOB 7
 .public	target_gas_balance
 .type	target_gas_balance, @function
 CALL $c4_to_c7$
-GETGLOB 30
+GETGLOB 31
 NEWC
 PUSHSLICE xc0000000000000000000000002_
 STSLICER

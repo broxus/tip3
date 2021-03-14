@@ -1,0 +1,78 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "expectedWalletAddressCallback",
+			"inputs": [
+				{"name":"wallet_","type":"address"},
+				{"name":"wallet_public_key","type":"uint256"},
+				{"name":"owner_address","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "tokensReceivedCallback",
+			"inputs": [
+				{"name":"token_wallet","type":"address"},
+				{"name":"value1","type":"address"},
+				{"name":"value2","type":"uint128"},
+				{"name":"value3","type":"uint256"},
+				{"name":"sender_address","type":"address"},
+				{"name":"sender_wallet","type":"address"},
+				{"name":"original_gas_to","type":"address"},
+				{"name":"updated_balance","type":"uint128"},
+				{"name":"value8","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "creator",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"creator","type":"address"}
+			]
+		},
+		{
+			"name": "root",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"root","type":"address"}
+			]
+		},
+		{
+			"name": "target",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"target","type":"address"}
+			]
+		},
+		{
+			"name": "wallet",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"wallet","type":"address"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"creator","type":"address"},
+		{"key":2,"name":"root","type":"address"},
+		{"key":3,"name":"target","type":"address"}
+	],
+	"events": [
+	]
+}

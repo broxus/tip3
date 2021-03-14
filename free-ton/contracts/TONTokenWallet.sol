@@ -3,6 +3,7 @@ pragma solidity >= 0.6.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
+import "./interfaces/IDestroyable.sol";
 import "./interfaces/ITONTokenWallet.sol";
 import "./interfaces/IBurnableByOwnerTokenWallet.sol";
 import "./interfaces/IBurnableByRootTokenWallet.sol";
@@ -11,7 +12,7 @@ import "./interfaces/ITokenWalletDeployedCallback.sol";
 import "./interfaces/ITokensReceivedCallback.sol";
 import "./interfaces/ITokensBouncedCallback.sol";
 
-contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet {
+contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet {
 
     address static root_address;
     TvmCell static code;
@@ -38,6 +39,7 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
     uint8 error_not_enough_allowance                      = 109;
     uint8 error_low_message_value                         = 110;
     uint8 error_define_wallet_public_key_or_owner_address = 111;
+    uint8 error_cant_transfer_to_self                     = 112;
 
     uint128 public target_gas_balance                      = 0.1 ton;
 
@@ -120,6 +122,8 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
         require((recipient_address.value != 0 && recipient_public_key == 0) ||
                 (recipient_address.value == 0 && recipient_public_key != 0),
                 error_define_wallet_public_key_or_owner_address);
+        require(recipient_address != recipient_address ||
+                recipient_public_key != recipient_public_key, error_cant_transfer_to_self);
 
         address send_gas_to_ = send_gas_to;
 
@@ -191,6 +195,7 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
         require(tokens > 0);
         require(tokens <= balance, error_not_enough_balance);
         require(to.value != 0);
+        require(to != address(this), error_cant_transfer_to_self);
 
         address send_gas_to_ = send_gas_to;
 
@@ -240,6 +245,7 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
     ) override external onlyOwner {
         require(to.value != 0);
         require(tokens > 0);
+        require(from != to, error_cant_transfer_to_self);
 
         address send_gas_to_ = send_gas_to;
 
@@ -284,6 +290,7 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
     ) override external {
         address expectedSenderAddress = getExpectedAddress(sender_public_key, sender_address);
         require(msg.sender == expectedSenderAddress, error_message_sender_is_not_good_wallet);
+        require(sender_address != owner_address || sender_public_key != wallet_public_key, error_cant_transfer_to_self);
 
         if (owner_address.value != 0 ) {
             uint128 reserve = math.max(target_gas_balance, address(this).balance - msg.value);
@@ -324,6 +331,7 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
         require(tokens <= allowance_.get().remaining_tokens, error_not_enough_allowance);
         require(tokens <= balance, error_not_enough_balance);
         require(tokens > 0);
+        require(to != address(this), error_cant_transfer_to_self);
 
         if (owner_address.value != 0 ) {
             uint128 reserve = math.max(target_gas_balance, address(this).balance - msg.value);
@@ -430,7 +438,7 @@ contract TONTokenWallet is ITONTokenWallet, IBurnableByOwnerTokenWallet, IBurnab
         bounced_callback = bounced_callback_;
     }
 
-    function destroy(address gas_dest) public onlyOwner {
+    function destroy(address gas_dest) override public onlyOwner {
         require(balance == 0);
         tvm.accept();
         selfdestruct(gas_dest);
