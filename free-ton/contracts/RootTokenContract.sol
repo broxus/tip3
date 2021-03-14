@@ -66,12 +66,11 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         );
     }
 
-    function getWalletAddress(uint256 wallet_public_key_, address owner_address_) override external returns (address) {
+    function getWalletAddress(uint256 wallet_public_key_, address owner_address_) override external view returns (address) {
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
                 error_define_public_key_or_owner_address);
-        address walletAddress = getExpectedWalletAddress(wallet_public_key_, owner_address_);
-        return walletAddress;
+        return getExpectedWalletAddress(wallet_public_key_, owner_address_);
     }
 
     function sendExpectedWalletAddress(uint256 wallet_public_key_, address owner_address_, address to) override external {

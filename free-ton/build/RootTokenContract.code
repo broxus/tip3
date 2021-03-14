@@ -290,6 +290,7 @@ PUSHCONT {
 }
 IFNOT
 THROWANYIFNOT
+;; return
 ;; push identifier wallet_public_key_
 PUSH S1
 ;; push identifier owner_address_
@@ -355,8 +356,6 @@ CTOS
 XCHG s3
 BLKDROP 3
 ; end function getExpectedWalletAddress
-;; decl: walletAddress
-;; return
 NIP
 NIP
 ;; emitting 1 value(s)
@@ -386,7 +385,10 @@ PUSHCONT {
 IF
 DROP
 ; end function getWalletAddress
-CALL $c7_to_c4$
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
 TRUE
 SETGLOB 7
 
