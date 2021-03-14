@@ -19,7 +19,7 @@ import "../interfaces/IExpectedWalletAddressCallback.sol";
     TvmBuilder b;
     ITONTokenWallet(target){value: 0.1 ton}.transfer(
         wallet,             // to - set as `wallet` variable of this contract
-        1,                  // amount
+        1,                  // amount - set 1 for smallest amount = 10^(-decimals)
         0,                  // grams - set it to `0.1 ton` instead {value: 0.1 ton} when wallet owned by public key
         address(this),      // gas destination
         true,               // notify_receiver (!) required TRUE
@@ -64,7 +64,6 @@ contract TokensBox is ITokensReceivedCallback, IExpectedWalletAddressCallback {
         uint128 updated_balance,
         TvmCell /* payload */
     ) override external {
-        tvm.rawReserve(address(this).balance - msg.value, 2);
         if (token_wallet == wallet && msg.sender == wallet) {
             if (sender_wallet == target || sender_address == target) {
                 TvmBuilder b;
