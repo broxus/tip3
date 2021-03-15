@@ -901,37 +901,6 @@ PUSHCONT {
 }
 IFNOT
 THROWANYIFNOT
-;; push identifier error_cant_transfer_to_self
-GETGLOB 30
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-;; push identifier recipient_address
-PUSH S7
-;; push identifier recipient_address
-PUSH S8
-SDEQ
-NOT
-;; short-circuiting ||
-DUP
-PUSHCONT {
-	DROP
-	;; push identifier recipient_public_key
-	PUSH S8
-	;; push identifier recipient_public_key
-	PUSH S9
-	;; !=
-	NEQ
-}
-IFNOT
-THROWANYIFNOT
-;; push identifier send_gas_to
-PUSH S2
-;; decl: send_gas_to_
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -973,12 +942,28 @@ PUSHCONT {
 	ADD
 	UFITS 128
 	;; push identifier deploy_grams
-	PUSH S9
+	PUSH S8
 	;; +
 	ADD
 	UFITS 128
 	;; >
 	GREATER
+	THROWANYIFNOT
+	;; push identifier error_cant_transfer_to_self
+	GETGLOB 30
+	DUP
+	LESSINT 2
+	PUSHCONT {
+		DROP
+		PUSHINT 100
+	}
+	IF
+	;; push identifier recipient_address
+	PUSH S8
+	;; push identifier owner_address
+	GETGLOB 13
+	SDEQ
+	NOT
 	THROWANYIFNOT
 	;; push identifier reserve
 	DUP
@@ -1000,9 +985,9 @@ PUSHCONT {
 	GETPARAM 7
 	INDEX 0
 	;; push identifier deploy_grams
-	PUSH S7
+	PUSH S6
 	;; push identifier transfer_grams
-	PUSH S7
+	PUSH S6
 	;; +
 	ADD
 	UFITS 128
@@ -1019,11 +1004,27 @@ PUSHCONT {
 	}
 	IF
 	;; push identifier transfer_grams
-	PUSH S5
+	PUSH S4
 	;; push identifier target_gas_balance
 	GETGLOB 31
 	;; >
 	GREATER
+	THROWANYIFNOT
+	;; push identifier error_cant_transfer_to_self
+	GETGLOB 30
+	DUP
+	LESSINT 2
+	PUSHCONT {
+		DROP
+		PUSHINT 100
+	}
+	IF
+	;; push identifier recipient_public_key
+	PUSH S8
+	;; push identifier wallet_public_key
+	GETGLOB 12
+	;; !=
+	NEQ
 	THROWANYIFNOT
 	ACCEPT
 }
@@ -1031,7 +1032,7 @@ IFELSE
 ;; end if
 NEWDICT
 ;; push identifier recipient_public_key
-PUSH S9
+PUSH S8
 NEWC
 STU 256
 PUSHINT 0
@@ -1051,7 +1052,7 @@ ROT
 PUSHINT 64
 DICTUSETREF
 ;; push identifier recipient_public_key
-PUSH S9
+PUSH S8
 NEWC
 STU 256
 PUSHINT 3
@@ -1059,7 +1060,7 @@ ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier recipient_address
-PUSH S8
+PUSH S7
 PUSHINT 4
 ROT
 PUSHINT 64
@@ -1087,7 +1088,7 @@ CTOS
 ;; decl: to
 ;; if
 ;; push identifier deploy_grams
-PUSH S7
+PUSH S6
 GTINT 0
 PUSHCONT {
 	;; push identifier stateInit
@@ -1105,7 +1106,7 @@ PUSHCONT {
 	ENDC
 	CTOS
 	;; push identifier deploy_grams
-	PUSH S9
+	PUSH S8
 	PUSH S1
 	NEWC
 	STSLICECONST x62_
@@ -1131,6 +1132,9 @@ PUSHCONT {
 }
 IF
 ;; end if
+;; push identifier send_gas_to
+PUSH S4
+;; decl: send_gas_to_
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -1155,7 +1159,7 @@ PUSHCONT {
 	;; if
 	;; get member value
 	;; push identifier send_gas_to_
-	PUSH S2
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -1165,14 +1169,14 @@ PUSHCONT {
 		;; push identifier owner_address
 		GETGLOB 13
 		; colValue
-		POP S3
+		NIP
 		; end colValue
 	}
 	IFNOT
 	;; end if
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier to
-	DUP
+	PUSH S1
 	TRUE
 	NEWC
 	STSLICECONST x6_
@@ -1200,7 +1204,7 @@ PUSHCONT {
 	STSLICER
 	;; send_gas_to
 	;; push identifier send_gas_to_
-	PUSH S4
+	PUSH S2
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
@@ -1231,7 +1235,7 @@ PUSHCONT {
 	;; if
 	;; get member value
 	;; push identifier send_gas_to_
-	PUSH S2
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -1240,7 +1244,7 @@ PUSHCONT {
 		; expValue
 		; end expValue
 		; colValue
-		POP S3
+		NIP
 		; end colValue
 	}
 	IFNOT
@@ -1249,7 +1253,7 @@ PUSHCONT {
 	;; push identifier transfer_grams
 	PUSH S6
 	;; push identifier to
-	PUSH S1
+	PUSH S2
 	TRUE
 	NEWC
 	STSLICECONST x6_
@@ -1279,7 +1283,7 @@ PUSHCONT {
 	STSLICER
 	;; send_gas_to
 	;; push identifier send_gas_to_
-	PUSH S4
+	PUSH S2
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
