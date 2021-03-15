@@ -594,7 +594,7 @@ describe('Test Fungible Tokens', function () {
 
             logger.log(`BarWallet#Internal GRAMS change: ${bwInternalEndGramsChange.toFixed(9)}`);
 
-            assert.equal(bwInternalEndGramsChange.gt(0.07), true, 'BarWallet#Internal GRAMS change less then +0.07');
+            assert.equal(bwInternalEndGramsChange.gt(0.02), true, 'BarWallet#Internal GRAMS change less then +0.07');
 
         });
 

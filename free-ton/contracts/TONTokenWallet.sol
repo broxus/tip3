@@ -122,18 +122,16 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         require((recipient_address.value != 0 && recipient_public_key == 0) ||
                 (recipient_address.value == 0 && recipient_public_key != 0),
                 error_define_wallet_public_key_or_owner_address);
-        require(recipient_address != recipient_address ||
-                recipient_public_key != recipient_public_key, error_cant_transfer_to_self);
-
-        address send_gas_to_ = send_gas_to;
 
         if (owner_address.value != 0 ) {
             uint128 reserve = math.max(target_gas_balance, address(this).balance - msg.value);
             require(address(this).balance > reserve + target_gas_balance + deploy_grams, error_low_message_value);
+            require(recipient_address != owner_address, error_cant_transfer_to_self);
             tvm.rawReserve(reserve, 2);
         } else {
             require(address(this).balance > deploy_grams + transfer_grams, error_low_message_value);
             require(transfer_grams > target_gas_balance, error_low_message_value);
+            require(recipient_public_key != wallet_public_key, error_cant_transfer_to_self);
             tvm.accept();
         }
 
@@ -154,6 +152,8 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         if(deploy_grams > 0) {
             tvm.deploy(stateInit, tvm.encodeBody(TONTokenWallet), deploy_grams, address(this).wid);
         }
+
+        address send_gas_to_ = send_gas_to;
 
         if (owner_address.value != 0 ) {
             balance -= tokens;
