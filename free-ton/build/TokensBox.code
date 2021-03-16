@@ -17,14 +17,41 @@ SETGLOB 6
 ENDS
 ; constructor TokensBox
 ACCEPT
+; end constructor TokensBox
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	init
+.public	init
+.type	init, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+ENDS
+; function init
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+PUSHINT 2
+RAWRESERVE
 ;; Remote call IRootTokenContract.sendExpectedWalletAddress
 ;; push identifier root
 GETGLOB 11
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x402faf080000000000000000000000000004_
-STSLICER
+PUSHINT 109
+STZEROES
 STSLICECONST 0
 STSLICECONST 1
 NEWC
@@ -40,10 +67,13 @@ MYADDR
 STSLICER
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 128
 SENDRAWMSG
-; end constructor TokensBox
-CALL $c7_to_c4$
+; end function init
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
 TRUE
 SETGLOB 7
 
@@ -97,19 +127,6 @@ GETGLOB 9
 ;; push identifier root
 GETGLOB 11
 SDEQ
-;; short-circuiting &&
-DUP
-PUSHCONT {
-	DROP
-	;; get member value
-	;; push identifier wallet
-	GETGLOB 13
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
-	EQINT 0
-}
-IF
 THROWIFNOT 100
 ;; push identifier wallet_public_key
 PUSH S1
@@ -120,6 +137,16 @@ DUP
 MYADDR
 SDEQ
 THROWIFNOT 100
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+PUSHINT 2
+RAWRESERVE
 ; expValue
 ; end expValue
 ;; push identifier wallet_
@@ -243,7 +270,7 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode 
+; Decode payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -255,7 +282,7 @@ ENDS
 ;; param: sender_wallet
 ;; param: original_gas_to
 ;; param: updated_balance
-;; param: 
+;; param: payload
 ; function tokensReceivedCallback
 ;; if
 ;; push identifier token_wallet
@@ -295,6 +322,31 @@ PUSHCONT {
 	PUSHCONT {
 		NEWC
 		;; decl: b
+		FALSE
+		;; decl: notify_receiver
+		;; if
+		;; push identifier payload
+		PUSH S2
+		CTOS
+		SBITS
+		PUSHINT 1
+		;; >=
+		GEQ
+		PUSHCONT {
+			;; push identifier payload
+			PUSH S2
+			CTOS
+			LDI 1
+			; colValue
+			DROP
+			; expValue
+			; end expValue
+			; colValue
+			NIP
+			; end colValue
+		}
+		IF
+		;; end if
 		;; Remote call ITONTokenWallet.transfer
 		;; push identifier wallet
 		GETGLOB 13
@@ -309,25 +361,26 @@ PUSHCONT {
 		STSLICECONST x4bf160e2
 		;; to
 		;; push identifier sender_wallet
-		PUSH S6
+		PUSH S7
 		STSLICER
 		;; tokens
 		;; push identifier updated_balance
-		PUSH S4
+		PUSH S5
 		STUR 128
 		;; grams
 		PUSHINT 0
 		STUR 128
 		;; send_gas_to
 		;; push identifier original_gas_to
-		PUSH S5
+		PUSH S6
 		STSLICER
 		;; notify_receiver
-		FALSE
+		;; push identifier notify_receiver
+		PUSH S2
 		STIR 1
 		;; payload
 		;; push identifier b
-		PUSH S2
+		PUSH S3
 		ENDC
 		STREFR
 		STBREFR
@@ -347,13 +400,13 @@ PUSHCONT {
 		STSLICECONST x0f0258aa
 		;; gas_dest
 		;; push identifier original_gas_to
-		PUSH S4
+		PUSH S5
 		STSLICER
 		ENDC
 		PUSHINT 1
 		SENDRAWMSG
 		;; push identifier original_gas_to
-		PUSH S3
+		PUSH S4
 		NEWC
 		STSLICECONST x42_
 		STSLICE
@@ -364,7 +417,7 @@ PUSHCONT {
 		ENDC
 		PUSHINT 160
 		SENDRAWMSG
-		DROP
+		DROP2
 	}
 	IF
 	;; end if

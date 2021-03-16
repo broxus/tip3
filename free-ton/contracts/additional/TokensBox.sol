@@ -15,9 +15,17 @@ import "../interfaces/IExpectedWalletAddressCallback.sol";
               with enabled option `notify_receiver`.
 
     // Withdraw example:
+    // Step 1:
+    TokensBox(box_address).init{value: 0.2 ton}();
+    // ...or...
+    IRootTokenContract(root).sendExpectedWalletAddress{value: 0.1 ton}(0, box_address, box_address)
+    //
+    //Step 2:
     // `target` is TONTokenWallet address in this example, but you can send it from TONTokenWallet owned by `target`
     TvmBuilder b;
-    ITONTokenWallet(target){value: 0.1 ton}.transfer(
+    // uncomment line below if you want receive tokens with `notify_receiver=true`
+    // b.store(true);
+    ITONTokenWallet(target).transfer{value: 0.2 ton}(
         wallet,             // to - set as `wallet` variable of this contract
         1,                  // amount - set 1 for smallest amount = 10^(-decimals)
         0,                  // grams - set it to `0.1 ton` instead {value: 0.1 ton} when wallet owned by public key
@@ -37,7 +45,11 @@ contract TokensBox is ITokensReceivedCallback, IExpectedWalletAddressCallback {
 
     constructor() public {
         tvm.accept();
-        IRootTokenContract(root).sendExpectedWalletAddress{value: 0.05 ton}(0, address(this), address(this));
+    }
+
+    function init() external view {
+        tvm.rawReserve(address(this).balance - msg.value, 2);
+        IRootTokenContract(root).sendExpectedWalletAddress{value: 0 ton, flag: 128}(0, address(this), address(this));
     }
 
     function expectedWalletAddressCallback(
@@ -45,9 +57,11 @@ contract TokensBox is ITokensReceivedCallback, IExpectedWalletAddressCallback {
         uint256 wallet_public_key,
         address owner_address
     ) override external {
-        require(msg.sender == root && wallet.value == 0);
+        require(msg.sender == root);
         require(wallet_public_key == 0);
         require(owner_address == address(this));
+
+        tvm.rawReserve(address(this).balance - msg.value, 2);
 
         wallet = wallet_;
         ITONTokenWallet(wallet).setReceiveCallback(address(this), true);
@@ -62,17 +76,21 @@ contract TokensBox is ITokensReceivedCallback, IExpectedWalletAddressCallback {
         address sender_wallet,
         address original_gas_to,
         uint128 updated_balance,
-        TvmCell /* payload */
+        TvmCell payload
     ) override external {
         if (token_wallet == wallet && msg.sender == wallet) {
             if (sender_wallet == target || sender_address == target) {
                 TvmBuilder b;
+                bool notify_receiver = false;
+                if (payload.toSlice().bits() >= 1) {
+                    notify_receiver = payload.toSlice().decode(bool);
+                }
                 ITONTokenWallet(wallet).transfer{ value: 0.2 ton }(
                     sender_wallet,
                     updated_balance,
                     0,
                     original_gas_to,
-                    false,
+                    notify_receiver,
                     b.toCell()
                 );
                 IDestroyable(wallet).destroy(original_gas_to);
