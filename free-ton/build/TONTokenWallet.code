@@ -114,13 +114,12 @@ GETGLOB 13
 ;; push identifier balance
 GETGLOB 15
 ;; push identifier receive_callback
+GETGLOB 31
+;; push identifier bounced_callback
 PUSHINT 32
 GETGLOBVAR
-;; push identifier bounced_callback
-PUSHINT 33
-GETGLOBVAR
 ;; push identifier allow_non_notifiable
-PUSHINT 34
+PUSHINT 33
 GETGLOBVAR
 TUPLE 8
 ;; emitting 1 value(s)
@@ -822,19 +821,10 @@ PUSHCONT {
 IFNOT
 THROWANYIFNOT
 ; function transferToRecipient
-;; push identifier error_low_tokens_value
-GETGLOB 31
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S6
+PUSH S5
 GTINT 0
-THROWANYIFNOT
+THROWIFNOT 100
 ;; push identifier error_not_enough_balance
 GETGLOB 18
 DUP
@@ -1008,22 +998,13 @@ PUSHCONT {
 	;; >
 	GREATER
 	THROWANYIFNOT
-	;; push identifier error_wrong_recipient
-	GETGLOB 29
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; push identifier recipient_public_key
-	PUSH S8
+	PUSH S7
 	;; push identifier wallet_public_key
 	GETGLOB 12
 	;; !=
 	NEQ
-	THROWANYIFNOT
+	THROWIFNOT 100
 	ACCEPT
 }
 IFELSE
@@ -1433,19 +1414,10 @@ PUSHCONT {
 IFNOT
 THROWANYIFNOT
 ; function transfer
-;; push identifier error_low_tokens_value
-GETGLOB 31
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S5
+PUSH S4
 GTINT 0
-THROWANYIFNOT
+THROWIFNOT 100
 ;; push identifier error_not_enough_balance
 GETGLOB 18
 DUP
@@ -1494,9 +1466,6 @@ MYADDR
 SDEQ
 NOT
 THROWANYIFNOT
-;; push identifier send_gas_to
-PUSH S2
-;; decl: send_gas_to_
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -1545,7 +1514,7 @@ PUSHCONT {
 	PUSHINT 2
 	RAWRESERVE
 	;; push identifier tokens
-	PUSH S6
+	PUSH S5
 	; expValue
 	;; fetch balance
 	GETGLOB 15
@@ -1556,10 +1525,13 @@ PUSHCONT {
 	; colValue
 	SETGLOB 15
 	; end colValue
+	;; push identifier send_gas_to
+	PUSH S3
+	;; decl: send_gas_to_
 	;; if
 	;; get member value
 	;; push identifier send_gas_to_
-	PUSH S1
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -1569,7 +1541,7 @@ PUSHCONT {
 		;; push identifier owner_address
 		GETGLOB 13
 		; colValue
-		POP S2
+		NIP
 		; end colValue
 	}
 	IFNOT
@@ -1604,7 +1576,7 @@ PUSHCONT {
 	STSLICER
 	;; send_gas_to
 	;; push identifier send_gas_to_
-	PUSH S3
+	PUSH S2
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
@@ -1618,7 +1590,7 @@ PUSHCONT {
 	ENDC
 	PUSHINT 128
 	SENDRAWMSG
-	DROP
+	DROP2
 }
 PUSHCONT {
 	;; push identifier error_low_message_value
@@ -1634,7 +1606,7 @@ PUSHCONT {
 	GETPARAM 7
 	INDEX 0
 	;; push identifier grams
-	PUSH S6
+	PUSH S5
 	;; >
 	GREATER
 	THROWANYIFNOT
@@ -1648,7 +1620,7 @@ PUSHCONT {
 	}
 	IF
 	;; push identifier grams
-	PUSH S5
+	PUSH S4
 	;; push identifier target_gas_balance
 	GETGLOB 14
 	;; >
@@ -1656,7 +1628,7 @@ PUSHCONT {
 	THROWANYIFNOT
 	ACCEPT
 	;; push identifier tokens
-	PUSH S5
+	PUSH S4
 	; expValue
 	;; fetch balance
 	GETGLOB 15
@@ -1667,6 +1639,9 @@ PUSHCONT {
 	; colValue
 	SETGLOB 15
 	; end colValue
+	;; push identifier send_gas_to
+	PUSH S2
+	;; decl: send_gas_to_
 	;; if
 	;; get member value
 	;; push identifier send_gas_to_
@@ -1732,10 +1707,10 @@ PUSHCONT {
 	ENDC
 	PUSHINT 1
 	SENDRAWMSG
+	DROP
 }
 IFELSE
 ;; end if
-DROP
 ; end function transfer
 BLKDROP 6
 ; end modifier onlyOwner
@@ -1898,19 +1873,10 @@ INDEX 3
 PLDU 256
 NEQINT 0
 THROWANYIFNOT
-;; push identifier error_low_tokens_value
-GETGLOB 31
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S5
+PUSH S4
 GTINT 0
-THROWANYIFNOT
+THROWIFNOT 100
 ;; push identifier error_wrong_recipient
 GETGLOB 29
 DUP
@@ -2227,7 +2193,7 @@ IF
 ;; push identifier notify_receiver
 PUSH S2
 ;; push identifier allow_non_notifiable
-PUSHINT 34
+PUSHINT 33
 GETGLOBVAR
 OR
 ;; short-circuiting ||
@@ -2236,8 +2202,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier receive_callback
-	PUSHINT 32
-	GETGLOBVAR
+	GETGLOB 31
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -2434,8 +2399,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier receive_callback
-	PUSHINT 32
-	GETGLOBVAR
+	GETGLOB 31
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -2445,8 +2409,7 @@ IF
 PUSHCONT {
 	;; Remote call ITokensReceivedCallback.tokensReceivedCallback
 	;; push identifier receive_callback
-	PUSHINT 32
-	GETGLOBVAR
+	GETGLOB 31
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -2654,19 +2617,10 @@ GETGLOB 15
 ;; <=
 LEQ
 THROWANYIFNOT
-;; push identifier error_low_tokens_value
-GETGLOB 31
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S4
+PUSH S3
 GTINT 0
-THROWANYIFNOT
+THROWIFNOT 100
 ;; push identifier error_wrong_recipient
 GETGLOB 29
 DUP
@@ -2977,19 +2931,10 @@ PUSHCONT {
 IFNOT
 THROWANYIFNOT
 ; function burnByOwner
-;; push identifier error_low_tokens_value
-GETGLOB 31
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S5
+PUSH S4
 GTINT 0
-THROWANYIFNOT
+THROWIFNOT 100
 ;; push identifier error_not_enough_balance
 GETGLOB 18
 DUP
@@ -3326,19 +3271,10 @@ GETGLOB 9
 SDEQ
 THROWANYIFNOT
 ; function burnByRoot
-;; push identifier error_low_tokens_value
-GETGLOB 31
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S4
+PUSH S3
 GTINT 0
-THROWANYIFNOT
+THROWIFNOT 100
 ;; push identifier error_not_enough_balance
 GETGLOB 18
 DUP
@@ -3526,15 +3462,14 @@ ACCEPT
 ;; push identifier receive_callback_
 PUSH S1
 ; colValue
-PUSHINT 32
-SETGLOBVAR
+SETGLOB 31
 ; end colValue
 ; expValue
 ; end expValue
 ;; push identifier allow_non_notifiable_
 DUP
 ; colValue
-PUSHINT 34
+PUSHINT 33
 SETGLOBVAR
 ; end colValue
 ; end function setReceiveCallback
@@ -3629,7 +3564,7 @@ ACCEPT
 ;; push identifier bounced_callback_
 DUP
 ; colValue
-PUSHINT 33
+PUSHINT 32
 SETGLOBVAR
 ; end colValue
 ; end function setBouncedCallback
@@ -3849,11 +3784,7 @@ GETGLOB 28
 GETGLOB 29
 GETGLOB 30
 GETGLOB 31
-PUSHINT 32
-GETGLOBVAR
-PUSHINT 18
-PUSHINT 0
-REVX
+REVERSE 17, 0
 STSLICE
 STU 128
 STU 8
@@ -3869,10 +3800,9 @@ STU 8
 STU 8
 STU 8
 STU 8
-STU 8
 STSLICE
 NEWC
-PUSHINT 33
+PUSHINT 32
 GETGLOBVAR
 SWAP
 STSLICE
@@ -3882,7 +3812,7 @@ GETGLOB 12
 GETGLOB 14
 GETGLOB 16
 GETGLOB 17
-PUSHINT 34
+PUSHINT 33
 GETGLOBVAR
 REVERSE 10, 0
 STBREF
@@ -3944,9 +3874,6 @@ LDU 8
 LDU 8
 LDU 8
 LDU 8
-LDU 8
-PUSHINT 32
-SETGLOBVAR
 SETGLOB 31
 SETGLOB 30
 SETGLOB 29
@@ -3964,7 +3891,7 @@ SETGLOB 18
 SETGLOB 15
 SETGLOB 13
 LDREFRTOS
-PUSHINT 33
+PUSHINT 32
 SETGLOBVAR
 LDMSGADDR
 LDREF
@@ -3983,7 +3910,7 @@ IFNOT
 SETGLOB 16
 LDU 8
 PLDI 1
-PUSHINT 34
+PUSHINT 33
 SETGLOBVAR
 SETGLOB 17
 SETGLOB 14
@@ -4022,9 +3949,6 @@ PUSHCONT {
 	LDU 8
 	LDU 8
 	LDU 8
-	LDU 8
-	PUSHINT 32
-	SETGLOBVAR
 	SETGLOB 31
 	SETGLOB 30
 	SETGLOB 29
@@ -4042,7 +3966,7 @@ PUSHCONT {
 	SETGLOB 15
 	SETGLOB 13
 	LDREFRTOS
-	PUSHINT 33
+	PUSHINT 32
 	SETGLOBVAR
 	LDMSGADDR
 	LDREF
@@ -4061,7 +3985,7 @@ PUSHCONT {
 	SETGLOB 16
 	LDU 8
 	PLDI 1
-	PUSHINT 34
+	PUSHINT 33
 	SETGLOBVAR
 	SETGLOB 17
 	SETGLOB 14
@@ -4171,20 +4095,16 @@ PUSHCONT {
 	; init error_recipient_has_disallow_non_notifiable
 	PUSHINT 0
 	SETGLOB 30
-	; init error_low_tokens_value
-	PUSHINT 0
-	SETGLOB 31
 	; init receive_callback
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	SETGLOB 31
+	; init bounced_callback
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	PUSHINT 32
 	SETGLOBVAR
-	; init bounced_callback
-	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	PUSHINT 33
-	SETGLOBVAR
 	; init allow_non_notifiable
 	PUSHINT 0
-	PUSHINT 34
+	PUSHINT 33
 	SETGLOBVAR
 	; set contract pubkey
 	PUSHINT 0
@@ -4245,12 +4165,9 @@ PUSHCONT {
 	;; init state var: error_recipient_has_disallow_non_notifiable
 	PUSHINT 113
 	SETGLOB 30
-	;; init state var: error_low_tokens_value
-	PUSHINT 114
-	SETGLOB 31
 	;; init state var: allow_non_notifiable
 	TRUE
-	PUSHINT 34
+	PUSHINT 33
 	SETGLOBVAR
 }
 IFELSE
@@ -4319,7 +4236,7 @@ PUSHCONT {
 		;; if
 		;; get member value
 		;; push identifier bounced_callback
-		PUSHINT 33
+		PUSHINT 32
 		GETGLOBVAR
 		PARSEMSGADDR
 		INDEX 3
@@ -4338,7 +4255,7 @@ PUSHCONT {
 			RAWRESERVE
 			;; Remote call ITokensBouncedCallback.tokensBouncedCallback
 			;; push identifier bounced_callback
-			PUSHINT 33
+			PUSHINT 32
 			GETGLOBVAR
 			NEWC
 			STSLICECONST x62_
