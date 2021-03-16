@@ -10,6 +10,13 @@
 			]
 		},
 		{
+			"name": "init",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "expectedWalletAddressCallback",
 			"inputs": [
 				{"name":"wallet_","type":"address"},
@@ -30,7 +37,7 @@
 				{"name":"sender_wallet","type":"address"},
 				{"name":"original_gas_to","type":"address"},
 				{"name":"updated_balance","type":"uint128"},
-				{"name":"value8","type":"cell"}
+				{"name":"payload","type":"cell"}
 			],
 			"outputs": [
 			]
