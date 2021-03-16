@@ -150,7 +150,8 @@ UFITS 128
 PUSHINT 2
 RAWRESERVE
 NEWC
-;; decl: b
+ENDC
+;; decl: empty
 ;; Remote call ITONTokenWallet.transferToRecipient
 ;; map.at
 ;; push identifier token_wallet
@@ -196,9 +197,8 @@ STSLICER
 FALSE
 STIR 1
 ;; payload
-;; push identifier b
+;; push identifier empty
 PUSH S3
-ENDC
 STREFR
 STBREFR
 STBREFR
@@ -744,7 +744,8 @@ THROWANYIFNOT
 ; function testTransferFrom
 ACCEPT
 NEWC
-;; decl: b
+ENDC
+;; decl: empty
 ;; Remote call ITONTokenWallet.transferFrom
 ;; push identifier grams
 PUSH S4
@@ -784,9 +785,8 @@ STSLICER
 TRUE
 STIR 1
 ;; payload
-;; push identifier b
+;; push identifier empty
 PUSH S3
-ENDC
 STREFR
 STBREFR
 STBREFR

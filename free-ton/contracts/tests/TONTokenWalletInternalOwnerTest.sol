@@ -36,9 +36,9 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback, ITokensBoun
     ) override external {
         require(change_directions.exists(token_wallet));
         tvm.rawReserve(address(this).balance - msg.value, 2);
-        TvmBuilder b;
+        TvmCell empty;
         ITONTokenWallet(change_directions.at(token_wallet))
-            .transferToRecipient{value: 0, flag: 128}(sender_public_key, sender_address, amount, 0.05 ton, 0, original_gas_to, false, b.toCell());
+            .transferToRecipient{value: 0, flag: 128}(sender_public_key, sender_address, amount, 0.05 ton, 0, original_gas_to, false, empty);
     }
 
     address public latest_bounced_from;
@@ -83,8 +83,8 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback, ITokensBoun
 
     function testTransferFrom(uint128 tokens, uint128 grams, address from, address to, address wallet) external view onlyExternalOwner {
         tvm.accept();
-        TvmBuilder b;
-        ITONTokenWallet(wallet).transferFrom{value: grams}(from, to, tokens, 0, address(this), true, b.toCell());
+        TvmCell empty;
+        ITONTokenWallet(wallet).transferFrom{value: grams}(from, to, tokens, 0, address(this), true, empty);
     }
 
     function deployEmptyWallet(address root_address, uint128 grams) external view onlyExternalOwner {

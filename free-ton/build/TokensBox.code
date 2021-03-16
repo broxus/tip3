@@ -326,29 +326,32 @@ PUSHCONT {
 	}
 	IFNOT
 	PUSHCONT {
+		ACCEPT
 		NEWC
-		;; decl: b
-		FALSE
-		;; decl: notify_receiver
-		;; if
+		ENDC
+		;; decl: back_payload
 		;; push identifier payload
-		PUSH S2
+		PUSH S1
 		CTOS
-		SBITS
+		SREFS
 		PUSHINT 1
 		;; >=
 		GEQ
+		;; decl: notify_back
+		;; if
+		;; push identifier notify_back
+		DUP
 		PUSHCONT {
 			;; push identifier payload
 			PUSH S2
 			CTOS
-			LDI 1
+			LDREF
 			; colValue
 			DROP
 			; expValue
 			; end expValue
 			; colValue
-			NIP
+			POP S2
 			; end colValue
 		}
 		IF
@@ -359,8 +362,8 @@ PUSHCONT {
 		NEWC
 		STSLICECONST x62_
 		STSLICE
-		PUSHSLICE x40bebc200000000000000000000000000004_
-		STSLICER
+		PUSHINT 109
+		STZEROES
 		STSLICECONST 0
 		STSLICECONST 1
 		NEWC
@@ -381,17 +384,16 @@ PUSHCONT {
 		PUSH S6
 		STSLICER
 		;; notify_receiver
-		;; push identifier notify_receiver
+		;; push identifier notify_back
 		PUSH S2
 		STIR 1
 		;; payload
-		;; push identifier b
+		;; push identifier back_payload
 		PUSH S3
-		ENDC
 		STREFR
 		STBREFR
 		ENDC
-		PUSHINT 1
+		PUSHINT 64
 		SENDRAWMSG
 		;; Remote call IDestroyable.destroy
 		;; push identifier wallet
