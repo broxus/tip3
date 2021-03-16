@@ -217,6 +217,7 @@ GETGLOB 9
 SDEQ
 THROWANYIFNOT
 ; function accept
+ACCEPT
 ;; push identifier tokens
 DUP
 ; expValue

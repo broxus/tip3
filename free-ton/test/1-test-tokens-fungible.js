@@ -907,8 +907,7 @@ describe('Test Fungible Tokens', function () {
                 'mint',
                 {
                     to: notExistsWalletAddress,
-                    tokens: 10000,
-                    gas_back_address: ZERO_ADDRESS
+                    tokens: 10000
                 },
                 tonWrapper.keys[0]
             ).catch(e => console.log(e));

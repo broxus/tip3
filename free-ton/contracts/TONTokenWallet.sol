@@ -68,6 +68,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     }
 
     function accept(uint128 tokens) override external onlyRoot {
+        tvm.accept();
         balance += tokens;
     }
 
