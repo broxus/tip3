@@ -136,7 +136,7 @@ const tonWrapper = new freeton.TonWrapper({
       owner_address: TONTokenWalletInternalOwnerTest.address
     },
     _randomNonce: false,
-    initialBalance: freeton.utils.convertCrystal('0.1', 'nano'),
+    initialBalance: freeton.utils.convertCrystal('0.5', 'nano'),
     keyPair: tonWrapper.keys[0],
     alias: 'FooWalletInternal'
   }).catch(e => console.log(e));

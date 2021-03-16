@@ -50,7 +50,7 @@ contract TokensBox is ITokensReceivedCallback, IExpectedWalletAddressCallback {
         require(owner_address == address(this));
 
         wallet = wallet_;
-        ITONTokenWallet(wallet).setReceiveCallback(address(this));
+        ITONTokenWallet(wallet).setReceiveCallback(address(this), true);
     }
 
     function tokensReceivedCallback(

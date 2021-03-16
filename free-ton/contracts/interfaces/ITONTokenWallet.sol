@@ -11,6 +11,10 @@ interface ITONTokenWallet is AllowanceInfoStructure {
         uint256 wallet_public_key;
         address owner_address;
         uint128 balance;
+
+        address receive_callback;
+        address bounced_callback;
+        bool allow_non_notifiable;
     }
 
     function getDetails() external view returns (ITONTokenWalletDetails);
@@ -21,7 +25,7 @@ interface ITONTokenWallet is AllowanceInfoStructure {
     function approve(address spender, uint128 remaining_tokens, uint128 tokens) external;
     function disapprove() external;
 
-    function setReceiveCallback(address receive_callback) external;
+    function setReceiveCallback(address receive_callback, bool allow_non_notifiable) external;
     function setBouncedCallback(address bounced_callback) external;
 
     function transfer(

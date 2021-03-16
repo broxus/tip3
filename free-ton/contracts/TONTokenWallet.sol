@@ -21,11 +21,10 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     //for internal owner
     address static owner_address;
 
+    uint128 target_gas_balance                            = 0.05 ton;
+
     uint128 public balance;
     optional(AllowanceInfo) allowance_;
-
-    address public receive_callback = address.makeAddrStd(0, 0);
-    address public bounced_callback = address.makeAddrStd(0, 0);
 
     uint8 error_message_sender_is_not_my_owner            = 100;
     uint8 error_not_enough_balance                        = 101;
@@ -39,14 +38,16 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     uint8 error_not_enough_allowance                      = 109;
     uint8 error_low_message_value                         = 110;
     uint8 error_define_wallet_public_key_or_owner_address = 111;
-    uint8 error_cant_transfer_to_self                     = 112;
+    uint8 error_wrong_recipient                           = 112;
+    uint8 error_recipient_has_disallow_non_notifiable     = 113;
 
-    uint128 public target_gas_balance                     = 0.05 ton;
+    address receive_callback;
+    address bounced_callback;
+    bool allow_non_notifiable = true;
 
     constructor() public {
         require((wallet_public_key != 0 && owner_address.value == 0) ||
-                (wallet_public_key == 0 && owner_address.value != 0),
-                error_define_wallet_public_key_or_owner_address);
+                (wallet_public_key == 0 && owner_address.value != 0));
         tvm.accept();
         if (owner_address.value != 0) {
             ITokenWalletDeployedCallback(owner_address).notifyWalletDeployed{value: 0.00001 ton}(root_address);
@@ -59,7 +60,10 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             code,
             wallet_public_key,
             owner_address,
-            balance
+            balance,
+            receive_callback,
+            bounced_callback,
+            allow_non_notifiable
         );
     }
 
@@ -67,12 +71,12 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         balance += tokens;
     }
 
-
     function allowance() override external view returns (AllowanceInfo) {
         return allowance_.hasValue() ? allowance_.get() : AllowanceInfo(0, address.makeAddrStd(0, 0));
     }
 
     function approve(address spender, uint128 remaining_tokens, uint128 tokens) override external onlyOwner {
+        require(remaining_tokens == 0 || !allowance_.hasValue(), error_non_zero_remaining);
         if (owner_address.value != 0 ) {
             tvm.rawReserve(math.max(target_gas_balance, address(this).balance - msg.value), 2);
         } else {
@@ -84,7 +88,6 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
                 allowance_.set(AllowanceInfo(tokens, spender));
             }
         } else {
-            require(remaining_tokens == 0, error_non_zero_remaining);
             allowance_.set(AllowanceInfo(tokens, spender));
         }
 
@@ -126,12 +129,12 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         if (owner_address.value != 0 ) {
             uint128 reserve = math.max(target_gas_balance, address(this).balance - msg.value);
             require(address(this).balance > reserve + target_gas_balance + deploy_grams, error_low_message_value);
-            require(recipient_address != owner_address, error_cant_transfer_to_self);
+            require(recipient_address != owner_address, error_wrong_recipient);
             tvm.rawReserve(reserve, 2);
         } else {
             require(address(this).balance > deploy_grams + transfer_grams, error_low_message_value);
             require(transfer_grams > target_gas_balance, error_low_message_value);
-            require(recipient_public_key != wallet_public_key, error_cant_transfer_to_self);
+            require(recipient_public_key != wallet_public_key);
             tvm.accept();
         }
 
@@ -194,16 +197,16 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     ) override external onlyOwner {
         require(tokens > 0);
         require(tokens <= balance, error_not_enough_balance);
-        require(to.value != 0);
-        require(to != address(this), error_cant_transfer_to_self);
-
-        address send_gas_to_ = send_gas_to;
+        require(to.value != 0, error_wrong_recipient);
+        require(to != address(this), error_wrong_recipient);
 
         if (owner_address.value != 0 ) {
             uint128 reserve = math.max(target_gas_balance, address(this).balance - msg.value);
             require(address(this).balance > reserve + target_gas_balance, error_low_message_value);
             tvm.rawReserve(reserve, 2);
             balance -= tokens;
+
+            address send_gas_to_ = send_gas_to;
             if (send_gas_to_.value == 0) {
                 send_gas_to_ = owner_address;
             }
@@ -220,6 +223,8 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             require(grams > target_gas_balance, error_low_message_value);
             tvm.accept();
             balance -= tokens;
+
+            address send_gas_to_ = send_gas_to;
             if (send_gas_to_.value == 0) {
                 send_gas_to_ = address(this);
             }
@@ -243,9 +248,9 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         bool notify_receiver,
         TvmCell payload
     ) override external onlyOwner {
-        require(to.value != 0);
+        require(to.value != 0, error_wrong_recipient);
         require(tokens > 0);
-        require(from != to, error_cant_transfer_to_self);
+        require(from != to, error_wrong_recipient);
 
         address send_gas_to_ = send_gas_to;
 
@@ -288,9 +293,11 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         bool notify_receiver,
         TvmCell payload
     ) override external {
+        require(notify_receiver || allow_non_notifiable || receive_callback.value == 0,
+                error_recipient_has_disallow_non_notifiable);
         address expectedSenderAddress = getExpectedAddress(sender_public_key, sender_address);
         require(msg.sender == expectedSenderAddress, error_message_sender_is_not_good_wallet);
-        require(sender_address != owner_address || sender_public_key != wallet_public_key, error_cant_transfer_to_self);
+        require(sender_address != owner_address || sender_public_key != wallet_public_key, error_wrong_recipient);
 
         if (owner_address.value != 0 ) {
             uint128 reserve = math.max(target_gas_balance, address(this).balance - msg.value);
@@ -331,7 +338,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         require(tokens <= allowance_.get().remaining_tokens, error_not_enough_allowance);
         require(tokens <= balance, error_not_enough_balance);
         require(tokens > 0);
-        require(to != address(this), error_cant_transfer_to_self);
+        require(to != address(this), error_wrong_recipient);
 
         if (owner_address.value != 0 ) {
             uint128 reserve = math.max(target_gas_balance, address(this).balance - msg.value);
@@ -428,9 +435,10 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             );
     }
 
-    function setReceiveCallback(address receive_callback_) override external onlyOwner {
+    function setReceiveCallback(address receive_callback_, bool allow_non_notifiable_) override external onlyOwner {
         tvm.accept();
         receive_callback = receive_callback_;
+        allow_non_notifiable = allow_non_notifiable_;
     }
 
     function setBouncedCallback(address bounced_callback_) override external onlyOwner {
@@ -447,34 +455,20 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     // =============== Support functions ==================
 
     modifier onlyRoot() {
-        require(isRoot(), error_message_sender_is_not_my_root);
+        require(root_address == msg.sender, error_message_sender_is_not_my_root);
         _;
     }
 
     modifier onlyOwner() {
-        require(isOwner(), error_message_sender_is_not_my_owner);
+        require((owner_address.value != 0 && owner_address == msg.sender) ||
+                (wallet_public_key != 0 && wallet_public_key == msg.pubkey()),
+                error_message_sender_is_not_my_owner);
         _;
     }
 
     modifier onlyInternalOwner() {
-        require(isInternalOwner());
+        require(owner_address.value != 0 && owner_address == msg.sender);
         _;
-    }
-
-    function isRoot() private inline view returns (bool) {
-        return root_address == msg.sender;
-    }
-
-    function isOwner() private inline view returns (bool) {
-        return isInternalOwner() || isExternalOwner();
-    }
-
-    function isInternalOwner() private inline view returns (bool) {
-        return owner_address.value != 0 && owner_address == msg.sender;
-    }
-
-    function isExternalOwner() private inline view returns (bool) {
-        return wallet_public_key != 0 && wallet_public_key == msg.pubkey();
     }
 
     function getExpectedAddress(uint256 wallet_public_key_, address owner_address_) private inline view returns (address)  {
@@ -500,7 +494,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         if (functionId == tvm.functionId(ITONTokenWallet.internalTransfer)) {
             uint128 tokens = body.decode(uint128);
             balance += tokens;
-            if (receive_callback.value != 0) {
+            if (bounced_callback.value != 0) {
                 tvm.rawReserve(address(this).balance - msg.value, 2);
                 ITokensBouncedCallback(bounced_callback).tokensBouncedCallback{ value: 0, flag: 128 }(
                     address(this),
