@@ -22,16 +22,18 @@ import "../interfaces/IExpectedWalletAddressCallback.sol";
     //
     //Step 2:
     // `target` is TONTokenWallet address in this example, but you can send it from TONTokenWallet owned by `target`
+    TvmBuilder a;
     TvmBuilder b;
-    // uncomment line below if you want receive tokens with `notify_receiver=true`
-    // b.store(true);
-    ITONTokenWallet(target).transfer{value: 0.2 ton}(
+    // uncomment line below if you want receive tokens with `notify_receiver=true`.
+    // in this case `b` will sent you back as transfer payload;
+    // a.storeRef(b);
+    ITONTokenWallet(target).transfer{value: 0.4 ton}(
         wallet,             // to - set as `wallet` variable of this contract
         1,                  // amount - set 1 for smallest amount = 10^(-decimals)
         0,                  // grams - set it to `0.1 ton` instead {value: 0.1 ton} when wallet owned by public key
         address(this),      // gas destination
         true,               // notify_receiver (!) required TRUE
-        b.toCell()          // payload - set empty payload, it will ignored
+        a.toCell()          // payload
     );
 */
 
@@ -81,21 +83,25 @@ contract TokensBox is ITokensReceivedCallback, IExpectedWalletAddressCallback {
     ) override external {
         if (token_wallet == wallet && msg.sender == wallet) {
             if (sender_wallet == target || sender_address == target) {
-                TvmBuilder b;
-                bool notify_receiver = false;
-                if (payload.toSlice().bits() >= 1) {
-                    notify_receiver = payload.toSlice().decode(bool);
+                if(msg.value > 0.2 ton) {
+                    tvm.accept();
+
+                    TvmCell back_payload;
+                    bool notify_back = payload.toSlice().refs() >= 1;
+                    if (notify_back) {
+                        back_payload = payload.toSlice().loadRef();
+                    }
+                    ITONTokenWallet(wallet).transfer{ value: 0, flag: 64 }(
+                        sender_wallet,
+                        updated_balance,
+                        0,
+                        original_gas_to,
+                        notify_back,
+                        back_payload
+                    );
+                    IDestroyable(wallet).destroy(original_gas_to);
+                    selfdestruct(original_gas_to);
                 }
-                ITONTokenWallet(wallet).transfer{ value: 0.2 ton }(
-                    sender_wallet,
-                    updated_balance,
-                    0,
-                    original_gas_to,
-                    notify_receiver,
-                    b.toCell()
-                );
-                IDestroyable(wallet).destroy(original_gas_to);
-                selfdestruct(original_gas_to);
             }
         }
     }

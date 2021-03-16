@@ -61,7 +61,8 @@ ENDS
 ; function mint
 ACCEPT
 NEWC
-;; decl: builder
+ENDC
+;; decl: empty
 ;; Remote call ITONTokenWallet.internalTransfer
 ;; push identifier grams
 PUSH S1
@@ -101,9 +102,8 @@ STSLICER
 FALSE
 STIR 1
 ;; payload
-;; push identifier builder
+;; push identifier empty
 PUSH S2
-ENDC
 STREFR
 STBREFR
 ENDC

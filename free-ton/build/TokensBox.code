@@ -326,104 +326,116 @@ PUSHCONT {
 	}
 	IFNOT
 	PUSHCONT {
-		NEWC
-		;; decl: b
-		FALSE
-		;; decl: notify_receiver
 		;; if
-		;; push identifier payload
-		PUSH S2
-		CTOS
-		SBITS
-		PUSHINT 1
-		;; >=
-		GEQ
+		;; get member value
+		CALL $message_balance_macro$
+		PUSHINT 200000000
+		;; >
+		GREATER
 		PUSHCONT {
+			ACCEPT
+			NEWC
+			ENDC
+			;; decl: back_payload
 			;; push identifier payload
-			PUSH S2
+			PUSH S1
 			CTOS
-			LDI 1
-			; colValue
-			DROP
-			; expValue
-			; end expValue
-			; colValue
-			NIP
-			; end colValue
+			SREFS
+			PUSHINT 1
+			;; >=
+			GEQ
+			;; decl: notify_back
+			;; if
+			;; push identifier notify_back
+			DUP
+			PUSHCONT {
+				;; push identifier payload
+				PUSH S2
+				CTOS
+				LDREF
+				; colValue
+				DROP
+				; expValue
+				; end expValue
+				; colValue
+				POP S2
+				; end colValue
+			}
+			IF
+			;; end if
+			;; Remote call ITONTokenWallet.transfer
+			;; push identifier wallet
+			GETGLOB 13
+			NEWC
+			STSLICECONST x62_
+			STSLICE
+			PUSHINT 109
+			STZEROES
+			STSLICECONST 0
+			STSLICECONST 1
+			NEWC
+			STSLICECONST x4bf160e2
+			;; to
+			;; push identifier sender_wallet
+			PUSH S7
+			STSLICER
+			;; tokens
+			;; push identifier updated_balance
+			PUSH S5
+			STUR 128
+			;; grams
+			PUSHINT 0
+			STUR 128
+			;; send_gas_to
+			;; push identifier original_gas_to
+			PUSH S6
+			STSLICER
+			;; notify_receiver
+			;; push identifier notify_back
+			PUSH S2
+			STIR 1
+			;; payload
+			;; push identifier back_payload
+			PUSH S3
+			STREFR
+			STBREFR
+			ENDC
+			PUSHINT 64
+			SENDRAWMSG
+			;; Remote call IDestroyable.destroy
+			;; push identifier wallet
+			GETGLOB 13
+			NEWC
+			STSLICECONST x62_
+			STSLICE
+			PUSHSLICE x3989680000000000000000000000000004_
+			STSLICER
+			STSLICECONST 0
+			STSLICECONST 0
+			STSLICECONST x0f0258aa
+			;; gas_dest
+			;; push identifier original_gas_to
+			PUSH S5
+			STSLICER
+			ENDC
+			PUSHINT 1
+			SENDRAWMSG
+			;; push identifier original_gas_to
+			PUSH S4
+			NEWC
+			STSLICECONST x42_
+			STSLICE
+			PUSHSLICE x203e8000000000000000000000000004_
+			STSLICER
+			STSLICECONST 0
+			STSLICECONST 0
+			ENDC
+			PUSHINT 160
+			SENDRAWMSG
+			DROP2
 		}
 		IF
 		;; end if
-		;; Remote call ITONTokenWallet.transfer
-		;; push identifier wallet
-		GETGLOB 13
-		NEWC
-		STSLICECONST x62_
-		STSLICE
-		PUSHSLICE x40bebc200000000000000000000000000004_
-		STSLICER
-		STSLICECONST 0
-		STSLICECONST 1
-		NEWC
-		STSLICECONST x4bf160e2
-		;; to
-		;; push identifier sender_wallet
-		PUSH S7
-		STSLICER
-		;; tokens
-		;; push identifier updated_balance
-		PUSH S5
-		STUR 128
-		;; grams
-		PUSHINT 0
-		STUR 128
-		;; send_gas_to
-		;; push identifier original_gas_to
-		PUSH S6
-		STSLICER
-		;; notify_receiver
-		;; push identifier notify_receiver
-		PUSH S2
-		STIR 1
-		;; payload
-		;; push identifier b
-		PUSH S3
-		ENDC
-		STREFR
-		STBREFR
-		ENDC
-		PUSHINT 1
-		SENDRAWMSG
-		;; Remote call IDestroyable.destroy
-		;; push identifier wallet
-		GETGLOB 13
-		NEWC
-		STSLICECONST x62_
-		STSLICE
-		PUSHSLICE x3989680000000000000000000000000004_
-		STSLICER
-		STSLICECONST 0
-		STSLICECONST 0
-		STSLICECONST x0f0258aa
-		;; gas_dest
-		;; push identifier original_gas_to
-		PUSH S5
-		STSLICER
-		ENDC
-		PUSHINT 1
-		SENDRAWMSG
-		;; push identifier original_gas_to
-		PUSH S4
-		NEWC
-		STSLICECONST x42_
-		STSLICE
-		PUSHSLICE x203e8000000000000000000000000004_
-		STSLICER
-		STSLICECONST 0
-		STSLICECONST 0
-		ENDC
-		PUSHINT 160
-		SENDRAWMSG
-		DROP2
 	}
 	IF
 	;; end if
