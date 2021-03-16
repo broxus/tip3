@@ -68,8 +68,7 @@
 			"name": "mint",
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
-				{"name":"to","type":"address"},
-				{"name":"gas_back_address","type":"address"}
+				{"name":"to","type":"address"}
 			],
 			"outputs": [
 			]

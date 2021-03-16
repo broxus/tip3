@@ -48,6 +48,7 @@ contract TokensBox is ITokensReceivedCallback, IExpectedWalletAddressCallback {
     }
 
     function init() external view {
+        require(msg.value >= 0.1 ton);
         tvm.rawReserve(address(this).balance - msg.value, 2);
         IRootTokenContract(root).sendExpectedWalletAddress{value: 0 ton, flag: 128}(0, address(this), address(this));
     }

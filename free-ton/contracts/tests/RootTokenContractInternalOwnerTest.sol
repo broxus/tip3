@@ -133,7 +133,7 @@ contract RootTokenContractInternalOwnerTest is IBurnTokensCallback, ITokensBurne
     function mint(uint128 tokens, address addr) external view onlyOwner {
         require(root_address_.value != 0);
         tvm.accept();
-        IRootTokenContract(root_address_).mint{value: 0.1 ton}(tokens, addr, address(this));
+        IRootTokenContract(root_address_).mint(tokens, addr);
     }
 
     function sendGramsToRoot(uint128 grams) external view onlyOwner {

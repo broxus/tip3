@@ -31,7 +31,7 @@ interface IRootTokenContract {
         address gas_back_address
     ) external returns(address);
 
-    function mint(uint128 tokens, address to, address gas_back_address) external;
+    function mint(uint128 tokens, address to) external;
 
     function sendExpectedWalletAddress(uint256 wallet_public_key_, address owner_address_, address to) external;
 }

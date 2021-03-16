@@ -34,6 +34,12 @@ IF
 ; Decode input parameters
 ENDS
 ; function init
+;; get member value
+CALL $message_balance_macro$
+PUSHINT 100000000
+;; >=
+GEQ
+THROWIFNOT 100
 ;; get member balance
 GETPARAM 7
 INDEX 0

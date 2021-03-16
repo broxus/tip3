@@ -1240,20 +1240,9 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode gas_back_address
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
 ENDS
 ;; param: tokens
 ;; param: to
-;; param: gas_back_address
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 19
@@ -1320,49 +1309,10 @@ IFNOT
 ; end function isOwner
 THROWANYIFNOT
 ; function mint
-;; if
-;; get member value
-;; push identifier root_owner_address
-GETGLOB 17
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-EQINT 0
-PUSHCONT {
-	ACCEPT
-}
-PUSHCONT {
-	;; push identifier start_gas_balance
-	GETGLOB 18
-	;; get member balance
-	GETPARAM 7
-	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
-	;; -
-	SUB
-	UFITS 128
-	MAX
-	PUSHINT 2
-	RAWRESERVE
-}
-IFELSE
-;; end if
-;; push identifier tokens
-PUSH S2
-; expValue
-;; fetch total_supply
-GETGLOB 15
-; end expValue
-SWAP
-ADD
-UFITS 128
-; colValue
-SETGLOB 15
-; end colValue
+ACCEPT
 ;; Remote call ITONTokenWallet.accept
 ;; push identifier to
-PUSH S1
+DUP
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -1373,64 +1323,25 @@ STSLICECONST 0
 STSLICECONST x0b3fcf57
 ;; tokens
 ;; push identifier tokens
-PUSH S3
+PUSH S2
 STUR 128
 ENDC
 PUSHINT 1
 SENDRAWMSG
-;; if
-;; get member value
-;; push identifier root_owner_address
-GETGLOB 17
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-PUSHCONT {
-	;; if
-	;; get member value
-	;; push identifier gas_back_address
-	DUP
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
-	NEQINT 0
-	PUSHCONT {
-		;; transfer()
-		;; push identifier gas_back_address
-		DUP
-		NEWC
-		STSLICECONST x62_
-		STSLICE
-		PUSHINT 109
-		STZEROES
-		STSLICECONST 0
-		STSLICECONST 0
-		ENDC
-		PUSHINT 128
-		SENDRAWMSG
-	}
-	PUSHCONT {
-		;; transfer()
-		;; push identifier root_owner_address
-		GETGLOB 17
-		NEWC
-		STSLICECONST x62_
-		STSLICE
-		PUSHINT 109
-		STZEROES
-		STSLICECONST 0
-		STSLICECONST 0
-		ENDC
-		PUSHINT 128
-		SENDRAWMSG
-	}
-	IFELSE
-	;; end if
-}
-IF
-;; end if
+;; push identifier tokens
+PUSH S1
+; expValue
+;; fetch total_supply
+GETGLOB 15
+; end expValue
+SWAP
+ADD
+UFITS 128
+; colValue
+SETGLOB 15
+; end colValue
 ; end function mint
-BLKDROP 3
+DROP2
 ; end modifier onlyOwner
 CALL $c7_to_c4$
 TRUE

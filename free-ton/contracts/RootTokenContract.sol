@@ -161,24 +161,12 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         return wallet;
     }
 
-    function mint(uint128 tokens, address to, address gas_back_address) override external onlyOwner {
-        if (root_owner_address.value == 0) {
-            tvm.accept();
-        } else {
-            tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); 
-        }
-
-        total_supply += tokens;
+    function mint(uint128 tokens, address to) override external onlyOwner {
+        tvm.accept();
 
         ITONTokenWallet(to).accept(tokens);
 
-        if (root_owner_address.value != 0) {
-            if (gas_back_address.value != 0) {
-                gas_back_address.transfer({ value: 0, flag: 128 });
-            } else {
-                root_owner_address.transfer({ value: 0, flag: 128 });
-            }
-        }
+        total_supply += tokens;
     }
 
 
