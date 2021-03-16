@@ -57,9 +57,9 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback, ITokensBoun
         tvm.accept();
         change_directions[wallet1] = wallet2;
         change_directions[wallet2] = wallet1;
-        ITONTokenWallet(wallet1).setReceiveCallback(address(this));
-        ITONTokenWallet(wallet2).setReceiveCallback(address(this));
+        ITONTokenWallet(wallet1).setReceiveCallback(address(this), true);
         ITONTokenWallet(wallet1).setBouncedCallback(address(this));
+        ITONTokenWallet(wallet2).setReceiveCallback(address(this), true);
         ITONTokenWallet(wallet2).setBouncedCallback(address(this));
     }
 
