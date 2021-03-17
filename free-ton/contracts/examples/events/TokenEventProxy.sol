@@ -6,7 +6,6 @@ pragma AbiHeader expire;
 import '../../../../node_modules/ton-eth-bridge-contracts/free-ton/contracts/interfaces/IProxy.sol';
 import "../../../../node_modules/ton-eth-bridge-contracts/free-ton/contracts/interfaces/IEvent.sol";
 import '../../../../node_modules/ton-eth-bridge-contracts/free-ton/contracts/event-contracts/EthereumEvent.sol';
-import '../../interfaces/outdated/IBurnTokensCallbackV1.sol';
 import "../../interfaces/IReceiveSurplusGas.sol";
 import "../../interfaces/ISendSurplusGas.sol";
 import '../../interfaces/ITokensBurner.sol';
@@ -18,7 +17,7 @@ import "../../interfaces/IPausable.sol";
 import "../../interfaces/ITransferOwner.sol";
 
 
-contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IBurnTokensCallbackV1, IPausable, ITransferOwner {
+contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausable, ITransferOwner {
 
     uint256 static _randomNonce;
     TvmCell static ethereum_event_code;
@@ -101,13 +100,13 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IBurnTok
         );
     }
 
-    function burnCallback(
+    function burnCallbackV1(
         uint128 tokens,
         TvmCell /*payload*/,
         uint256 sender_public_key,
         address sender_address,
         address wallet_address
-    ) override external {
+    ) external functionID(0x71dd2774) {
         tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
         bool is_outdated_tokens = false;

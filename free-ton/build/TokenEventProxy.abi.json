@@ -21,13 +21,47 @@
 			]
 		},
 		{
-			"name": "burnCallback",
+			"name": "burnCallbackV1",
+			"id": "0x71DD2774",
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
 				{"name":"value1","type":"cell"},
 				{"name":"sender_public_key","type":"uint256"},
 				{"name":"sender_address","type":"address"},
 				{"name":"wallet_address","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "burnCallback",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"payload","type":"cell"},
+				{"name":"sender_public_key","type":"uint256"},
+				{"name":"sender_address","type":"address"},
+				{"name":"value4","type":"address"},
+				{"name":"send_gas_to","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "transferMyTokensToEthereum",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"ethereum_address","type":"uint160"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "burnMyTokens",
+			"inputs": [
+				{"name":"tokens","type":"uint128"},
+				{"name":"send_gas_to","type":"address"},
+				{"name":"callback_address","type":"address"},
+				{"name":"callback_payload","type":"cell"}
 			],
 			"outputs": [
 			]

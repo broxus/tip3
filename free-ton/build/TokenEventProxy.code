@@ -810,6 +810,238 @@ SENDRAWMSG
 BLKDROP 8
 ; end function broxusBridgeCallback
 
+.globl	burnCallbackV1
+.public	burnCallbackV1
+.type	burnCallbackV1, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode tokens
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+; Decode 
+;; decode TvmCell
+DUP
+SBITREFS
+EQINT 1
+SWAP
+EQINT 0
+AND
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDREF
+; Decode sender_public_key
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+; Decode sender_address
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode wallet_address
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+;; param: tokens
+;; param: 
+;; param: sender_public_key
+;; param: sender_address
+;; param: wallet_address
+; function burnCallbackV1
+;; push identifier start_gas_balance
+GETGLOB 20
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+MAX
+PUSHINT 2
+RAWRESERVE
+FALSE
+;; decl: is_outdated_tokens
+; for
+PUSHINT 0
+;; decl: i
+PUSHCONT {
+	;; push identifier i
+	DUP
+	;; get member length
+	;; push identifier outdated_token_roots
+	GETGLOB 12
+	INDEX 0
+	;; <
+	LESS
+}
+PUSHCONT {
+	; expValue
+	; end expValue
+	;; push identifier is_outdated_tokens
+	PUSH S1
+	;; short-circuiting ||
+	DUP
+	PUSHCONT {
+		DROP
+		;; index
+		;; push identifier i
+		DUP
+		;; push identifier outdated_token_roots
+		GETGLOB 12
+		INDEX 1
+		PUSHINT 32
+		DICTUGET
+		THROWIFNOT 50
+		;; get member sender
+		GETGLOB 9
+		SDEQ
+	}
+	IFNOT
+	; colValue
+	POP S2
+	; end colValue
+	;; ++
+	; expValue
+	; end expValue
+	INC
+	; colValue
+	; end colValue
+}
+WHILE
+DROP
+; end for
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+;; decl: send_gas_to
+;; if
+;; get member value
+;; push identifier sender_address
+PUSH S3
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+EQINT 0
+PUSHCONT {
+	; expValue
+	; end expValue
+	;; push identifier wallet_address
+	PUSH S2
+	; colValue
+	NIP
+	; end colValue
+}
+PUSHCONT {
+	; expValue
+	; end expValue
+	;; push identifier sender_address
+	PUSH S3
+	; colValue
+	NIP
+	; end colValue
+}
+IFELSE
+;; end if
+;; if
+;; push identifier is_outdated_tokens
+PUSH S1
+PUSHCONT {
+	;; Remote call IRootTokenContract.deployWallet
+	;; push identifier token_root_address
+	GETGLOB 17
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 1
+	NEWC
+	STSLICECONST x66211c6f
+	;; tokens
+	;; push identifier tokens
+	PUSH S8
+	STUR 128
+	;; deploy_grams
+	;; push identifier settings_deploy_wallet_grams
+	GETGLOB 19
+	STUR 128
+	;; wallet_public_key
+	;; push identifier sender_public_key
+	PUSH S6
+	STUR 256
+	;; owner_address
+	;; push identifier sender_address
+	PUSH S5
+	STSLICER
+	NEWC
+	;; gas_back_address
+	;; push identifier send_gas_to
+	PUSH S3
+	STSLICER
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+PUSHCONT {
+	;; transfer()
+	;; push identifier send_gas_to
+	DUP
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+}
+IFELSE
+;; end if
+BLKDROP 7
+; end function burnCallbackV1
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
 .globl	burnCallback
 .public	burnCallback
 .type	burnCallback, @function
@@ -1098,6 +1330,304 @@ IFELSE
 ;; end if
 BLKDROP 6
 ; end function burnCallback
+CALL $c7_to_c4$
+TRUE
+SETGLOB 7
+
+.globl	transferMyTokensToEthereum
+.public	transferMyTokensToEthereum
+.type	transferMyTokensToEthereum, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode tokens
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+; Decode ethereum_address
+LDUQ 160
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 160
+}
+IFNOT
+ENDS
+;; param: tokens
+;; param: ethereum_address
+; function transferMyTokensToEthereum
+;; push identifier error_paused
+GETGLOB 28
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; !
+;; push identifier paused
+GETGLOB 22
+NOT
+THROWANYIFNOT
+;; push identifier tokens
+PUSH S1
+GTINT 0
+THROWIFNOT 100
+;; get member value
+;; push identifier token_root_address
+GETGLOB 17
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+THROWIFNOT 100
+;; get member value
+;; get member sender
+GETGLOB 9
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+THROWIFNOT 100
+;; get member value
+CALL $message_balance_macro$
+;; push identifier settings_burn_min_msg_value
+GETGLOB 18
+;; >=
+GEQ
+THROWIFNOT 100
+ACCEPT
+;; push identifier start_gas_balance
+GETGLOB 20
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+MAX
+PUSHINT 2
+RAWRESERVE
+NEWC
+;; decl: builder
+; expValue
+DUP
+; end expValue
+;; push identifier ethereum_address
+PUSH S2
+STUR 160
+; colValue
+NIP
+; end colValue
+;; push identifier builder
+DUP
+ENDC
+;; decl: callback_payload
+;; Remote call IBurnableByRootTokenRootContract.proxyBurn
+;; push identifier token_root_address
+GETGLOB 17
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x1df868a9
+;; tokens
+;; push identifier tokens
+PUSH S5
+STUR 128
+;; sender_address
+;; get member sender
+GETGLOB 9
+STSLICER
+;; send_gas_to
+;; get member sender
+GETGLOB 9
+STSLICER
+NEWC
+;; callback_address
+MYADDR
+STSLICER
+;; callback_payload
+;; push identifier callback_payload
+PUSH S3
+STREFR
+STBREFR
+STBREFR
+ENDC
+PUSHINT 128
+SENDRAWMSG
+BLKDROP 4
+; end function transferMyTokensToEthereum
+PUSHCONT {
+	CALL $c7_to_c4$
+}
+IF
+TRUE
+SETGLOB 7
+
+.globl	burnMyTokens
+.public	burnMyTokens
+.type	burnMyTokens, @function
+GETGLOB 1
+ISNULL
+PUSHCONT {
+	CALL $c4_to_c7$
+}
+IF
+; Decode input parameters
+; Decode tokens
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+; Decode send_gas_to
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode callback_address
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+; Decode callback_payload
+;; decode TvmCell
+LDREF
+ENDS
+;; param: tokens
+;; param: send_gas_to
+;; param: callback_address
+;; param: callback_payload
+; function burnMyTokens
+;; push identifier error_paused
+GETGLOB 28
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; !
+;; push identifier paused
+GETGLOB 22
+NOT
+THROWANYIFNOT
+;; push identifier tokens
+PUSH S3
+GTINT 0
+THROWIFNOT 100
+;; get member value
+;; push identifier token_root_address
+GETGLOB 17
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+THROWIFNOT 100
+;; get member value
+;; get member sender
+GETGLOB 9
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+THROWIFNOT 100
+;; get member value
+CALL $message_balance_macro$
+;; push identifier settings_burn_min_msg_value
+GETGLOB 18
+;; >=
+GEQ
+THROWIFNOT 100
+ACCEPT
+;; push identifier start_gas_balance
+GETGLOB 20
+;; get member balance
+GETPARAM 7
+INDEX 0
+;; get member value
+CALL $message_balance_macro$
+;; -
+SUB
+UFITS 128
+MAX
+PUSHINT 2
+RAWRESERVE
+;; Remote call IBurnableByRootTokenRootContract.proxyBurn
+;; push identifier token_root_address
+GETGLOB 17
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
+NEWC
+STSLICECONST x1df868a9
+;; tokens
+;; push identifier tokens
+PUSH S5
+STUR 128
+;; sender_address
+;; get member sender
+GETGLOB 9
+STSLICER
+;; send_gas_to
+;; push identifier send_gas_to
+PUSH S4
+STSLICER
+NEWC
+;; callback_address
+;; push identifier callback_address
+PUSH S4
+STSLICER
+;; callback_payload
+;; push identifier callback_payload
+PUSH S3
+STREFR
+STBREFR
+STBREFR
+ENDC
+PUSHINT 128
+SENDRAWMSG
+BLKDROP 4
+; end function burnMyTokens
 CALL $c7_to_c4$
 TRUE
 SETGLOB 7
