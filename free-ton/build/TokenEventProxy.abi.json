@@ -24,31 +24,10 @@
 			"name": "burnCallback",
 			"inputs": [
 				{"name":"tokens","type":"uint128"},
-				{"name":"payload","type":"cell"},
-				{"name":"value2","type":"uint256"},
+				{"name":"value1","type":"cell"},
+				{"name":"sender_public_key","type":"uint256"},
 				{"name":"sender_address","type":"address"},
-				{"name":"value4","type":"address"},
-				{"name":"send_gas_to","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "transferMyTokensToEthereum",
-			"inputs": [
-				{"name":"tokens","type":"uint128"},
-				{"name":"ethereum_address","type":"uint160"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "burnMyTokens",
-			"inputs": [
-				{"name":"tokens","type":"uint128"},
-				{"name":"send_gas_to","type":"address"},
-				{"name":"callback_address","type":"address"},
-				{"name":"callback_payload","type":"cell"}
+				{"name":"wallet_address","type":"address"}
 			],
 			"outputs": [
 			]
@@ -228,7 +207,8 @@
 	],
 	"data": [
 		{"key":1,"name":"_randomNonce","type":"uint256"},
-		{"key":2,"name":"ethereum_event_code","type":"cell"}
+		{"key":2,"name":"ethereum_event_code","type":"cell"},
+		{"key":3,"name":"outdated_token_roots","type":"address[]"}
 	],
 	"events": [
 		{
