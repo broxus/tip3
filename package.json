@@ -23,7 +23,8 @@
     "ton-client-js": "^0.28.1",
     "ton-client-node-js": "^0.28.0",
     "ton-testing-suite": "^1.2.1",
-    "underscore": "^1.12.0"
+    "underscore": "^1.12.0",
+    "ton-eth-bridge-contracts": "git://github.com/broxus/ton-eth-bridge-contracts#31e13e6da976a2f3ecb305f180fab65bf36dee1b"
   },
   "devDependencies": {
     "@digix/doxity": "^0.5.2"

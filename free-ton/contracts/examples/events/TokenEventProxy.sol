@@ -3,9 +3,10 @@ pragma solidity >= 0.6.0;
 pragma AbiHeader pubkey;
 pragma AbiHeader expire;
 
-import '../interfaces/IProxy.sol';
-import "../interfaces/IEvent.sol";
-import '../bridge/EthereumEvent.sol';
+import '../../../../node_modules/ton-eth-bridge-contracts/free-ton/contracts/interfaces/IProxy.sol';
+import "../../../../node_modules/ton-eth-bridge-contracts/free-ton/contracts/interfaces/IEvent.sol";
+import '../../../../node_modules/ton-eth-bridge-contracts/free-ton/contracts/event-contracts/EthereumEvent.sol';
+import '../../interfaces/outdated/IBurnTokensCallbackV1.sol';
 import "../../interfaces/IReceiveSurplusGas.sol";
 import "../../interfaces/ISendSurplusGas.sol";
 import '../../interfaces/ITokensBurner.sol';
@@ -17,10 +18,11 @@ import "../../interfaces/IPausable.sol";
 import "../../interfaces/ITransferOwner.sol";
 
 
-contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausable, ITransferOwner {
+contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IBurnTokensCallbackV1, IPausable, ITransferOwner {
 
     uint256 static _randomNonce;
     TvmCell static ethereum_event_code;
+    address[] static outdated_token_roots;
 
     uint256 public external_owner_pubkey;
     address public internal_owner_address;
@@ -79,7 +81,6 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausabl
         require(eventData.proxyAddress == address(this));
         require(token_root_address.value != 0);
 
-        tvm.accept();
         tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); //RESERVE_UP_TO
 
         (uint128 tokens, int8 wid, uint256 owner_addr, uint256 owner_pubkey) =
@@ -102,23 +103,74 @@ contract TokenEventProxy is IProxy, IBurnTokensCallback, ITokensBurner, IPausabl
 
     function burnCallback(
         uint128 tokens,
+        TvmCell /*payload*/,
+        uint256 sender_public_key,
+        address sender_address,
+        address wallet_address
+    ) override external {
+        tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+
+        bool is_outdated_tokens = false;
+        for (uint i=0; i<outdated_token_roots.length; i++) {
+            is_outdated_tokens = is_outdated_tokens || outdated_token_roots[i] == msg.sender;
+        }
+
+        address send_gas_to;
+        if (sender_address.value == 0) {
+            send_gas_to = wallet_address;
+        } else {
+            send_gas_to = sender_address;
+        }
+
+        if (is_outdated_tokens) {
+            IRootTokenContract(token_root_address).deployWallet{ value: 0, flag: 128}(
+                tokens,
+                settings_deploy_wallet_grams,
+                sender_public_key,
+                sender_address,
+                send_gas_to
+            );
+        } else {
+            send_gas_to.transfer({ value: 0, flag: 128 });
+        }
+    }
+
+    function burnCallback(
+        uint128 tokens,
         TvmCell payload,
-        uint256,
+        uint256 sender_public_key,
         address sender_address,
         address,
         address send_gas_to
-    ) override external onlyRoot {
-
-        tvm.accept();
+    ) override external {
         tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2); //RESERVE_UP_TO
+        if (token_root_address == msg.sender) {
 
-        burned_count += tokens;
+            burned_count += tokens;
 
-        (uint160 ethereum_address) = payload.toSlice().decode(uint160);
+            (uint160 ethereum_address) = payload.toSlice().decode(uint160);
 
-        emit TokenBurn(sender_address.wid, sender_address.value, tokens, ethereum_address);
+            emit TokenBurn(sender_address.wid, sender_address.value, tokens, ethereum_address);
 
-        send_gas_to.transfer({ value: 0, flag: 128 });
+            send_gas_to.transfer({ value: 0, flag: 128 });
+        } else {
+            bool is_outdated_tokens = false;
+                for (uint i=0; i<outdated_token_roots.length; i++) {
+                is_outdated_tokens = is_outdated_tokens || outdated_token_roots[i] == msg.sender;
+            }
+
+            if (is_outdated_tokens) {
+                IRootTokenContract(token_root_address).deployWallet{ value: 0, flag: 128}(
+                    tokens,
+                    settings_deploy_wallet_grams,
+                    sender_public_key,
+                    sender_address,
+                    send_gas_to
+                );
+            } else {
+                send_gas_to.transfer({ value: 0, flag: 128 });
+            }
+        }
     }
 
     function transferMyTokensToEthereum(uint128 tokens, uint160 ethereum_address) external view {
