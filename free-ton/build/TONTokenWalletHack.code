@@ -3,10 +3,9 @@
 .type	constructor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -18,7 +17,9 @@ ENDS
 ; constructor TONTokenWalletHack
 ACCEPT
 ; end constructor TONTokenWalletHack
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -27,10 +28,9 @@ SETGLOB 7
 .type	mint, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode to
 LDMSGADDR
@@ -107,19 +107,17 @@ PUSH S2
 STREFR
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 BLKDROP 4
 ; end function mint
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -142,8 +140,7 @@ STU 256
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4
@@ -343,7 +340,9 @@ IF
 .globl	root_address
 .public	root_address
 .type	root_address, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 10
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -354,7 +353,7 @@ STSLICECONST xbd6d13f5
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -362,7 +361,9 @@ SETGLOB 7
 .globl	code
 .public	code
 .type	code, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 11
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -373,7 +374,7 @@ STSLICECONST xffbb70d7
 PUSH S1
 STREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -381,7 +382,9 @@ SETGLOB 7
 .globl	wallet_public_key
 .public	wallet_public_key
 .type	wallet_public_key, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 12
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -392,7 +395,7 @@ STSLICECONST xe4f8a61e
 PUSH S1
 STUR 256
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -400,7 +403,9 @@ SETGLOB 7
 .globl	owner_address
 .public	owner_address
 .type	owner_address, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 13
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -411,7 +416,7 @@ STSLICECONST xda4604cb
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7

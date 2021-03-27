@@ -1,4 +1,4 @@
-pragma solidity >= 0.6.0;
+pragma ton-solidity ^0.38.2;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -55,11 +55,13 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         @dev If owner_address is not empty, it will be notified with .notifyWalletDeployed
     */
     constructor() public {
-        require((wallet_public_key != 0 && owner_address.value == 0) ||
-                (wallet_public_key == 0 && owner_address.value != 0));
-        tvm.accept();
-        if (owner_address.value != 0) {
+        if(tvm.pubkey() == 0) {
+            require(wallet_public_key == 0 && owner_address.value != 0);
+            tvm.accept();
             ITokenWalletDeployedCallback(owner_address).notifyWalletDeployed{value: 0.00001 ton}(root_address);
+        } else {
+            require(wallet_public_key == tvm.pubkey() && owner_address.value == 0);
+            tvm.accept();
         }
     }
 
@@ -185,8 +187,9 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     ) override external onlyOwner {
         require(tokens > 0);
         require(tokens <= balance, error_not_enough_balance);
-        require((recipient_address.value != 0 && recipient_public_key == 0) ||
-                (recipient_address.value == 0 && recipient_public_key != 0),
+        require(recipient_address.value != 0 || recipient_public_key != 0,
+                error_define_wallet_public_key_or_owner_address);
+        require(recipient_address.value == 0 || recipient_public_key == 0,
                 error_define_wallet_public_key_or_owner_address);
 
         if (owner_address.value != 0 ) {

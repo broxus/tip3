@@ -1,4 +1,4 @@
-pragma solidity >= 0.6.0;
+pragma ton-solidity ^0.38.2;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -38,7 +38,7 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback, ITokensBoun
         tvm.rawReserve(address(this).balance - msg.value, 2);
         TvmCell empty;
         ITONTokenWallet(change_directions.at(token_wallet))
-            .transferToRecipient{value: 0, flag: 128}(sender_public_key, sender_address, amount, 0.05 ton, 0, original_gas_to, false, empty);
+            .transferToRecipient{value: 0, flag: 128}(sender_public_key, sender_address, amount, 0.1 ton, 0, original_gas_to, false, empty);
     }
 
     address public latest_bounced_from;
@@ -69,7 +69,7 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback, ITokensBoun
         address burner_address,
         address callback_address,
         uint160 ethereum_address
-    ) external view onlyExternalOwner {
+    ) external pure onlyExternalOwner {
         require(ethereum_address  != 0);
 
         tvm.accept();
@@ -81,13 +81,13 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback, ITokensBoun
         ITokensBurner(burner_address).burnMyTokens{value: grams}(tokens, address(this), callback_address, callback_payload);
     }
 
-    function testTransferFrom(uint128 tokens, uint128 grams, address from, address to, address wallet) external view onlyExternalOwner {
+    function testTransferFrom(uint128 tokens, uint128 grams, address from, address to, address wallet) external pure onlyExternalOwner {
         tvm.accept();
         TvmCell empty;
         ITONTokenWallet(wallet).transferFrom{value: grams}(from, to, tokens, 0, address(this), true, empty);
     }
 
-    function deployEmptyWallet(address root_address, uint128 grams) external view onlyExternalOwner {
+    function deployEmptyWallet(address root_address, uint128 grams) external pure onlyExternalOwner {
         tvm.accept();
         IRootTokenContract(root_address).deployEmptyWallet{value: 1 ton}(
             grams,
@@ -103,7 +103,7 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback, ITokensBoun
         bool bounce,
         uint8 flags,
         TvmCell payload
-    ) public view onlyExternalOwner {
+    ) public pure onlyExternalOwner {
         tvm.accept();
         dest.transfer(value, bounce, flags, payload);
     }

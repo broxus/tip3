@@ -3,10 +3,9 @@
 .type	constructor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -16,26 +15,10 @@ SETGLOB 6
 ; Decode input parameters
 ENDS
 ; constructor TONTokenWallet
-;; push identifier wallet_public_key
-GETGLOB 12
-NEQINT 0
-;; short-circuiting &&
-DUP
+;; if
+GETGLOB 2
+EQINT 0
 PUSHCONT {
-	DROP
-	;; get member value
-	;; push identifier owner_address
-	GETGLOB 13
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
-	EQINT 0
-}
-IF
-;; short-circuiting ||
-DUP
-PUSHCONT {
-	DROP
 	;; push identifier wallet_public_key
 	GETGLOB 12
 	EQINT 0
@@ -52,18 +35,8 @@ PUSHCONT {
 		NEQINT 0
 	}
 	IF
-}
-IFNOT
-THROWIFNOT 100
-ACCEPT
-;; if
-;; get member value
-;; push identifier owner_address
-GETGLOB 13
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-PUSHCONT {
+	THROWIFNOT 100
+	ACCEPT
 	;; Remote call ITokenWalletDeployedCallback.notifyWalletDeployed
 	;; push identifier owner_address
 	GETGLOB 13
@@ -80,13 +53,37 @@ PUSHCONT {
 	GETGLOB 10
 	STSLICER
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
-IF
+PUSHCONT {
+	;; push identifier wallet_public_key
+	GETGLOB 12
+	;; ==
+	GETGLOB 2
+	EQUAL
+	;; short-circuiting &&
+	DUP
+	PUSHCONT {
+		DROP
+		;; get member value
+		;; push identifier owner_address
+		GETGLOB 13
+		PARSEMSGADDR
+		INDEX 3
+		PLDU 256
+		EQINT 0
+	}
+	IF
+	THROWIFNOT 100
+	ACCEPT
+}
+IFELSE
 ;; end if
 ; end constructor TONTokenWallet
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -95,10 +92,9 @@ SETGLOB 7
 .type	getDetails, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getDetails
@@ -165,16 +161,15 @@ PUSHCONT {
 	STBREFR
 	STBREFR
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function getDetails
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -183,10 +178,9 @@ SETGLOB 7
 .type	accept, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -233,7 +227,9 @@ SETGLOB 15
 ; end function accept
 DROP
 ; end modifier onlyRoot
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -242,10 +238,9 @@ SETGLOB 7
 .type	allowance, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function allowance
@@ -296,16 +291,15 @@ PUSHCONT {
 	NIP
 	NIP
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function allowance
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -314,10 +308,9 @@ SETGLOB 7
 .type	approve, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode spender
 LDMSGADDRQ
@@ -394,6 +387,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -402,7 +396,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -449,9 +442,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -477,9 +472,9 @@ PUSHCONT {
 	ISNULL
 	THROWIF 63
 	INDEX 0
+	;; ==
 	;; push identifier remaining_tokens
 	PUSH S2
-	;; ==
 	EQUAL
 	PUSHCONT {
 		; expValue
@@ -537,7 +532,9 @@ IF
 ; end function approve
 BLKDROP 3
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -546,10 +543,9 @@ SETGLOB 7
 .type	disapprove, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; modifier onlyOwner
@@ -593,6 +589,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -601,7 +598,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -623,9 +619,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -669,7 +667,9 @@ IF
 ;; end if
 ; end function disapprove
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -678,10 +678,9 @@ SETGLOB 7
 .type	transferToRecipient, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode recipient_public_key
 LDUQ 256
@@ -806,6 +805,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -814,7 +814,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -837,9 +836,9 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S6
+;; <=
 ;; push identifier balance
 GETGLOB 15
-;; <=
 LEQ
 THROWANYIFNOT
 ;; push identifier error_define_wallet_public_key_or_owner_address
@@ -858,35 +857,39 @@ PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
-;; short-circuiting &&
+;; short-circuiting ||
+DUP
+PUSHCONT {
+	DROP
+	;; push identifier recipient_public_key
+	PUSH S8
+	NEQINT 0
+}
+IFNOT
+THROWANYIFNOT
+;; push identifier error_define_wallet_public_key_or_owner_address
+GETGLOB 28
+DUP
+LESSINT 2
+PUSHCONT {
+	DROP
+	PUSHINT 100
+}
+IF
+;; get member value
+;; push identifier recipient_address
+PUSH S7
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+EQINT 0
+;; short-circuiting ||
 DUP
 PUSHCONT {
 	DROP
 	;; push identifier recipient_public_key
 	PUSH S8
 	EQINT 0
-}
-IF
-;; short-circuiting ||
-DUP
-PUSHCONT {
-	DROP
-	;; get member value
-	;; push identifier recipient_address
-	PUSH S7
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
-	EQINT 0
-	;; short-circuiting &&
-	DUP
-	PUSHCONT {
-		DROP
-		;; push identifier recipient_public_key
-		PUSH S8
-		NEQINT 0
-	}
-	IF
 }
 IFNOT
 THROWANYIFNOT
@@ -904,9 +907,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -923,19 +928,19 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
+	;; >
 	;; push identifier reserve
 	PUSH S2
+	;; +
 	;; push identifier target_gas_balance
 	GETGLOB 14
-	;; +
 	ADD
 	UFITS 128
+	;; +
 	;; push identifier deploy_grams
 	PUSH S8
-	;; +
 	ADD
 	UFITS 128
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; push identifier error_wrong_recipient
@@ -973,14 +978,14 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
+	;; >
 	;; push identifier deploy_grams
 	PUSH S6
+	;; +
 	;; push identifier transfer_grams
 	PUSH S6
-	;; +
 	ADD
 	UFITS 128
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; push identifier error_low_message_value
@@ -994,16 +999,16 @@ PUSHCONT {
 	IF
 	;; push identifier transfer_grams
 	PUSH S4
+	;; >
 	;; push identifier target_gas_balance
 	GETGLOB 14
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; push identifier recipient_public_key
 	PUSH S7
+	;; !=
 	;; push identifier wallet_public_key
 	GETGLOB 12
-	;; !=
 	NEQ
 	THROWIFNOT 100
 	ACCEPT
@@ -1105,7 +1110,7 @@ PUSHCONT {
 	ENDC
 	STREFR
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 	NIP
 	DROP
@@ -1275,7 +1280,7 @@ PUSHCONT {
 	STREFR
 	STBREFR
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IFELSE
@@ -1284,7 +1289,9 @@ BLKDROP 3
 ; end function transferToRecipient
 BLKDROP 8
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -1293,10 +1300,9 @@ SETGLOB 7
 .type	transfer, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode to
 LDMSGADDRQ
@@ -1399,6 +1405,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -1407,7 +1414,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -1430,9 +1436,9 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S5
+;; <=
 ;; push identifier balance
 GETGLOB 15
-;; <=
 LEQ
 THROWANYIFNOT
 ;; push identifier error_wrong_recipient
@@ -1481,9 +1487,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -1500,14 +1508,14 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
+	;; >
 	;; push identifier reserve
 	PUSH S2
+	;; +
 	;; push identifier target_gas_balance
 	GETGLOB 14
-	;; +
 	ADD
 	UFITS 128
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; push identifier reserve
@@ -1606,9 +1614,9 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
+	;; >
 	;; push identifier grams
 	PUSH S5
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; push identifier error_low_message_value
@@ -1622,9 +1630,9 @@ PUSHCONT {
 	IF
 	;; push identifier grams
 	PUSH S4
+	;; >
 	;; push identifier target_gas_balance
 	GETGLOB 14
-	;; >
 	GREATER
 	THROWANYIFNOT
 	ACCEPT
@@ -1706,7 +1714,7 @@ PUSHCONT {
 	STREFR
 	STBREFR
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 	DROP
 }
@@ -1715,7 +1723,9 @@ IFELSE
 ; end function transfer
 BLKDROP 6
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -1724,10 +1734,9 @@ SETGLOB 7
 .type	transferFrom, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode from
 LDMSGADDRQ
@@ -1841,6 +1850,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -1849,7 +1859,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -1911,9 +1920,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -1930,18 +1941,18 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
+	;; >
 	;; push identifier reserve
 	PUSH S2
+	;; +
 	;; push identifier target_gas_balance
 	GETGLOB 14
-	PUSHINT 2
 	;; *
+	PUSHINT 2
 	MUL
 	UFITS 128
-	;; +
 	ADD
 	UFITS 128
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; push identifier reserve
@@ -2017,9 +2028,9 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
+	;; >
 	;; push identifier grams
 	PUSH S6
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; push identifier error_low_message_value
@@ -2033,13 +2044,13 @@ PUSHCONT {
 	IF
 	;; push identifier grams
 	PUSH S5
+	;; >
 	;; push identifier target_gas_balance
 	GETGLOB 14
-	PUSHINT 2
 	;; *
+	PUSHINT 2
 	MUL
 	UFITS 128
-	;; >
 	GREATER
 	THROWANYIFNOT
 	ACCEPT
@@ -2098,7 +2109,7 @@ PUSHCONT {
 	STREFR
 	STBREFR
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IFELSE
@@ -2107,7 +2118,9 @@ DROP
 ; end function transferFrom
 BLKDROP 7
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -2116,10 +2129,9 @@ SETGLOB 7
 .type	internalTransfer, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -2314,9 +2326,9 @@ PUSHCONT {
 	DROP
 	;; push identifier sender_public_key
 	PUSH S6
+	;; !=
 	;; push identifier wallet_public_key
 	GETGLOB 12
-	;; !=
 	NEQ
 }
 IFNOT
@@ -2335,9 +2347,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -2354,9 +2368,9 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
+	;; >
 	;; push identifier reserve
 	PUSH S2
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; push identifier reserve
@@ -2369,9 +2383,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	PUSHINT 2
@@ -2483,7 +2499,9 @@ IFELSE
 ;; end if
 BLKDROP 7
 ; end function internalTransfer
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -2492,10 +2510,9 @@ SETGLOB 7
 .type	internalTransferFrom, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode to
 LDMSGADDRQ
@@ -2592,6 +2609,7 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S4
+;; <=
 ;; get member remaining_tokens
 ;; push identifier allowance_
 GETGLOB 16
@@ -2599,7 +2617,6 @@ DUP
 ISNULL
 THROWIF 63
 INDEX 0
-;; <=
 LEQ
 THROWANYIFNOT
 ;; push identifier error_not_enough_balance
@@ -2613,9 +2630,9 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S4
+;; <=
 ;; push identifier balance
 GETGLOB 15
-;; <=
 LEQ
 THROWANYIFNOT
 ;; push identifier tokens
@@ -2651,9 +2668,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -2670,14 +2689,14 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
+	;; >
 	;; push identifier reserve
 	PUSH S2
+	;; +
 	;; push identifier target_gas_balance
 	GETGLOB 14
-	;; +
 	ADD
 	UFITS 128
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; push identifier reserve
@@ -2689,9 +2708,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -2710,18 +2731,22 @@ PUSHCONT {
 	}
 	IF
 	;; get member value
-	CALL $message_balance_macro$
+	CALLREF {
+		CALL $message_balance_macro$
+	}
+	;; >
 	;; push identifier target_gas_balance
 	GETGLOB 14
-	;; >
 	GREATER
 	THROWANYIFNOT
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	PUSHINT 2
@@ -2750,9 +2775,9 @@ DUP
 ISNULL
 THROWIF 63
 INDEX 0
+;; -
 ;; push identifier tokens
 PUSH S4
-;; -
 SUB
 UFITS 128
 ;; get member spender
@@ -2812,7 +2837,9 @@ PUSHINT 128
 SENDRAWMSG
 BLKDROP 5
 ; end function internalTransferFrom
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -2821,10 +2848,9 @@ SETGLOB 7
 .type	burnByOwner, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -2916,6 +2942,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2924,7 +2951,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2947,9 +2973,9 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S5
+;; <=
 ;; push identifier balance
 GETGLOB 15
-;; <=
 LEQ
 THROWANYIFNOT
 ;; push identifier error_low_message_value
@@ -2973,7 +2999,9 @@ DUP
 PUSHCONT {
 	DROP
 	;; get member value
-	CALL $message_balance_macro$
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	GTINT 0
 }
 IF
@@ -2994,10 +3022,10 @@ PUSHCONT {
 		DROP
 		;; push identifier grams
 		PUSH S4
+		;; <=
 		;; get member balance
 		GETPARAM 7
 		INDEX 0
-		;; <=
 		LEQ
 		;; short-circuiting &&
 		DUP
@@ -3030,9 +3058,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -3194,7 +3224,7 @@ PUSHCONT {
 	STBREFR
 	STBREFR
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IFELSE
@@ -3203,7 +3233,9 @@ DROP
 ; end function burnByOwner
 BLKDROP 5
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -3212,10 +3244,9 @@ SETGLOB 7
 .type	burnByRoot, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -3287,17 +3318,19 @@ PUSHCONT {
 IF
 ;; push identifier tokens
 PUSH S4
+;; <=
 ;; push identifier balance
 GETGLOB 15
-;; <=
 LEQ
 THROWANYIFNOT
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -3363,7 +3396,9 @@ SENDRAWMSG
 ; end function burnByRoot
 BLKDROP 4
 ; end modifier onlyRoot
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -3372,10 +3407,9 @@ SETGLOB 7
 .type	setReceiveCallback, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode receive_callback_
 LDMSGADDRQ
@@ -3441,6 +3475,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -3449,7 +3484,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -3476,7 +3510,9 @@ SETGLOBVAR
 ; end function setReceiveCallback
 DROP2
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -3485,10 +3521,9 @@ SETGLOB 7
 .type	setBouncedCallback, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode bounced_callback_
 LDMSGADDRQ
@@ -3543,6 +3578,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -3551,7 +3587,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -3571,7 +3606,9 @@ SETGLOBVAR
 ; end function setBouncedCallback
 DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -3580,10 +3617,9 @@ SETGLOB 7
 .type	destroy, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode gas_dest
 LDMSGADDRQ
@@ -3638,6 +3674,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -3646,7 +3683,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -3674,7 +3710,9 @@ SENDRAWMSG
 ; end function destroy
 DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -3722,6 +3760,7 @@ PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
 		GETGLOB 12
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -3730,7 +3769,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -3759,8 +3797,7 @@ SENDRAWMSG
 DROP
 ; end modifier onlyOwner
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -3852,8 +3889,7 @@ STI 1
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4
@@ -4195,7 +4231,9 @@ PUSHCONT {
 	NIP
 	PUSHINT 1
 	CALL 1
-	CALL $c4_to_c7$
+	CALLREF {
+		CALL $c4_to_c7$
+	}
 	;; param: body
 	; function onBounce
 	ACCEPT
@@ -4210,8 +4248,8 @@ PUSHCONT {
 	;; if
 	;; push identifier functionId
 	DUP
-	PUSHINT 416421634
 	;; ==
+	PUSHINT 416421634
 	EQUAL
 	PUSHCONT {
 		; expValue
@@ -4247,9 +4285,11 @@ PUSHCONT {
 			;; get member balance
 			GETPARAM 7
 			INDEX 0
-			;; get member value
-			CALL $message_balance_macro$
 			;; -
+			;; get member value
+			CALLREF {
+				CALL $message_balance_macro$
+			}
 			SUB
 			UFITS 128
 			PUSHINT 2
@@ -4307,9 +4347,11 @@ PUSHCONT {
 				;; get member balance
 				GETPARAM 7
 				INDEX 0
-				;; get member value
-				CALL $message_balance_macro$
 				;; -
+				;; get member value
+				CALLREF {
+					CALL $message_balance_macro$
+				}
 				SUB
 				UFITS 128
 				MAX
@@ -4340,8 +4382,8 @@ PUSHCONT {
 		;; if
 		;; push identifier functionId
 		DUP
-		PUSHINT 774408362
 		;; ==
+		PUSHINT 774408362
 		EQUAL
 		PUSHCONT {
 			; expValue
@@ -4374,9 +4416,11 @@ PUSHCONT {
 				;; get member balance
 				GETPARAM 7
 				INDEX 0
-				;; get member value
-				CALL $message_balance_macro$
 				;; -
+				;; get member value
+				CALLREF {
+					CALL $message_balance_macro$
+				}
 				SUB
 				UFITS 128
 				MAX
@@ -4406,7 +4450,9 @@ PUSHCONT {
 	;; end if
 	DROP2
 	; end function onBounce
-	CALL $c7_to_c4$
+	CALLREF {
+		CALL $c7_to_c4$
+	}
 }
 IFJMP
 PUSH S1    ; body
@@ -4504,7 +4550,9 @@ IF
 .globl	balance
 .public	balance
 .type	balance, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 15
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -4515,7 +4563,7 @@ STSLICECONST x866db788
 PUSH S1
 STUR 128
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7

@@ -3,10 +3,9 @@
 .type	constructor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -18,7 +17,9 @@ ENDS
 ; constructor TokensBox
 ACCEPT
 ; end constructor TokensBox
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -27,25 +28,28 @@ SETGLOB 7
 .type	init, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function init
 ;; get member value
-CALL $message_balance_macro$
-PUSHINT 100000000
+CALLREF {
+	CALL $message_balance_macro$
+}
 ;; >=
+PUSHINT 100000000
 GEQ
 THROWIFNOT 100
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -76,10 +80,9 @@ ENDC
 PUSHINT 128
 SENDRAWMSG
 ; end function init
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -88,10 +91,9 @@ SETGLOB 7
 .type	expectedWalletAddressCallback, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode wallet_
 LDMSGADDRQ
@@ -146,9 +148,11 @@ THROWIFNOT 100
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -178,11 +182,13 @@ STSLICER
 TRUE
 STIR 1
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 BLKDROP 3
 ; end function expectedWalletAddressCallback
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -191,10 +197,9 @@ SETGLOB 7
 .type	tokensReceivedCallback, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode token_wallet
 LDMSGADDRQ
@@ -328,9 +333,11 @@ PUSHCONT {
 	PUSHCONT {
 		;; if
 		;; get member value
-		CALL $message_balance_macro$
-		PUSHINT 200000000
+		CALLREF {
+			CALL $message_balance_macro$
+		}
 		;; >
+		PUSHINT 200000000
 		GREATER
 		PUSHCONT {
 			ACCEPT
@@ -341,8 +348,8 @@ PUSHCONT {
 			PUSH S1
 			CTOS
 			SREFS
-			PUSHINT 1
 			;; >=
+			PUSHINT 1
 			GEQ
 			;; decl: notify_back
 			;; if
@@ -418,7 +425,7 @@ PUSHCONT {
 			PUSH S5
 			STSLICER
 			ENDC
-			PUSHINT 1
+			PUSHINT 0
 			SENDRAWMSG
 			;; push identifier original_gas_to
 			PUSH S4
@@ -444,12 +451,13 @@ IF
 ;; end if
 BLKDROP 9
 ; end function tokensReceivedCallback
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -472,8 +480,7 @@ STSLICE
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4
@@ -681,7 +688,9 @@ IF
 .globl	creator
 .public	creator
 .type	creator, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 10
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -692,7 +701,7 @@ STSLICECONST xbeee132a
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -700,7 +709,9 @@ SETGLOB 7
 .globl	root
 .public	root
 .type	root, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 11
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -711,7 +722,7 @@ STSLICECONST xb7295e20
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -719,7 +730,9 @@ SETGLOB 7
 .globl	target
 .public	target
 .type	target, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 12
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -730,7 +743,7 @@ STSLICECONST xa976d463
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -738,7 +751,9 @@ SETGLOB 7
 .globl	wallet
 .public	wallet
 .type	wallet, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 13
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -749,7 +764,7 @@ STSLICECONST x94870017
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7

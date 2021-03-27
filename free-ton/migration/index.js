@@ -126,20 +126,14 @@ const tonWrapper = new freeton.TonWrapper({
     keyPair: tonWrapper.keys[5]
   }).catch(e => console.log(e));
 
-  await migration.deploy({
-    contract: TONTokenWallet,
-    constructorParams: {},
-    initParams: {
-      root_address: RootTokenContractExternalOwner.address,
-      code: TONTokenWallet.code,
-      wallet_public_key: `0x0`,
-      owner_address: TONTokenWalletInternalOwnerTest.address
-    },
-    _randomNonce: false,
-    initialBalance: freeton.utils.convertCrystal('0.5', 'nano'),
-    keyPair: tonWrapper.keys[0],
-    alias: 'FooWalletInternal'
-  }).catch(e => console.log(e));
+  await TONTokenWalletInternalOwnerTest.run(
+      'deployEmptyWallet',
+      {
+        root_address: RootTokenContractExternalOwner.address,
+        grams: freeton.utils.convertCrystal('0.5', 'nano')
+      },
+      tonWrapper.keys[5]
+  ).catch(e => console.log(e));
 
   await migration.deploy({
     contract: TONTokenWallet,

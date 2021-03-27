@@ -3,10 +3,9 @@
 .type	constructor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -33,7 +32,9 @@ INDEX 0
 SETGLOB 14
 ; end colValue
 ; end constructor RootTokenContractInternalOwnerTest
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -42,10 +43,9 @@ SETGLOB 7
 .type	setRootAddressOnce, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode root_address
 LDMSGADDRQ
@@ -107,6 +107,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -115,7 +116,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -144,7 +144,9 @@ SETGLOB 13
 ; end function setRootAddressOnce
 DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -153,10 +155,9 @@ SETGLOB 7
 .type	getRootAddress, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getRootAddress
@@ -184,16 +185,15 @@ PUSHCONT {
 	PUSH S1
 	STSLICER
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function getRootAddress
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -202,10 +202,9 @@ SETGLOB 7
 .type	burnCallback, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -302,9 +301,11 @@ THROWANYIFNOT
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -344,7 +345,9 @@ SENDRAWMSG
 ; end function burnCallback
 BLKDROP 6
 ; end modifier onlyRoot
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -353,10 +356,9 @@ SETGLOB 7
 .type	burnMyTokens, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -414,18 +416,22 @@ PLDU 256
 NEQINT 0
 THROWIFNOT 100
 ;; get member value
-CALL $message_balance_macro$
+CALLREF {
+	CALL $message_balance_macro$
+}
+;; >=
 ;; push identifier settings_burn_min_value
 GETGLOB 17
-;; >=
 GEQ
 THROWIFNOT 100
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -470,7 +476,9 @@ PUSHINT 128
 SENDRAWMSG
 BLKDROP 4
 ; end function burnMyTokens
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -479,10 +487,9 @@ SETGLOB 7
 .type	getBurnedCount, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getBurnedCount
@@ -510,16 +517,15 @@ PUSHCONT {
 	PUSH S1
 	STUR 128
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function getBurnedCount
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -528,10 +534,9 @@ SETGLOB 7
 .type	getLatestPayload, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getLatestPayload
@@ -559,16 +564,15 @@ PUSHCONT {
 	PUSH S1
 	STREFR
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function getLatestPayload
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -577,10 +581,9 @@ SETGLOB 7
 .type	deployWallet, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -675,6 +678,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -683,7 +687,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -705,9 +708,9 @@ ACCEPT
 ;; Remote call IRootTokenContract.deployWallet
 ;; push identifier grams
 PUSH S2
+;; +
 ;; push identifier settings_deploy_value
 GETGLOB 18
-;; +
 ADD
 UFITS 128
 ;; push identifier root_address_
@@ -746,15 +749,14 @@ STSLICER
 STBREFR
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function deployWallet
 BLKDROP 4
 ; end modifier onlyOwner
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -763,10 +765,9 @@ SETGLOB 7
 .type	mint, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -839,6 +840,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -847,7 +849,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -886,15 +887,14 @@ STUR 128
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function mint
 DROP2
 ; end modifier onlyOwner
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -903,10 +903,9 @@ SETGLOB 7
 .type	sendGramsToRoot, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode grams
 LDUQ 128
@@ -968,6 +967,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -976,7 +976,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -1002,15 +1001,14 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 0
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function sendGramsToRoot
 DROP
 ; end modifier onlyOwner
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -1019,10 +1017,9 @@ SETGLOB 7
 .type	testWithdrawExtraGas, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; modifier onlyOwner
@@ -1073,6 +1070,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -1081,7 +1079,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -1107,14 +1104,13 @@ STSLICECONST x20ebc76d
 MYADDR
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function testWithdrawExtraGas
 ; end modifier onlyOwner
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -1123,20 +1119,20 @@ SETGLOB 7
 .type	receiveSurplusGas, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function receiveSurplusGas
 ; end function receiveSurplusGas
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -1173,8 +1169,7 @@ STREF
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4

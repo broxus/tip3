@@ -3,10 +3,9 @@
 .type	constructor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -123,7 +122,9 @@ SETGLOB 18
 ; end colValue
 DROP2
 ; end constructor RootTokenContract
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -132,10 +133,9 @@ SETGLOB 7
 .type	getDetails, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getDetails
@@ -195,16 +195,15 @@ PUSHCONT {
 	BLKDROP 7
 	STBREFR
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function getDetails
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -213,10 +212,9 @@ SETGLOB 7
 .type	getWalletAddress, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode wallet_public_key_
 LDUQ 256
@@ -379,16 +377,15 @@ PUSHCONT {
 	PUSH S1
 	STSLICER
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function getWalletAddress
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -397,10 +394,9 @@ SETGLOB 7
 .type	sendExpectedWalletAddress, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode wallet_public_key_
 LDUQ 256
@@ -440,9 +436,11 @@ ENDS
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -543,7 +541,9 @@ PUSHINT 128
 SENDRAWMSG
 BLKDROP 4
 ; end function sendExpectedWalletAddress
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -552,10 +552,9 @@ SETGLOB 7
 .type	deployWallet, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -661,6 +660,7 @@ PUSHCONT {
 		DROP
 		;; push identifier root_public_key
 		GETGLOB 16
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -669,7 +669,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -681,8 +680,8 @@ THROWANYIFNOT
 ; function deployWallet
 ;; push identifier tokens
 PUSH S4
-PUSHINT 0
 ;; >=
+PUSHINT 0
 GEQ
 THROWIFNOT 100
 ;; push identifier error_define_public_key_or_owner_address
@@ -750,9 +749,11 @@ PUSHCONT {
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
-	;; get member value
-	CALL $message_balance_macro$
 	;; -
+	;; get member value
+	CALLREF {
+		CALL $message_balance_macro$
+	}
 	SUB
 	UFITS 128
 	MAX
@@ -830,7 +831,7 @@ STREFR
 STSLICECONST 0
 STSLICECONST x68b55f3f
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 NIP
 ;; decl: wallet
@@ -850,7 +851,7 @@ STSLICECONST x0b3fcf57
 PUSH S6
 STUR 128
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ;; push identifier tokens
 PUSH S5
@@ -937,7 +938,7 @@ PUSHCONT {
 	PUSH S1
 	STSLICER
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
@@ -945,7 +946,9 @@ DROP
 ; end function deployWallet
 BLKDROP 5
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -954,10 +957,9 @@ SETGLOB 7
 .type	deployEmptyWallet, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode deploy_grams
 LDUQ 128
@@ -1056,9 +1058,11 @@ THROWANYIFNOT
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -1132,7 +1136,7 @@ STREFR
 STSLICECONST 0
 STSLICECONST x68b55f3f
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 NIP
 ;; decl: wallet
@@ -1200,13 +1204,15 @@ PUSHCONT {
 	PUSH S1
 	STSLICER
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function deployEmptyWallet
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -1215,10 +1221,9 @@ SETGLOB 7
 .type	mint, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -1291,6 +1296,7 @@ PUSHCONT {
 		DROP
 		;; push identifier root_public_key
 		GETGLOB 16
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -1299,7 +1305,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -1326,7 +1331,7 @@ STSLICECONST x0b3fcf57
 PUSH S2
 STUR 128
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ;; push identifier tokens
 PUSH S1
@@ -1343,7 +1348,9 @@ SETGLOB 15
 ; end function mint
 DROP2
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -1352,10 +1359,9 @@ SETGLOB 7
 .type	proxyBurn, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -1442,9 +1448,11 @@ THROWANYIFNOT
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -1571,7 +1579,9 @@ DROP2
 ; end function proxyBurn
 BLKDROP 5
 ; end modifier onlyInternalOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -1580,10 +1590,9 @@ SETGLOB 7
 .type	tokensBurned, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -1744,9 +1753,11 @@ THROWANYIFNOT
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -1834,7 +1845,9 @@ IFELSE
 ;; end if
 BLKDROP 7
 ; end function tokensBurned
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -1843,10 +1856,9 @@ SETGLOB 7
 .type	sendSurplusGas, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode to
 LDMSGADDRQ
@@ -1914,7 +1926,9 @@ SENDRAWMSG
 ; end function sendSurplusGas
 DROP
 ; end modifier onlyInternalOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -1923,10 +1937,9 @@ SETGLOB 7
 .type	setPaused, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode value
 LDI 1
@@ -1980,6 +1993,7 @@ PUSHCONT {
 		DROP
 		;; push identifier root_public_key
 		GETGLOB 16
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -1988,7 +2002,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2009,7 +2022,9 @@ SETGLOB 24
 ; end function setPaused
 DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -2018,10 +2033,9 @@ SETGLOB 7
 .type	sendPausedCallbackTo, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode callback_id
 LDU 64
@@ -2042,9 +2056,11 @@ ENDS
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -2073,7 +2089,9 @@ PUSHINT 128
 SENDRAWMSG
 DROP2
 ; end function sendPausedCallbackTo
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -2082,10 +2100,9 @@ SETGLOB 7
 .type	transferOwner, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode root_public_key_
 LDUQ 256
@@ -2158,6 +2175,7 @@ PUSHCONT {
 		DROP
 		;; push identifier root_public_key
 		GETGLOB 16
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2166,7 +2184,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2242,12 +2259,13 @@ SETGLOB 17
 ; end function transferOwner
 DROP2
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -2292,8 +2310,7 @@ STI 1
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4
@@ -2528,7 +2545,9 @@ PUSHCONT {
 	NIP
 	PUSHINT 1
 	CALL 1
-	CALL $c4_to_c7$
+	CALLREF {
+		CALL $c4_to_c7$
+	}
 	;; param: slice
 	; function onBounce
 	ACCEPT
@@ -2543,8 +2562,8 @@ PUSHCONT {
 	;; if
 	;; push identifier functionId
 	DUP
-	PUSHINT 188731223
 	;; ==
+	PUSHINT 188731223
 	EQUAL
 	PUSHCONT {
 		; expValue
@@ -2573,7 +2592,9 @@ PUSHCONT {
 	;; end if
 	DROP2
 	; end function onBounce
-	CALL $c7_to_c4$
+	CALLREF {
+		CALL $c7_to_c4$
+	}
 }
 IFJMP
 PUSH S1    ; body
@@ -2671,7 +2692,9 @@ IF
 .globl	name
 .public	name
 .type	name, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 11
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -2682,7 +2705,7 @@ STSLICECONST xf985b3f4
 PUSH S1
 STREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -2690,7 +2713,9 @@ SETGLOB 7
 .globl	symbol
 .public	symbol
 .type	symbol, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 12
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -2701,7 +2726,7 @@ STSLICECONST xc5b3bdfd
 PUSH S1
 STREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -2709,7 +2734,9 @@ SETGLOB 7
 .globl	decimals
 .public	decimals
 .type	decimals, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 13
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -2720,7 +2747,7 @@ STSLICECONST x95005b07
 PUSH S1
 STUR 8
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -2728,7 +2755,9 @@ SETGLOB 7
 .globl	wallet_code
 .public	wallet_code
 .type	wallet_code, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 14
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -2739,7 +2768,7 @@ STSLICECONST xa29719f7
 PUSH S1
 STREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -2747,7 +2776,9 @@ SETGLOB 7
 .globl	total_supply
 .public	total_supply
 .type	total_supply, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 15
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -2758,7 +2789,7 @@ STSLICECONST xccab94a8
 PUSH S1
 STUR 128
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -2766,7 +2797,9 @@ SETGLOB 7
 .globl	start_gas_balance
 .public	start_gas_balance
 .type	start_gas_balance, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 18
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -2777,7 +2810,7 @@ STSLICECONST xf26e937f
 PUSH S1
 STUR 128
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
@@ -2785,7 +2818,9 @@ SETGLOB 7
 .globl	paused
 .public	paused
 .type	paused, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 24
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -2796,7 +2831,7 @@ STSLICECONST xb08d66d1
 PUSH S1
 STIR 1
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7

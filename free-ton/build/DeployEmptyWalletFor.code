@@ -3,10 +3,9 @@
 .type	constructor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -18,7 +17,9 @@ ENDS
 ; constructor DeployEmptyWalletFor
 ACCEPT
 ; end constructor DeployEmptyWalletFor
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -27,10 +28,9 @@ SETGLOB 7
 .type	deployEmptyWalletFor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode pubkey
 LDU 256
@@ -92,11 +92,13 @@ PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 STSLICER
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 DROP2
 ; end function deployEmptyWalletFor
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -105,10 +107,9 @@ SETGLOB 7
 .type	getLatestPublicKey, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getLatestPublicKey
@@ -136,16 +137,15 @@ PUSHCONT {
 	PUSH S1
 	STUR 256
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function getLatestPublicKey
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -154,10 +154,9 @@ SETGLOB 7
 .type	getLatestAddr, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getLatestAddr
@@ -185,16 +184,15 @@ PUSHCONT {
 	PUSH S1
 	STSLICER
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function getLatestAddr
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -203,10 +201,9 @@ SETGLOB 7
 .type	getRoot, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getRoot
@@ -234,21 +231,19 @@ PUSHCONT {
 	PUSH S1
 	STSLICER
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
 ; end function getRoot
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -271,8 +266,7 @@ STSLICE
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4

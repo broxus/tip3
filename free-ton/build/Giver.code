@@ -3,10 +3,9 @@
 .type	constructor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -18,7 +17,9 @@ ENDS
 ; constructor Giver
 ACCEPT
 ; end constructor Giver
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -38,9 +39,9 @@ ACCEPT
 ;; get member balance
 GETPARAM 7
 INDEX 0
+;; >
 ;; push identifier amount
 PUSH S1
-;; >
 GREATER
 THROWIFNOT 60
 ;; transfer()
@@ -62,10 +63,9 @@ PUSHINT 1
 SENDRAWMSG
 DROP2
 ; end function sendGrams
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -78,9 +78,9 @@ ACCEPT
 ;; get member balance
 GETPARAM 7
 INDEX 0
+;; >
 ;; push identifier amount
 PUSH S1
-;; >
 GREATER
 THROWIFNOT 60
 ;; transfer()
@@ -103,8 +103,7 @@ SENDRAWMSG
 DROP2
 ; end function sendGrams
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -115,8 +114,7 @@ STUR 1
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4

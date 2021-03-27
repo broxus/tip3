@@ -3,10 +3,9 @@
 .type	constructor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -18,7 +17,9 @@ ENDS
 ; constructor TONTokenWalletInternalOwnerTest
 ACCEPT
 ; end constructor TONTokenWalletInternalOwnerTest
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -27,10 +28,9 @@ SETGLOB 7
 .type	tokensReceivedCallback, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode token_wallet
 LDMSGADDRQ
@@ -142,9 +142,11 @@ THROWIFNOT 100
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -183,7 +185,7 @@ STSLICER
 PUSH S9
 STUR 128
 ;; deploy_grams
-PUSHINT 50000000
+PUSHINT 100000000
 STUR 128
 ;; transfer_grams
 PUSHINT 0
@@ -207,7 +209,9 @@ PUSHINT 128
 SENDRAWMSG
 BLKDROP 10
 ; end function tokensReceivedCallback
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -216,10 +220,9 @@ SETGLOB 7
 .type	tokensBouncedCallback, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode 
 LDMSGADDRQ
@@ -287,7 +290,9 @@ SETGLOB 14
 ; end colValue
 BLKDROP 5
 ; end function tokensBouncedCallback
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -296,10 +301,9 @@ SETGLOB 7
 .type	subscribeForTransfers, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode wallet1
 LDMSGADDRQ
@@ -345,6 +349,7 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
+	;; ==
 	GETGLOB 5
 	DUP
 	ISNULL
@@ -353,7 +358,6 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IF
-	;; ==
 	EQUAL
 }
 IF
@@ -409,7 +413,7 @@ STSLICER
 TRUE
 STIR 1
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ;; Remote call ITONTokenWallet.setBouncedCallback
 ;; push identifier wallet1
@@ -426,7 +430,7 @@ STSLICECONST x05c5000f
 MYADDR
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ;; Remote call ITONTokenWallet.setReceiveCallback
 ;; push identifier wallet2
@@ -446,7 +450,7 @@ STSLICER
 TRUE
 STIR 1
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ;; Remote call ITONTokenWallet.setBouncedCallback
 ;; push identifier wallet2
@@ -463,24 +467,20 @@ STSLICECONST x05c5000f
 MYADDR
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function subscribeForTransfers
 DROP2
 ; end modifier onlyExternalOwner
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
 .globl	burnMyTokens
 .public	burnMyTokens
 .type	burnMyTokens, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -559,6 +559,7 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
+	;; ==
 	GETGLOB 5
 	DUP
 	ISNULL
@@ -567,7 +568,6 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IF
-	;; ==
 	EQUAL
 }
 IF
@@ -627,28 +627,21 @@ PUSH S2
 STREFR
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 DROP2
 ; end function burnMyTokens
 BLKDROP 5
 ; end modifier onlyExternalOwner
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
 .globl	testTransferFrom
 .public	testTransferFrom
 .type	testTransferFrom, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -727,6 +720,7 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
+	;; ==
 	GETGLOB 5
 	DUP
 	ISNULL
@@ -735,7 +729,6 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IF
-	;; ==
 	EQUAL
 }
 IF
@@ -791,28 +784,21 @@ STREFR
 STBREFR
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 DROP
 ; end function testTransferFrom
 BLKDROP 5
 ; end modifier onlyExternalOwner
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
 .globl	deployEmptyWallet
 .public	deployEmptyWallet
 .type	deployEmptyWallet, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
 ; Decode input parameters
 ; Decode root_address
 LDMSGADDRQ
@@ -858,6 +844,7 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
+	;; ==
 	GETGLOB 5
 	DUP
 	ISNULL
@@ -866,7 +853,6 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IF
-	;; ==
 	EQUAL
 }
 IF
@@ -902,27 +888,20 @@ PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 STSLICER
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function deployEmptyWallet
 DROP2
 ; end modifier onlyExternalOwner
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
 .globl	sendTransaction
 .public	sendTransaction
 .type	sendTransaction, @function
-GETGLOB 1
-ISNULL
-PUSHCONT {
-	CALL $c4_to_c7$
-}
-IF
 ; Decode input parameters
 ; Decode dest
 LDMSGADDRQ
@@ -994,6 +973,7 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
+	;; ==
 	GETGLOB 5
 	DUP
 	ISNULL
@@ -1002,7 +982,6 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IF
-	;; ==
 	EQUAL
 }
 IF
@@ -1039,10 +1018,9 @@ SENDRAWMSG
 ; end function sendTransaction
 BLKDROP 5
 ; end modifier onlyExternalOwner
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
@@ -1074,6 +1052,7 @@ PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
 	GETGLOB 11
+	;; ==
 	GETGLOB 5
 	DUP
 	ISNULL
@@ -1082,7 +1061,6 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IF
-	;; ==
 	EQUAL
 }
 IF
@@ -1120,8 +1098,7 @@ SENDRAWMSG
 BLKDROP 5
 ; end modifier onlyExternalOwner
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -1146,8 +1123,7 @@ STDICT
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4
@@ -1363,7 +1339,9 @@ IF
 .globl	latest_bounced_from
 .public	latest_bounced_from
 .type	latest_bounced_from, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 14
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -1374,7 +1352,7 @@ STSLICECONST xeeaff1af
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7

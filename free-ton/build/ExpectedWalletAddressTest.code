@@ -3,10 +3,9 @@
 .type	constructor, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -43,7 +42,7 @@ MYADDR
 STSLICER
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ;; Remote call IRootTokenContract.sendExpectedWalletAddress
 ;; push identifier root_address
@@ -68,10 +67,12 @@ MYADDR
 STSLICER
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end constructor ExpectedWalletAddressTest
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
@@ -80,10 +81,9 @@ SETGLOB 7
 .type	expectedWalletAddressCallback, @function
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode wallet_
 LDMSGADDR
@@ -136,12 +136,13 @@ SETGLOB 11
 ; end colValue
 BLKDROP 3
 ; end function expectedWalletAddressCallback
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -157,8 +158,7 @@ STSLICE
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4
@@ -322,7 +322,9 @@ IF
 .globl	wallet
 .public	wallet
 .type	wallet, @function
-CALL $c4_to_c7$
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 11
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -333,7 +335,7 @@ STSLICECONST x94870017
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
