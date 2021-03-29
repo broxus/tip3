@@ -1,12 +1,10 @@
-.globl	constructor
-.public	constructor
-.type	constructor, @function
+.macro constructor
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -18,19 +16,19 @@ ENDS
 ; constructor TONTokenWalletHack
 ACCEPT
 ; end constructor TONTokenWalletHack
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	mint
-.public	mint
-.type	mint, @function
+.macro mint
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode to
 LDMSGADDR
@@ -107,19 +105,18 @@ PUSH S2
 STREFR
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
-BLKDROP 4
+DROP
 ; end function mint
-PUSHCONT {
+BLKDROP 3
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -142,8 +139,7 @@ STU 256
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4
@@ -250,8 +246,8 @@ PUSHCONT {
 }
 IFELSE
 
-.internal-alias :main_internal,        0
-.internal	:main_internal
+.internal-alias :main_internal, 0
+.internal :main_internal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Function: main_internal
 ;; param: contract_balance
@@ -271,32 +267,21 @@ PUSH S1 ; body
 LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
-PUSH S1 ; funcId body' funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
+SWAP
+CALLREF {
+	CALL $public_function_selector$
 }
-IFJMP
-SWAP    ; body funcId
-CALL 1
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
-.internal-alias :main_external,        -1
-.internal	:main_external
+.internal-alias :main_external, -1
+.internal :main_external
 PUSHINT -1 ; main_external trans id
 PUSH S1
-CALL $c4_to_c7_with_init_storage$
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
 LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
@@ -319,31 +304,18 @@ NOW     ; msgSlice expireAt now
 GREATER ; msgSlice expireAt>now
 THROWIFNOT 57
 LDU  32 ; funcId body
-PUSH S1 ; funcId body funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
-}
-IFJMP
 SWAP    ; body funcId
-CALL 1
+CALLREF {
+	CALL $public_function_selector$
+}
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
-.globl	root_address
-.public	root_address
-.type	root_address, @function
-CALL $c4_to_c7$
+.macro root_address
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 10
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -354,15 +326,15 @@ STSLICECONST xbd6d13f5
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	code
-.public	code
-.type	code, @function
-CALL $c4_to_c7$
+.macro code
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 11
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -373,15 +345,15 @@ STSLICECONST xffbb70d7
 PUSH S1
 STREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	wallet_public_key
-.public	wallet_public_key
-.type	wallet_public_key, @function
-CALL $c4_to_c7$
+.macro wallet_public_key
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 12
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -392,15 +364,15 @@ STSLICECONST xe4f8a61e
 PUSH S1
 STUR 256
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	owner_address
-.public	owner_address
-.type	owner_address, @function
-CALL $c4_to_c7$
+.macro owner_address
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 13
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -411,8 +383,63 @@ STSLICECONST xda4604cb
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
+.macro public_function_selector
+DUP
+PUSHINT 1030558709
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 593250132
+	EQUAL
+	IFJMPREF {
+		CALL $mint$
+	}
+	DUP
+	PUSHINT 1030558709
+	EQUAL
+	IFJMPREF {
+		CALL $root_address$
+	}
+}
+IFJMP
+DUP
+PUSHINT 1694017054
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1514538187
+	EQUAL
+	IFJMPREF {
+		CALL $owner_address$
+	}
+	DUP
+	PUSHINT 1694017054
+	EQUAL
+	IFJMPREF {
+		CALL $wallet_public_key$
+	}
+}
+IFJMP
+DUP
+PUSHINT 2142990551
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1756716863
+	EQUAL
+	IFJMPREF {
+		CALL $constructor$
+	}
+	DUP
+	PUSHINT 2142990551
+	EQUAL
+	IFJMPREF {
+		CALL $code$
+	}
+}
+IFJMP

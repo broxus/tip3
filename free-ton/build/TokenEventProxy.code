@@ -1,12 +1,10 @@
-.globl	constructor
-.public	constructor
-.type	constructor, @function
+.macro constructor
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -129,21 +127,21 @@ INDEX 0
 ; colValue
 SETGLOB 20
 ; end colValue
-DROP2
 ; end constructor TokenEventProxy
-CALL $c7_to_c4$
+DROP2
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	broxusBridgeCallback
-.public	broxusBridgeCallback
-.type	broxusBridgeCallback, @function
+.macro broxusBridgeCallback
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode eventData
 ;; decode struct EthereumEventInitData eventData
@@ -271,277 +269,20 @@ IFNOT
 ENDS
 ;; param: eventData
 ;; param: gasBackAddress
-; function broxusBridgeCallback
-;; push identifier error_paused
-GETGLOB 28
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
+CALLREF {
+	CALL $broxusBridgeCallback_internal_macro$
 }
-IF
-;; !
-;; push identifier paused
-GETGLOB 22
-NOT
-THROWANYIFNOT
-;; push identifier eventData
-PUSH S1
-;; param: initData
-; function getExpectedEventAddress
-NEWDICT
-;; push identifier ethereum_event_deploy_pubkey
-GETGLOB 15
-NEWC
-STU 256
-PUSHINT 0
-ROT
-PUSHINT 64
-DICTUSETB
-;; push identifier initData
-PUSH S1
-UNTUPLE 10
-NEWC
-NEWC
-PUSH S3
-STSLICER
-PUSH S2
-STREFR
-STBREFR
-PUSH S10
-STUR 256
-PUSH S9
-STUR 32
-PUSH S8
-STREFR
-PUSH S7
-STUR 32
-PUSH S6
-STUR 256
-PUSH S5
-STSLICER
-PUSH S4
-STUR 16
-PUSH S3
-STUR 16
-XCHG s10
-BLKDROP 10
-ENDC
-PUSHINT 1
-ROT
-PUSHINT 64
-DICTUSETREF
-NEWC
-STDICT
-ENDC
-;; push identifier ethereum_event_code
-GETGLOB 11
-NEWC
-STSLICECONST x2_
-STOPTREF
-STOPTREF
-STZERO
-ENDC
-;; decl: stateInit
-;; return
-;; push identifier stateInit
-DUP
-HASHCU
-NEWC
-STSLICECONST x801_
-STU 256
-ENDC
-CTOS
-NIP
-NIP
-; end function getExpectedEventAddress
-;; decl: expectedSenderAddress
-;; push identifier error_message_sender_is_not_valid_event
-GETGLOB 25
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
+CALLREF {
+	CALL $c7_to_c4$
 }
-IF
-;; push identifier expectedSenderAddress
-PUSH S1
-;; get member sender
-GETGLOB 9
-SDEQ
-THROWANYIFNOT
-;; get member ethereumEventConfiguration
-;; push identifier eventData
-PUSH S2
-INDEX 5
-;; push identifier ethereum_event_configuration_address
-GETGLOB 16
-SDEQ
-THROWIFNOT 100
-;; get member proxyAddress
-;; push identifier eventData
-PUSH S2
-INDEX 8
-MYADDR
-SDEQ
-THROWIFNOT 100
-;; get member value
-;; push identifier token_root_address
-GETGLOB 17
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-THROWIFNOT 100
-;; push identifier start_gas_balance
-GETGLOB 20
-;; get member balance
-GETPARAM 7
-INDEX 0
-;; get member value
-CALL $message_balance_macro$
-;; -
-SUB
-UFITS 128
-MAX
-PUSHINT 2
-RAWRESERVE
-;; get member eventData
-;; push identifier eventData
-PUSH S2
-INDEX 2
-CTOS
-LDU 128
-LDI 8
-LDU 256
-LDU 256
-; colValue
-DROP
-;; decl: tokens
-;; decl: wid
-;; decl: owner_addr
-;; decl: owner_pubkey
-;; address.makeAddrStd()
-;; push identifier owner_addr
-PUSH S1
-;; push identifier wid
-PUSH S3
-NEWC
-STSLICECONST x9_
-STI 8
-STU 256
-ENDC
-CTOS
-;; decl: owner_address
-;; push identifier error_message_not_valid_payload
-GETGLOB 26
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-;; push identifier tokens
-PUSH S5
-GTINT 0
-THROWANYIFNOT
-;; push identifier error_message_not_valid_payload
-GETGLOB 26
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
-;; push identifier owner_pubkey
-PUSH S2
-NEQINT 0
-;; short-circuiting &&
-DUP
-PUSHCONT {
-	DROP
-	;; get member value
-	;; push identifier owner_address
-	PUSH S1
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
-	EQINT 0
-}
-IF
-;; short-circuiting ||
-DUP
-PUSHCONT {
-	DROP
-	;; push identifier owner_pubkey
-	PUSH S2
-	EQINT 0
-	;; short-circuiting &&
-	DUP
-	PUSHCONT {
-		DROP
-		;; get member value
-		;; push identifier owner_address
-		PUSH S1
-		PARSEMSGADDR
-		INDEX 3
-		PLDU 256
-		NEQINT 0
-	}
-	IF
-}
-IFNOT
-THROWANYIFNOT
-;; Remote call IRootTokenContract.deployWallet
-;; push identifier token_root_address
-GETGLOB 17
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 1
-NEWC
-STSLICECONST x66211c6f
-;; tokens
-;; push identifier tokens
-PUSH S6
-STUR 128
-;; deploy_grams
-;; push identifier settings_deploy_wallet_grams
-GETGLOB 19
-STUR 128
-;; wallet_public_key
-;; push identifier owner_pubkey
-PUSH S3
-STUR 256
-;; owner_address
-;; push identifier owner_address
-PUSH S2
-STSLICER
-NEWC
-;; gas_back_address
-;; push identifier gasBackAddress
-PUSH S9
-STSLICER
-STBREFR
-STBREFR
-ENDC
-PUSHINT 128
-SENDRAWMSG
-BLKDROP 8
-; end function broxusBridgeCallback
-CALL $c7_to_c4$
 TRUE
 SETGLOB 7
 
 .globl	broxusBridgeCallback_internal
 .type	broxusBridgeCallback_internal, @function
+CALL $broxusBridgeCallback_internal_macro$
+
+.macro broxusBridgeCallback_internal_macro
 ;; param: eventData
 ;; param: gasBackAddress
 ; function broxusBridgeCallback
@@ -598,10 +339,9 @@ PUSH S4
 STUR 16
 PUSH S3
 STUR 16
-XCHG s10
-BLKDROP 10
+BLKDROP2 10, 1
 ENDC
-PUSHINT 1
+PUSHINT 2
 ROT
 PUSHINT 64
 DICTUSETREF
@@ -627,8 +367,8 @@ STU 256
 ENDC
 CTOS
 NIP
-NIP
 ; end function getExpectedEventAddress
+NIP
 ;; decl: expectedSenderAddress
 ;; push identifier error_message_sender_is_not_valid_event
 GETGLOB 25
@@ -673,9 +413,11 @@ GETGLOB 20
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 MAX
@@ -692,6 +434,10 @@ LDU 256
 LDU 256
 ; colValue
 DROP
+BLKSWAP 3, 1
+BLKSWAP 3, 1
+BLKSWAP 3, 1
+BLKSWAP 3, 1
 ;; decl: tokens
 ;; decl: wid
 ;; decl: owner_addr
@@ -807,18 +553,17 @@ STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-BLKDROP 8
+BLKDROP 6
 ; end function broxusBridgeCallback
+DROP2
 
-.globl	burnCallbackV1
-.public	burnCallbackV1
-.type	burnCallbackV1, @function
+.macro burnCallbackV1
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -887,9 +632,11 @@ GETGLOB 20
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 MAX
@@ -903,11 +650,11 @@ PUSHINT 0
 PUSHCONT {
 	;; push identifier i
 	DUP
+	;; <
 	;; get member length
 	;; push identifier outdated_token_roots
 	GETGLOB 12
 	INDEX 0
-	;; <
 	LESS
 }
 PUSHCONT {
@@ -1036,21 +783,22 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
-BLKDROP 7
+DROP2
 ; end function burnCallbackV1
-CALL $c7_to_c4$
+BLKDROP 5
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	burnCallback
-.public	burnCallback
-.type	burnCallback, @function
+.macro burnCallback
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -1130,9 +878,11 @@ GETGLOB 20
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 MAX
@@ -1195,7 +945,7 @@ PUSHCONT {
 	PUSH S1
 	STUR 160
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 	;; transfer()
 	;; push identifier send_gas_to
@@ -1221,11 +971,11 @@ PUSHCONT {
 	PUSHCONT {
 		;; push identifier i
 		DUP
+		;; <
 		;; get member length
 		;; push identifier outdated_token_roots
 		GETGLOB 12
 		INDEX 0
-		;; <
 		LESS
 	}
 	PUSHCONT {
@@ -1328,21 +1078,21 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
-BLKDROP 6
 ; end function burnCallback
-CALL $c7_to_c4$
+BLKDROP 6
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	transferMyTokensToEthereum
-.public	transferMyTokensToEthereum
-.type	transferMyTokensToEthereum, @function
+.macro transferMyTokensToEthereum
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -1403,10 +1153,12 @@ PLDU 256
 NEQINT 0
 THROWIFNOT 100
 ;; get member value
-CALL $message_balance_macro$
+CALLREF {
+	CALL $message_balance_macro$
+}
+;; >=
 ;; push identifier settings_burn_min_msg_value
 GETGLOB 18
-;; >=
 GEQ
 THROWIFNOT 100
 ACCEPT
@@ -1415,9 +1167,11 @@ GETGLOB 20
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 MAX
@@ -1475,24 +1229,22 @@ STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-BLKDROP 4
+DROP2
 ; end function transferMyTokensToEthereum
-PUSHCONT {
+DROP2
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	burnMyTokens
-.public	burnMyTokens
-.type	burnMyTokens, @function
+.macro burnMyTokens
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -1568,10 +1320,12 @@ PLDU 256
 NEQINT 0
 THROWIFNOT 100
 ;; get member value
-CALL $message_balance_macro$
+CALLREF {
+	CALL $message_balance_macro$
+}
+;; >=
 ;; push identifier settings_burn_min_msg_value
 GETGLOB 18
-;; >=
 GEQ
 THROWIFNOT 100
 ACCEPT
@@ -1580,9 +1334,11 @@ GETGLOB 20
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 MAX
@@ -1626,21 +1382,21 @@ STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-BLKDROP 4
 ; end function burnMyTokens
-CALL $c7_to_c4$
+BLKDROP 4
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	withdrawExtraGasFromTokenRoot
-.public	withdrawExtraGasFromTokenRoot
-.type	withdrawExtraGasFromTokenRoot, @function
+.macro withdrawExtraGasFromTokenRoot
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode to
 LDMSGADDRQ
@@ -1702,6 +1458,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -1710,7 +1467,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -1737,27 +1493,24 @@ STSLICECONST x20ebc76d
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function withdrawExtraGasFromTokenRoot
-DROP
 ; end modifier onlyOwner
-PUSHCONT {
+DROP
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	setPaused
-.public	setPaused
-.type	setPaused, @function
+.macro setPaused
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode value
 LDI 1
@@ -1811,6 +1564,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -1819,7 +1573,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -1853,24 +1606,24 @@ STSLICECONST x0d5afc72
 GETGLOB 22
 STIR 1
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function setPaused
-DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	sendPausedCallbackTo
-.public	sendPausedCallbackTo
-.type	sendPausedCallbackTo, @function
+.macro sendPausedCallbackTo
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode callback_id
 LDU 64
@@ -1893,9 +1646,11 @@ GETGLOB 20
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 MAX
@@ -1923,21 +1678,21 @@ STIR 1
 ENDC
 PUSHINT 128
 SENDRAWMSG
-DROP2
 ; end function sendPausedCallbackTo
-CALL $c7_to_c4$
+DROP2
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	transferOwner
-.public	transferOwner
-.type	transferOwner, @function
+.macro transferOwner
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode external_owner_pubkey_
 LDUQ 256
@@ -2010,6 +1765,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2018,7 +1774,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2092,21 +1847,21 @@ DUP
 SETGLOB 14
 ; end colValue
 ; end function transferOwner
-DROP2
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+DROP2
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	transferOwnership
-.public	transferOwnership
-.type	transferOwnership, @function
+.macro transferOwnership
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode target
 LDMSGADDRQ
@@ -2190,6 +1945,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2198,7 +1954,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2279,27 +2034,24 @@ PUSH S2
 STSLICER
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function transferOwnership
-BLKDROP 3
 ; end modifier onlyOwner
-PUSHCONT {
+BLKDROP 3
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	setTokenRootAddressOnce
-.public	setTokenRootAddressOnce
-.type	setTokenRootAddressOnce, @function
+.macro setTokenRootAddressOnce
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode value
 LDMSGADDRQ
@@ -2361,6 +2113,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2369,7 +2122,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2396,21 +2148,21 @@ DUP
 SETGLOB 17
 ; end colValue
 ; end function setTokenRootAddressOnce
-DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	setEthEventDeployPubkeyOnce
-.public	setEthEventDeployPubkeyOnce
-.type	setEthEventDeployPubkeyOnce, @function
+.macro setEthEventDeployPubkeyOnce
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode value
 LDUQ 256
@@ -2472,6 +2224,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2480,7 +2233,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2503,21 +2255,21 @@ DUP
 SETGLOB 15
 ; end colValue
 ; end function setEthEventDeployPubkeyOnce
-DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	setEthEventConfigAddressOnce
-.public	setEthEventConfigAddressOnce
-.type	setEthEventConfigAddressOnce, @function
+.macro setEthEventConfigAddressOnce
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode value
 LDMSGADDRQ
@@ -2579,6 +2331,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2587,7 +2340,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2614,21 +2366,21 @@ DUP
 SETGLOB 16
 ; end colValue
 ; end function setEthEventConfigAddressOnce
-DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	setBurnMinMsgValue
-.public	setBurnMinMsgValue
-.type	setBurnMinMsgValue, @function
+.macro setBurnMinMsgValue
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode value
 LDUQ 128
@@ -2690,6 +2442,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2698,7 +2451,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2717,21 +2469,21 @@ DUP
 SETGLOB 18
 ; end colValue
 ; end function setBurnMinMsgValue
-DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	setDeployWalletGrams
-.public	setDeployWalletGrams
-.type	setDeployWalletGrams, @function
+.macro setDeployWalletGrams
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode value
 LDUQ 128
@@ -2793,6 +2545,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2801,7 +2554,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2820,21 +2572,21 @@ DUP
 SETGLOB 19
 ; end colValue
 ; end function setDeployWalletGrams
-DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	setEthereumEventCode
-.public	setEthereumEventCode
-.type	setEthereumEventCode, @function
+.macro setEthereumEventCode
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode value
 ;; decode TvmCell
@@ -2889,6 +2641,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey
 		GETGLOB 13
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -2897,7 +2650,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -2916,14 +2668,15 @@ DUP
 SETGLOB 11
 ; end colValue
 ; end function setEthereumEventCode
-DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -2981,8 +2734,7 @@ STU 8
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4
@@ -3231,8 +2983,8 @@ PUSHCONT {
 }
 IFELSE
 
-.internal-alias :main_internal,        0
-.internal	:main_internal
+.internal-alias :main_internal, 0
+.internal :main_internal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Function: main_internal
 ;; param: contract_balance
@@ -3255,34 +3007,23 @@ PUSH S1 ; body
 LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
-PUSH S1 ; funcId body' funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
+SWAP
+CALLREF {
+	CALL $public_function_selector$
 }
-IFJMP
-SWAP    ; body funcId
-CALL 1
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
-.internal-alias :main_external,        -1
-.internal	:main_external
+.internal-alias :main_external, -1
+.internal :main_external
 PUSHINT -1 ; main_external trans id
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 SETGLOB 9
 PUSH S1
-CALL $c4_to_c7_with_init_storage$
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
 LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
@@ -3323,31 +3064,18 @@ NOW     ; msgSlice expireAt now
 GREATER ; msgSlice expireAt>now
 THROWIFNOT 57
 LDU  32 ; funcId body
-PUSH S1 ; funcId body funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
-}
-IFJMP
 SWAP    ; body funcId
-CALL 1
+CALLREF {
+	CALL $public_function_selector$
+}
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
-.globl	external_owner_pubkey
-.public	external_owner_pubkey
-.type	external_owner_pubkey, @function
-CALL $c4_to_c7$
+.macro external_owner_pubkey
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 13
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3358,15 +3086,15 @@ STSLICECONST xcdf1df2f
 PUSH S1
 STUR 256
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	internal_owner_address
-.public	internal_owner_address
-.type	internal_owner_address, @function
-CALL $c4_to_c7$
+.macro internal_owner_address
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 14
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3377,15 +3105,15 @@ STSLICECONST xa98bad2a
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	ethereum_event_deploy_pubkey
-.public	ethereum_event_deploy_pubkey
-.type	ethereum_event_deploy_pubkey, @function
-CALL $c4_to_c7$
+.macro ethereum_event_deploy_pubkey
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 15
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3396,15 +3124,15 @@ STSLICECONST xdc31fe95
 PUSH S1
 STUR 256
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	ethereum_event_configuration_address
-.public	ethereum_event_configuration_address
-.type	ethereum_event_configuration_address, @function
-CALL $c4_to_c7$
+.macro ethereum_event_configuration_address
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 16
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3415,15 +3143,15 @@ STSLICECONST xf68d1c31
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	token_root_address
-.public	token_root_address
-.type	token_root_address, @function
-CALL $c4_to_c7$
+.macro token_root_address
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 17
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3434,15 +3162,15 @@ STSLICECONST xedf12b93
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	settings_burn_min_msg_value
-.public	settings_burn_min_msg_value
-.type	settings_burn_min_msg_value, @function
-CALL $c4_to_c7$
+.macro settings_burn_min_msg_value
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 18
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3453,15 +3181,15 @@ STSLICECONST xbff6c029
 PUSH S1
 STUR 128
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	settings_deploy_wallet_grams
-.public	settings_deploy_wallet_grams
-.type	settings_deploy_wallet_grams, @function
-CALL $c4_to_c7$
+.macro settings_deploy_wallet_grams
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 19
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3472,15 +3200,15 @@ STSLICECONST xb4696dbd
 PUSH S1
 STUR 128
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	start_gas_balance
-.public	start_gas_balance
-.type	start_gas_balance, @function
-CALL $c4_to_c7$
+.macro start_gas_balance
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 20
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3491,15 +3219,15 @@ STSLICECONST xf26e937f
 PUSH S1
 STUR 128
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	burned_count
-.public	burned_count
-.type	burned_count, @function
-CALL $c4_to_c7$
+.macro burned_count
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 21
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3510,15 +3238,15 @@ STSLICECONST xf481fc8d
 PUSH S1
 STUR 128
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	paused
-.public	paused
-.type	paused, @function
-CALL $c4_to_c7$
+.macro paused
+CALLREF {
+	CALL $c4_to_c7$
+}
 GETGLOB 22
 NEWC
 PUSHSLICE xc0000000000000000000000002_
@@ -3529,8 +3257,267 @@ STSLICECONST xb08d66d1
 PUSH S1
 STIR 1
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 TRUE
 SETGLOB 7
 
+.macro public_function_selector
+DUP
+PUSHINT 814573265
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 30752029
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 12081194
+		EQUAL
+		IFJMPREF {
+			CALL $setTokenRootAddressOnce$
+		}
+		DUP
+		PUSHINT 30752029
+		EQUAL
+		IFJMPREF {
+			CALL $constructor$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 224066674
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 32840294
+		EQUAL
+		IFJMPREF {
+			CALL $sendPausedCallbackTo$
+		}
+		DUP
+		PUSHINT 224066674
+		EQUAL
+		IFJMPREF {
+			CALL $setPaused$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 697019690
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 609313448
+		EQUAL
+		IFJMPREF {
+			CALL $transferMyTokensToEthereum$
+		}
+		DUP
+		PUSHINT 697019690
+		EQUAL
+		IFJMPREF {
+			CALL $internal_owner_address$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 814573265
+	EQUAL
+	IFJMPREF {
+		CALL $paused$
+	}
+}
+IFJMP
+DUP
+PUSHINT 1214893325
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 879324605
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 835447957
+		EQUAL
+		IFJMPREF {
+			CALL $setDeployWalletGrams$
+		}
+		DUP
+		PUSHINT 879324605
+		EQUAL
+		IFJMPREF {
+			CALL $settings_deploy_wallet_grams$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1019809854
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 942155290
+		EQUAL
+		IFJMPREF {
+			CALL $transferOwner$
+		}
+		DUP
+		PUSHINT 1019809854
+		EQUAL
+		IFJMPREF {
+			CALL $burnCallback$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1105088798
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1073135657
+		EQUAL
+		IFJMPREF {
+			CALL $settings_burn_min_msg_value$
+		}
+		DUP
+		PUSHINT 1105088798
+		EQUAL
+		IFJMPREF {
+			CALL $setBurnMinMsgValue$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1214893325
+	EQUAL
+	IFJMPREF {
+		CALL $broxusBridgeCallback$
+	}
+}
+IFJMP
+DUP
+PUSHINT 1783125081
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1307696943
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1230081952
+		EQUAL
+		IFJMPREF {
+			CALL $transferOwnership$
+		}
+		DUP
+		PUSHINT 1307696943
+		EQUAL
+		IFJMPREF {
+			CALL $external_owner_pubkey$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1495942408
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1344148966
+		EQUAL
+		IFJMPREF {
+			CALL $setEthEventConfigAddressOnce$
+		}
+		DUP
+		PUSHINT 1495942408
+		EQUAL
+		IFJMPREF {
+			CALL $setEthereumEventCode$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1739066831
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1546780309
+		EQUAL
+		IFJMPREF {
+			CALL $ethereum_event_deploy_pubkey$
+		}
+		DUP
+		PUSHINT 1739066831
+		EQUAL
+		IFJMPREF {
+			CALL $burnMyTokens$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1783125081
+	EQUAL
+	IFJMPREF {
+		CALL $withdrawExtraGasFromTokenRoot$
+	}
+}
+IFJMP
+DUP
+PUSHINT 2112130069
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1910318964
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1844521875
+		EQUAL
+		IFJMPREF {
+			CALL $token_root_address$
+		}
+		DUP
+		PUSHINT 1910318964
+		EQUAL
+		IFJMPREF {
+			CALL $burnCallbackV1$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1954675853
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1919849343
+		EQUAL
+		IFJMPREF {
+			CALL $start_gas_balance$
+		}
+		DUP
+		PUSHINT 1954675853
+		EQUAL
+		IFJMPREF {
+			CALL $burned_count$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 2112130069
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1988959281
+		EQUAL
+		IFJMPREF {
+			CALL $ethereum_event_configuration_address$
+		}
+		DUP
+		PUSHINT 2112130069
+		EQUAL
+		IFJMPREF {
+			CALL $setEthEventDeployPubkeyOnce$
+		}
+	}
+	IFJMP
+}
+IFJMP

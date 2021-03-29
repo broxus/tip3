@@ -14,6 +14,7 @@
 		{
 			"name": "getDetails",
 			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
 			],
 			"outputs": [
 				{"components":[{"name":"name","type":"bytes"},{"name":"symbol","type":"bytes"},{"name":"decimals","type":"uint8"},{"name":"wallet_code","type":"cell"},{"name":"root_public_key","type":"uint256"},{"name":"root_owner_address","type":"address"},{"name":"total_supply","type":"uint128"}],"name":"value0","type":"tuple"}
@@ -22,6 +23,7 @@
 		{
 			"name": "getWalletAddress",
 			"inputs": [
+				{"name":"_answer_id","type":"uint32"},
 				{"name":"wallet_public_key_","type":"uint256"},
 				{"name":"owner_address_","type":"address"}
 			],

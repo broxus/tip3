@@ -1,4 +1,4 @@
-pragma solidity >= 0.6.0;
+pragma ton-solidity ^0.39.0;
 
 interface IRootTokenContract {
 
@@ -12,9 +12,9 @@ interface IRootTokenContract {
         uint128 total_supply;
     }
 
-    function getDetails() external view returns (IRootTokenContractDetails);
+    function getDetails() external view responsible returns (IRootTokenContractDetails);
 
-    function getWalletAddress(uint256 wallet_public_key, address owner_address) external view returns(address);
+    function getWalletAddress(uint256 wallet_public_key, address owner_address) external view responsible returns(address);
 
     function deployWallet(
         uint128 tokens,

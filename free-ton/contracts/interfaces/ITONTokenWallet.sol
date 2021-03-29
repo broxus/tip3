@@ -1,4 +1,4 @@
-pragma solidity >= 0.6.0;
+pragma ton-solidity ^0.39.0;
 pragma AbiHeader expire;
 
 import "./AllowanceInfoStructure.sol";
@@ -17,11 +17,12 @@ interface ITONTokenWallet is AllowanceInfoStructure {
         bool allow_non_notifiable;
     }
 
-    function getDetails() external view returns (ITONTokenWalletDetails);
+    function getDetails() external view responsible returns (ITONTokenWalletDetails);
 
     function accept(uint128 tokens) external;
 
-    function allowance() external view returns (AllowanceInfo);
+    function balance() external view responsible returns (uint128);
+    function allowance() external view responsible returns (AllowanceInfo);
     function approve(address spender, uint128 remaining_tokens, uint128 tokens) external;
     function disapprove() external;
 

@@ -56,7 +56,6 @@ describe('Test Fungible Tokens', function () {
         RootTokenContractInternalOwnerTest = await freeton.requireContract(tonWrapper, 'RootTokenContractInternalOwnerTest');
         TONTokenWalletInternalOwnerTest = await freeton.requireContract(tonWrapper, 'TONTokenWalletInternalOwnerTest');
         SelfDeployedWallet = await freeton.requireContract(tonWrapper, 'TONTokenWallet');
-        FooWalletInternal = await freeton.requireContract(tonWrapper, 'TONTokenWallet');
         BarWallet2 = await freeton.requireContract(tonWrapper, 'TONTokenWallet');
         TONTokenWalletHack = await freeton.requireContract(tonWrapper, 'TONTokenWalletHack');
         DeployEmptyWalletFor = await freeton.requireContract(tonWrapper, 'DeployEmptyWalletFor');
@@ -66,11 +65,17 @@ describe('Test Fungible Tokens', function () {
         await RootTokenContractInternalOwnerTest.loadMigration();
         await TONTokenWalletInternalOwnerTest.loadMigration();
         await SelfDeployedWallet.loadMigration('SelfDeployedWallet');
-        await FooWalletInternal.loadMigration('FooWalletInternal');
         await BarWallet2.loadMigration('BarWallet2');
         await TONTokenWalletHack.loadMigration();
         await DeployEmptyWalletFor.loadMigration();
         await ExpectedWalletAddressTest.loadMigration();
+
+        const fooWalletInternalAddress = await RootTokenContractExternalOwner.runLocal('getWalletAddress', {
+            wallet_public_key_: `0x0`,
+            owner_address_: TONTokenWalletInternalOwnerTest.address
+        });
+
+        FooWalletInternal = await freeton.requireContract(tonWrapper, 'TONTokenWallet', fooWalletInternalAddress);
 
         logger.log(`RootTokenContractExternalOwner address: ${RootTokenContractExternalOwner.address}`);
         logger.log(`RootTokenContractInternalOwner address: ${RootTokenContractInternalOwner.address}`);
@@ -310,7 +315,7 @@ describe('Test Fungible Tokens', function () {
                 'deployEmptyWallet',
                 {
                     root_address: RootTokenContractInternalOwner.address,
-                    grams: freeton.utils.convertCrystal('0.02', 'nano')
+                    grams: freeton.utils.convertCrystal('0.1', 'nano')
                 },
                 tonWrapper.keys[5]
             ).catch(e => console.log(e));
@@ -523,81 +528,6 @@ describe('Test Fungible Tokens', function () {
             logger.log(`Actual TONTokenWalletHack address: ${TONTokenWalletHack.address}`);
             assert.notEqual(expectedAddress, TONTokenWalletHack.address, 'Wallets address equals');
         });
-    });
-
-    describe('Test BarWallet#Internal target_gas_balance on internalTransfer', async function () {
-        it('Transfer tokens to address must compensate gas balance to `target_gas_balance`', async () => {
-            logger.log('######################################################');
-            logger.log('BarWallet#6 transfer 1000 to BarWallet#Internal');
-
-            bw6address = await RootTokenContractInternalOwner.runLocal(
-                'getWalletAddress',
-                {
-                    wallet_public_key_: `0x${tonWrapper.keys[6].public}`,
-                    owner_address_: ZERO_ADDRESS,
-                });
-
-            BarWallet6 = await freeton.requireContract(
-                tonWrapper,
-                'TONTokenWallet',
-                bw6address
-            );
-
-            bwInternalAddress = await RootTokenContractInternalOwner.runLocal(
-                'getWalletAddress',
-                {
-                    wallet_public_key_: `0x0`,
-                    owner_address_: TONTokenWalletInternalOwnerTest.address,
-                });
-
-            BarWalletInternal = await freeton.requireContract(
-                tonWrapper,
-                'TONTokenWallet',
-                bwInternalAddress
-            );
-
-            const bwInternalStartBalance = await BarWalletInternal.runLocal('balance', {});
-            const bw6StartBalance = await BarWallet6.runLocal('balance', {});
-
-            const bwInternalStartGrams = await tonWrapper.getBalance(BarWalletInternal.address);
-            const bw6StartGrams = await tonWrapper.getBalance(BarWallet6.address);
-
-            logger.log(`BarWallet#6 start balance: ${bw6StartBalance} BAR`);
-            logger.log(`BarWallet#Internal start balance: ${bwInternalStartBalance} BAR`);
-
-            await BarWallet6.run(
-                'transfer',
-                {
-                    tokens: 1000,
-                    to: bwInternalAddress,
-                    grams: freeton.utils.convertCrystal('0.5', 'nano'),
-                    send_gas_to: BarWallet6.address,
-                    notify_receiver: false,
-                    payload: EMPTY_TVM_CELL
-                },
-                tonWrapper.keys[6]
-            ).catch(e => console.log(e));
-
-            const bwInternalEndBalance = await BarWalletInternal.runLocal('balance', {});
-            const bw6EndBalance = await BarWallet6.runLocal('balance', {});
-
-            const bwInternalEndGrams = await tonWrapper.getBalance(BarWalletInternal.address);
-            const bw6EndGrams = await tonWrapper.getBalance(BarWallet6.address);
-
-            logger.log(`BarWallet#6 end balance: ${bw6EndBalance} BAR`);
-            logger.log(`BarWallet#Internal end balance: ${bwInternalEndBalance} BAR`);
-
-            const bwInternalEndGramsChange =  new BigNumber(bwInternalEndGrams).minus(bwInternalStartGrams).div(1000000000);
-
-            logger.log(`BarWallet#6 GRAMS change:
-                ${new BigNumber(bw6EndGrams).minus(bw6StartGrams).div(1000000000).toFixed(9)}`);
-
-            logger.log(`BarWallet#Internal GRAMS change: ${bwInternalEndGramsChange.toFixed(9)}`);
-
-            assert.equal(bwInternalEndGramsChange.gt(0.02), true, 'BarWallet#Internal GRAMS change less then +0.07');
-
-        });
-
     });
 
     describe('Test mint/burn', async function () {
@@ -1498,7 +1428,7 @@ describe('Test Fungible Tokens', function () {
         });
 
 
-        it('Test transferWithNotify', async () => {
+        it('Test tokensReceivedCallback', async () => {
             logger.log('######################################################');
             logger.log('External call TONTokenWalletInternalOwnerTest.subscribeForTransfers(FooWalletInternal.address, BarWalletInternal.address)');
             await TONTokenWalletInternalOwnerTest.run(

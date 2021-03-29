@@ -1,12 +1,10 @@
-.globl	constructor
-.public	constructor
-.type	constructor, @function
+.macro constructor
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-IF
 ;; constructor protection
 GETGLOB 6
 THROWIF 51
@@ -33,19 +31,19 @@ INDEX 0
 SETGLOB 14
 ; end colValue
 ; end constructor RootTokenContractInternalOwnerTest
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	setRootAddressOnce
-.public	setRootAddressOnce
-.type	setRootAddressOnce, @function
+.macro setRootAddressOnce
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode root_address
 LDMSGADDRQ
@@ -107,6 +105,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -115,7 +114,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -142,27 +140,28 @@ DUP
 SETGLOB 13
 ; end colValue
 ; end function setRootAddressOnce
-DROP
 ; end modifier onlyOwner
-CALL $c7_to_c4$
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	getRootAddress
-.public	getRootAddress
-.type	getRootAddress, @function
+.macro getRootAddress
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getRootAddress
 ;; return
 ;; push identifier root_address_
 GETGLOB 13
+; end function getRootAddress
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -184,28 +183,24 @@ PUSHCONT {
 	PUSH S1
 	STSLICER
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
-; end function getRootAddress
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	burnCallback
-.public	burnCallback
-.type	burnCallback, @function
+.macro burnCallback
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -302,9 +297,11 @@ THROWANYIFNOT
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -342,21 +339,21 @@ ENDC
 PUSHINT 128
 SENDRAWMSG
 ; end function burnCallback
-BLKDROP 6
 ; end modifier onlyRoot
-CALL $c7_to_c4$
+BLKDROP 6
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	burnMyTokens
-.public	burnMyTokens
-.type	burnMyTokens, @function
+.macro burnMyTokens
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -414,18 +411,22 @@ PLDU 256
 NEQINT 0
 THROWIFNOT 100
 ;; get member value
-CALL $message_balance_macro$
+CALLREF {
+	CALL $message_balance_macro$
+}
+;; >=
 ;; push identifier settings_burn_min_value
 GETGLOB 17
-;; >=
 GEQ
 THROWIFNOT 100
 ;; get member balance
 GETPARAM 7
 INDEX 0
-;; get member value
-CALL $message_balance_macro$
 ;; -
+;; get member value
+CALLREF {
+	CALL $message_balance_macro$
+}
 SUB
 UFITS 128
 PUSHINT 2
@@ -468,27 +469,28 @@ STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-BLKDROP 4
 ; end function burnMyTokens
-CALL $c7_to_c4$
+BLKDROP 4
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	getBurnedCount
-.public	getBurnedCount
-.type	getBurnedCount, @function
+.macro getBurnedCount
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getBurnedCount
 ;; return
 ;; push identifier burned_count
 GETGLOB 19
+; end function getBurnedCount
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -510,34 +512,31 @@ PUSHCONT {
 	PUSH S1
 	STUR 128
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
-; end function getBurnedCount
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	getLatestPayload
-.public	getLatestPayload
-.type	getLatestPayload, @function
+.macro getLatestPayload
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function getLatestPayload
 ;; return
 ;; push identifier latest_payload
 GETGLOB 20
+; end function getLatestPayload
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -559,28 +558,24 @@ PUSHCONT {
 	PUSH S1
 	STREFR
 	ENDC
-	PUSHINT 1
+	PUSHINT 0
 	SENDRAWMSG
 }
 IF
 DROP
-; end function getLatestPayload
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	deployWallet
-.public	deployWallet
-.type	deployWallet, @function
+.macro deployWallet
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -675,6 +670,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -683,7 +679,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -705,9 +700,9 @@ ACCEPT
 ;; Remote call IRootTokenContract.deployWallet
 ;; push identifier grams
 PUSH S2
+;; +
 ;; push identifier settings_deploy_value
 GETGLOB 18
-;; +
 ADD
 UFITS 128
 ;; push identifier root_address_
@@ -746,27 +741,24 @@ STSLICER
 STBREFR
 STBREFR
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function deployWallet
-BLKDROP 4
 ; end modifier onlyOwner
-PUSHCONT {
+BLKDROP 4
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	mint
-.public	mint
-.type	mint, @function
+.macro mint
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -839,6 +831,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -847,7 +840,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -886,27 +878,24 @@ STUR 128
 PUSH S1
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function mint
-DROP2
 ; end modifier onlyOwner
-PUSHCONT {
+DROP2
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	sendGramsToRoot
-.public	sendGramsToRoot
-.type	sendGramsToRoot, @function
+.macro sendGramsToRoot
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ; Decode grams
 LDUQ 128
@@ -968,6 +957,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -976,7 +966,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -1002,27 +991,24 @@ STZEROES
 STSLICECONST 0
 STSLICECONST 0
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function sendGramsToRoot
-DROP
 ; end modifier onlyOwner
-PUSHCONT {
+DROP
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	testWithdrawExtraGas
-.public	testWithdrawExtraGas
-.type	testWithdrawExtraGas, @function
+.macro testWithdrawExtraGas
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; modifier onlyOwner
@@ -1073,6 +1059,7 @@ PUSHCONT {
 		DROP
 		;; push identifier external_owner_pubkey_
 		GETGLOB 11
+		;; ==
 		GETGLOB 5
 		DUP
 		ISNULL
@@ -1081,7 +1068,6 @@ PUSHCONT {
 			PUSHINT 0
 		}
 		IF
-		;; ==
 		EQUAL
 	}
 	IF
@@ -1107,36 +1093,34 @@ STSLICECONST x20ebc76d
 MYADDR
 STSLICER
 ENDC
-PUSHINT 1
+PUSHINT 0
 SENDRAWMSG
 ; end function testWithdrawExtraGas
 ; end modifier onlyOwner
-PUSHCONT {
+IFREF {
 	CALL $c7_to_c4$
 }
-IF
 TRUE
 SETGLOB 7
 
-.globl	receiveSurplusGas
-.public	receiveSurplusGas
-.type	receiveSurplusGas, @function
+.macro receiveSurplusGas
+DROP
 GETGLOB 1
 ISNULL
-PUSHCONT {
+IFREF {
 	CALL $c4_to_c7$
 }
-IF
 ; Decode input parameters
 ENDS
 ; function receiveSurplusGas
 ; end function receiveSurplusGas
-CALL $c7_to_c4$
+CALLREF {
+	CALL $c7_to_c4$
+}
 TRUE
 SETGLOB 7
 
-.globl	c7_to_c4
-.type	c7_to_c4, @function
+.macro c7_to_c4
 GETGLOB 2
 NEWC
 STU 256
@@ -1173,8 +1157,7 @@ STREF
 ENDC
 POP C4
 
-.globl	c4_to_c7
-.type	c4_to_c7, @function
+.macro c4_to_c7
 PUSHROOT
 CTOS        ; c4
 LDU 256      ; pubkey c4
@@ -1340,8 +1323,8 @@ PUSHCONT {
 }
 IFELSE
 
-.internal-alias :main_internal,        0
-.internal	:main_internal
+.internal-alias :main_internal, 0
+.internal :main_internal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Function: main_internal
 ;; param: contract_balance
@@ -1364,34 +1347,23 @@ PUSH S1 ; body
 LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
-PUSH S1 ; funcId body' funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
+SWAP
+CALLREF {
+	CALL $public_function_selector$
 }
-IFJMP
-SWAP    ; body funcId
-CALL 1
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
-.internal-alias :main_external,        -1
-.internal	:main_external
+.internal-alias :main_external, -1
+.internal :main_external
 PUSHINT -1 ; main_external trans id
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 SETGLOB 9
 PUSH S1
-CALL $c4_to_c7_with_init_storage$
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
 LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
@@ -1432,24 +1404,108 @@ NOW     ; msgSlice expireAt now
 GREATER ; msgSlice expireAt>now
 THROWIFNOT 57
 LDU  32 ; funcId body
-PUSH S1 ; funcId body funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
-}
-IFJMP
 SWAP    ; body funcId
-CALL 1
+CALLREF {
+	CALL $public_function_selector$
+}
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
+.macro public_function_selector
+DUP
+PUSHINT 575351501
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 62587920
+	EQUAL
+	IFJMPREF {
+		CALL $setRootAddressOnce$
+	}
+	DUP
+	PUSHINT 250457340
+	EQUAL
+	IFJMPREF {
+		CALL $receiveSurplusGas$
+	}
+	DUP
+	PUSHINT 575351501
+	EQUAL
+	IFJMPREF {
+		CALL $getLatestPayload$
+	}
+}
+IFJMP
+DUP
+PUSHINT 1423775331
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1019809854
+	EQUAL
+	IFJMPREF {
+		CALL $burnCallback$
+	}
+	DUP
+	PUSHINT 1243877638
+	EQUAL
+	IFJMPREF {
+		CALL $getRootAddress$
+	}
+	DUP
+	PUSHINT 1423775331
+	EQUAL
+	IFJMPREF {
+		CALL $getBurnedCount$
+	}
+}
+IFJMP
+DUP
+PUSHINT 1739066831
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1481854072
+	EQUAL
+	IFJMPREF {
+		CALL $testWithdrawExtraGas$
+	}
+	DUP
+	PUSHINT 1517575493
+	EQUAL
+	IFJMPREF {
+		CALL $sendGramsToRoot$
+	}
+	DUP
+	PUSHINT 1739066831
+	EQUAL
+	IFJMPREF {
+		CALL $burnMyTokens$
+	}
+}
+IFJMP
+DUP
+PUSHINT 2037512395
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1756716863
+	EQUAL
+	IFJMPREF {
+		CALL $constructor$
+	}
+	DUP
+	PUSHINT 1916650702
+	EQUAL
+	IFJMPREF {
+		CALL $mint$
+	}
+	DUP
+	PUSHINT 2037512395
+	EQUAL
+	IFJMPREF {
+		CALL $deployWallet$
+	}
+}
+IFJMP
