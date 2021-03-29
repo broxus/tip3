@@ -22,7 +22,7 @@
     "solidity-docgen": "^0.5.7",
     "ton-client-js": "^0.28.1",
     "ton-client-node-js": "^0.28.0",
-    "ton-testing-suite": "^1.2.1",
+    "ton-testing-suite": "^1.2.3",
     "underscore": "^1.12.0",
     "ton-eth-bridge-contracts": "git://github.com/broxus/ton-eth-bridge-contracts#13ff51e26aed0b3a8202f9c9f08b616acc0a4fb9"
   },
