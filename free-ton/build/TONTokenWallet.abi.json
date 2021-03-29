@@ -10,8 +10,18 @@
 			]
 		},
 		{
+			"name": "balance",
+			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
 			"name": "getDetails",
 			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
 			],
 			"outputs": [
 				{"components":[{"name":"root_address","type":"address"},{"name":"code","type":"cell"},{"name":"wallet_public_key","type":"uint256"},{"name":"owner_address","type":"address"},{"name":"balance","type":"uint128"},{"name":"receive_callback","type":"address"},{"name":"bounced_callback","type":"address"},{"name":"allow_non_notifiable","type":"bool"}],"name":"value0","type":"tuple"}
@@ -28,6 +38,7 @@
 		{
 			"name": "allowance",
 			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
 			],
 			"outputs": [
 				{"components":[{"name":"remaining_tokens","type":"uint128"},{"name":"spender","type":"address"}],"name":"value0","type":"tuple"}
@@ -163,14 +174,6 @@
 				{"name":"gas_dest","type":"address"}
 			],
 			"outputs": [
-			]
-		},
-		{
-			"name": "balance",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"balance","type":"uint128"}
 			]
 		}
 	],

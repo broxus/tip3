@@ -72,8 +72,8 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         @returns root_owner_address Owner address
         @returns total_supply Token total supply
     */
-    function getDetails() override external view returns (IRootTokenContractDetails) {
-        return IRootTokenContractDetails(
+    function getDetails() override external view responsible returns (IRootTokenContractDetails) {
+        return { value: 0, bounce: false, flag: 64 } IRootTokenContractDetails(
             name,
             symbol,
             decimals,
@@ -98,13 +98,14 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         override
         external
         view
+        responsible
     returns (
         address
     ) {
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
                 error_define_public_key_or_owner_address);
-        return getExpectedWalletAddress(wallet_public_key_, owner_address_);
+        return { value: 0, bounce: false, flag: 64 } getExpectedWalletAddress(wallet_public_key_, owner_address_);
     }
 
     /*
