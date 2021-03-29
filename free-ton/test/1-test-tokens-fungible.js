@@ -1046,7 +1046,7 @@ describe('Test Fungible Tokens', function () {
                     recipient_public_key: `0x${tonWrapper.keys[7].public}`,
                     recipient_address: ZERO_ADDRESS,
                     tokens: 1000,
-                    deploy_grams: freeton.utils.convertCrystal('0.1', 'nano'),
+                    deploy_grams: freeton.utils.convertCrystal('0.05', 'nano'),
                     transfer_grams: freeton.utils.convertCrystal('0.5', 'nano'),
                     send_gas_to: BarWallet6.address,
                     notify_receiver: false,

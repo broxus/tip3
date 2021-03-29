@@ -169,6 +169,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         address wallet = new TONTokenWallet{
             value: deploy_grams,
+            flag: 1,
             code: wallet_code,
             pubkey: wallet_public_key_,
             varInit: {
@@ -222,6 +223,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
 
         address wallet = new TONTokenWallet{
             value: deploy_grams,
+            flag: 1,
             code: wallet_code,
             pubkey: wallet_public_key_,
             varInit: {

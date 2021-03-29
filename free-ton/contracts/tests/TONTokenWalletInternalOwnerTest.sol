@@ -38,7 +38,7 @@ contract TONTokenWalletInternalOwnerTest is ITokensReceivedCallback, ITokensBoun
         tvm.rawReserve(address(this).balance - msg.value, 2);
         TvmCell empty;
         ITONTokenWallet(change_directions.at(token_wallet))
-            .transferToRecipient{value: 0, flag: 128}(sender_public_key, sender_address, amount, 0.1 ton, 0, original_gas_to, false, empty);
+            .transferToRecipient{value: 0, flag: 128}(sender_public_key, sender_address, amount, 0.05 ton, 0, original_gas_to, false, empty);
     }
 
     address public latest_bounced_from;

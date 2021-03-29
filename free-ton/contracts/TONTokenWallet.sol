@@ -213,10 +213,17 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             code: code
         });
 
-        address to = address(tvm.hash(stateInit));
+        address to;
 
         if(deploy_grams > 0) {
-            tvm.deploy(stateInit, tvm.encodeBody(TONTokenWallet), deploy_grams, address(this).wid);
+            to = new TONTokenWallet{
+                stateInit: stateInit,
+                value: deploy_grams,
+                wid: address(this).wid,
+                flag: 1
+            }();
+        } else {
+            to = address(tvm.hash(stateInit));
         }
 
         address send_gas_to_ = send_gas_to;
@@ -226,7 +233,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             if (send_gas_to_.value == 0) {
                 send_gas_to_ = owner_address;
             }
-            ITONTokenWallet(to).internalTransfer{ value: 0, flag: 128, bounce: true }(
+            ITONTokenWallet(to).internalTransfer{ value: 0, flag: 129, bounce: true }(
                 tokens,
                 wallet_public_key,
                 owner_address,
@@ -239,7 +246,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             if (send_gas_to_.value == 0) {
                 send_gas_to_ = address(this);
             }
-            ITONTokenWallet(to).internalTransfer{ value: transfer_grams, bounce: true }(
+            ITONTokenWallet(to).internalTransfer{ value: transfer_grams, flag: 1, bounce: true }(
                 tokens,
                 wallet_public_key,
                 owner_address,
@@ -284,7 +291,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             if (send_gas_to_.value == 0) {
                 send_gas_to_ = owner_address;
             }
-            ITONTokenWallet(to).internalTransfer{ value: 0, flag: 128, bounce: true }(
+            ITONTokenWallet(to).internalTransfer{ value: 0, flag: 129, bounce: true }(
                 tokens,
                 wallet_public_key,
                 owner_address,
@@ -302,7 +309,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             if (send_gas_to_.value == 0) {
                 send_gas_to_ = address(this);
             }
-            ITONTokenWallet(to).internalTransfer{ value: grams, bounce: true }(
+            ITONTokenWallet(to).internalTransfer{ value: grams, bounce: true, flag: 1 }(
                 tokens,
                 wallet_public_key,
                 owner_address,
@@ -350,7 +357,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             if (send_gas_to_.value == 0) {
                 send_gas_to_ = owner_address;
             }
-            ITONTokenWallet(from).internalTransferFrom{ value: 0, flag: 128 }(
+            ITONTokenWallet(from).internalTransferFrom{ value: 0, flag: 129 }(
                 to,
                 tokens,
                 send_gas_to_,
@@ -364,7 +371,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             if (send_gas_to_.value == 0) {
                 send_gas_to_ = address(this);
             }
-            ITONTokenWallet(from).internalTransferFrom{ value: grams }(
+            ITONTokenWallet(from).internalTransferFrom{ value: grams, flag: 1 }(
                 to,
                 tokens,
                 send_gas_to_,
@@ -468,7 +475,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
 
         allowance_.set(AllowanceInfo(allowance_.get().remaining_tokens - tokens, allowance_.get().spender));
 
-        ITONTokenWallet(to).internalTransfer{ value: 0, bounce: true, flag: 128 }(
+        ITONTokenWallet(to).internalTransfer{ value: 0, bounce: true, flag: 129 }(
             tokens,
             wallet_public_key,
             owner_address,
