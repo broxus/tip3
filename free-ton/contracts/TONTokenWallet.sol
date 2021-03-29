@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.38.2;
+pragma ton-solidity ^0.39.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -25,7 +25,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     //for internal owner
     address static owner_address;
 
-    uint128 target_gas_balance                            = 0.05 ton;
+    uint128 target_gas_balance;
 
     uint128 public balance;
     optional(AllowanceInfo) allowance_;
@@ -41,13 +41,12 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     uint8 error_wrong_spender                             = 108;
     uint8 error_not_enough_allowance                      = 109;
     uint8 error_low_message_value                         = 110;
-    uint8 error_define_wallet_public_key_or_owner_address = 111;
-    uint8 error_wrong_recipient                           = 112;
-    uint8 error_recipient_has_disallow_non_notifiable     = 113;
+    uint8 error_wrong_recipient                           = 111;
+    uint8 error_recipient_has_disallow_non_notifiable     = 112;
 
     address receive_callback;
     address bounced_callback;
-    bool allow_non_notifiable = true;
+    bool allow_non_notifiable;
 
     /*
         @notice Creates new token wallet
@@ -55,13 +54,14 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         @dev If owner_address is not empty, it will be notified with .notifyWalletDeployed
     */
     constructor() public {
-        if(tvm.pubkey() == 0) {
-            require(wallet_public_key == 0 && owner_address.value != 0);
-            tvm.accept();
-            ITokenWalletDeployedCallback(owner_address).notifyWalletDeployed{value: 0.00001 ton}(root_address);
-        } else {
-            require(wallet_public_key == tvm.pubkey() && owner_address.value == 0);
-            tvm.accept();
+        require(wallet_public_key == tvm.pubkey() && (owner_address.value == 0 || wallet_public_key == 0));
+        tvm.accept();
+
+        target_gas_balance = 0.05 ton;
+        allow_non_notifiable = true;
+
+        if (owner_address.value != 0) {
+            ITokenWalletDeployedCallback(owner_address).notifyWalletDeployed{value: 0.00001 ton, flag: 1}(root_address);
         }
     }
 
@@ -187,10 +187,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     ) override external onlyOwner {
         require(tokens > 0);
         require(tokens <= balance, error_not_enough_balance);
-        require(recipient_address.value != 0 || recipient_public_key != 0,
-                error_define_wallet_public_key_or_owner_address);
-        require(recipient_address.value == 0 || recipient_public_key == 0,
-                error_define_wallet_public_key_or_owner_address);
+        require(recipient_address.value == 0 || recipient_public_key == 0, error_wrong_recipient);
 
         if (owner_address.value != 0 ) {
             uint128 reserve = math.max(target_gas_balance, address(this).balance - msg.value);

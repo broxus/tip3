@@ -1,6 +1,5 @@
-.globl	constructor
-.public	constructor
-.type	constructor, @function
+.macro constructor
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -23,9 +22,8 @@ CALLREF {
 TRUE
 SETGLOB 7
 
-.globl	deployEmptyWalletFor
-.public	deployEmptyWalletFor
-.type	deployEmptyWalletFor, @function
+.macro deployEmptyWalletFor
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -94,17 +92,16 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-DROP2
 ; end function deployEmptyWalletFor
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	getLatestPublicKey
-.public	getLatestPublicKey
-.type	getLatestPublicKey, @function
+.macro getLatestPublicKey
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -116,6 +113,7 @@ ENDS
 ;; return
 ;; push identifier latest_pubkey
 GETGLOB 12
+; end function getLatestPublicKey
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -142,16 +140,14 @@ PUSHCONT {
 }
 IF
 DROP
-; end function getLatestPublicKey
 IFREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	getLatestAddr
-.public	getLatestAddr
-.type	getLatestAddr, @function
+.macro getLatestAddr
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -163,6 +159,7 @@ ENDS
 ;; return
 ;; push identifier latest_addr
 GETGLOB 13
+; end function getLatestAddr
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -189,16 +186,14 @@ PUSHCONT {
 }
 IF
 DROP
-; end function getLatestAddr
 IFREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	getRoot
-.public	getRoot
-.type	getRoot, @function
+.macro getRoot
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -210,6 +205,7 @@ ENDS
 ;; return
 ;; push identifier root
 GETGLOB 11
+; end function getRoot
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -236,7 +232,6 @@ PUSHCONT {
 }
 IF
 DROP
-; end function getRoot
 IFREF {
 	CALL $c7_to_c4$
 }
@@ -360,8 +355,8 @@ PUSHCONT {
 }
 IFELSE
 
-.internal-alias :main_internal,        0
-.internal	:main_internal
+.internal-alias :main_internal, 0
+.internal :main_internal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Function: main_internal
 ;; param: contract_balance
@@ -381,32 +376,21 @@ PUSH S1 ; body
 LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
-PUSH S1 ; funcId body' funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
+SWAP
+CALLREF {
+	CALL $public_function_selector$
 }
-IFJMP
-SWAP    ; body funcId
-CALL 1
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
-.internal-alias :main_external,        -1
-.internal	:main_external
+.internal-alias :main_external, -1
+.internal :main_external
 PUSHINT -1 ; main_external trans id
 PUSH S1
-CALL $c4_to_c7_with_init_storage$
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
 LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
@@ -429,24 +413,54 @@ NOW     ; msgSlice expireAt now
 GREATER ; msgSlice expireAt>now
 THROWIFNOT 57
 LDU  32 ; funcId body
-PUSH S1 ; funcId body funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
-}
-IFJMP
 SWAP    ; body funcId
-CALL 1
+CALLREF {
+	CALL $public_function_selector$
+}
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
+.macro public_function_selector
+DUP
+PUSHINT 965783651
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 724582505
+	EQUAL
+	IFJMPREF {
+		CALL $getRoot$
+	}
+	DUP
+	PUSHINT 965783651
+	EQUAL
+	IFJMPREF {
+		CALL $getLatestAddr$
+	}
+}
+IFJMP
+DUP
+PUSHINT 1756716863
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1118926144
+	EQUAL
+	IFJMPREF {
+		CALL $getLatestPublicKey$
+	}
+	DUP
+	PUSHINT 1756716863
+	EQUAL
+	IFJMPREF {
+		CALL $constructor$
+	}
+}
+IFJMP
+DUP
+PUSHINT 2012135880
+EQUAL
+IFJMPREF {
+	CALL $deployEmptyWalletFor$
+}

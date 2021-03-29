@@ -1,6 +1,5 @@
-.globl	constructor
-.public	constructor
-.type	constructor, @function
+.macro constructor
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -120,17 +119,16 @@ INDEX 0
 ; colValue
 SETGLOB 18
 ; end colValue
-DROP2
 ; end constructor RootTokenContract
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	getDetails
-.public	getDetails
-.type	getDetails, @function
+.macro getDetails
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -155,6 +153,7 @@ GETGLOB 17
 ;; push identifier total_supply
 GETGLOB 15
 TUPLE 7
+; end function getDetails
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -191,8 +190,7 @@ PUSHCONT {
 	STSLICER
 	PUSH S1
 	STUR 128
-	XCHG s7
-	BLKDROP 7
+	BLKDROP2 7, 1
 	STBREFR
 	ENDC
 	PUSHINT 0
@@ -200,16 +198,14 @@ PUSHCONT {
 }
 IF
 DROP
-; end function getDetails
 IFREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	getWalletAddress
-.public	getWalletAddress
-.type	getWalletAddress, @function
+.macro getWalletAddress
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -351,11 +347,11 @@ STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-XCHG s3
-BLKDROP 3
+NIP
 ; end function getExpectedWalletAddress
-NIP
-NIP
+BLKDROP2 2, 1
+; end function getWalletAddress
+BLKDROP2 2, 1
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -382,16 +378,14 @@ PUSHCONT {
 }
 IF
 DROP
-; end function getWalletAddress
 IFREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	sendExpectedWalletAddress
-.public	sendExpectedWalletAddress
-.type	sendExpectedWalletAddress, @function
+.macro sendExpectedWalletAddress
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -507,9 +501,9 @@ STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-XCHG s3
-BLKDROP 3
+NIP
 ; end function getExpectedWalletAddress
+BLKDROP2 2, 1
 ;; decl: wallet
 ;; Remote call IExpectedWalletAddressCallback.expectedWalletAddressCallback
 ;; push identifier to
@@ -539,17 +533,17 @@ STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-BLKDROP 4
+DROP
 ; end function sendExpectedWalletAddress
+BLKDROP 3
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	deployWallet
-.public	deployWallet
-.type	deployWallet, @function
+.macro deployWallet
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -612,6 +606,8 @@ ENDS
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ;; param: gas_back_address
+;; ret param: retParam@0
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 ; modifier onlyOwner
 ;; push identifier error_message_sender_is_not_my_owner
 GETGLOB 19
@@ -679,7 +675,7 @@ IFNOT
 THROWANYIFNOT
 ; function deployWallet
 ;; push identifier tokens
-PUSH S4
+PUSH S5
 ;; >=
 PUSHINT 0
 GEQ
@@ -695,7 +691,7 @@ PUSHCONT {
 IF
 ;; get member value
 ;; push identifier owner_address_
-PUSH S2
+PUSH S3
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -705,7 +701,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key_
-	PUSH S3
+	PUSH S4
 	EQINT 0
 }
 IF
@@ -715,7 +711,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address_
-	PUSH S2
+	PUSH S3
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -725,7 +721,7 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key_
-		PUSH S3
+		PUSH S4
 		NEQINT 0
 	}
 	IF
@@ -764,7 +760,7 @@ IFELSE
 ;; end if
 NEWDICT
 ;; push identifier wallet_public_key_
-PUSH S3
+PUSH S4
 NEWC
 STU 256
 PUSHINT 0
@@ -783,7 +779,7 @@ ROT
 PUSHINT 64
 DICTUSETREF
 ;; push identifier wallet_public_key_
-PUSH S3
+PUSH S4
 NEWC
 STU 256
 PUSHINT 3
@@ -791,7 +787,7 @@ ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address_
-PUSH S2
+PUSH S3
 PUSHINT 4
 ROT
 PUSHINT 64
@@ -815,7 +811,7 @@ STU 256
 ENDC
 CTOS
 ;; push identifier deploy_grams
-PUSH S5
+PUSH S6
 PUSH S1
 NEWC
 STSLICECONST x62_
@@ -848,13 +844,13 @@ STSLICECONST 0
 STSLICECONST x0b3fcf57
 ;; tokens
 ;; push identifier tokens
-PUSH S6
+PUSH S7
 STUR 128
 ENDC
 PUSHINT 0
 SENDRAWMSG
 ;; push identifier tokens
-PUSH S5
+PUSH S6
 ; expValue
 ;; fetch total_supply
 GETGLOB 15
@@ -876,7 +872,7 @@ PUSHCONT {
 	;; if
 	;; get member value
 	;; push identifier gas_back_address
-	PUSH S1
+	PUSH S2
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -884,7 +880,7 @@ PUSHCONT {
 	PUSHCONT {
 		;; transfer()
 		;; push identifier gas_back_address
-		PUSH S1
+		PUSH S2
 		NEWC
 		STSLICECONST x62_
 		STSLICE
@@ -917,11 +913,19 @@ PUSHCONT {
 IF
 ;; end if
 ;; return
+;; push identifier wallet
+DUP
+BLKDROP2 1, 2
+SWAP
+DROP
+; end function deployWallet
+; end modifier onlyOwner
+BLKDROP2 5, 1
 ;; emitting 1 value(s)
-PUSH S6
+PUSH S1
 EQINT -1
 PUSHCONT {
-	PUSH S8
+	PUSH S3
 	CTOS
 	LDU 2
 	LDMSGADDR
@@ -943,18 +947,14 @@ PUSHCONT {
 }
 IF
 DROP
-; end function deployWallet
-BLKDROP 5
-; end modifier onlyOwner
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	deployEmptyWallet
-.public	deployEmptyWallet
-.type	deployEmptyWallet, @function
+.macro deployEmptyWallet
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -1181,8 +1181,11 @@ PUSHCONT {
 IFELSE
 ;; end if
 ;; return
-XCHG s4
-BLKDROP 4
+;; push identifier wallet
+DUP
+NIP
+; end function deployEmptyWallet
+BLKDROP2 4, 1
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -1209,16 +1212,14 @@ PUSHCONT {
 }
 IF
 DROP
-; end function deployEmptyWallet
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	mint
-.public	mint
-.type	mint, @function
+.macro mint
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -1346,17 +1347,16 @@ UFITS 128
 SETGLOB 15
 ; end colValue
 ; end function mint
-DROP2
 ; end modifier onlyOwner
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	proxyBurn
-.public	proxyBurn
-.type	proxyBurn, @function
+.macro proxyBurn
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -1521,9 +1521,9 @@ STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-XCHG s3
-BLKDROP 3
+NIP
 ; end function getExpectedWalletAddress
+BLKDROP2 2, 1
 ;; decl: expectedWalletAddress
 ;; if
 ;; get member value
@@ -1577,17 +1577,16 @@ PUSHINT 128
 SENDRAWMSG
 DROP2
 ; end function proxyBurn
-BLKDROP 5
 ; end modifier onlyInternalOwner
+BLKDROP 5
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	tokensBurned
-.public	tokensBurned
-.type	tokensBurned, @function
+.macro tokensBurned
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -1731,9 +1730,9 @@ STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-XCHG s3
-BLKDROP 3
+NIP
 ; end function getExpectedWalletAddress
+BLKDROP2 2, 1
 ;; decl: expectedWalletAddress
 ;; push identifier error_message_sender_is_not_good_wallet
 GETGLOB 21
@@ -1843,17 +1842,17 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
-BLKDROP 7
+DROP
 ; end function tokensBurned
+BLKDROP 6
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	sendSurplusGas
-.public	sendSurplusGas
-.type	sendSurplusGas, @function
+.macro sendSurplusGas
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -1924,17 +1923,16 @@ ENDC
 PUSHINT 128
 SENDRAWMSG
 ; end function sendSurplusGas
-DROP
 ; end modifier onlyInternalOwner
+DROP
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	setPaused
-.public	setPaused
-.type	setPaused, @function
+.macro setPaused
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -2020,17 +2018,16 @@ DUP
 SETGLOB 24
 ; end colValue
 ; end function setPaused
-DROP
 ; end modifier onlyOwner
+DROP
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	sendPausedCallbackTo
-.public	sendPausedCallbackTo
-.type	sendPausedCallbackTo, @function
+.macro sendPausedCallbackTo
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -2087,17 +2084,16 @@ STIR 1
 ENDC
 PUSHINT 128
 SENDRAWMSG
-DROP2
 ; end function sendPausedCallbackTo
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	transferOwner
-.public	transferOwner
-.type	transferOwner, @function
+.macro transferOwner
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -2257,13 +2253,80 @@ DUP
 SETGLOB 17
 ; end colValue
 ; end function transferOwner
-DROP2
 ; end modifier onlyOwner
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
+
+.macro on_bounce_macro
+GETGLOB 1
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+;; param: slice
+; function onBounce
+ACCEPT
+; expValue
+DUP
+; end expValue
+LDU 32
+; colValue
+POP S2
+; end colValue
+;; decl: functionId
+;; if
+;; push identifier functionId
+DUP
+;; ==
+PUSHINT 188731223
+EQUAL
+PUSHCONT {
+	; expValue
+	PUSH S1
+	; end expValue
+	LDU 128
+	; colValue
+	POP S3
+	; end colValue
+	;; decl: latest_bounced_tokens
+	;; push identifier latest_bounced_tokens
+	DUP
+	; expValue
+	;; fetch total_supply
+	GETGLOB 15
+	; end expValue
+	SWAP
+	SUB
+	UFITS 128
+	; colValue
+	SETGLOB 15
+	; end colValue
+	DROP
+}
+IF
+;; end if
+DROP
+; end function onBounce
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+
+.macro fallback_macro
+GETGLOB 1
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+; function fallback
+; end function fallback
+CALLREF {
+	CALL $c7_to_c4$
+}
 
 .macro c7_to_c4
 GETGLOB 2
@@ -2523,8 +2586,8 @@ PUSHCONT {
 }
 IFELSE
 
-.internal-alias :main_internal,        0
-.internal	:main_internal
+.internal-alias :main_internal, 0
+.internal :main_internal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Function: main_internal
 ;; param: contract_balance
@@ -2543,58 +2606,7 @@ PUSHCONT {
 	PUSH S1
 	LDSLICE 32
 	NIP
-	PUSHINT 1
-	CALL 1
-	CALLREF {
-		CALL $c4_to_c7$
-	}
-	;; param: slice
-	; function onBounce
-	ACCEPT
-	; expValue
-	DUP
-	; end expValue
-	LDU 32
-	; colValue
-	POP S2
-	; end colValue
-	;; decl: functionId
-	;; if
-	;; push identifier functionId
-	DUP
-	;; ==
-	PUSHINT 188731223
-	EQUAL
-	PUSHCONT {
-		; expValue
-		PUSH S1
-		; end expValue
-		LDU 128
-		; colValue
-		POP S3
-		; end colValue
-		;; decl: latest_bounced_tokens
-		;; push identifier latest_bounced_tokens
-		DUP
-		; expValue
-		;; fetch total_supply
-		GETGLOB 15
-		; end expValue
-		SWAP
-		SUB
-		UFITS 128
-		; colValue
-		SETGLOB 15
-		; end colValue
-		DROP
-	}
-	IF
-	;; end if
-	DROP2
-	; end function onBounce
-	CALLREF {
-		CALL $c7_to_c4$
-	}
+	CALL $on_bounce_macro$
 }
 IFJMP
 PUSH S1    ; body
@@ -2604,32 +2616,29 @@ PUSH S1 ; body
 LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
-PUSH S1 ; funcId body' funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
+SWAP
+CALLREF {
+	CALL $public_function_selector$
 }
-IFJMP
-SWAP    ; body funcId
-CALL 1
 GETGLOB 7
 ISNULL
 PUSHCONT {
-	DROP
+	DROP2 ; funcId and restSlice
+	CALLREF {
+		CALL $fallback_macro$
+	}
 }
 IF
 
-.internal-alias :main_external,        -1
-.internal	:main_external
+.internal-alias :main_external, -1
+.internal :main_external
 PUSHINT -1 ; main_external trans id
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 SETGLOB 9
 PUSH S1
-CALL $c4_to_c7_with_init_storage$
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
 LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
@@ -2670,28 +2679,21 @@ NOW     ; msgSlice expireAt now
 GREATER ; msgSlice expireAt>now
 THROWIFNOT 57
 LDU  32 ; funcId body
-PUSH S1 ; funcId body funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-}
-IFJMP
 SWAP    ; body funcId
-CALL 1
+CALLREF {
+	CALL $public_function_selector$
+}
 GETGLOB 7
 ISNULL
 PUSHCONT {
-	DROP
+	DROP2 ; funcId and restSlice
+	CALLREF {
+		CALL $fallback_macro$
+	}
 }
 IF
 
-.globl	name
-.public	name
-.type	name, @function
+.macro name
 CALLREF {
 	CALL $c4_to_c7$
 }
@@ -2710,9 +2712,7 @@ SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	symbol
-.public	symbol
-.type	symbol, @function
+.macro symbol
 CALLREF {
 	CALL $c4_to_c7$
 }
@@ -2731,9 +2731,7 @@ SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	decimals
-.public	decimals
-.type	decimals, @function
+.macro decimals
 CALLREF {
 	CALL $c4_to_c7$
 }
@@ -2752,9 +2750,7 @@ SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	wallet_code
-.public	wallet_code
-.type	wallet_code, @function
+.macro wallet_code
 CALLREF {
 	CALL $c4_to_c7$
 }
@@ -2773,9 +2769,7 @@ SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	total_supply
-.public	total_supply
-.type	total_supply, @function
+.macro total_supply
 CALLREF {
 	CALL $c4_to_c7$
 }
@@ -2794,9 +2788,7 @@ SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	start_gas_balance
-.public	start_gas_balance
-.type	start_gas_balance, @function
+.macro start_gas_balance
 CALLREF {
 	CALL $c4_to_c7$
 }
@@ -2815,9 +2807,7 @@ SENDRAWMSG
 TRUE
 SETGLOB 7
 
-.globl	paused
-.public	paused
-.type	paused, @function
+.macro paused
 CALLREF {
 	CALL $c4_to_c7$
 }
@@ -2836,3 +2826,196 @@ SENDRAWMSG
 TRUE
 SETGLOB 7
 
+.macro public_function_selector
+DUP
+PUSHINT 352344839
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 32840294
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 30752029
+		EQUAL
+		IFJMPREF {
+			CALL $constructor$
+		}
+		DUP
+		PUSHINT 32840294
+		EQUAL
+		IFJMPREF {
+			CALL $sendPausedCallbackTo$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 224066674
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 117189373
+		EQUAL
+		IFJMPREF {
+			CALL $getDetails$
+		}
+		DUP
+		PUSHINT 224066674
+		EQUAL
+		IFJMPREF {
+			CALL $setPaused$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 352344839
+	EQUAL
+	IFJMPREF {
+		CALL $decimals$
+	}
+}
+IFJMP
+DUP
+PUSHINT 814573265
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 552322925
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 502818985
+		EQUAL
+		IFJMPREF {
+			CALL $proxyBurn$
+		}
+		DUP
+		PUSHINT 552322925
+		EQUAL
+		IFJMPREF {
+			CALL $sendSurplusGas$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 774408362
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 580327927
+		EQUAL
+		IFJMPREF {
+			CALL $wallet_code$
+		}
+		DUP
+		PUSHINT 774408362
+		EQUAL
+		IFJMPREF {
+			CALL $tokensBurned$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 814573265
+	EQUAL
+	IFJMPREF {
+		CALL $paused$
+	}
+}
+IFJMP
+DUP
+PUSHINT 1437837819
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1169407485
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 942155290
+		EQUAL
+		IFJMPREF {
+			CALL $transferOwner$
+		}
+		DUP
+		PUSHINT 1169407485
+		EQUAL
+		IFJMPREF {
+			CALL $symbol$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1412109938
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1286313128
+		EQUAL
+		IFJMPREF {
+			CALL $total_supply$
+		}
+		DUP
+		PUSHINT 1412109938
+		EQUAL
+		IFJMPREF {
+			CALL $deployEmptyWallet$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1437837819
+	EQUAL
+	IFJMPREF {
+		CALL $sendExpectedWalletAddress$
+	}
+}
+IFJMP
+DUP
+PUSHINT 2038805492
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1767190320
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1713445999
+		EQUAL
+		IFJMPREF {
+			CALL $deployWallet$
+		}
+		DUP
+		PUSHINT 1767190320
+		EQUAL
+		IFJMPREF {
+			CALL $getWalletAddress$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 1919849343
+	LEQ
+	PUSHCONT {
+		DUP
+		PUSHINT 1916650702
+		EQUAL
+		IFJMPREF {
+			CALL $mint$
+		}
+		DUP
+		PUSHINT 1919849343
+		EQUAL
+		IFJMPREF {
+			CALL $start_gas_balance$
+		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 2038805492
+	EQUAL
+	IFJMPREF {
+		CALL $name$
+	}
+}
+IFJMP

@@ -1,6 +1,5 @@
-.globl	constructor
-.public	constructor
-.type	constructor, @function
+.macro constructor
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -23,9 +22,8 @@ CALLREF {
 TRUE
 SETGLOB 7
 
-.globl	sendGrams
-.public	sendGrams
-.type	sendGrams, @function
+.macro sendGrams
+DROP
 ; Decode input parameters
 ; Decode dest
 LDMSGADDR
@@ -34,35 +32,9 @@ LDU 64
 ENDS
 ;; param: dest
 ;; param: amount
-; function sendGrams
-ACCEPT
-;; get member balance
-GETPARAM 7
-INDEX 0
-;; >
-;; push identifier amount
-PUSH S1
-GREATER
-THROWIFNOT 60
-;; transfer()
-;; push identifier amount
-DUP
-;; push identifier dest
-PUSH S2
-NEWC
-STSLICECONST x42_
-STSLICE
-SWAP
-STGRAMS
-PUSHINT 105
-STZEROES
-STSLICECONST 0
-STSLICECONST 0
-ENDC
-PUSHINT 1
-SENDRAWMSG
-DROP2
-; end function sendGrams
+CALLREF {
+	CALL $sendGrams_internal_macro$
+}
 IFREF {
 	CALL $c7_to_c4$
 }
@@ -71,6 +43,9 @@ SETGLOB 7
 
 .globl	sendGrams_internal
 .type	sendGrams_internal, @function
+CALL $sendGrams_internal_macro$
+
+.macro sendGrams_internal_macro
 ;; param: dest
 ;; param: amount
 ; function sendGrams
@@ -100,8 +75,8 @@ STSLICECONST 0
 ENDC
 PUSHINT 1
 SENDRAWMSG
-DROP2
 ; end function sendGrams
+DROP2
 
 .macro c7_to_c4
 GETGLOB 2
@@ -163,8 +138,8 @@ PUSHCONT {
 }
 IFELSE
 
-.internal-alias :main_internal,        0
-.internal	:main_internal
+.internal-alias :main_internal, 0
+.internal :main_internal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Function: main_internal
 ;; param: contract_balance
@@ -184,32 +159,21 @@ PUSH S1 ; body
 LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
-PUSH S1 ; funcId body' funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
+SWAP
+CALLREF {
+	CALL $public_function_selector$
 }
-IFJMP
-SWAP    ; body funcId
-CALL 1
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
-.internal-alias :main_external,        -1
-.internal	:main_external
+.internal-alias :main_external, -1
+.internal :main_external
 PUSHINT -1 ; main_external trans id
 PUSH S1
-CALL $c4_to_c7_with_init_storage$
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
 LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
@@ -232,24 +196,24 @@ NOW     ; msgSlice expireAt now
 GREATER ; msgSlice expireAt>now
 THROWIFNOT 57
 LDU  32 ; funcId body
-PUSH S1 ; funcId body funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
-}
-IFJMP
 SWAP    ; body funcId
-CALL 1
+CALLREF {
+	CALL $public_function_selector$
+}
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
+.macro public_function_selector
+DUP
+PUSHINT 1534382747
+EQUAL
+IFJMPREF {
+	CALL $sendGrams$
+}
+DUP
+PUSHINT 1756716863
+EQUAL
+IFJMPREF {
+	CALL $constructor$
+}

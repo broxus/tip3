@@ -1,6 +1,5 @@
-.globl	constructor
-.public	constructor
-.type	constructor, @function
+.macro constructor
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -23,9 +22,8 @@ CALLREF {
 TRUE
 SETGLOB 7
 
-.globl	tokensReceivedCallback
-.public	tokensReceivedCallback
-.type	tokensReceivedCallback, @function
+.macro tokensReceivedCallback
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -207,17 +205,17 @@ STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
-BLKDROP 10
+DROP
 ; end function tokensReceivedCallback
+BLKDROP 9
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	tokensBouncedCallback
-.public	tokensBouncedCallback
-.type	tokensBouncedCallback, @function
+.macro tokensBouncedCallback
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -288,17 +286,16 @@ PUSH S1
 ; colValue
 SETGLOB 14
 ; end colValue
-BLKDROP 5
 ; end function tokensBouncedCallback
+BLKDROP 5
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	subscribeForTransfers
-.public	subscribeForTransfers
-.type	subscribeForTransfers, @function
+.macro subscribeForTransfers
+DROP
 GETGLOB 1
 ISNULL
 IFREF {
@@ -470,17 +467,16 @@ ENDC
 PUSHINT 0
 SENDRAWMSG
 ; end function subscribeForTransfers
-DROP2
 ; end modifier onlyExternalOwner
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	burnMyTokens
-.public	burnMyTokens
-.type	burnMyTokens, @function
+.macro burnMyTokens
+DROP
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -631,17 +627,16 @@ PUSHINT 0
 SENDRAWMSG
 DROP2
 ; end function burnMyTokens
-BLKDROP 5
 ; end modifier onlyExternalOwner
+BLKDROP 5
 IFREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	testTransferFrom
-.public	testTransferFrom
-.type	testTransferFrom, @function
+.macro testTransferFrom
+DROP
 ; Decode input parameters
 ; Decode tokens
 LDUQ 128
@@ -788,17 +783,16 @@ PUSHINT 0
 SENDRAWMSG
 DROP
 ; end function testTransferFrom
-BLKDROP 5
 ; end modifier onlyExternalOwner
+BLKDROP 5
 IFREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	deployEmptyWallet
-.public	deployEmptyWallet
-.type	deployEmptyWallet, @function
+.macro deployEmptyWallet
+DROP
 ; Decode input parameters
 ; Decode root_address
 LDMSGADDRQ
@@ -891,17 +885,16 @@ ENDC
 PUSHINT 0
 SENDRAWMSG
 ; end function deployEmptyWallet
-DROP2
 ; end modifier onlyExternalOwner
+DROP2
 IFREF {
 	CALL $c7_to_c4$
 }
 TRUE
 SETGLOB 7
 
-.globl	sendTransaction
-.public	sendTransaction
-.type	sendTransaction, @function
+.macro sendTransaction
+DROP
 ; Decode input parameters
 ; Decode dest
 LDMSGADDRQ
@@ -952,72 +945,9 @@ ENDS
 ;; param: bounce
 ;; param: flags
 ;; param: payload
-; modifier onlyExternalOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 12
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
+CALLREF {
+	CALL $sendTransaction_internal_macro$
 }
-IF
-; function isExternalOwner
-;; return
-;; push identifier external_owner_pubkey_
-GETGLOB 11
-NEQINT 0
-;; short-circuiting &&
-DUP
-PUSHCONT {
-	DROP
-	;; push identifier external_owner_pubkey_
-	GETGLOB 11
-	;; ==
-	GETGLOB 5
-	DUP
-	ISNULL
-	PUSHCONT {
-		DROP
-		PUSHINT 0
-	}
-	IF
-	EQUAL
-}
-IF
-; end function isExternalOwner
-THROWANYIFNOT
-; function sendTransaction
-ACCEPT
-;; transfer()
-;; push identifier value
-PUSH S3
-;; push identifier dest
-PUSH S5
-;; push identifier bounce
-PUSH S4
-NEWC
-STSLICECONST x6_
-STI 1
-PUSHINT 3
-STZEROES
-STSLICE
-SWAP
-STGRAMS
-PUSHINT 105
-STZEROES
-STSLICECONST 0
-STSLICECONST 1
-;; push identifier payload
-PUSH S1
-STREFR
-ENDC
-;; push identifier flags
-PUSH S2
-SENDRAWMSG
-; end function sendTransaction
-BLKDROP 5
-; end modifier onlyExternalOwner
 IFREF {
 	CALL $c7_to_c4$
 }
@@ -1026,6 +956,9 @@ SETGLOB 7
 
 .globl	sendTransaction_internal
 .type	sendTransaction_internal, @function
+CALL $sendTransaction_internal_macro$
+
+.macro sendTransaction_internal_macro
 ;; param: dest
 ;; param: value
 ;; param: bounce
@@ -1095,8 +1028,8 @@ ENDC
 PUSH S2
 SENDRAWMSG
 ; end function sendTransaction
-BLKDROP 5
 ; end modifier onlyExternalOwner
+BLKDROP 5
 
 .macro c7_to_c4
 GETGLOB 2
@@ -1228,8 +1161,8 @@ PUSHCONT {
 }
 IFELSE
 
-.internal-alias :main_internal,        0
-.internal	:main_internal
+.internal-alias :main_internal, 0
+.internal :main_internal
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Function: main_internal
 ;; param: contract_balance
@@ -1249,32 +1182,21 @@ PUSH S1 ; body
 LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
-PUSH S1 ; funcId body' funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
+SWAP
+CALLREF {
+	CALL $public_function_selector$
 }
-IFJMP
-SWAP    ; body funcId
-CALL 1
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
-.internal-alias :main_external,        -1
-.internal	:main_external
+.internal-alias :main_external, -1
+.internal :main_external
 PUSHINT -1 ; main_external trans id
 PUSH S1
-CALL $c4_to_c7_with_init_storage$
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
 LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
@@ -1315,30 +1237,15 @@ NOW     ; msgSlice expireAt now
 GREATER ; msgSlice expireAt>now
 THROWIFNOT 57
 LDU  32 ; funcId body
-PUSH S1 ; funcId body funcId
-LESSINT 3            ; funcId body' funcId<3
-PUSH S2              ; funcId body' funcId<3 funcId
-PUSHINT 4294967293   ; funcId body' funcId<3 funcId 4294967293
-GREATER              ; funcId body' funcId<3 funcId>4294967293
-OR                   ; funcId body' funcId<3||funcId>4294967293
-PUSHCONT {
-	DROP2
-	THROW 60
-}
-IFJMP
 SWAP    ; body funcId
-CALL 1
+CALLREF {
+	CALL $public_function_selector$
+}
 GETGLOB 7
 ISNULL
-PUSHCONT {
-	DROP
-	THROW 60
-}
-IF
+THROWIF 60
 
-.globl	latest_bounced_from
-.public	latest_bounced_from
-.type	latest_bounced_from, @function
+.macro latest_bounced_from
 CALLREF {
 	CALL $c4_to_c7$
 }
@@ -1357,3 +1264,76 @@ SENDRAWMSG
 TRUE
 SETGLOB 7
 
+.macro public_function_selector
+DUP
+PUSHINT 1129462832
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 913194251
+	EQUAL
+	IFJMPREF {
+		CALL $subscribeForTransfers$
+	}
+	DUP
+	PUSHINT 981825104
+	EQUAL
+	IFJMPREF {
+		CALL $tokensBouncedCallback$
+	}
+	DUP
+	PUSHINT 1129462832
+	EQUAL
+	IFJMPREF {
+		CALL $deployEmptyWallet$
+	}
+}
+IFJMP
+DUP
+PUSHINT 1756716863
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1290691692
+	EQUAL
+	IFJMPREF {
+		CALL $sendTransaction$
+	}
+	DUP
+	PUSHINT 1497440185
+	EQUAL
+	IFJMPREF {
+		CALL $tokensReceivedCallback$
+	}
+	DUP
+	PUSHINT 1756716863
+	EQUAL
+	IFJMPREF {
+		CALL $constructor$
+	}
+}
+IFJMP
+DUP
+PUSHINT 2072076462
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1827837911
+	EQUAL
+	IFJMPREF {
+		CALL $testTransferFrom$
+	}
+	DUP
+	PUSHINT 1857024431
+	EQUAL
+	IFJMPREF {
+		CALL $latest_bounced_from$
+	}
+	DUP
+	PUSHINT 2072076462
+	EQUAL
+	IFJMPREF {
+		CALL $burnMyTokens$
+	}
+}
+IFJMP

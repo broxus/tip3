@@ -49,19 +49,6 @@ const tonWrapper = new freeton.TonWrapper({
     initialBalance: freeton.utils.convertCrystal('17.654', 'nano'),
     _randomNonce: true,
     alias: 'RootTokenContractExternalOwner'
-  });
-
-  const ExpectedWalletAddressTest = await freeton.requireContract(tonWrapper, 'ExpectedWalletAddressTest');
-
-  await migration.deploy({
-    contract: ExpectedWalletAddressTest,
-    constructorParams: {},
-    initParams: {
-      root_address: RootTokenContractExternalOwner.address
-    },
-    _randomNonce: false,
-    initialBalance: freeton.utils.convertCrystal('1', 'nano'),
-    keyPair: tonWrapper.keys[0]
   }).catch(e => console.log(e));
 
   await migration.deploy({
@@ -77,6 +64,19 @@ const tonWrapper = new freeton.TonWrapper({
     initialBalance: freeton.utils.convertCrystal('2.001', 'nano'),
     keyPair: tonWrapper.keys[4],
     alias: 'SelfDeployedWallet'
+  }).catch(e => console.log(e));
+
+  const ExpectedWalletAddressTest = await freeton.requireContract(tonWrapper, 'ExpectedWalletAddressTest');
+
+  await migration.deploy({
+    contract: ExpectedWalletAddressTest,
+    constructorParams: {},
+    initParams: {
+      root_address: RootTokenContractExternalOwner.address
+    },
+    _randomNonce: false,
+    initialBalance: freeton.utils.convertCrystal('1', 'nano'),
+    keyPair: tonWrapper.keys[0]
   }).catch(e => console.log(e));
 
   const RootTokenContractInternalOwnerTest = await freeton.requireContract(tonWrapper, 'RootTokenContractInternalOwnerTest');

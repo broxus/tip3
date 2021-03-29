@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.38.2;
+pragma ton-solidity ^0.39.0;
 pragma AbiHeader expire;
 
 interface ITokensBurner {
