@@ -36,17 +36,8 @@ ENDS
 ;; param: root_public_key_
 ;; param: root_owner_address_
 ; constructor RootTokenContract
-;; push identifier error_define_public_key_or_owner_address
-GETGLOB 22
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier root_public_key_
-PUSH S2
+PUSH S1
 NEQINT 0
 ;; short-circuiting &&
 DUP
@@ -54,7 +45,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier root_owner_address_
-	PUSH S1
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -66,7 +57,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier root_public_key_
-	PUSH S2
+	PUSH S1
 	EQINT 0
 	;; short-circuiting &&
 	DUP
@@ -74,7 +65,7 @@ PUSHCONT {
 		DROP
 		;; get member value
 		;; push identifier root_owner_address_
-		PUSH S1
+		DUP
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -83,7 +74,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 103
 ACCEPT
 ; expValue
 ; end expValue
@@ -109,7 +100,7 @@ SETGLOB 15
 ; end expValue
 FALSE
 ; colValue
-SETGLOB 24
+SETGLOB 19
 ; end colValue
 ;; get member balance
 GETPARAM 7
@@ -305,18 +296,9 @@ ENDS
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ; function getWalletAddress
-;; push identifier error_define_public_key_or_owner_address
-GETGLOB 22
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address_
-PUSH S1
+DUP
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -326,7 +308,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key_
-	PUSH S2
+	PUSH S1
 	EQINT 0
 }
 IF
@@ -336,7 +318,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address_
-	PUSH S1
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -346,13 +328,13 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key_
-		PUSH S2
+		PUSH S1
 		NEQINT 0
 	}
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 103
 ;; return
 GETGLOB 4
 PUSHINT 0
@@ -719,15 +701,6 @@ ENDS
 ;; ret param: retParam@0
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isOwner
 ;; return
 ; function isInternalOwner
@@ -782,7 +755,7 @@ PUSHCONT {
 }
 IFNOT
 ; end function isOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function deployWallet
 ;; push identifier tokens
 PUSH S5
@@ -790,18 +763,9 @@ PUSH S5
 PUSHINT 0
 GEQ
 THROWIFNOT 100
-;; push identifier error_define_public_key_or_owner_address
-GETGLOB 22
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address_
-PUSH S3
+PUSH S2
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -811,7 +775,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key_
-	PUSH S4
+	PUSH S3
 	EQINT 0
 }
 IF
@@ -821,7 +785,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address_
-	PUSH S3
+	PUSH S2
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -831,13 +795,13 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key_
-		PUSH S4
+		PUSH S3
 		NEQINT 0
 	}
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 103
 ;; if
 ;; get member value
 ;; push identifier root_owner_address
@@ -1117,18 +1081,9 @@ ENDS
 ;; param: owner_address_
 ;; param: gas_back_address
 ; function deployEmptyWallet
-;; push identifier error_define_public_key_or_owner_address
-GETGLOB 22
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address_
-PUSH S2
+PUSH S1
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1138,7 +1093,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key_
-	PUSH S3
+	PUSH S2
 	EQINT 0
 }
 IF
@@ -1148,7 +1103,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address_
-	PUSH S2
+	PUSH S1
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -1158,13 +1113,13 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key_
-		PUSH S3
+		PUSH S2
 		NEQINT 0
 	}
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 103
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -1360,15 +1315,6 @@ ENDS
 ;; param: tokens
 ;; param: to
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isOwner
 ;; return
 ; function isInternalOwner
@@ -1423,7 +1369,7 @@ PUSHCONT {
 }
 IFNOT
 ; end function isOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function mint
 ACCEPT
 ;; Remote call ITONTokenWallet.accept
@@ -1523,15 +1469,6 @@ ENDS
 ;; param: callback_address
 ;; param: callback_payload
 ; modifier onlyInternalOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isInternalOwner
 ;; return
 ;; get member value
@@ -1553,7 +1490,7 @@ PUSHCONT {
 }
 IF
 ; end function isInternalOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function proxyBurn
 ;; get member balance
 GETPARAM 7
@@ -1764,20 +1701,11 @@ ENDS
 ;; param: callback_address
 ;; param: callback_payload
 ; function tokensBurned
-;; push identifier error_paused
-GETGLOB 23
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; !
 ;; push identifier paused
-GETGLOB 24
+GETGLOB 19
 NOT
-THROWANYIFNOT
+THROWIFNOT 104
 ;; push identifier sender_public_key
 PUSH S4
 ;; push identifier sender_address
@@ -1844,21 +1772,12 @@ NIP
 ; end function getExpectedWalletAddress
 BLKDROP2 2, 1
 ;; decl: expectedWalletAddress
-;; push identifier error_message_sender_is_not_good_wallet
-GETGLOB 21
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member sender
 GETGLOB 9
 ;; push identifier expectedWalletAddress
-PUSH S2
+PUSH S1
 SDEQ
-THROWANYIFNOT
+THROWIFNOT 102
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -1982,15 +1901,6 @@ IFNOT
 ENDS
 ;; param: to
 ; modifier onlyInternalOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isInternalOwner
 ;; return
 ;; get member value
@@ -2012,7 +1922,7 @@ PUSHCONT {
 }
 IF
 ; end function isInternalOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function sendSurplusGas
 ;; push identifier start_gas_balance
 GETGLOB 18
@@ -2054,15 +1964,6 @@ LDI 1
 ENDS
 ;; param: value
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isOwner
 ;; return
 ; function isInternalOwner
@@ -2117,7 +2018,7 @@ PUSHCONT {
 }
 IFNOT
 ; end function isOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function setPaused
 ACCEPT
 ; expValue
@@ -2125,7 +2026,7 @@ ACCEPT
 ;; push identifier value
 DUP
 ; colValue
-SETGLOB 24
+SETGLOB 19
 ; end colValue
 ; end function setPaused
 ; end modifier onlyOwner
@@ -2189,7 +2090,7 @@ PUSH S2
 STUR 64
 ;; value
 ;; push identifier paused
-GETGLOB 24
+GETGLOB 19
 STIR 1
 ENDC
 PUSHINT 128
@@ -2234,15 +2135,6 @@ ENDS
 ;; param: root_public_key_
 ;; param: root_owner_address_
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 19
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isOwner
 ;; return
 ; function isInternalOwner
@@ -2297,19 +2189,10 @@ PUSHCONT {
 }
 IFNOT
 ; end function isOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function transferOwner
-;; push identifier error_define_public_key_or_owner_address
-GETGLOB 22
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier root_public_key_
-PUSH S2
+PUSH S1
 NEQINT 0
 ;; short-circuiting &&
 DUP
@@ -2317,7 +2200,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier root_owner_address_
-	PUSH S1
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -2329,7 +2212,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier root_public_key_
-	PUSH S2
+	PUSH S1
 	EQINT 0
 	;; short-circuiting &&
 	DUP
@@ -2337,7 +2220,7 @@ PUSHCONT {
 		DROP
 		;; get member value
 		;; push identifier root_owner_address_
-		PUSH S1
+		DUP
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -2346,7 +2229,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 103
 ACCEPT
 ; expValue
 ; end expValue
@@ -2460,12 +2343,7 @@ GETGLOB 14
 GETGLOB 15
 GETGLOB 16
 GETGLOB 19
-GETGLOB 20
-GETGLOB 21
-GETGLOB 22
-GETGLOB 23
-GETGLOB 24
-REVERSE 15, 0
+REVERSE 10, 0
 STBREF
 STU 256
 STREF
@@ -2474,11 +2352,6 @@ STU 8
 STREF
 STU 128
 STU 256
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
 STI 1
 ENDC
 POP C4
@@ -2501,17 +2374,7 @@ LDU 8
 LDREF
 LDU 128
 LDU 256
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
 PLDI 1
-SETGLOB 24
-SETGLOB 23
-SETGLOB 22
-SETGLOB 21
-SETGLOB 20
 SETGLOB 19
 SETGLOB 16
 SETGLOB 15
@@ -2548,17 +2411,7 @@ PUSHCONT {
 	LDREF
 	LDU 128
 	LDU 256
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
 	PLDI 1
-	SETGLOB 24
-	SETGLOB 23
-	SETGLOB 22
-	SETGLOB 21
-	SETGLOB 20
 	SETGLOB 19
 	SETGLOB 16
 	SETGLOB 15
@@ -2646,24 +2499,9 @@ PUSHCONT {
 	; init start_gas_balance
 	PUSHINT 0
 	SETGLOB 18
-	; init error_message_sender_is_not_my_owner
-	PUSHINT 0
-	SETGLOB 19
-	; init error_not_enough_balance
-	PUSHINT 0
-	SETGLOB 20
-	; init error_message_sender_is_not_good_wallet
-	PUSHINT 0
-	SETGLOB 21
-	; init error_define_public_key_or_owner_address
-	PUSHINT 0
-	SETGLOB 22
-	; init error_paused
-	PUSHINT 0
-	SETGLOB 23
 	; init paused
 	PUSHINT 0
-	SETGLOB 24
+	SETGLOB 19
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -2678,21 +2516,6 @@ PUSHCONT {
 	SETGLOB 6
 	TRUE
 	SETGLOB 1
-	;; init state var: error_message_sender_is_not_my_owner
-	PUSHINT 100
-	SETGLOB 19
-	;; init state var: error_not_enough_balance
-	PUSHINT 101
-	SETGLOB 20
-	;; init state var: error_message_sender_is_not_good_wallet
-	PUSHINT 103
-	SETGLOB 21
-	;; init state var: error_define_public_key_or_owner_address
-	PUSHINT 106
-	SETGLOB 22
-	;; init state var: error_paused
-	PUSHINT 107
-	SETGLOB 23
 }
 IFELSE
 
@@ -2937,7 +2760,7 @@ SETGLOB 7
 CALLREF {
 	CALL $c4_to_c7$
 }
-GETGLOB 24
+GETGLOB 19
 NEWC
 PUSHSLICE xc0000000000000000000000002_
 STSLICER
