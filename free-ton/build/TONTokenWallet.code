@@ -45,16 +45,9 @@ THROWIFNOT 100
 ACCEPT
 ; expValue
 ; end expValue
-PUSHINT 50000000
-; colValue
-SETGLOB 14
-; end colValue
-; expValue
-; end expValue
 TRUE
 ; colValue
-PUSHINT 32
-SETGLOBVAR
+SETGLOB 18
 ; end colValue
 ;; if
 ;; get member value
@@ -117,7 +110,7 @@ PUSHINT 64
 SETINDEXQ 4
 SETGLOB 4
 ;; push identifier balance_
-GETGLOB 15
+GETGLOB 14
 ; end function balance
 ;; emitting 1 value(s)
 PUSH S1
@@ -217,14 +210,13 @@ GETGLOB 12
 ;; push identifier owner_address
 GETGLOB 13
 ;; push identifier balance_
-GETGLOB 15
+GETGLOB 14
 ;; push identifier receive_callback
-GETGLOB 30
+GETGLOB 16
 ;; push identifier bounced_callback
-GETGLOB 31
+GETGLOB 17
 ;; push identifier allow_non_notifiable
-PUSHINT 32
-GETGLOBVAR
+GETGLOB 18
 TUPLE 8
 ; end function getDetails
 ;; emitting 1 value(s)
@@ -357,34 +349,25 @@ IFNOT
 ENDS
 ;; param: tokens
 ; modifier onlyRoot
-;; push identifier error_message_sender_is_not_my_root
-GETGLOB 19
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier root_address
 GETGLOB 10
 ;; get member sender
 GETGLOB 9
 SDEQ
-THROWANYIFNOT
+THROWIFNOT 102
 ; function accept
 ACCEPT
 ;; push identifier tokens
 DUP
 ; expValue
 ;; fetch balance_
-GETGLOB 15
+GETGLOB 14
 ; end expValue
 SWAP
 ADD
 UFITS 128
 ; colValue
-SETGLOB 15
+SETGLOB 14
 ; end colValue
 ; end function accept
 ; end modifier onlyRoot
@@ -420,12 +403,12 @@ PUSHINT 64
 SETINDEXQ 4
 SETGLOB 4
 ;; push identifier allowance_
-GETGLOB 16
+GETGLOB 15
 ISNULL
 NOT
 PUSHCONT {
 	;; push identifier allowance_
-	GETGLOB 16
+	GETGLOB 15
 	DUP
 	ISNULL
 	THROWIF 63
@@ -558,15 +541,6 @@ ENDS
 ;; param: remaining_tokens
 ;; param: tokens
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -612,19 +586,10 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 100
 ; function approve
-;; push identifier error_non_zero_remaining
-GETGLOB 23
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier remaining_tokens
-PUSH S2
+PUSH S1
 EQINT 0
 ;; short-circuiting ||
 DUP
@@ -632,13 +597,13 @@ PUSHCONT {
 	DROP
 	;; !
 	;; push identifier allowance_
-	GETGLOB 16
+	GETGLOB 15
 	ISNULL
 	NOT
 	NOT
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 106
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -648,8 +613,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -671,14 +635,14 @@ IFELSE
 ;; end if
 ;; if
 ;; push identifier allowance_
-GETGLOB 16
+GETGLOB 15
 ISNULL
 NOT
 PUSHCONT {
 	;; if
 	;; get member remaining_tokens
 	;; push identifier allowance_
-	GETGLOB 16
+	GETGLOB 15
 	DUP
 	ISNULL
 	THROWIF 63
@@ -696,7 +660,7 @@ PUSHCONT {
 		PUSH S3
 		TUPLE 2
 		; colValue
-		SETGLOB 16
+		SETGLOB 15
 		; end colValue
 	}
 	IF
@@ -711,7 +675,7 @@ PUSHCONT {
 	PUSH S3
 	TUPLE 2
 	; colValue
-	SETGLOB 16
+	SETGLOB 15
 	; end colValue
 }
 IFELSE
@@ -759,15 +723,6 @@ IFREF {
 ; Decode input parameters
 ENDS
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -813,7 +768,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 100
 ; function disapprove
 ;; if
 ;; get member value
@@ -824,8 +779,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -849,7 +803,7 @@ IFELSE
 ; end expValue
 NULL
 ; colValue
-SETGLOB 16
+SETGLOB 15
 ; end colValue
 ;; if
 ;; get member value
@@ -974,15 +928,6 @@ ENDS
 ;; param: notify_receiver
 ;; param: payload
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -1028,40 +973,22 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 100
 ; function transferToRecipient
 ;; push identifier tokens
 PUSH S5
 GTINT 0
 THROWIFNOT 100
-;; push identifier error_not_enough_balance
-GETGLOB 18
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S6
+PUSH S5
 ;; <=
 ;; push identifier balance_
-GETGLOB 15
+GETGLOB 14
 LEQ
-THROWANYIFNOT
-;; push identifier error_wrong_recipient
-GETGLOB 28
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 101
 ;; get member value
 ;; push identifier recipient_address
-PUSH S7
+PUSH S6
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1071,11 +998,11 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier recipient_public_key
-	PUSH S8
+	PUSH S7
 	EQINT 0
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -1085,8 +1012,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -1099,49 +1025,30 @@ PUSHCONT {
 	UFITS 128
 	MAX
 	;; decl: reserve
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
 	;; >
 	;; push identifier reserve
-	PUSH S2
+	PUSH S1
 	;; +
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	ADD
 	UFITS 128
 	;; +
 	;; push identifier deploy_grams
-	PUSH S8
+	PUSH S7
 	ADD
 	UFITS 128
 	GREATER
-	THROWANYIFNOT
-	;; push identifier error_wrong_recipient
-	GETGLOB 28
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
+	THROWIFNOT 110
 	;; push identifier recipient_address
-	PUSH S8
+	PUSH S7
 	;; push identifier owner_address
 	GETGLOB 13
 	SDEQ
 	NOT
-	THROWANYIFNOT
+	THROWIFNOT 111
 	;; push identifier reserve
 	DUP
 	PUSHINT 2
@@ -1149,44 +1056,25 @@ PUSHCONT {
 	DROP
 }
 PUSHCONT {
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
 	;; >
 	;; push identifier deploy_grams
-	PUSH S6
+	PUSH S5
 	;; +
 	;; push identifier transfer_grams
-	PUSH S6
+	PUSH S5
 	ADD
 	UFITS 128
 	GREATER
-	THROWANYIFNOT
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
+	THROWIFNOT 110
 	;; push identifier transfer_grams
-	PUSH S4
+	PUSH S3
 	;; >
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	GREATER
-	THROWANYIFNOT
+	THROWIFNOT 110
 	;; push identifier recipient_public_key
 	PUSH S7
 	;; !=
@@ -1322,13 +1210,13 @@ PUSHCONT {
 	PUSH S7
 	; expValue
 	;; fetch balance_
-	GETGLOB 15
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 15
+	SETGLOB 14
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier to
@@ -1394,13 +1282,13 @@ PUSHCONT {
 	PUSH S7
 	; expValue
 	;; fetch balance_
-	GETGLOB 15
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 15
+	SETGLOB 14
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier transfer_grams
@@ -1545,15 +1433,6 @@ ENDS
 ;; param: notify_receiver
 ;; param: payload
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -1599,60 +1478,33 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 100
 ; function transfer
 ;; push identifier tokens
 PUSH S4
 GTINT 0
 THROWIFNOT 100
-;; push identifier error_not_enough_balance
-GETGLOB 18
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S5
+PUSH S4
 ;; <=
 ;; push identifier balance_
-GETGLOB 15
+GETGLOB 14
 LEQ
-THROWANYIFNOT
-;; push identifier error_wrong_recipient
-GETGLOB 28
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 101
 ;; get member value
 ;; push identifier to
-PUSH S6
+PUSH S5
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
-THROWANYIFNOT
-;; push identifier error_wrong_recipient
-GETGLOB 28
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 111
 ;; push identifier to
-PUSH S6
+PUSH S5
 MYADDR
 SDEQ
 NOT
-THROWANYIFNOT
+THROWIFNOT 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -1662,8 +1514,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -1676,28 +1527,18 @@ PUSHCONT {
 	UFITS 128
 	MAX
 	;; decl: reserve
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
 	;; >
 	;; push identifier reserve
-	PUSH S2
+	PUSH S1
 	;; +
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	ADD
 	UFITS 128
 	GREATER
-	THROWANYIFNOT
+	THROWIFNOT 110
 	;; push identifier reserve
 	DUP
 	PUSHINT 2
@@ -1706,13 +1547,13 @@ PUSHCONT {
 	PUSH S5
 	; expValue
 	;; fetch balance_
-	GETGLOB 15
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 15
+	SETGLOB 14
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier to
@@ -1775,51 +1616,32 @@ PUSHCONT {
 	DROP
 }
 PUSHCONT {
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
 	;; >
 	;; push identifier grams
-	PUSH S5
-	GREATER
-	THROWANYIFNOT
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; push identifier grams
 	PUSH S4
-	;; >
-	;; push identifier target_gas_balance
-	GETGLOB 14
 	GREATER
-	THROWANYIFNOT
+	THROWIFNOT 110
+	;; push identifier grams
+	PUSH S3
+	;; >
+	PUSHINT 50000000
+	GREATER
+	THROWIFNOT 110
 	ACCEPT
 	;; push identifier tokens
 	PUSH S4
 	; expValue
 	;; fetch balance_
-	GETGLOB 15
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 15
+	SETGLOB 14
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier grams
@@ -1974,15 +1796,6 @@ ENDS
 ;; param: notify_receiver
 ;; param: payload
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -2028,45 +1841,27 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 100
 ; function transferFrom
-;; push identifier error_wrong_recipient
-GETGLOB 28
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier to
-PUSH S6
+PUSH S5
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
-THROWANYIFNOT
+THROWIFNOT 111
 ;; push identifier tokens
 PUSH S4
 GTINT 0
 THROWIFNOT 100
-;; push identifier error_wrong_recipient
-GETGLOB 28
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier from
-PUSH S7
+PUSH S6
 ;; push identifier to
-PUSH S7
+PUSH S6
 SDEQ
 NOT
-THROWANYIFNOT
+THROWIFNOT 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -2076,8 +1871,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2090,24 +1884,14 @@ PUSHCONT {
 	UFITS 128
 	MAX
 	;; decl: reserve
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
 	;; >
 	;; push identifier reserve
-	PUSH S2
+	PUSH S1
 	;; +
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; *
 	PUSHINT 2
 	MUL
@@ -2115,7 +1899,7 @@ PUSHCONT {
 	ADD
 	UFITS 128
 	GREATER
-	THROWANYIFNOT
+	THROWIFNOT 110
 	;; push identifier reserve
 	DUP
 	PUSHINT 2
@@ -2173,43 +1957,24 @@ PUSHCONT {
 	DROP
 }
 PUSHCONT {
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
 	;; >
 	;; push identifier grams
-	PUSH S5
-	GREATER
-	THROWANYIFNOT
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
-	;; push identifier grams
 	PUSH S4
+	GREATER
+	THROWIFNOT 110
+	;; push identifier grams
+	PUSH S3
 	;; >
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; *
 	PUSHINT 2
 	MUL
 	UFITS 128
 	GREATER
-	THROWANYIFNOT
+	THROWIFNOT 110
 	ACCEPT
 	;; Remote call ITONTokenWallet.internalTransferFrom
 	;; push identifier grams
@@ -2345,20 +2110,10 @@ ENDS
 ;; param: notify_receiver
 ;; param: payload
 ; function internalTransfer
-;; push identifier error_recipient_has_disallow_non_notifiable
-GETGLOB 29
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier notify_receiver
-PUSH S2
+PUSH S1
 ;; push identifier allow_non_notifiable
-PUSHINT 32
-GETGLOBVAR
+GETGLOB 18
 OR
 ;; short-circuiting ||
 DUP
@@ -2366,14 +2121,14 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier receive_callback
-	GETGLOB 30
+	GETGLOB 16
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
 	EQINT 0
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 112
 ;; push identifier sender_public_key
 PUSH S4
 ;; push identifier sender_address
@@ -2441,32 +2196,14 @@ NIP
 ; end function getExpectedAddress
 BLKDROP2 2, 1
 ;; decl: expectedSenderAddress
-;; push identifier error_message_sender_is_not_good_wallet
-GETGLOB 20
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member sender
 GETGLOB 9
 ;; push identifier expectedSenderAddress
-PUSH S2
+PUSH S1
 SDEQ
-THROWANYIFNOT
-;; push identifier error_wrong_recipient
-GETGLOB 28
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 103
 ;; push identifier sender_address
-PUSH S5
+PUSH S4
 ;; push identifier owner_address
 GETGLOB 13
 SDEQ
@@ -2476,14 +2213,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier sender_public_key
-	PUSH S6
+	PUSH S5
 	;; !=
 	;; push identifier wallet_public_key
 	GETGLOB 12
 	NEQ
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -2493,8 +2230,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2507,23 +2243,14 @@ PUSHCONT {
 	UFITS 128
 	MAX
 	;; decl: reserve
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
 	;; >
 	;; push identifier reserve
-	PUSH S2
+	PUSH S1
 	GREATER
-	THROWANYIFNOT
+	THROWIFNOT 110
 	;; push identifier reserve
 	DUP
 	PUSHINT 2
@@ -2550,13 +2277,13 @@ IFELSE
 PUSH S6
 ; expValue
 ;; fetch balance_
-GETGLOB 15
+GETGLOB 14
 ; end expValue
 SWAP
 ADD
 UFITS 128
 ; colValue
-SETGLOB 15
+SETGLOB 14
 ; end colValue
 ;; if
 ;; push identifier notify_receiver
@@ -2567,7 +2294,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier receive_callback
-	GETGLOB 30
+	GETGLOB 16
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -2577,7 +2304,7 @@ IF
 PUSHCONT {
 	;; Remote call ITokensReceivedCallback.tokensReceivedCallback
 	;; push identifier receive_callback
-	GETGLOB 30
+	GETGLOB 16
 	NEWC
 	STSLICECONST x62_
 	STSLICE
@@ -2618,7 +2345,7 @@ PUSHCONT {
 	NEWC
 	;; updated_balance
 	;; push identifier balance_
-	GETGLOB 15
+	GETGLOB 14
 	STUR 128
 	;; payload
 	;; push identifier payload
@@ -2715,96 +2442,51 @@ ENDS
 ;; param: notify_receiver
 ;; param: payload
 ; function internalTransferFrom
-;; push identifier error_no_allowance_set
-GETGLOB 24
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier allowance_
-GETGLOB 16
+GETGLOB 15
 ISNULL
 NOT
-THROWANYIFNOT
-;; push identifier error_wrong_spender
-GETGLOB 25
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 107
 ;; get member sender
 GETGLOB 9
 ;; get member spender
 ;; push identifier allowance_
-GETGLOB 16
+GETGLOB 15
 DUP
 ISNULL
 THROWIF 63
 INDEX 1
 SDEQ
-THROWANYIFNOT
-;; push identifier error_not_enough_allowance
-GETGLOB 26
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 108
 ;; push identifier tokens
-PUSH S4
+PUSH S3
 ;; <=
 ;; get member remaining_tokens
 ;; push identifier allowance_
-GETGLOB 16
+GETGLOB 15
 DUP
 ISNULL
 THROWIF 63
 INDEX 0
 LEQ
-THROWANYIFNOT
-;; push identifier error_not_enough_balance
-GETGLOB 18
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 109
 ;; push identifier tokens
-PUSH S4
+PUSH S3
 ;; <=
 ;; push identifier balance_
-GETGLOB 15
+GETGLOB 14
 LEQ
-THROWANYIFNOT
+THROWIFNOT 101
 ;; push identifier tokens
 PUSH S3
 GTINT 0
 THROWIFNOT 100
-;; push identifier error_wrong_recipient
-GETGLOB 28
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier to
-PUSH S5
+PUSH S4
 MYADDR
 SDEQ
 NOT
-THROWANYIFNOT
+THROWIFNOT 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -2814,8 +2496,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2828,34 +2509,23 @@ PUSHCONT {
 	UFITS 128
 	MAX
 	;; decl: reserve
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
 	;; >
 	;; push identifier reserve
-	PUSH S2
+	PUSH S1
 	;; +
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	ADD
 	UFITS 128
 	GREATER
-	THROWANYIFNOT
+	THROWIFNOT 110
 	;; push identifier reserve
 	DUP
 	PUSHINT 2
 	RAWRESERVE
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2872,24 +2542,14 @@ PUSHCONT {
 	DROP
 }
 PUSHCONT {
-	;; push identifier error_low_message_value
-	GETGLOB 27
-	DUP
-	LESSINT 2
-	PUSHCONT {
-		DROP
-		PUSHINT 100
-	}
-	IF
 	;; get member value
 	CALLREF {
 		CALL $message_balance_macro$
 	}
 	;; >
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	GREATER
-	THROWANYIFNOT
+	THROWIFNOT 110
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -2909,19 +2569,19 @@ IFELSE
 PUSH S3
 ; expValue
 ;; fetch balance_
-GETGLOB 15
+GETGLOB 14
 ; end expValue
 SWAP
 SUB
 UFITS 128
 ; colValue
-SETGLOB 15
+SETGLOB 14
 ; end colValue
 ; expValue
 ; end expValue
 ;; get member remaining_tokens
 ;; push identifier allowance_
-GETGLOB 16
+GETGLOB 15
 DUP
 ISNULL
 THROWIF 63
@@ -2933,14 +2593,14 @@ SUB
 UFITS 128
 ;; get member spender
 ;; push identifier allowance_
-GETGLOB 16
+GETGLOB 15
 DUP
 ISNULL
 THROWIF 63
 INDEX 1
 TUPLE 2
 ; colValue
-SETGLOB 16
+SETGLOB 15
 ; end colValue
 ;; Remote call ITONTokenWallet.internalTransfer
 ;; push identifier to
@@ -3052,15 +2712,6 @@ ENDS
 ;; param: callback_address
 ;; param: callback_payload
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -3106,37 +2757,19 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 100
 ; function burnByOwner
 ;; push identifier tokens
 PUSH S4
 GTINT 0
 THROWIFNOT 100
-;; push identifier error_not_enough_balance
-GETGLOB 18
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S5
+PUSH S4
 ;; <=
 ;; push identifier balance_
-GETGLOB 15
+GETGLOB 14
 LEQ
-THROWANYIFNOT
-;; push identifier error_low_message_value
-GETGLOB 27
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 101
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -3171,7 +2804,7 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; push identifier grams
-		PUSH S4
+		PUSH S3
 		;; <=
 		;; get member balance
 		GETPARAM 7
@@ -3182,7 +2815,7 @@ PUSHCONT {
 		PUSHCONT {
 			DROP
 			;; push identifier grams
-			PUSH S4
+			PUSH S3
 			GTINT 0
 		}
 		IF
@@ -3190,7 +2823,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 110
 ;; if
 ;; get member value
 ;; push identifier owner_address
@@ -3200,8 +2833,7 @@ INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
-	;; push identifier target_gas_balance
-	GETGLOB 14
+	PUSHINT 50000000
 	;; get member balance
 	GETPARAM 7
 	INDEX 0
@@ -3219,13 +2851,13 @@ PUSHCONT {
 	PUSH S4
 	; expValue
 	;; fetch balance_
-	GETGLOB 15
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 15
+	SETGLOB 14
 	; end colValue
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier root_address
@@ -3294,13 +2926,13 @@ PUSHCONT {
 	PUSH S4
 	; expValue
 	;; fetch balance_
-	GETGLOB 15
+	GETGLOB 14
 	; end expValue
 	SWAP
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 15
+	SETGLOB 14
 	; end colValue
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier grams
@@ -3424,42 +3056,24 @@ ENDS
 ;; param: callback_address
 ;; param: callback_payload
 ; modifier onlyRoot
-;; push identifier error_message_sender_is_not_my_root
-GETGLOB 19
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier root_address
 GETGLOB 10
 ;; get member sender
 GETGLOB 9
 SDEQ
-THROWANYIFNOT
+THROWIFNOT 102
 ; function burnByRoot
 ;; push identifier tokens
 PUSH S3
 GTINT 0
 THROWIFNOT 100
-;; push identifier error_not_enough_balance
-GETGLOB 18
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S4
+PUSH S3
 ;; <=
 ;; push identifier balance_
-GETGLOB 15
+GETGLOB 14
 LEQ
-THROWANYIFNOT
+THROWIFNOT 101
 ;; get member balance
 GETPARAM 7
 INDEX 0
@@ -3476,13 +3090,13 @@ RAWRESERVE
 PUSH S3
 ; expValue
 ;; fetch balance_
-GETGLOB 15
+GETGLOB 14
 ; end expValue
 SWAP
 SUB
 UFITS 128
 ; colValue
-SETGLOB 15
+SETGLOB 14
 ; end colValue
 ;; Remote call IBurnableTokenRootContract.tokensBurned
 ;; push identifier root_address
@@ -3571,15 +3185,6 @@ ENDS
 ;; param: receive_callback_
 ;; param: allow_non_notifiable_
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -3625,7 +3230,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 100
 ; function setReceiveCallback
 ACCEPT
 ; expValue
@@ -3633,15 +3238,14 @@ ACCEPT
 ;; push identifier receive_callback_
 PUSH S1
 ; colValue
-SETGLOB 30
+SETGLOB 16
 ; end colValue
 ; expValue
 ; end expValue
 ;; push identifier allow_non_notifiable_
 DUP
 ; colValue
-PUSHINT 32
-SETGLOBVAR
+SETGLOB 18
 ; end colValue
 ; end function setReceiveCallback
 ; end modifier onlyOwner
@@ -3673,15 +3277,6 @@ IFNOT
 ENDS
 ;; param: bounced_callback_
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -3727,7 +3322,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 100
 ; function setBouncedCallback
 ACCEPT
 ; expValue
@@ -3735,7 +3330,7 @@ ACCEPT
 ;; push identifier bounced_callback_
 DUP
 ; colValue
-SETGLOB 31
+SETGLOB 17
 ; end colValue
 ; end function setBouncedCallback
 ; end modifier onlyOwner
@@ -3782,15 +3377,6 @@ CALL $destroy_internal_macro$
 .macro destroy_internal_macro
 ;; param: gas_dest
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; get member value
 ;; push identifier owner_address
 GETGLOB 13
@@ -3836,10 +3422,10 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 100
 ; function destroy
 ;; push identifier balance_
-GETGLOB 15
+GETGLOB 14
 EQINT 0
 THROWIFNOT 100
 ACCEPT
@@ -3895,18 +3481,18 @@ PUSHCONT {
 	DUP
 	; expValue
 	;; fetch balance_
-	GETGLOB 15
+	GETGLOB 14
 	; end expValue
 	SWAP
 	ADD
 	UFITS 128
 	; colValue
-	SETGLOB 15
+	SETGLOB 14
 	; end colValue
 	;; if
 	;; get member value
 	;; push identifier bounced_callback
-	GETGLOB 31
+	GETGLOB 17
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -3926,7 +3512,7 @@ PUSHCONT {
 		RAWRESERVE
 		;; Remote call ITokensBouncedCallback.tokensBouncedCallback
 		;; push identifier bounced_callback
-		GETGLOB 31
+		GETGLOB 17
 		NEWC
 		STSLICECONST x62_
 		STSLICE
@@ -3954,7 +3540,7 @@ PUSHCONT {
 		STSLICER
 		;; updated_balance
 		;; push identifier balance_
-		GETGLOB 15
+		GETGLOB 14
 		STUR 128
 		STBREFR
 		STBREFR
@@ -3971,8 +3557,7 @@ PUSHCONT {
 		INDEX 3
 		PLDU 256
 		PUSHCONT {
-			;; push identifier target_gas_balance
-			GETGLOB 14
+			PUSHINT 50000000
 			;; get member balance
 			GETPARAM 7
 			INDEX 0
@@ -4024,13 +3609,13 @@ PUSHCONT {
 		; end colValue
 		; expValue
 		;; fetch balance_
-		GETGLOB 15
+		GETGLOB 14
 		; end expValue
 		SWAP
 		ADD
 		UFITS 128
 		; colValue
-		SETGLOB 15
+		SETGLOB 14
 		; end colValue
 		;; if
 		;; get member value
@@ -4040,8 +3625,7 @@ PUSHCONT {
 		INDEX 3
 		PLDU 256
 		PUSHCONT {
-			;; push identifier target_gas_balance
-			GETGLOB 14
+			PUSHINT 50000000
 			;; get member balance
 			GETPARAM 7
 			INDEX 0
@@ -4106,50 +3690,19 @@ GETGLOB 6
 STUR 1
 NEWC
 GETGLOB 13
-GETGLOB 15
-GETGLOB 18
-GETGLOB 19
-GETGLOB 20
-GETGLOB 21
-GETGLOB 22
-GETGLOB 23
-GETGLOB 24
-GETGLOB 25
-GETGLOB 26
-GETGLOB 27
-GETGLOB 28
-GETGLOB 29
-GETGLOB 30
-REVERSE 16, 0
+GETGLOB 16
+GETGLOB 17
+REVERSE 4, 0
 STSLICE
-STU 128
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
-STU 8
 STSLICE
-NEWC
-GETGLOB 31
-SWAP
 STSLICE
 GETGLOB 10
 GETGLOB 11
 GETGLOB 12
 GETGLOB 14
-GETGLOB 16
-GETGLOB 17
-PUSHINT 32
-GETGLOBVAR
-REVERSE 10, 0
-STBREF
+GETGLOB 15
+GETGLOB 18
+REVERSE 8, 0
 STBREF
 STSLICE
 STREF
@@ -4179,7 +3732,6 @@ PUSHCONT {
 	STSLICECONST 0
 }
 IFELSE
-STU 8
 STI 1
 ENDC
 POP C4
@@ -4192,36 +3744,10 @@ LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
 LDREFRTOS
 LDMSGADDR
-LDU 128
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-SETGLOB 30
-SETGLOB 29
-SETGLOB 28
-SETGLOB 27
-SETGLOB 26
-SETGLOB 25
-SETGLOB 24
-SETGLOB 23
-SETGLOB 22
-SETGLOB 21
-SETGLOB 20
-SETGLOB 19
-SETGLOB 18
-SETGLOB 15
+LDMSGADDR
+SETGLOB 17
+SETGLOB 16
 SETGLOB 13
-LDREFRTOS
-SETGLOB 31
 LDMSGADDR
 LDREF
 LDU 256
@@ -4236,12 +3762,9 @@ PUSHCONT {
 	TUPLE 2
 }
 IFNOT
-SETGLOB 16
-LDU 8
+SETGLOB 15
 PLDI 1
-PUSHINT 32
-SETGLOBVAR
-SETGLOB 17
+SETGLOB 18
 SETGLOB 14
 SETGLOB 12
 SETGLOB 11
@@ -4264,36 +3787,10 @@ PUSHCONT {
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
 	LDREFRTOS
 	LDMSGADDR
-	LDU 128
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	SETGLOB 30
-	SETGLOB 29
-	SETGLOB 28
-	SETGLOB 27
-	SETGLOB 26
-	SETGLOB 25
-	SETGLOB 24
-	SETGLOB 23
-	SETGLOB 22
-	SETGLOB 21
-	SETGLOB 20
-	SETGLOB 19
-	SETGLOB 18
-	SETGLOB 15
+	LDMSGADDR
+	SETGLOB 17
+	SETGLOB 16
 	SETGLOB 13
-	LDREFRTOS
-	SETGLOB 31
 	LDMSGADDR
 	LDREF
 	LDU 256
@@ -4308,12 +3805,9 @@ PUSHCONT {
 		TUPLE 2
 	}
 	IFNOT
-	SETGLOB 16
-	LDU 8
+	SETGLOB 15
 	PLDI 1
-	PUSHINT 32
-	SETGLOBVAR
-	SETGLOB 17
+	SETGLOB 18
 	SETGLOB 14
 	SETGLOB 12
 	SETGLOB 11
@@ -4370,64 +3864,21 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 13
-	; init target_gas_balance
-	PUSHINT 0
-	SETGLOB 14
 	; init balance_
 	PUSHINT 0
-	SETGLOB 15
+	SETGLOB 14
 	; init allowance_
 	NULL
-	SETGLOB 16
-	; init error_message_sender_is_not_my_owner
-	PUSHINT 0
-	SETGLOB 17
-	; init error_not_enough_balance
-	PUSHINT 0
-	SETGLOB 18
-	; init error_message_sender_is_not_my_root
-	PUSHINT 0
-	SETGLOB 19
-	; init error_message_sender_is_not_good_wallet
-	PUSHINT 0
-	SETGLOB 20
-	; init error_wrong_bounced_header
-	PUSHINT 0
-	SETGLOB 21
-	; init error_wrong_bounced_args
-	PUSHINT 0
-	SETGLOB 22
-	; init error_non_zero_remaining
-	PUSHINT 0
-	SETGLOB 23
-	; init error_no_allowance_set
-	PUSHINT 0
-	SETGLOB 24
-	; init error_wrong_spender
-	PUSHINT 0
-	SETGLOB 25
-	; init error_not_enough_allowance
-	PUSHINT 0
-	SETGLOB 26
-	; init error_low_message_value
-	PUSHINT 0
-	SETGLOB 27
-	; init error_wrong_recipient
-	PUSHINT 0
-	SETGLOB 28
-	; init error_recipient_has_disallow_non_notifiable
-	PUSHINT 0
-	SETGLOB 29
+	SETGLOB 15
 	; init receive_callback
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 30
+	SETGLOB 16
 	; init bounced_callback
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 31
+	SETGLOB 17
 	; init allow_non_notifiable
 	PUSHINT 0
-	PUSHINT 32
-	SETGLOBVAR
+	SETGLOB 18
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -4442,45 +3893,6 @@ PUSHCONT {
 	SETGLOB 6
 	TRUE
 	SETGLOB 1
-	;; init state var: error_message_sender_is_not_my_owner
-	PUSHINT 100
-	SETGLOB 17
-	;; init state var: error_not_enough_balance
-	PUSHINT 101
-	SETGLOB 18
-	;; init state var: error_message_sender_is_not_my_root
-	PUSHINT 102
-	SETGLOB 19
-	;; init state var: error_message_sender_is_not_good_wallet
-	PUSHINT 103
-	SETGLOB 20
-	;; init state var: error_wrong_bounced_header
-	PUSHINT 104
-	SETGLOB 21
-	;; init state var: error_wrong_bounced_args
-	PUSHINT 105
-	SETGLOB 22
-	;; init state var: error_non_zero_remaining
-	PUSHINT 106
-	SETGLOB 23
-	;; init state var: error_no_allowance_set
-	PUSHINT 107
-	SETGLOB 24
-	;; init state var: error_wrong_spender
-	PUSHINT 108
-	SETGLOB 25
-	;; init state var: error_not_enough_allowance
-	PUSHINT 109
-	SETGLOB 26
-	;; init state var: error_low_message_value
-	PUSHINT 110
-	SETGLOB 27
-	;; init state var: error_wrong_recipient
-	PUSHINT 111
-	SETGLOB 28
-	;; init state var: error_recipient_has_disallow_non_notifiable
-	PUSHINT 112
-	SETGLOB 29
 }
 IFELSE
 

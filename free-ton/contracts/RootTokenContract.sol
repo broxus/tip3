@@ -15,6 +15,7 @@ import "./TONTokenWallet.sol";
 import "./interfaces/IPausable.sol";
 import "./interfaces/IPausedCallback.sol";
 import "./interfaces/ITransferOwner.sol";
+import "./libraries/RootTokenContractErrors.sol";
 
 
 /*
@@ -35,12 +36,6 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     address root_owner_address;
     uint128 public start_gas_balance;
 
-    uint8 error_message_sender_is_not_my_owner = 100;
-    uint8 error_not_enough_balance = 101;
-    uint8 error_message_sender_is_not_good_wallet = 103;
-    uint8 error_define_public_key_or_owner_address = 106;
-    uint8 error_paused = 107;
-
     bool public paused;
 
     /*
@@ -50,7 +45,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     constructor(uint256 root_public_key_, address root_owner_address_) public {
         require((root_public_key_ != 0 && root_owner_address_.value == 0) ||
                 (root_public_key_ == 0 && root_owner_address_.value != 0),
-                error_define_public_key_or_owner_address);
+                RootTokenContractErrors.error_define_public_key_or_owner_address);
         tvm.accept();
 
         root_public_key = root_public_key_;
@@ -104,7 +99,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     ) {
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
-                error_define_public_key_or_owner_address);
+                RootTokenContractErrors.error_define_public_key_or_owner_address);
         return { value: 0, bounce: false, flag: 64 } getExpectedWalletAddress(wallet_public_key_, owner_address_);
     }
 
@@ -160,7 +155,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         require(tokens >= 0);
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
-                error_define_public_key_or_owner_address);
+                RootTokenContractErrors.error_define_public_key_or_owner_address);
 
         if(root_owner_address.value == 0) {
             tvm.accept();
@@ -218,7 +213,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     ) {
         require((owner_address_.value != 0 && wallet_public_key_ == 0) ||
                 (owner_address_.value == 0 && wallet_public_key_ != 0),
-                error_define_public_key_or_owner_address);
+                RootTokenContractErrors.error_define_public_key_or_owner_address);
 
         tvm.rawReserve(address(this).balance - msg.value, 2);
 
@@ -324,11 +319,11 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         TvmCell callback_payload
     ) override external {
 
-        require(!paused, error_paused);
+        require(!paused, RootTokenContractErrors.error_paused);
 
         address expectedWalletAddress = getExpectedWalletAddress(sender_public_key, sender_address);
 
-        require(msg.sender == expectedWalletAddress, error_message_sender_is_not_good_wallet);
+        require(msg.sender == expectedWalletAddress, RootTokenContractErrors.error_message_sender_is_not_good_wallet);
 
         tvm.rawReserve(address(this).balance - msg.value, 2);
 
@@ -418,7 +413,7 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     {
         require((root_public_key_ != 0 && root_owner_address_.value == 0) ||
                 (root_public_key_ == 0 && root_owner_address_.value != 0),
-                error_define_public_key_or_owner_address);
+                RootTokenContractErrors.error_define_public_key_or_owner_address);
         tvm.accept();
         root_public_key = root_public_key_;
         root_owner_address = root_owner_address_;
@@ -427,12 +422,12 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
     // =============== Support functions ==================
 
     modifier onlyOwner() {
-        require(isOwner(), error_message_sender_is_not_my_owner);
+        require(isOwner(), RootTokenContractErrors.error_message_sender_is_not_my_owner);
         _;
     }
 
     modifier onlyInternalOwner() {
-        require(isInternalOwner(), error_message_sender_is_not_my_owner);
+        require(isInternalOwner(), RootTokenContractErrors.error_message_sender_is_not_my_owner);
         _;
     }
 
