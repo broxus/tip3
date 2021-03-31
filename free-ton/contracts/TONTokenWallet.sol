@@ -13,12 +13,13 @@ import "./interfaces/ITokensReceivedCallback.sol";
 import "./interfaces/ITokensBouncedCallback.sol";
 import "./libraries/TONTokenWalletErrors.sol";
 import "./libraries/TONTokenWalletConstants.sol";
+import "./interfaces/IVersioned.sol";
 
 
 /*
     @title FT token wallet contract
 */
-contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet {
+contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet, IVersioned {
 
     address static root_address;
     TvmCell static code;
@@ -48,6 +49,10 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         if (owner_address.value != 0) {
             ITokenWalletDeployedCallback(owner_address).notifyWalletDeployed{value: 0.00001 ton, flag: 1}(root_address);
         }
+    }
+
+    function getVersion() override external pure responsible returns (uint32) {
+        return 3;
     }
 
     function balance() override external view responsible returns (uint128) {
