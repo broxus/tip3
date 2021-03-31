@@ -16,12 +16,15 @@ import "./interfaces/IPausable.sol";
 import "./interfaces/IPausedCallback.sol";
 import "./interfaces/ITransferOwner.sol";
 import "./libraries/RootTokenContractErrors.sol";
+import "./interfaces/IVersioned.sol";
 
 
 /*
     @title FT token root contract
 */
-contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IBurnableByRootTokenRootContract, IPausable, ITransferOwner, ISendSurplusGas {
+contract RootTokenContract is
+IRootTokenContract, IBurnableTokenRootContract, IBurnableByRootTokenRootContract,
+IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
 
     uint256 static _randomNonce;
 
@@ -55,6 +58,10 @@ contract RootTokenContract is IRootTokenContract, IBurnableTokenRootContract, IB
         paused = false;
 
         start_gas_balance = address(this).balance;
+    }
+
+    function getVersion() override external pure responsible returns (uint32) {
+        return 3;
     }
 
     /*
