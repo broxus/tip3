@@ -170,18 +170,30 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
             tvm.rawReserve(math.max(start_gas_balance, address(this).balance - msg.value), 2);
         }
 
-        address wallet = new TONTokenWallet{
-            value: deploy_grams,
-            flag: 1,
-            code: wallet_code,
-            pubkey: wallet_public_key_,
+        TvmCell stateInit = tvm.buildStateInit({
+            contr: TONTokenWallet,
             varInit: {
                 root_address: address(this),
                 code: wallet_code,
                 wallet_public_key: wallet_public_key_,
                 owner_address: owner_address_
-            }
-        }();
+            },
+            pubkey: wallet_public_key_,
+            code: wallet_code
+        });
+
+        address wallet;
+
+        if(deploy_grams > 0) {
+            wallet = new TONTokenWallet{
+                stateInit: stateInit,
+                value: deploy_grams,
+                wid: address(this).wid,
+                flag: 1
+            }();
+        } else {
+            wallet = address(tvm.hash(stateInit));
+        }
 
         ITONTokenWallet(wallet).accept(tokens);
 
