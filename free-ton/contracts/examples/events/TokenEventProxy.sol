@@ -35,7 +35,6 @@ contract TokenEventProxy is
 
         address root_tunnel;
 
-        uint128 settings_burn_min_msg_value;
         uint128 settings_deploy_wallet_grams;
     }
 

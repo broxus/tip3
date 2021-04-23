@@ -14,7 +14,7 @@
 		{
 			"name": "setConfiguration",
 			"inputs": [
-				{"components":[{"name":"ethereum_event_code","type":"cell"},{"name":"outdated_token_roots","type":"address[]"},{"name":"ethereum_event_deploy_pubkey","type":"uint256"},{"name":"ethereum_event_configuration_address","type":"address"},{"name":"token_root_address","type":"address"},{"name":"root_tunnel","type":"address"},{"name":"settings_burn_min_msg_value","type":"uint128"},{"name":"settings_deploy_wallet_grams","type":"uint128"}],"name":"_config","type":"tuple"}
+				{"components":[{"name":"ethereum_event_code","type":"cell"},{"name":"outdated_token_roots","type":"address[]"},{"name":"ethereum_event_deploy_pubkey","type":"uint256"},{"name":"ethereum_event_configuration_address","type":"address"},{"name":"token_root_address","type":"address"},{"name":"root_tunnel","type":"address"},{"name":"settings_deploy_wallet_grams","type":"uint128"}],"name":"_config","type":"tuple"}
 			],
 			"outputs": [
 			]
@@ -121,7 +121,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"ethereum_event_code","type":"cell"},{"name":"outdated_token_roots","type":"address[]"},{"name":"ethereum_event_deploy_pubkey","type":"uint256"},{"name":"ethereum_event_configuration_address","type":"address"},{"name":"token_root_address","type":"address"},{"name":"root_tunnel","type":"address"},{"name":"settings_burn_min_msg_value","type":"uint128"},{"name":"settings_deploy_wallet_grams","type":"uint128"}],"name":"config","type":"tuple"}
+				{"components":[{"name":"ethereum_event_code","type":"cell"},{"name":"outdated_token_roots","type":"address[]"},{"name":"ethereum_event_deploy_pubkey","type":"uint256"},{"name":"ethereum_event_configuration_address","type":"address"},{"name":"token_root_address","type":"address"},{"name":"root_tunnel","type":"address"},{"name":"settings_deploy_wallet_grams","type":"uint128"}],"name":"config","type":"tuple"}
 			]
 		},
 		{
