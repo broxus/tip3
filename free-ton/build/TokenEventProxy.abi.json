@@ -12,6 +12,14 @@
 			]
 		},
 		{
+			"name": "setConfiguration",
+			"inputs": [
+				{"components":[{"name":"ethereum_event_code","type":"cell"},{"name":"outdated_token_roots","type":"address[]"},{"name":"ethereum_event_deploy_pubkey","type":"uint256"},{"name":"ethereum_event_configuration_address","type":"address"},{"name":"token_root_address","type":"address"},{"name":"root_tunnel","type":"address"},{"name":"settings_burn_min_msg_value","type":"uint128"},{"name":"settings_deploy_wallet_grams","type":"uint128"}],"name":"_config","type":"tuple"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "broxusBridgeCallback",
 			"inputs": [
 				{"components":[{"name":"eventTransaction","type":"uint256"},{"name":"eventIndex","type":"uint32"},{"name":"eventData","type":"cell"},{"name":"eventBlockNumber","type":"uint32"},{"name":"eventBlock","type":"uint256"},{"name":"ethereumEventConfiguration","type":"address"},{"name":"requiredConfirmations","type":"uint16"},{"name":"requiredRejects","type":"uint16"},{"name":"proxyAddress","type":"address"},{"name":"configurationMeta","type":"cell"}],"name":"eventData","type":"tuple"},
@@ -47,28 +55,9 @@
 			]
 		},
 		{
-			"name": "transferMyTokensToEthereum",
-			"inputs": [
-				{"name":"tokens","type":"uint128"},
-				{"name":"ethereum_address","type":"uint160"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "burnMyTokens",
-			"inputs": [
-				{"name":"tokens","type":"uint128"},
-				{"name":"send_gas_to","type":"address"},
-				{"name":"callback_address","type":"address"},
-				{"name":"callback_payload","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "withdrawExtraGasFromTokenRoot",
 			"inputs": [
+				{"name":"root","type":"address"},
 				{"name":"to","type":"address"}
 			],
 			"outputs": [
@@ -111,51 +100,28 @@
 			]
 		},
 		{
-			"name": "setTokenRootAddressOnce",
+			"name": "token_root_address",
 			"inputs": [
-				{"name":"value","type":"address"}
 			],
 			"outputs": [
+				{"name":"value0","type":"address"}
 			]
 		},
 		{
-			"name": "setEthEventDeployPubkeyOnce",
+			"name": "getExpectedEventAddress",
 			"inputs": [
-				{"name":"value","type":"uint256"}
+				{"components":[{"name":"eventTransaction","type":"uint256"},{"name":"eventIndex","type":"uint32"},{"name":"eventData","type":"cell"},{"name":"eventBlockNumber","type":"uint32"},{"name":"eventBlock","type":"uint256"},{"name":"ethereumEventConfiguration","type":"address"},{"name":"requiredConfirmations","type":"uint16"},{"name":"requiredRejects","type":"uint16"},{"name":"proxyAddress","type":"address"},{"name":"configurationMeta","type":"cell"}],"name":"initData","type":"tuple"}
 			],
 			"outputs": [
+				{"name":"value0","type":"address"}
 			]
 		},
 		{
-			"name": "setEthEventConfigAddressOnce",
+			"name": "config",
 			"inputs": [
-				{"name":"value","type":"address"}
 			],
 			"outputs": [
-			]
-		},
-		{
-			"name": "setBurnMinMsgValue",
-			"inputs": [
-				{"name":"value","type":"uint128"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "setDeployWalletGrams",
-			"inputs": [
-				{"name":"value","type":"uint128"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "setEthereumEventCode",
-			"inputs": [
-				{"name":"value","type":"cell"}
-			],
-			"outputs": [
+				{"components":[{"name":"ethereum_event_code","type":"cell"},{"name":"outdated_token_roots","type":"address[]"},{"name":"ethereum_event_deploy_pubkey","type":"uint256"},{"name":"ethereum_event_configuration_address","type":"address"},{"name":"token_root_address","type":"address"},{"name":"root_tunnel","type":"address"},{"name":"settings_burn_min_msg_value","type":"uint128"},{"name":"settings_deploy_wallet_grams","type":"uint128"}],"name":"config","type":"tuple"}
 			]
 		},
 		{
@@ -172,46 +138,6 @@
 			],
 			"outputs": [
 				{"name":"internal_owner_address","type":"address"}
-			]
-		},
-		{
-			"name": "ethereum_event_deploy_pubkey",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"ethereum_event_deploy_pubkey","type":"uint256"}
-			]
-		},
-		{
-			"name": "ethereum_event_configuration_address",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"ethereum_event_configuration_address","type":"address"}
-			]
-		},
-		{
-			"name": "token_root_address",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"token_root_address","type":"address"}
-			]
-		},
-		{
-			"name": "settings_burn_min_msg_value",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"settings_burn_min_msg_value","type":"uint128"}
-			]
-		},
-		{
-			"name": "settings_deploy_wallet_grams",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"settings_deploy_wallet_grams","type":"uint128"}
 			]
 		},
 		{
@@ -240,9 +166,7 @@
 		}
 	],
 	"data": [
-		{"key":1,"name":"_randomNonce","type":"uint256"},
-		{"key":2,"name":"ethereum_event_code","type":"cell"},
-		{"key":3,"name":"outdated_token_roots","type":"address[]"}
+		{"key":1,"name":"_randomNonce","type":"uint256"}
 	],
 	"events": [
 		{
