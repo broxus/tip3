@@ -1,6 +1,6 @@
 .macro constructor
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7_with_init_storage$
@@ -11,7 +11,6 @@ THROWIF 51
 PUSHINT 1
 SETGLOB 6
 ;; end constructor protection
-; Decode input parameters
 ENDS
 ; constructor TONTokenWalletHack
 ACCEPT
@@ -24,15 +23,20 @@ SETGLOB 7
 
 .macro mint
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode to
-LDMSGADDR
-; Decode tokens
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -42,7 +46,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -58,14 +61,13 @@ ENDS
 ;; param: grams
 ; function mint
 ACCEPT
-NEWC
-ENDC
+PUSHREF {
+}
 ;; decl: empty
 ;; Remote call ITONTokenWallet.internalTransfer
 ;; push identifier grams
-PUSH S1
 ;; push identifier to
-PUSH S4
+PUSH2 S1, S3
 FALSE
 NEWC
 STSLICECONST x6_
@@ -75,10 +77,8 @@ STZEROES
 STSLICE
 SWAP
 STGRAMS
-PUSHINT 105
-STZEROES
-STSLICECONST 0
-STSLICECONST 1
+PUSHINT 1
+STUR 107
 NEWC
 STSLICECONST x18d21702
 ;; tokens
@@ -87,29 +87,29 @@ PUSH S4
 STUR 128
 ;; sender_public_key
 ;; push identifier wallet_public_key
-GETGLOB 12
+GETGLOB 11
 STUR 256
 ;; sender_address
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 STSLICER
+NEWC
 ;; send_gas_to
 MYADDR
 STSLICER
 ;; notify_receiver
-FALSE
-STIR 1
+STZERO
 ;; payload
 ;; push identifier empty
-PUSH S2
+PUSH S3
 STREFR
+STBREFR
 STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-DROP
 ; end function mint
-BLKDROP 3
+BLKDROP 4
 IFREF {
 	CALL $c7_to_c4$
 }
@@ -117,25 +117,21 @@ TRUE
 SETGLOB 7
 
 .macro c7_to_c4
+GETGLOB 6
+GETGLOB 3
 GETGLOB 2
 NEWC
 STU 256
-GETGLOB 3
-STUR 64
-GETGLOB 6
-STUR 1
-NEWC
-GETGLOB 13
-SWAP
-STSLICE
+STU 64
+STU 1
 GETGLOB 10
+STSLICER
 GETGLOB 11
-GETGLOB 12
-REVERSE 5, 0
-STBREF
-STSLICE
-STREF
+NEWC
 STU 256
+GETGLOB 12
+STSLICER
+STBREFR
 ENDC
 POP C4
 
@@ -145,16 +141,20 @@ CTOS        ; c4
 LDU 256      ; pubkey c4
 LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
-LDREFRTOS
-SETGLOB 13
 LDMSGADDR
+;; load next cell
 LDREF
-PLDU 256
+ENDS
+CTOS
+LDU 256
+LDMSGADDR
+ENDS
 SETGLOB 12
 SETGLOB 11
 SETGLOB 10
 TRUE
-SETGLOB 1   ; pubkey [timestamp] constructor_flag
+SETGLOB 8
+; pubkey [timestamp] constructor_flag
 SETGLOB 6   ; pubkey [timestamp]
 SETGLOB 3   ; D
 SETGLOB 2
@@ -169,16 +169,20 @@ PUSHCONT {
 	LDU 256      ; pubkey c4
 	LDU 64      ; pubkey timestamp c4
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
-	LDREFRTOS
-	SETGLOB 13
 	LDMSGADDR
+	;; load next cell
 	LDREF
-	PLDU 256
+	ENDS
+	CTOS
+	LDU 256
+	LDMSGADDR
+	ENDS
 	SETGLOB 12
 	SETGLOB 11
 	SETGLOB 10
 	TRUE
-	SETGLOB 1   ; pubkey [timestamp] constructor_flag
+	SETGLOB 8
+	; pubkey [timestamp] constructor_flag
 	SETGLOB 6   ; pubkey [timestamp]
 	SETGLOB 3   ; D
 	SETGLOB 2
@@ -195,19 +199,8 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 10
-	; init code
-	PUSHINT 2
-	PUSH S1
-	PUSHINT 64
-	DICTUGETREF
-	PUSHCONT {
-		NEWC
-		ENDC
-	}
-	IFNOT
-	SETGLOB 11
 	; init wallet_public_key
-	PUSHINT 3
+	PUSHINT 2
 	PUSH S1
 	PUSHINT 64
 	DICTUGET
@@ -218,9 +211,9 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IFELSE
-	SETGLOB 12
+	SETGLOB 11
 	; init owner_address
-	PUSHINT 4
+	PUSHINT 3
 	PUSH S1
 	PUSHINT 64
 	DICTUGET
@@ -228,7 +221,7 @@ PUSHCONT {
 		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	}
 	IFNOT
-	SETGLOB 13
+	SETGLOB 12
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -241,8 +234,8 @@ PUSHCONT {
 	SETGLOB 3
 	PUSHINT 0 ; constructor_flag
 	SETGLOB 6
-	TRUE
-	SETGLOB 1
+TRUE
+SETGLOB 8
 }
 IFELSE
 
@@ -254,7 +247,7 @@ IFELSE
 ;; param: msg_balance
 ;; param: int_msg_info
 ;; param: msg_body_slice
-PUSHINT 0  ; main_external trans id
+;; param: transaction_type
 PUSH S2
 CTOS
 PLDU 4
@@ -264,7 +257,8 @@ PUSH S1    ; body
 SEMPTY     ; isEmpty
 IFRET
 PUSH S1 ; body
-LDU 32  ; funcId body'
+LDUQ 32  ; [funcId] body' ok
+THROWIFNOT 60 ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
 SWAP
@@ -277,7 +271,6 @@ THROWIF 60
 
 .internal-alias :main_external, -1
 .internal :main_external
-PUSHINT -1 ; main_external trans id
 PUSH S1
 CALLREF {
 	CALL $c4_to_c7_with_init_storage$
@@ -313,78 +306,77 @@ ISNULL
 THROWIF 60
 
 .macro root_address
+DROP
+ENDS
 CALLREF {
 	CALL $c4_to_c7$
 }
-GETGLOB 10
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
-STSLICECONST xbd6d13f5
-PUSH S1
-STSLICER
-ENDC
-PUSHINT 0
-SENDRAWMSG
-TRUE
-SETGLOB 7
-
-.macro code
-CALLREF {
-	CALL $c4_to_c7$
+;; emitting 1 value
+DUP
+EQINT -1
+PUSHCONT {
+	GETGLOB 10
+	PUSHSLICE xc0000000000000000000000000bd6d13f5
+	NEWC
+	STSLICE
+	PUSH S1
+	STSLICER
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
 }
-GETGLOB 11
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
-STSLICECONST xffbb70d7
-PUSH S1
-STREFR
-ENDC
-PUSHINT 0
-SENDRAWMSG
+IF
+DROP
 TRUE
 SETGLOB 7
 
 .macro wallet_public_key
+DROP
+ENDS
 CALLREF {
 	CALL $c4_to_c7$
 }
-GETGLOB 12
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
-STSLICECONST xe4f8a61e
-PUSH S1
-STUR 256
-ENDC
-PUSHINT 0
-SENDRAWMSG
+;; emitting 1 value
+DUP
+EQINT -1
+PUSHCONT {
+	GETGLOB 11
+	PUSHSLICE xc0000000000000000000000000e4f8a61e
+	NEWC
+	STSLICE
+	PUSH S1
+	STUR 256
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+DROP
 TRUE
 SETGLOB 7
 
 .macro owner_address
+DROP
+ENDS
 CALLREF {
 	CALL $c4_to_c7$
 }
-GETGLOB 13
-NEWC
-PUSHSLICE xc0000000000000000000000002_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
-STSLICECONST xda4604cb
-PUSH S1
-STSLICER
-ENDC
-PUSHINT 0
-SENDRAWMSG
+;; emitting 1 value
+DUP
+EQINT -1
+PUSHCONT {
+	GETGLOB 12
+	PUSHSLICE xc0000000000000000000000000da4604cb
+	NEWC
+	STSLICE
+	PUSH S1
+	STSLICER
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+DROP
 TRUE
 SETGLOB 7
 
@@ -426,20 +418,8 @@ PUSHCONT {
 }
 IFJMP
 DUP
-PUSHINT 2142990551
-LEQ
-PUSHCONT {
-	DUP
-	PUSHINT 1756716863
-	EQUAL
-	IFJMPREF {
-		CALL $constructor$
-	}
-	DUP
-	PUSHINT 2142990551
-	EQUAL
-	IFJMPREF {
-		CALL $code$
-	}
+PUSHINT 1756716863
+EQUAL
+IFJMPREF {
+	CALL $constructor$
 }
-IFJMP

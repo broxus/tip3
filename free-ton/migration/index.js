@@ -56,7 +56,6 @@ const tonWrapper = new freeton.TonWrapper({
     constructorParams: {},
     initParams: {
       root_address: RootTokenContractExternalOwner.address,
-      code: TONTokenWallet.code,
       wallet_public_key: `0x${tonWrapper.keys[4].public}`,
       owner_address: ZERO_ADDRESS
     },
@@ -140,7 +139,6 @@ const tonWrapper = new freeton.TonWrapper({
     constructorParams: {},
     initParams: {
       root_address: RootTokenContractInternalOwner.address,
-      code: TONTokenWallet.code,
       wallet_public_key: `0x${tonWrapper.keys[2].public}`,
       owner_address: ZERO_ADDRESS
     },
@@ -167,7 +165,6 @@ const tonWrapper = new freeton.TonWrapper({
     constructorParams: {},
     initParams: {
       root_address: RootTokenContractExternalOwner.address,
-      code: TONTokenWalletHack.code,
       wallet_public_key: `0x${tonWrapper.keys[9].public}`,
       owner_address: ZERO_ADDRESS
     },

@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.39.0;
+pragma ton-solidity ^0.43.0;
 
 interface IRootTokenContract {
 
@@ -6,13 +6,16 @@ interface IRootTokenContract {
         bytes name;
         bytes symbol;
         uint8 decimals;
-        TvmCell wallet_code;
         uint256 root_public_key;
         address root_owner_address;
         uint128 total_supply;
     }
 
     function getDetails() external view responsible returns (IRootTokenContractDetails);
+
+    function getTotalSupply() external view responsible returns (uint128);
+
+    function getWalletCode() external view responsible returns (TvmCell);
 
     function getWalletAddress(uint256 wallet_public_key, address owner_address) external view responsible returns(address);
 

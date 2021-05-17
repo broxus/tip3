@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.39.0;
+pragma ton-solidity ^0.43.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
@@ -61,7 +61,7 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
     }
 
     function getVersion() override external pure responsible returns (uint32) {
-        return 3;
+        return 4;
     }
 
     /*
@@ -79,11 +79,26 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
             name,
             symbol,
             decimals,
-            wallet_code,
             root_public_key,
             root_owner_address,
             total_supply
         );
+    }
+
+    /*
+        @notice Get total supply
+        @returns total_supply Token total supply
+    */
+    function getTotalSupply() override external view responsible returns (uint128) {
+        return { value: 0, bounce: false, flag: 64 } total_supply;
+    }
+
+    /*
+        @notice Get Token wallet code
+        @returns code Token wallet code
+    */
+    function getWalletCode() override external view responsible returns (TvmCell) {
+        return { value: 0, bounce: false, flag: 64 } wallet_code;
     }
 
     /*
@@ -174,7 +189,6 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
             contr: TONTokenWallet,
             varInit: {
                 root_address: address(this),
-                code: wallet_code,
                 wallet_public_key: wallet_public_key_,
                 owner_address: owner_address_
             },
@@ -243,7 +257,6 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
             pubkey: wallet_public_key_,
             varInit: {
                 root_address: address(this),
-                code: wallet_code,
                 wallet_public_key: wallet_public_key_,
                 owner_address: owner_address_
             }
@@ -481,7 +494,6 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
             contr: TONTokenWallet,
             varInit: {
                 root_address: address(this),
-                code: wallet_code,
                 wallet_public_key: wallet_public_key_,
                 owner_address: owner_address_
             },

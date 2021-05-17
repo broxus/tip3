@@ -33,7 +33,16 @@
 				{"name":"_answer_id","type":"uint32"}
 			],
 			"outputs": [
-				{"components":[{"name":"root_address","type":"address"},{"name":"code","type":"cell"},{"name":"wallet_public_key","type":"uint256"},{"name":"owner_address","type":"address"},{"name":"balance","type":"uint128"},{"name":"receive_callback","type":"address"},{"name":"bounced_callback","type":"address"},{"name":"allow_non_notifiable","type":"bool"}],"name":"value0","type":"tuple"}
+				{"components":[{"name":"root_address","type":"address"},{"name":"wallet_public_key","type":"uint256"},{"name":"owner_address","type":"address"},{"name":"balance","type":"uint128"},{"name":"receive_callback","type":"address"},{"name":"bounced_callback","type":"address"},{"name":"allow_non_notifiable","type":"bool"}],"name":"value0","type":"tuple"}
+			]
+		},
+		{
+			"name": "getWalletCode",
+			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"cell"}
 			]
 		},
 		{
@@ -188,9 +197,8 @@
 	],
 	"data": [
 		{"key":1,"name":"root_address","type":"address"},
-		{"key":2,"name":"code","type":"cell"},
-		{"key":3,"name":"wallet_public_key","type":"uint256"},
-		{"key":4,"name":"owner_address","type":"address"}
+		{"key":2,"name":"wallet_public_key","type":"uint256"},
+		{"key":3,"name":"owner_address","type":"address"}
 	],
 	"events": [
 	]
