@@ -33,15 +33,6 @@ ENDS
 ;; param: external_owner_pubkey_
 ;; param: internal_owner_address_
 ; constructor TokenEventProxy
-;; push identifier error_wrong_tvm_key
-GETGLOB 23
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 GETGLOB 2
 ;; ==
 GETGLOB 5
@@ -53,18 +44,9 @@ PUSHCONT {
 }
 IF
 EQUAL
-THROWANYIFNOT
-;; push identifier error_define_public_key_or_owner_address
-GETGLOB 21
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 108
 ;; push identifier external_owner_pubkey_
-PUSH S2
+PUSH S1
 NEQINT 0
 ;; short-circuiting &&
 DUP
@@ -72,7 +54,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier internal_owner_address_
-	PUSH S1
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -84,7 +66,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
-	PUSH S2
+	PUSH S1
 	EQINT 0
 	;; short-circuiting &&
 	DUP
@@ -92,7 +74,7 @@ PUSHCONT {
 		DROP
 		;; get member value
 		;; push identifier internal_owner_address_
-		PUSH S1
+		DUP
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -101,7 +83,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 106
 ACCEPT
 ; expValue
 ; end expValue
@@ -222,15 +204,6 @@ CALL $setConfiguration_internal_macro$
 .macro setConfiguration_internal_macro
 ;; param: _config
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isOwner
 ;; return
 ; function isInternalOwner
@@ -285,7 +258,7 @@ PUSHCONT {
 }
 IFNOT
 ; end function isOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function setConfiguration
 ; expValue
 ; end expValue
@@ -444,41 +417,22 @@ CALL $broxusBridgeCallback_internal_macro$
 ;; param: eventData
 ;; param: gasBackAddress
 ; function broxusBridgeCallback
-;; push identifier error_paused
-GETGLOB 22
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; !
 ;; push identifier paused
 GETGLOB 16
-NOT
-THROWANYIFNOT
+THROWIF 107
 ;; push identifier eventData
 PUSH S1
 CALLREF {
 	CALL $getExpectedEventAddress_internal_macro$
 }
 ;; decl: expectedSenderAddress
-;; push identifier error_message_sender_is_not_valid_event
-GETGLOB 19
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier expectedSenderAddress
-PUSH S1
+DUP
 ;; get member sender
 GETGLOB 9
 SDEQ
-THROWANYIFNOT
+THROWIFNOT 103
 ;; get member ethereumEventConfiguration
 ;; push identifier eventData
 PUSH S2
@@ -546,30 +500,12 @@ STU 256
 ENDC
 CTOS
 ;; decl: owner_address
-;; push identifier error_message_not_valid_payload
-GETGLOB 20
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier tokens
-PUSH S5
+PUSH S4
 GTINT 0
-THROWANYIFNOT
-;; push identifier error_message_not_valid_payload
-GETGLOB 20
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
+THROWIFNOT 104
 ;; push identifier owner_pubkey
-PUSH S2
+PUSH S1
 NEQINT 0
 ;; short-circuiting &&
 DUP
@@ -577,7 +513,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address
-	PUSH S1
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -589,7 +525,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_pubkey
-	PUSH S2
+	PUSH S1
 	EQINT 0
 	;; short-circuiting &&
 	DUP
@@ -597,7 +533,7 @@ PUSHCONT {
 		DROP
 		;; get member value
 		;; push identifier owner_address
-		PUSH S1
+		DUP
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -606,7 +542,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 104
 ;; Remote call IRootTokenContract.deployWallet
 ;; get member root_tunnel
 ;; push identifier config
@@ -877,7 +813,7 @@ IFELSE
 ;; end if
 ; end function burnCallbackV1
 BLKDROP 7
-CALLREF {
+IFREF {
 	CALL $c7_to_c4$
 }
 TRUE
@@ -1193,15 +1129,6 @@ ENDS
 ;; param: root
 ;; param: to
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isOwner
 ;; return
 ; function isInternalOwner
@@ -1256,7 +1183,7 @@ PUSHCONT {
 }
 IFNOT
 ; end function isOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function withdrawExtraGasFromTokenRoot
 ACCEPT
 ;; Remote call ISendSurplusGas.sendSurplusGas
@@ -1297,15 +1224,6 @@ LDI 1
 ENDS
 ;; param: value
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isOwner
 ;; return
 ; function isInternalOwner
@@ -1360,7 +1278,7 @@ PUSHCONT {
 }
 IFNOT
 ; end function isOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function setPaused
 ACCEPT
 ; expValue
@@ -1488,15 +1406,6 @@ ENDS
 ;; param: external_owner_pubkey_
 ;; param: internal_owner_address_
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isOwner
 ;; return
 ; function isInternalOwner
@@ -1551,19 +1460,10 @@ PUSHCONT {
 }
 IFNOT
 ; end function isOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function transferOwner
-;; push identifier error_define_public_key_or_owner_address
-GETGLOB 21
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier external_owner_pubkey_
-PUSH S2
+PUSH S1
 NEQINT 0
 ;; short-circuiting &&
 DUP
@@ -1571,7 +1471,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier internal_owner_address_
-	PUSH S1
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -1583,7 +1483,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
-	PUSH S2
+	PUSH S1
 	EQINT 0
 	;; short-circuiting &&
 	DUP
@@ -1591,7 +1491,7 @@ PUSHCONT {
 		DROP
 		;; get member value
 		;; push identifier internal_owner_address_
-		PUSH S1
+		DUP
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -1600,7 +1500,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 106
 ACCEPT
 ; expValue
 ; end expValue
@@ -1625,11 +1525,6 @@ SETGLOB 7
 
 .macro transferOwnership
 DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1662,15 +1557,6 @@ ENDS
 ;; param: external_owner_pubkey_
 ;; param: internal_owner_address_
 ; modifier onlyOwner
-;; push identifier error_message_sender_is_not_my_owner
-GETGLOB 17
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ; function isOwner
 ;; return
 ; function isInternalOwner
@@ -1725,19 +1611,10 @@ PUSHCONT {
 }
 IFNOT
 ; end function isOwner
-THROWANYIFNOT
+THROWIFNOT 100
 ; function transferOwnership
-;; push identifier error_define_public_key_or_owner_address
-GETGLOB 21
-DUP
-LESSINT 2
-PUSHCONT {
-	DROP
-	PUSHINT 100
-}
-IF
 ;; push identifier external_owner_pubkey_
-PUSH S2
+PUSH S1
 NEQINT 0
 ;; short-circuiting &&
 DUP
@@ -1745,7 +1622,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier internal_owner_address_
-	PUSH S1
+	DUP
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -1757,7 +1634,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier external_owner_pubkey_
-	PUSH S2
+	PUSH S1
 	EQINT 0
 	;; short-circuiting &&
 	DUP
@@ -1765,7 +1642,7 @@ PUSHCONT {
 		DROP
 		;; get member value
 		;; push identifier internal_owner_address_
-		PUSH S1
+		DUP
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -1774,7 +1651,7 @@ PUSHCONT {
 	IF
 }
 IFNOT
-THROWANYIFNOT
+THROWIFNOT 106
 ACCEPT
 ;; Remote call ITransferOwner.transferOwner
 ;; push identifier target
@@ -2122,20 +1999,6 @@ GETGLOB 15
 STUR 128
 GETGLOB 16
 STIR 1
-GETGLOB 17
-STUR 8
-GETGLOB 18
-STUR 8
-GETGLOB 19
-STUR 8
-GETGLOB 20
-STUR 8
-GETGLOB 21
-STUR 8
-GETGLOB 22
-STUR 8
-GETGLOB 23
-STUR 8
 STBREFR
 STBREFR
 STBREFR
@@ -2195,21 +2058,7 @@ LDMSGADDR
 LDU 128
 LDU 128
 LDI 1
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
-LDU 8
 ENDS
-SETGLOB 23
-SETGLOB 22
-SETGLOB 21
-SETGLOB 20
-SETGLOB 19
-SETGLOB 18
-SETGLOB 17
 SETGLOB 16
 SETGLOB 15
 SETGLOB 14
@@ -2280,21 +2129,7 @@ PUSHCONT {
 	LDU 128
 	LDU 128
 	LDI 1
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
-	LDU 8
 	ENDS
-	SETGLOB 23
-	SETGLOB 22
-	SETGLOB 21
-	SETGLOB 20
-	SETGLOB 19
-	SETGLOB 18
-	SETGLOB 17
 	SETGLOB 16
 	SETGLOB 15
 	SETGLOB 14
@@ -2352,27 +2187,6 @@ PUSHCONT {
 	; init paused
 	PUSHINT 0
 	SETGLOB 16
-	; init error_message_sender_is_not_my_owner
-	PUSHINT 0
-	SETGLOB 17
-	; init error_message_sender_is_not_my_root
-	PUSHINT 0
-	SETGLOB 18
-	; init error_message_sender_is_not_valid_event
-	PUSHINT 0
-	SETGLOB 19
-	; init error_message_not_valid_payload
-	PUSHINT 0
-	SETGLOB 20
-	; init error_define_public_key_or_owner_address
-	PUSHINT 0
-	SETGLOB 21
-	; init error_paused
-	PUSHINT 0
-	SETGLOB 22
-	; init error_wrong_tvm_key
-	PUSHINT 0
-	SETGLOB 23
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -2390,27 +2204,6 @@ SETGLOB 8
 	;; init state var: paused
 	FALSE
 	SETGLOB 16
-	;; init state var: error_message_sender_is_not_my_owner
-	PUSHINT 100
-	SETGLOB 17
-	;; init state var: error_message_sender_is_not_my_root
-	PUSHINT 102
-	SETGLOB 18
-	;; init state var: error_message_sender_is_not_valid_event
-	PUSHINT 103
-	SETGLOB 19
-	;; init state var: error_message_not_valid_payload
-	PUSHINT 104
-	SETGLOB 20
-	;; init state var: error_define_public_key_or_owner_address
-	PUSHINT 106
-	SETGLOB 21
-	;; init state var: error_paused
-	PUSHINT 107
-	SETGLOB 22
-	;; init state var: error_wrong_tvm_key
-	PUSHINT 108
-	SETGLOB 23
 }
 IFELSE
 

@@ -48,13 +48,13 @@ contract TokenEventProxy is
 
     bool public paused = false;
 
-    uint8 error_message_sender_is_not_my_owner = 100;
-    uint8 error_message_sender_is_not_my_root = 102;
-    uint8 error_message_sender_is_not_valid_event = 103;
-    uint8 error_message_not_valid_payload = 104;
-    uint8 error_define_public_key_or_owner_address = 106;
-    uint8 error_paused = 107;
-    uint8 error_wrong_tvm_key = 108;
+    uint8 constant error_message_sender_is_not_my_owner = 100;
+    uint8 constant error_message_sender_is_not_my_root = 102;
+    uint8 constant error_message_sender_is_not_valid_event = 103;
+    uint8 constant error_message_not_valid_payload = 104;
+    uint8 constant error_define_public_key_or_owner_address = 106;
+    uint8 constant error_paused = 107;
+    uint8 constant error_wrong_tvm_key = 108;
 
     event TokenBurn(
         int8 wid,
@@ -131,7 +131,7 @@ contract TokenEventProxy is
         uint256 sender_public_key,
         address sender_address,
         address wallet_address
-    ) external functionID(0x71dd2774) {
+    ) external view functionID(0x71dd2774) {
         tvm.rawReserve(
             math.max(start_gas_balance, address(this).balance - msg.value),
             2
@@ -247,7 +247,7 @@ contract TokenEventProxy is
         address target,
         uint256 external_owner_pubkey_,
         address internal_owner_address_
-    ) external view onlyOwner {
+    ) external pure onlyOwner {
         require((external_owner_pubkey_ != 0 && internal_owner_address_.value == 0) ||
         (external_owner_pubkey_ == 0 && internal_owner_address_.value != 0),
         error_define_public_key_or_owner_address);
