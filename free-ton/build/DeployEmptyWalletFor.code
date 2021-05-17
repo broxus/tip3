@@ -1,6 +1,6 @@
 .macro constructor
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7_with_init_storage$
@@ -11,7 +11,6 @@ THROWIF 51
 PUSHINT 1
 SETGLOB 6
 ;; end constructor protection
-; Decode input parameters
 ENDS
 ; constructor DeployEmptyWalletFor
 ACCEPT
@@ -24,15 +23,12 @@ SETGLOB 7
 
 .macro deployEmptyWalletFor
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode pubkey
 LDU 256
-; Decode addr
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -67,10 +63,8 @@ GETGLOB 11
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x41dcd6500000000000000000000000000004_
+PUSHSLICE x41dcd6500000000000000000000000000003_
 STSLICER
-STSLICECONST 0
-STSLICECONST 1
 NEWC
 STSLICECONST x542b1672
 ;; deploy_grams
@@ -87,7 +81,9 @@ STSLICER
 ;; gas_back_address
 ;; address.makeAddrStd()
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-STSLICER
+NEWC
+STSLICE 
+STBREFR
 STBREFR
 ENDC
 PUSHINT 0
@@ -102,12 +98,11 @@ SETGLOB 7
 
 .macro getLatestPublicKey
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
 ENDS
 ; function getLatestPublicKey
 ;; return
@@ -127,11 +122,8 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xc2b17540
+	PUSHSLICE x00000000000000000000000030ac5d502_
+	STSLICER
 	PUSH S1
 	STUR 256
 	ENDC
@@ -148,12 +140,11 @@ SETGLOB 7
 
 .macro getLatestAddr
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
 ENDS
 ; function getLatestAddr
 ;; return
@@ -173,13 +164,13 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
+	PUSHINT 1
+	STUR 98
+	NEWC
 	STSLICECONST xb990b063
-	PUSH S1
+	PUSH S2
 	STSLICER
+	STBREFR
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
@@ -194,12 +185,11 @@ SETGLOB 7
 
 .macro getRoot
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
 ENDS
 ; function getRoot
 ;; return
@@ -219,13 +209,13 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
+	PUSHINT 1
+	STUR 98
+	NEWC
 	STSLICECONST xab304069
-	PUSH S1
+	PUSH S2
 	STSLICER
+	STBREFR
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
@@ -239,25 +229,25 @@ TRUE
 SETGLOB 7
 
 .macro c7_to_c4
+GETGLOB 6
+GETGLOB 3
 GETGLOB 2
 NEWC
 STU 256
-GETGLOB 3
-STUR 64
-GETGLOB 6
-STUR 1
-NEWC
-GETGLOB 12
-GETGLOB 13
-XCHG s2
-STU 256
-STSLICE
+STU 64
+STU 1
 GETGLOB 10
+STUR 256
 GETGLOB 11
-REVERSE 4, 0
-STBREF
-STU 256
-STSLICE
+NEWC
+STSLICE 
+GETGLOB 12
+STUR 256
+GETGLOB 13
+NEWC
+STSLICE 
+STBREFR
+STBREFR
 ENDC
 POP C4
 
@@ -267,17 +257,26 @@ CTOS        ; c4
 LDU 256      ; pubkey c4
 LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
-LDREFRTOS
 LDU 256
+;; load next cell
+LDREF
+ENDS
+CTOS
+LDMSGADDR
+LDU 256
+;; load next cell
+LDREF
+ENDS
+CTOS
+LDMSGADDR
+ENDS
 SETGLOB 13
 SETGLOB 12
-LDU 256
-LDMSGADDR
-DROP
 SETGLOB 11
 SETGLOB 10
 TRUE
-SETGLOB 1   ; pubkey [timestamp] constructor_flag
+SETGLOB 8
+; pubkey [timestamp] constructor_flag
 SETGLOB 6   ; pubkey [timestamp]
 SETGLOB 3   ; D
 SETGLOB 2
@@ -292,17 +291,26 @@ PUSHCONT {
 	LDU 256      ; pubkey c4
 	LDU 64      ; pubkey timestamp c4
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
-	LDREFRTOS
 	LDU 256
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+	LDU 256
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+	ENDS
 	SETGLOB 13
 	SETGLOB 12
-	LDU 256
-	LDMSGADDR
-	DROP
 	SETGLOB 11
 	SETGLOB 10
 	TRUE
-	SETGLOB 1   ; pubkey [timestamp] constructor_flag
+	SETGLOB 8
+	; pubkey [timestamp] constructor_flag
 	SETGLOB 6   ; pubkey [timestamp]
 	SETGLOB 3   ; D
 	SETGLOB 2
@@ -350,8 +358,8 @@ PUSHCONT {
 	SETGLOB 3
 	PUSHINT 0 ; constructor_flag
 	SETGLOB 6
-	TRUE
-	SETGLOB 1
+TRUE
+SETGLOB 8
 }
 IFELSE
 
@@ -363,7 +371,7 @@ IFELSE
 ;; param: msg_balance
 ;; param: int_msg_info
 ;; param: msg_body_slice
-PUSHINT 0  ; main_external trans id
+;; param: transaction_type
 PUSH S2
 CTOS
 PLDU 4
@@ -373,7 +381,8 @@ PUSH S1    ; body
 SEMPTY     ; isEmpty
 IFRET
 PUSH S1 ; body
-LDU 32  ; funcId body'
+LDUQ 32  ; [funcId] body' ok
+THROWIFNOT 60 ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
 SWAP
@@ -386,7 +395,6 @@ THROWIF 60
 
 .internal-alias :main_external, -1
 .internal :main_external
-PUSHINT -1 ; main_external trans id
 PUSH S1
 CALLREF {
 	CALL $c4_to_c7_with_init_storage$

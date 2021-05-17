@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.39.0;
+pragma ton-solidity ^0.43.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -22,7 +22,6 @@ import "./interfaces/IVersioned.sol";
 contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet, IVersioned {
 
     address static root_address;
-    TvmCell static code;
     //for external owner
     uint256 static wallet_public_key;
     //for internal owner
@@ -52,7 +51,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     }
 
     function getVersion() override external pure responsible returns (uint32) {
-        return 3;
+        return 4;
     }
 
     function balance() override external view responsible returns (uint128) {
@@ -62,7 +61,6 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     /*
         @notice Get details about token wallet
         @returns root_address Token root address
-        @returns code Token wallet code
         @returns wallet_public_key Token wallet owner public key
         @returns owner_address Token wallet owner address
         @returns balance Token wallet balance in tokens
@@ -73,7 +71,6 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     function getDetails() override external view responsible returns (ITONTokenWalletDetails) {
         return { value: 0, bounce: false, flag: 64 } ITONTokenWalletDetails(
             root_address,
-            code,
             wallet_public_key,
             owner_address,
             balance_,
@@ -84,10 +81,17 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
     }
 
     /*
-        @notice Accept minted tokens from root
-        @dev Can be called only by root token
-        @param tokens How much tokens to accept
+        @returns code Token wallet code
     */
+    function getWalletCode() override external view responsible returns (TvmCell) {
+        return { value: 0, bounce: false, flag: 64 } tvm.code();
+    }
+
+/*
+    @notice Accept minted tokens from root
+    @dev Can be called only by root token
+    @param tokens How much tokens to accept
+*/
     function accept(
         uint128 tokens
     )
@@ -199,12 +203,11 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             contr: TONTokenWallet,
             varInit: {
                 root_address: root_address,
-                code: code,
                 wallet_public_key: recipient_public_key,
                 owner_address: recipient_address
             },
             pubkey: recipient_public_key,
-            code: code
+            code: tvm.code()
         });
 
         address to;
@@ -626,12 +629,11 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             contr: TONTokenWallet,
             varInit: {
                 root_address: root_address,
-                code: code,
                 wallet_public_key: wallet_public_key_,
                 owner_address: owner_address_
             },
             pubkey: wallet_public_key_,
-            code: code
+            code: tvm.code()
         });
 
         return address(tvm.hash(stateInit));

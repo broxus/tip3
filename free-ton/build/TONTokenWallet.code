@@ -1,6 +1,6 @@
 .macro constructor
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7_with_init_storage$
@@ -11,11 +11,10 @@ THROWIF 51
 PUSHINT 1
 SETGLOB 6
 ;; end constructor protection
-; Decode input parameters
 ENDS
 ; constructor TONTokenWallet
 ;; push identifier wallet_public_key
-GETGLOB 12
+GETGLOB 11
 ;; ==
 GETGLOB 2
 EQUAL
@@ -25,7 +24,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -35,7 +34,7 @@ PUSHCONT {
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		EQINT 0
 	}
 	IFNOT
@@ -47,31 +46,31 @@ ACCEPT
 ; end expValue
 TRUE
 ; colValue
-SETGLOB 18
+SETGLOB 17
 ; end colValue
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 PUSHCONT {
 	;; Remote call ITokenWalletDeployedCallback.notifyWalletDeployed
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHSLICE x22710000000000000000000000000004_
+	PUSHSLICE x22710000000000000000000000000003_
 	STSLICER
-	STSLICECONST 0
-	STSLICECONST 0
+	NEWC
 	STSLICECONST x4853bb37
 	;; root
 	;; push identifier root_address
 	GETGLOB 10
 	STSLICER
+	STBREFR
 	ENDC
 	PUSHINT 1
 	SENDRAWMSG
@@ -92,11 +91,10 @@ GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
-; Decode input parameters
 ENDS
 ; function getVersion
 ;; return
-PUSHINT 3
+PUSHINT 4
 ; end function getVersion
 ;; emitting 1 value(s)
 PUSH S1
@@ -111,11 +109,8 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xada94d2f
+	PUSHSLICE x0000000000000000000000002b6a534be_
+	STSLICER
 	PUSH S1
 	STUR 32
 	ENDC
@@ -141,10 +136,8 @@ PUSHCONT {
 	SWAP
 	STGRAMS
 	STDICT
-	PUSHINT 104
+	PUSHINT 106
 	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
 	GETGLOB 4
 	INDEX 5
 	STUR 32
@@ -165,7 +158,7 @@ SETGLOB 7
 
 .macro balance
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -175,7 +168,6 @@ GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
-; Decode input parameters
 ENDS
 ; function balance
 ;; return
@@ -188,7 +180,7 @@ PUSHINT 64
 SETINDEXQ 4
 SETGLOB 4
 ;; push identifier balance_
-GETGLOB 14
+GETGLOB 13
 ; end function balance
 ;; emitting 1 value(s)
 PUSH S1
@@ -203,11 +195,8 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xc969587f
+	PUSHSLICE x000000000000000000000000325a561fe_
+	STSLICER
 	PUSH S1
 	STUR 128
 	ENDC
@@ -233,10 +222,8 @@ PUSHCONT {
 	SWAP
 	STGRAMS
 	STDICT
-	PUSHINT 104
+	PUSHINT 106
 	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
 	GETGLOB 4
 	INDEX 5
 	STUR 32
@@ -257,7 +244,7 @@ SETGLOB 7
 
 .macro getDetails
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -267,7 +254,6 @@ GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
-; Decode input parameters
 ENDS
 ; function getDetails
 ;; return
@@ -281,21 +267,19 @@ SETINDEXQ 4
 SETGLOB 4
 ;; push identifier root_address
 GETGLOB 10
-;; push identifier code
-GETGLOB 11
 ;; push identifier wallet_public_key
-GETGLOB 12
+GETGLOB 11
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 ;; push identifier balance_
-GETGLOB 14
+GETGLOB 13
 ;; push identifier receive_callback
-GETGLOB 16
+GETGLOB 15
 ;; push identifier bounced_callback
-GETGLOB 17
+GETGLOB 16
 ;; push identifier allow_non_notifiable
-GETGLOB 18
-TUPLE 8
+GETGLOB 17
+TUPLE 7
 ; end function getDetails
 ;; emitting 1 value(s)
 PUSH S1
@@ -310,33 +294,33 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 98
 	NEWC
-	STSLICECONST xa7161091
+	STSLICECONST xf9b25ee1
 	PUSH S2
-	UNTUPLE 8
-	BLKSWAP 1, 8
-	PUSH S8
-	STSLICER
+	UNTUPLE 7
+	BLKSWAP 1, 7
 	PUSH S7
-	STREFR
+	STSLICER
 	PUSH S6
 	STUR 256
+	NEWC
+	PUSH S6
+	STSLICER
+	PUSH S5
+	STUR 128
+	NEWC
+	PUSH S5
+	STSLICER
+	NEWC
 	PUSH S5
 	STSLICER
 	PUSH S4
-	STUR 128
-	NEWC
-	PUSH S4
-	STSLICER
-	PUSH S3
-	STSLICER
-	PUSH S2
 	STIR 1
-	BLKDROP2 8, 2
+	BLKDROP2 7, 4
+	STBREFR
+	STBREFR
 	STBREFR
 	STBREFR
 	ENDC
@@ -362,35 +346,35 @@ PUSHCONT {
 	SWAP
 	STGRAMS
 	STDICT
-	PUSHINT 104
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 106
 	NEWC
 	GETGLOB 4
 	INDEX 5
 	STUR 32
 	PUSH S2
-	UNTUPLE 8
-	BLKSWAP 1, 8
-	PUSH S8
-	STSLICER
+	UNTUPLE 7
+	BLKSWAP 1, 7
 	PUSH S7
-	STREFR
+	STSLICER
 	PUSH S6
 	STUR 256
+	NEWC
+	PUSH S6
+	STSLICER
+	PUSH S5
+	STUR 128
+	NEWC
+	PUSH S5
+	STSLICER
+	NEWC
 	PUSH S5
 	STSLICER
 	PUSH S4
-	STUR 128
-	NEWC
-	PUSH S4
-	STSLICER
-	PUSH S3
-	STSLICER
-	PUSH S2
 	STIR 1
-	BLKDROP2 8, 2
+	BLKDROP2 7, 4
+	STBREFR
+	STBREFR
 	STBREFR
 	STBREFR
 	ENDC
@@ -406,15 +390,109 @@ IFREF {
 TRUE
 SETGLOB 7
 
-.macro accept
+.macro getWalletCode
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode tokens
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+; function getWalletCode
+;; return
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+FALSE
+SETINDEXQ 1
+PUSHINT 64
+SETINDEXQ 4
+SETGLOB 4
+GETGLOB 1
+PUSHREF {
+	DUP
+	SETGLOB 1
+	BLESS
+	JMPX
+}
+NEWC
+STSLICECONST x8adb35
+STREF
+STSLICE
+ENDC
+; end function getWalletCode
+;; emitting 1 value(s)
+PUSH S1
+EQINT -1
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x000000000000000000000000205f0cd66_
+	STSLICER
+	PUSH S1
+	STREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	PUSH S1
+	INDEX 2
+	GETGLOB 9
+	BLKSWAP 1, 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	PUSH S1
+	STREFR
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+DROP
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro accept
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -436,20 +514,17 @@ THROWIFNOT 102
 ; function accept
 ACCEPT
 ;; push identifier tokens
-DUP
 ; expValue
 ;; fetch balance_
-GETGLOB 14
 ; end expValue
-SWAP
-ADD
-UFITS 128
+GETGLOB 13
 ; colValue
-SETGLOB 14
 ; end colValue
 ; end function accept
 ; end modifier onlyRoot
-DROP
+ADD
+UFITS 128
+SETGLOB 13
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -458,7 +533,7 @@ SETGLOB 7
 
 .macro allowance
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -468,7 +543,6 @@ GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
-; Decode input parameters
 ENDS
 ; function allowance
 ;; return
@@ -481,12 +555,12 @@ PUSHINT 64
 SETINDEXQ 4
 SETGLOB 4
 ;; push identifier allowance_
-GETGLOB 15
+GETGLOB 14
 ISNULL
 NOT
 PUSHCONT {
 	;; push identifier allowance_
-	GETGLOB 15
+	GETGLOB 14
 	DUP
 	ISNULL
 	THROWIF 63
@@ -512,12 +586,11 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 96
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
+	PUSHINT 1
+	STUR 98
+	NEWC
 	STSLICECONST x986d73bc
-	PUSH S1
+	PUSH S2
 	UNTUPLE 2
 	ROT
 	PUSH S2
@@ -525,6 +598,7 @@ PUSHCONT {
 	PUSH S1
 	STSLICER
 	BLKDROP2 2, 1
+	STBREFR
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
@@ -548,14 +622,13 @@ PUSHCONT {
 	SWAP
 	STGRAMS
 	STDICT
-	PUSHINT 104
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
+	PUSHINT 1
+	STUR 106
+	NEWC
 	GETGLOB 4
 	INDEX 5
 	STUR 32
-	PUSH S1
+	PUSH S2
 	UNTUPLE 2
 	ROT
 	PUSH S2
@@ -563,6 +636,7 @@ PUSHCONT {
 	PUSH S1
 	STSLICER
 	BLKDROP2 2, 1
+	STBREFR
 	ENDC
 	GETGLOB 4
 	INDEX 4
@@ -578,13 +652,11 @@ SETGLOB 7
 
 .macro approve
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode spender
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -594,7 +666,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode remaining_tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -604,7 +675,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -621,7 +691,7 @@ ENDS
 ; modifier onlyOwner
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -631,7 +701,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -642,14 +712,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		;; ==
 		GETGLOB 5
 		DUP
@@ -675,17 +745,15 @@ PUSHCONT {
 	DROP
 	;; !
 	;; push identifier allowance_
-	GETGLOB 15
+	GETGLOB 14
 	ISNULL
-	NOT
-	NOT
 }
 IFNOT
 THROWIFNOT 106
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -713,14 +781,14 @@ IFELSE
 ;; end if
 ;; if
 ;; push identifier allowance_
-GETGLOB 15
+GETGLOB 14
 ISNULL
 NOT
 PUSHCONT {
 	;; if
 	;; get member remaining_tokens
 	;; push identifier allowance_
-	GETGLOB 15
+	GETGLOB 14
 	DUP
 	ISNULL
 	THROWIF 63
@@ -733,12 +801,11 @@ PUSHCONT {
 		; expValue
 		; end expValue
 		;; push identifier tokens
-		DUP
 		;; push identifier spender
-		PUSH S3
+		PUSH2 S0, S2
 		TUPLE 2
 		; colValue
-		SETGLOB 15
+		SETGLOB 14
 		; end colValue
 	}
 	IF
@@ -748,12 +815,11 @@ PUSHCONT {
 	; expValue
 	; end expValue
 	;; push identifier tokens
-	DUP
 	;; push identifier spender
-	PUSH S3
+	PUSH2 S0, S2
 	TUPLE 2
 	; colValue
-	SETGLOB 15
+	SETGLOB 14
 	; end colValue
 }
 IFELSE
@@ -761,7 +827,7 @@ IFELSE
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -772,10 +838,8 @@ PUSHCONT {
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHINT 109
+	PUSHINT 111
 	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
 	ENDC
 	PUSHINT 128
 	SENDRAWMSG
@@ -793,17 +857,16 @@ SETGLOB 7
 
 .macro disapprove
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
 ENDS
 ; modifier onlyOwner
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -813,7 +876,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -824,14 +887,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		;; ==
 		GETGLOB 5
 		DUP
@@ -851,7 +914,7 @@ THROWIFNOT 100
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -881,12 +944,12 @@ IFELSE
 ; end expValue
 NULL
 ; colValue
-SETGLOB 15
+SETGLOB 14
 ; end colValue
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -897,10 +960,8 @@ PUSHCONT {
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHINT 109
+	PUSHINT 111
 	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
 	ENDC
 	PUSHINT 128
 	SENDRAWMSG
@@ -917,13 +978,11 @@ SETGLOB 7
 
 .macro transferToRecipient
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode recipient_public_key
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -933,7 +992,6 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
-; Decode recipient_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -943,7 +1001,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -953,7 +1010,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode deploy_grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -963,7 +1019,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode transfer_grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -973,7 +1028,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -983,7 +1037,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode notify_receiver
 LDIQ 1
 PUSHCONT {
 	;; load next cell
@@ -993,7 +1046,6 @@ PUSHCONT {
 	LDI 1
 }
 IFNOT
-; Decode payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -1008,7 +1060,7 @@ ENDS
 ; modifier onlyOwner
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1018,7 +1070,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -1029,14 +1081,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		;; ==
 		GETGLOB 5
 		DUP
@@ -1061,7 +1113,7 @@ THROWIFNOT 100
 PUSH S5
 ;; <=
 ;; push identifier balance_
-GETGLOB 14
+GETGLOB 13
 LEQ
 THROWIFNOT 101
 ;; get member value
@@ -1084,7 +1136,7 @@ THROWIFNOT 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1123,10 +1175,9 @@ PUSHCONT {
 	;; push identifier recipient_address
 	PUSH S7
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	SDEQ
-	NOT
-	THROWIFNOT 111
+	THROWIF 111
 	;; push identifier reserve
 	DUP
 	PUSHINT 2
@@ -1139,10 +1190,9 @@ PUSHCONT {
 	INDEX 0
 	;; >
 	;; push identifier deploy_grams
-	PUSH S5
 	;; +
 	;; push identifier transfer_grams
-	PUSH S5
+	BLKPUSH 2, 5
 	ADD
 	UFITS 128
 	GREATER
@@ -1157,7 +1207,7 @@ PUSHCONT {
 	PUSH S7
 	;; !=
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQ
 	THROWIFNOT 100
 	ACCEPT
@@ -1179,31 +1229,35 @@ PUSHINT 1
 ROT
 PUSHINT 64
 DICTUSET
-;; push identifier code
-GETGLOB 11
-PUSHINT 2
-ROT
-PUSHINT 64
-DICTUSETREF
 ;; push identifier recipient_public_key
 PUSH S8
 NEWC
 STU 256
-PUSHINT 3
+PUSHINT 2
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier recipient_address
 PUSH S7
-PUSHINT 4
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSET
 NEWC
 STDICT
 ENDC
-;; push identifier code
-GETGLOB 11
+GETGLOB 1
+PUSHREF {
+	DUP
+	SETGLOB 1
+	BLESS
+	JMPX
+}
+NEWC
+STSLICECONST x8adb35
+STREF
+STSLICE
+ENDC
 NEWC
 STSLICECONST x2_
 STOPTREF
@@ -1219,8 +1273,7 @@ PUSH S6
 GTINT 0
 PUSHCONT {
 	;; push identifier stateInit
-	PUSH S1
-	DUP
+	PUSH2 S1, S1
 	HASHCU
 	;; get member wid
 	MYADDR
@@ -1233,21 +1286,17 @@ PUSHCONT {
 	ENDC
 	CTOS
 	;; push identifier deploy_grams
-	PUSH S8
-	PUSH S1
+	PUSH2 S8, S0
 	NEWC
 	STSLICECONST x62_
 	STSLICE
 	SWAP
 	STGRAMS
-	PUSHINT 105
-	STZEROES
-	STSLICECONST xc_
-	STSLICECONST 1
+	PUSHSLICE x000000000000000000000000007_
+	STSLICER
 	PUSH S2
 	STREFR
-	STSLICECONST 0
-	STSLICECONST x68b55f3f
+	STSLICECONST x345aaf9fc_
 	ENDC
 	PUSHINT 1
 	SENDRAWMSG
@@ -1260,17 +1309,17 @@ PUSHCONT {
 }
 PUSHCONT {
 	;; push identifier stateInit
-	PUSH S1
+	; expValue
+	; end expValue
+	; colValue
+	DROP
+	DUP
 	HASHCU
 	NEWC
 	STSLICECONST x801_
 	STU 256
-	; expValue
-	; end expValue
-	; colValue
 	ENDC
 	CTOS
-	NIP
 	; end colValue
 }
 IFELSE
@@ -1278,23 +1327,22 @@ IFELSE
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 NEQINT 0
 PUSHCONT {
 	;; push identifier tokens
-	PUSH S7
 	; expValue
 	;; fetch balance_
-	GETGLOB 14
 	; end expValue
-	SWAP
+	GETGLOB 13
+	PUSH S8
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 14
+	SETGLOB 13
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier to
@@ -1306,10 +1354,8 @@ PUSHCONT {
 	PUSHINT 3
 	STZEROES
 	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 111
 	NEWC
 	STSLICECONST x18d21702
 	;; tokens
@@ -1318,38 +1364,40 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	STSLICER
+	NEWC
 	;; send_gas_to
 	;; get member value
 	;; push identifier send_gas_to
-	PUSH S6
+	PUSH S7
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
 	NEQINT 0
 	PUSHCONT {
 		;; push identifier send_gas_to
-		PUSH S6
+		PUSH S7
 	}
 	PUSHCONT {
 		;; push identifier owner_address
-		GETGLOB 13
+		GETGLOB 12
 	}
 	IFELSE
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
-	PUSH S5
+	PUSH S6
 	STIR 1
 	;; payload
 	;; push identifier payload
-	PUSH S4
+	PUSH S5
 	STREFR
+	STBREFR
 	STBREFR
 	ENDC
 	PUSHINT 129
@@ -1357,22 +1405,20 @@ PUSHCONT {
 }
 PUSHCONT {
 	;; push identifier tokens
-	PUSH S7
 	; expValue
 	;; fetch balance_
-	GETGLOB 14
 	; end expValue
-	SWAP
+	GETGLOB 13
+	PUSH S8
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 14
+	SETGLOB 13
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier transfer_grams
-	PUSH S5
 	;; push identifier to
-	PUSH S1
+	PUSH2 S5, S0
 	TRUE
 	NEWC
 	STSLICECONST x6_
@@ -1382,10 +1428,8 @@ PUSHCONT {
 	STSLICE
 	SWAP
 	STGRAMS
-	PUSHINT 105
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 107
 	NEWC
 	STSLICECONST x18d21702
 	;; tokens
@@ -1394,23 +1438,24 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	STSLICER
+	NEWC
 	;; send_gas_to
 	;; get member value
 	;; push identifier send_gas_to
-	PUSH S6
+	PUSH S7
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
 	NEQINT 0
 	PUSHCONT {
 		;; push identifier send_gas_to
-		PUSH S6
+		PUSH S7
 	}
 	PUSHCONT {
 		MYADDR
@@ -1419,12 +1464,13 @@ PUSHCONT {
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
-	PUSH S5
+	PUSH S6
 	STIR 1
 	;; payload
 	;; push identifier payload
-	PUSH S4
+	PUSH S5
 	STREFR
+	STBREFR
 	STBREFR
 	ENDC
 	PUSHINT 1
@@ -1432,10 +1478,9 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
-DROP2
 ; end function transferToRecipient
 ; end modifier onlyOwner
-BLKDROP 8
+BLKDROP 10
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -1444,13 +1489,11 @@ SETGLOB 7
 
 .macro transfer
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1460,7 +1503,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -1470,7 +1512,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -1480,7 +1521,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1490,7 +1530,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode notify_receiver
 LDIQ 1
 PUSHCONT {
 	;; load next cell
@@ -1500,7 +1539,6 @@ PUSHCONT {
 	LDI 1
 }
 IFNOT
-; Decode payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -1513,7 +1551,7 @@ ENDS
 ; modifier onlyOwner
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1523,7 +1561,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -1534,14 +1572,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		;; ==
 		GETGLOB 5
 		DUP
@@ -1566,7 +1604,7 @@ THROWIFNOT 100
 PUSH S4
 ;; <=
 ;; push identifier balance_
-GETGLOB 14
+GETGLOB 13
 LEQ
 THROWIFNOT 101
 ;; get member value
@@ -1575,18 +1613,16 @@ PUSH S5
 PARSEMSGADDR
 INDEX 3
 PLDU 256
-NEQINT 0
 THROWIFNOT 111
 ;; push identifier to
 PUSH S5
 MYADDR
 SDEQ
-NOT
-THROWIFNOT 111
+THROWIF 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1622,16 +1658,15 @@ PUSHCONT {
 	PUSHINT 2
 	RAWRESERVE
 	;; push identifier tokens
-	PUSH S5
 	; expValue
 	;; fetch balance_
-	GETGLOB 14
 	; end expValue
-	SWAP
+	GETGLOB 13
+	PUSH S6
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 14
+	SETGLOB 13
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier to
@@ -1643,10 +1678,8 @@ PUSHCONT {
 	PUSHINT 3
 	STZEROES
 	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 111
 	NEWC
 	STSLICECONST x18d21702
 	;; tokens
@@ -1655,38 +1688,40 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	STSLICER
+	NEWC
 	;; send_gas_to
 	;; get member value
 	;; push identifier send_gas_to
-	PUSH S5
+	PUSH S6
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
 	NEQINT 0
 	PUSHCONT {
 		;; push identifier send_gas_to
-		PUSH S5
+		PUSH S6
 	}
 	PUSHCONT {
 		;; push identifier owner_address
-		GETGLOB 13
+		GETGLOB 12
 	}
 	IFELSE
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
-	PUSH S4
+	PUSH S5
 	STIR 1
 	;; payload
 	;; push identifier payload
-	PUSH S3
+	PUSH S4
 	STREFR
+	STBREFR
 	STBREFR
 	ENDC
 	PUSHINT 129
@@ -1710,22 +1745,20 @@ PUSHCONT {
 	THROWIFNOT 110
 	ACCEPT
 	;; push identifier tokens
-	PUSH S4
 	; expValue
 	;; fetch balance_
-	GETGLOB 14
 	; end expValue
-	SWAP
+	GETGLOB 13
+	PUSH S5
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 14
+	SETGLOB 13
 	; end colValue
 	;; Remote call ITONTokenWallet.internalTransfer
 	;; push identifier grams
-	PUSH S3
 	;; push identifier to
-	PUSH S6
+	PUSH2 S3, S5
 	TRUE
 	NEWC
 	STSLICECONST x6_
@@ -1735,10 +1768,8 @@ PUSHCONT {
 	STSLICE
 	SWAP
 	STGRAMS
-	PUSHINT 105
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 107
 	NEWC
 	STSLICECONST x18d21702
 	;; tokens
@@ -1747,23 +1778,24 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	STSLICER
+	NEWC
 	;; send_gas_to
 	;; get member value
 	;; push identifier send_gas_to
-	PUSH S4
+	PUSH S5
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
 	NEQINT 0
 	PUSHCONT {
 		;; push identifier send_gas_to
-		PUSH S4
+		PUSH S5
 	}
 	PUSHCONT {
 		MYADDR
@@ -1772,12 +1804,13 @@ PUSHCONT {
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
-	PUSH S3
+	PUSH S4
 	STIR 1
 	;; payload
 	;; push identifier payload
-	PUSH S2
+	PUSH S3
 	STREFR
+	STBREFR
 	STBREFR
 	ENDC
 	PUSHINT 1
@@ -1796,13 +1829,11 @@ SETGLOB 7
 
 .macro transferFrom
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode from
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1812,7 +1843,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1822,7 +1852,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -1832,7 +1861,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -1842,7 +1870,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1852,7 +1879,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode notify_receiver
 LDIQ 1
 PUSHCONT {
 	;; load next cell
@@ -1862,7 +1888,6 @@ PUSHCONT {
 	LDI 1
 }
 IFNOT
-; Decode payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -1876,7 +1901,7 @@ ENDS
 ; modifier onlyOwner
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1886,7 +1911,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -1897,14 +1922,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		;; ==
 		GETGLOB 5
 		DUP
@@ -1927,23 +1952,20 @@ PUSH S5
 PARSEMSGADDR
 INDEX 3
 PLDU 256
-NEQINT 0
 THROWIFNOT 111
 ;; push identifier tokens
 PUSH S4
 GTINT 0
 THROWIFNOT 100
 ;; push identifier from
-PUSH S6
 ;; push identifier to
-PUSH S6
+BLKPUSH 2, 6
 SDEQ
-NOT
-THROWIFNOT 111
+THROWIF 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -1969,10 +1991,8 @@ PUSHCONT {
 	;; push identifier reserve
 	PUSH S1
 	;; +
-	PUSHINT 50000000
 	;; *
-	PUSHINT 2
-	MUL
+	PUSHINT 100000000
 	UFITS 128
 	ADD
 	UFITS 128
@@ -1988,10 +2008,8 @@ PUSHCONT {
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 111
 	NEWC
 	STSLICECONST x3f567951
 	;; to
@@ -2002,32 +2020,34 @@ PUSHCONT {
 	;; push identifier tokens
 	PUSH S7
 	STUR 128
+	NEWC
 	;; send_gas_to
 	;; get member value
 	;; push identifier send_gas_to
-	PUSH S5
+	PUSH S6
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
 	NEQINT 0
 	PUSHCONT {
 		;; push identifier send_gas_to
-		PUSH S5
+		PUSH S6
 	}
 	PUSHCONT {
 		;; push identifier owner_address
-		GETGLOB 13
+		GETGLOB 12
 	}
 	IFELSE
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
-	PUSH S4
+	PUSH S5
 	STIR 1
 	;; payload
 	;; push identifier payload
-	PUSH S3
+	PUSH S4
 	STREFR
+	STBREFR
 	STBREFR
 	ENDC
 	PUSHINT 129
@@ -2046,28 +2066,23 @@ PUSHCONT {
 	;; push identifier grams
 	PUSH S3
 	;; >
-	PUSHINT 50000000
 	;; *
-	PUSHINT 2
-	MUL
+	PUSHINT 100000000
 	UFITS 128
 	GREATER
 	THROWIFNOT 110
 	ACCEPT
 	;; Remote call ITONTokenWallet.internalTransferFrom
 	;; push identifier grams
-	PUSH S3
 	;; push identifier from
-	PUSH S7
+	PUSH2 S3, S6
 	NEWC
 	STSLICECONST x62_
 	STSLICE
 	SWAP
 	STGRAMS
-	PUSHINT 105
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 107
 	NEWC
 	STSLICECONST x3f567951
 	;; to
@@ -2078,17 +2093,18 @@ PUSHCONT {
 	;; push identifier tokens
 	PUSH S6
 	STUR 128
+	NEWC
 	;; send_gas_to
 	;; get member value
 	;; push identifier send_gas_to
-	PUSH S4
+	PUSH S5
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
 	NEQINT 0
 	PUSHCONT {
 		;; push identifier send_gas_to
-		PUSH S4
+		PUSH S5
 	}
 	PUSHCONT {
 		MYADDR
@@ -2097,12 +2113,13 @@ PUSHCONT {
 	STSLICER
 	;; notify_receiver
 	;; push identifier notify_receiver
-	PUSH S3
+	PUSH S4
 	STIR 1
 	;; payload
 	;; push identifier payload
-	PUSH S2
+	PUSH S3
 	STREFR
+	STBREFR
 	STBREFR
 	ENDC
 	PUSHINT 1
@@ -2121,13 +2138,11 @@ SETGLOB 7
 
 .macro internalTransfer
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -2137,7 +2152,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode sender_public_key
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -2147,7 +2161,6 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
-; Decode sender_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -2157,7 +2170,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -2167,7 +2179,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode notify_receiver
 LDIQ 1
 PUSHCONT {
 	;; load next cell
@@ -2177,7 +2188,6 @@ PUSHCONT {
 	LDI 1
 }
 IFNOT
-; Decode payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -2191,7 +2201,7 @@ ENDS
 ;; push identifier notify_receiver
 PUSH S1
 ;; push identifier allow_non_notifiable
-GETGLOB 18
+GETGLOB 17
 OR
 ;; short-circuiting ||
 DUP
@@ -2199,7 +2209,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier receive_callback
-	GETGLOB 16
+	GETGLOB 15
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -2208,9 +2218,8 @@ PUSHCONT {
 IFNOT
 THROWIFNOT 112
 ;; push identifier sender_public_key
-PUSH S4
 ;; push identifier sender_address
-PUSH S4
+BLKPUSH 2, 4
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ; function getExpectedAddress
@@ -2229,31 +2238,35 @@ PUSHINT 1
 ROT
 PUSHINT 64
 DICTUSET
-;; push identifier code
-GETGLOB 11
-PUSHINT 2
-ROT
-PUSHINT 64
-DICTUSETREF
 ;; push identifier wallet_public_key_
 PUSH S2
 NEWC
 STU 256
-PUSHINT 3
+PUSHINT 2
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address_
 PUSH S1
-PUSHINT 4
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSET
 NEWC
 STDICT
 ENDC
-;; push identifier code
-GETGLOB 11
+GETGLOB 1
+PUSHREF {
+	DUP
+	SETGLOB 1
+	BLESS
+	JMPX
+}
+NEWC
+STSLICECONST x8adb35
+STREF
+STSLICE
+ENDC
 NEWC
 STSLICECONST x2_
 STOPTREF
@@ -2263,14 +2276,12 @@ ENDC
 ;; decl: stateInit
 ;; return
 ;; push identifier stateInit
-DUP
 HASHCU
 NEWC
 STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-NIP
 ; end function getExpectedAddress
 BLKDROP2 2, 1
 ;; decl: expectedSenderAddress
@@ -2283,7 +2294,7 @@ THROWIFNOT 103
 ;; push identifier sender_address
 PUSH S4
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 SDEQ
 NOT
 ;; short-circuiting ||
@@ -2294,7 +2305,7 @@ PUSHCONT {
 	PUSH S5
 	;; !=
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQ
 }
 IFNOT
@@ -2302,7 +2313,7 @@ THROWIFNOT 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2352,27 +2363,25 @@ PUSHCONT {
 IFELSE
 ;; end if
 ;; push identifier tokens
-PUSH S6
 ; expValue
 ;; fetch balance_
-GETGLOB 14
 ; end expValue
-SWAP
+GETGLOB 13
+PUSH S7
 ADD
 UFITS 128
 ; colValue
-SETGLOB 14
+SETGLOB 13
 ; end colValue
 ;; if
 ;; push identifier notify_receiver
-PUSH S2
 ;; short-circuiting &&
-DUP
+PUSH2 S2, S2
 PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier receive_callback
-	GETGLOB 16
+	GETGLOB 15
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -2382,14 +2391,12 @@ IF
 PUSHCONT {
 	;; Remote call ITokensReceivedCallback.tokensReceivedCallback
 	;; push identifier receive_callback
-	GETGLOB 16
+	GETGLOB 15
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 111
 	NEWC
 	STSLICECONST x59411fb9
 	;; token_wallet
@@ -2398,37 +2405,41 @@ PUSHCONT {
 	;; token_root
 	;; push identifier root_address
 	GETGLOB 10
-	STSLICER
+	NEWC
+	STSLICE 
 	;; amount
 	;; push identifier tokens
-	PUSH S8
+	PUSH S9
 	STUR 128
 	;; sender_public_key
 	;; push identifier sender_public_key
-	PUSH S7
+	PUSH S8
 	STUR 256
 	NEWC
 	;; sender_address
 	;; push identifier sender_address
-	PUSH S7
+	PUSH S8
 	STSLICER
 	;; sender_wallet
 	;; get member sender
 	GETGLOB 9
-	STSLICER
+	NEWC
+	STSLICE 
+	NEWC
 	;; original_gas_to
 	;; push identifier send_gas_to
-	PUSH S6
+	PUSH S9
 	STSLICER
-	NEWC
 	;; updated_balance
 	;; push identifier balance_
-	GETGLOB 14
+	GETGLOB 13
 	STUR 128
 	;; payload
 	;; push identifier payload
-	PUSH S5
+	PUSH S7
 	STREFR
+	STBREFR
+	STBREFR
 	STBREFR
 	STBREFR
 	STBREFR
@@ -2443,19 +2454,16 @@ PUSHCONT {
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHINT 109
+	PUSHINT 111
 	STZEROES
-	STSLICECONST 0
-	STSLICECONST 0
 	ENDC
 	PUSHINT 128
 	SENDRAWMSG
 }
 IFELSE
 ;; end if
-DROP
 ; end function internalTransfer
-BLKDROP 6
+BLKDROP 7
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -2464,13 +2472,11 @@ SETGLOB 7
 
 .macro internalTransferFrom
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -2480,7 +2486,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -2490,7 +2495,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -2500,7 +2504,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode notify_receiver
 LDIQ 1
 PUSHCONT {
 	;; load next cell
@@ -2510,7 +2513,6 @@ PUSHCONT {
 	LDI 1
 }
 IFNOT
-; Decode payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -2521,15 +2523,14 @@ ENDS
 ;; param: payload
 ; function internalTransferFrom
 ;; push identifier allowance_
-GETGLOB 15
+GETGLOB 14
 ISNULL
-NOT
-THROWIFNOT 107
+THROWIF 107
 ;; get member sender
 GETGLOB 9
 ;; get member spender
 ;; push identifier allowance_
-GETGLOB 15
+GETGLOB 14
 DUP
 ISNULL
 THROWIF 63
@@ -2541,7 +2542,7 @@ PUSH S3
 ;; <=
 ;; get member remaining_tokens
 ;; push identifier allowance_
-GETGLOB 15
+GETGLOB 14
 DUP
 ISNULL
 THROWIF 63
@@ -2552,7 +2553,7 @@ THROWIFNOT 109
 PUSH S3
 ;; <=
 ;; push identifier balance_
-GETGLOB 14
+GETGLOB 13
 LEQ
 THROWIFNOT 101
 ;; push identifier tokens
@@ -2563,12 +2564,11 @@ THROWIFNOT 100
 PUSH S4
 MYADDR
 SDEQ
-NOT
-THROWIFNOT 111
+THROWIF 111
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2644,22 +2644,21 @@ PUSHCONT {
 IFELSE
 ;; end if
 ;; push identifier tokens
-PUSH S3
 ; expValue
 ;; fetch balance_
-GETGLOB 14
 ; end expValue
-SWAP
+GETGLOB 13
+PUSH S4
 SUB
 UFITS 128
 ; colValue
-SETGLOB 14
+SETGLOB 13
 ; end colValue
 ; expValue
 ; end expValue
 ;; get member remaining_tokens
 ;; push identifier allowance_
-GETGLOB 15
+GETGLOB 14
 DUP
 ISNULL
 THROWIF 63
@@ -2671,14 +2670,14 @@ SUB
 UFITS 128
 ;; get member spender
 ;; push identifier allowance_
-GETGLOB 15
+GETGLOB 14
 DUP
 ISNULL
 THROWIF 63
 INDEX 1
 TUPLE 2
 ; colValue
-SETGLOB 15
+SETGLOB 14
 ; end colValue
 ;; Remote call ITONTokenWallet.internalTransfer
 ;; push identifier to
@@ -2690,10 +2689,8 @@ STI 1
 PUSHINT 3
 STZEROES
 STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 1
+PUSHINT 1
+STUR 111
 NEWC
 STSLICECONST x18d21702
 ;; tokens
@@ -2702,24 +2699,26 @@ PUSH S5
 STUR 128
 ;; sender_public_key
 ;; push identifier wallet_public_key
-GETGLOB 12
+GETGLOB 11
 STUR 256
 ;; sender_address
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 STSLICER
+NEWC
 ;; send_gas_to
 ;; push identifier send_gas_to
-PUSH S4
+PUSH S5
 STSLICER
 ;; notify_receiver
 ;; push identifier notify_receiver
-PUSH S3
+PUSH S4
 STIR 1
 ;; payload
 ;; push identifier payload
-PUSH S2
+PUSH S3
 STREFR
+STBREFR
 STBREFR
 ENDC
 PUSHINT 129
@@ -2734,13 +2733,11 @@ SETGLOB 7
 
 .macro burnByOwner
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -2750,7 +2747,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -2760,7 +2756,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -2770,7 +2765,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode callback_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -2780,7 +2774,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode callback_payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -2792,7 +2785,7 @@ ENDS
 ; modifier onlyOwner
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2802,7 +2795,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -2813,14 +2806,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		;; ==
 		GETGLOB 5
 		DUP
@@ -2845,12 +2838,12 @@ THROWIFNOT 100
 PUSH S4
 ;; <=
 ;; push identifier balance_
-GETGLOB 14
+GETGLOB 13
 LEQ
 THROWIFNOT 101
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2872,7 +2865,7 @@ PUSHCONT {
 	DROP
 	;; get member value
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -2905,7 +2898,7 @@ THROWIFNOT 110
 ;; if
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -2926,16 +2919,15 @@ PUSHCONT {
 	PUSHINT 2
 	RAWRESERVE
 	;; push identifier tokens
-	PUSH S4
 	; expValue
 	;; fetch balance_
-	GETGLOB 14
 	; end expValue
-	SWAP
+	GETGLOB 13
+	PUSH S5
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 14
+	SETGLOB 13
 	; end colValue
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier root_address
@@ -2947,10 +2939,8 @@ PUSHCONT {
 	PUSHINT 3
 	STZEROES
 	STSLICE
-	PUSHINT 109
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 111
 	NEWC
 	STSLICECONST x2e2888aa
 	;; tokens
@@ -2959,39 +2949,41 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	STSLICER
+	NEWC
 	;; send_gas_to
 	;; get member value
 	;; push identifier send_gas_to
-	PUSH S4
+	PUSH S5
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
 	NEQINT 0
 	PUSHCONT {
 		;; push identifier send_gas_to
-		PUSH S4
+		PUSH S5
 	}
 	PUSHCONT {
 		;; push identifier owner_address
-		GETGLOB 13
+		GETGLOB 12
 	}
 	IFELSE
 	STSLICER
 	NEWC
 	;; callback_address
 	;; push identifier callback_address
-	PUSH S4
+	PUSH S5
 	STSLICER
 	;; callback_payload
 	;; push identifier callback_payload
-	PUSH S3
+	PUSH S4
 	STREFR
+	STBREFR
 	STBREFR
 	STBREFR
 	ENDC
@@ -3001,16 +2993,15 @@ PUSHCONT {
 PUSHCONT {
 	ACCEPT
 	;; push identifier tokens
-	PUSH S4
 	; expValue
 	;; fetch balance_
-	GETGLOB 14
 	; end expValue
-	SWAP
+	GETGLOB 13
+	PUSH S5
 	SUB
 	UFITS 128
 	; colValue
-	SETGLOB 14
+	SETGLOB 13
 	; end colValue
 	;; Remote call IBurnableTokenRootContract.tokensBurned
 	;; push identifier grams
@@ -3026,10 +3017,8 @@ PUSHCONT {
 	STSLICE
 	SWAP
 	STGRAMS
-	PUSHINT 105
-	STZEROES
-	STSLICECONST 0
-	STSLICECONST 1
+	PUSHINT 1
+	STUR 107
 	NEWC
 	STSLICECONST x2e2888aa
 	;; tokens
@@ -3038,23 +3027,24 @@ PUSHCONT {
 	STUR 128
 	;; sender_public_key
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	STUR 256
 	;; sender_address
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	STSLICER
+	NEWC
 	;; send_gas_to
 	;; get member value
 	;; push identifier send_gas_to
-	PUSH S4
+	PUSH S5
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
 	NEQINT 0
 	PUSHCONT {
 		;; push identifier send_gas_to
-		PUSH S4
+		PUSH S5
 	}
 	PUSHCONT {
 		MYADDR
@@ -3064,12 +3054,13 @@ PUSHCONT {
 	NEWC
 	;; callback_address
 	;; push identifier callback_address
-	PUSH S4
+	PUSH S5
 	STSLICER
 	;; callback_payload
 	;; push identifier callback_payload
-	PUSH S3
+	PUSH S4
 	STREFR
+	STBREFR
 	STBREFR
 	STBREFR
 	ENDC
@@ -3089,13 +3080,11 @@ SETGLOB 7
 
 .macro burnByRoot
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -3105,7 +3094,6 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -3115,7 +3103,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode callback_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -3125,7 +3112,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode callback_payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -3149,7 +3135,7 @@ THROWIFNOT 100
 PUSH S3
 ;; <=
 ;; push identifier balance_
-GETGLOB 14
+GETGLOB 13
 LEQ
 THROWIFNOT 101
 ;; get member balance
@@ -3165,16 +3151,15 @@ UFITS 128
 PUSHINT 2
 RAWRESERVE
 ;; push identifier tokens
-PUSH S3
 ; expValue
 ;; fetch balance_
-GETGLOB 14
 ; end expValue
-SWAP
+GETGLOB 13
+PUSH S4
 SUB
 UFITS 128
 ; colValue
-SETGLOB 14
+SETGLOB 13
 ; end colValue
 ;; Remote call IBurnableTokenRootContract.tokensBurned
 ;; push identifier root_address
@@ -3186,10 +3171,8 @@ STI 1
 PUSHINT 3
 STZEROES
 STSLICE
-PUSHINT 109
-STZEROES
-STSLICECONST 0
-STSLICECONST 1
+PUSHINT 1
+STUR 111
 NEWC
 STSLICECONST x2e2888aa
 ;; tokens
@@ -3198,25 +3181,27 @@ PUSH S5
 STUR 128
 ;; sender_public_key
 ;; push identifier wallet_public_key
-GETGLOB 12
+GETGLOB 11
 STUR 256
 ;; sender_address
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 STSLICER
+NEWC
 ;; send_gas_to
 ;; push identifier send_gas_to
-PUSH S4
+PUSH S5
 STSLICER
 NEWC
 ;; callback_address
 ;; push identifier callback_address
-PUSH S4
+PUSH S5
 STSLICER
 ;; callback_payload
 ;; push identifier callback_payload
-PUSH S3
+PUSH S4
 STREFR
+STBREFR
 STBREFR
 STBREFR
 ENDC
@@ -3233,13 +3218,11 @@ SETGLOB 7
 
 .macro setReceiveCallback
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode receive_callback_
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -3249,7 +3232,6 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
-; Decode allow_non_notifiable_
 LDIQ 1
 PUSHCONT {
 	;; load next cell
@@ -3265,7 +3247,7 @@ ENDS
 ; modifier onlyOwner
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -3275,7 +3257,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -3286,14 +3268,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		;; ==
 		GETGLOB 5
 		DUP
@@ -3314,20 +3296,18 @@ ACCEPT
 ; expValue
 ; end expValue
 ;; push identifier receive_callback_
-PUSH S1
 ; colValue
-SETGLOB 16
 ; end colValue
 ; expValue
 ; end expValue
 ;; push identifier allow_non_notifiable_
-DUP
 ; colValue
-SETGLOB 18
 ; end colValue
 ; end function setReceiveCallback
 ; end modifier onlyOwner
-DROP2
+SWAP
+SETGLOB 15
+SETGLOB 17
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -3336,13 +3316,11 @@ SETGLOB 7
 
 .macro setBouncedCallback
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode bounced_callback_
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -3357,7 +3335,7 @@ ENDS
 ; modifier onlyOwner
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -3367,7 +3345,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -3378,14 +3356,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		;; ==
 		GETGLOB 5
 		DUP
@@ -3406,13 +3384,11 @@ ACCEPT
 ; expValue
 ; end expValue
 ;; push identifier bounced_callback_
-DUP
 ; colValue
-SETGLOB 17
 ; end colValue
 ; end function setBouncedCallback
 ; end modifier onlyOwner
-DROP
+SETGLOB 16
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -3421,13 +3397,11 @@ SETGLOB 7
 
 .macro destroy
 DROP
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode gas_dest
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -3457,7 +3431,7 @@ CALL $destroy_internal_macro$
 ; modifier onlyOwner
 ;; get member value
 ;; push identifier owner_address
-GETGLOB 13
+GETGLOB 12
 PARSEMSGADDR
 INDEX 3
 PLDU 256
@@ -3467,7 +3441,7 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier owner_address
-	GETGLOB 13
+	GETGLOB 12
 	;; get member sender
 	GETGLOB 9
 	SDEQ
@@ -3478,14 +3452,14 @@ DUP
 PUSHCONT {
 	DROP
 	;; push identifier wallet_public_key
-	GETGLOB 12
+	GETGLOB 11
 	NEQINT 0
 	;; short-circuiting &&
 	DUP
 	PUSHCONT {
 		DROP
 		;; push identifier wallet_public_key
-		GETGLOB 12
+		GETGLOB 11
 		;; ==
 		GETGLOB 5
 		DUP
@@ -3503,19 +3477,16 @@ IFNOT
 THROWIFNOT 100
 ; function destroy
 ;; push identifier balance_
-GETGLOB 14
-EQINT 0
-THROWIFNOT 100
+GETGLOB 13
+THROWIF 100
 ACCEPT
 ;; push identifier gas_dest
 DUP
 NEWC
 STSLICECONST x42_
 STSLICE
-PUSHSLICE x203e8000000000000000000000000004_
-STSLICER
-STSLICECONST 0
-STSLICECONST 0
+PUSHINT 111
+STZEROES
 ENDC
 PUSHINT 160
 SENDRAWMSG
@@ -3524,7 +3495,7 @@ SENDRAWMSG
 DROP
 
 .macro on_bounce_macro
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -3556,21 +3527,20 @@ PUSHCONT {
 	; end colValue
 	;; decl: tokens
 	;; push identifier tokens
-	DUP
 	; expValue
 	;; fetch balance_
-	GETGLOB 14
 	; end expValue
-	SWAP
+	GETGLOB 13
+	PUSH S1
 	ADD
 	UFITS 128
 	; colValue
-	SETGLOB 14
+	SETGLOB 13
 	; end colValue
 	;; if
 	;; get member value
 	;; push identifier bounced_callback
-	GETGLOB 17
+	GETGLOB 16
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
@@ -3590,14 +3560,12 @@ PUSHCONT {
 		RAWRESERVE
 		;; Remote call ITokensBouncedCallback.tokensBouncedCallback
 		;; push identifier bounced_callback
-		GETGLOB 17
+		GETGLOB 16
 		NEWC
 		STSLICECONST x62_
 		STSLICE
-		PUSHINT 109
-		STZEROES
-		STSLICECONST 0
-		STSLICECONST 1
+		PUSHINT 1
+		STUR 111
 		NEWC
 		STSLICECONST x3a857650
 		;; token_wallet
@@ -3606,20 +3574,22 @@ PUSHCONT {
 		;; token_root
 		;; push identifier root_address
 		GETGLOB 10
-		STSLICER
+		NEWC
+		STSLICE 
 		;; amount
 		;; push identifier tokens
-		PUSH S2
+		PUSH S3
 		STUR 128
-		NEWC
 		;; bounced_from
 		;; get member sender
 		GETGLOB 9
-		STSLICER
+		NEWC
+		STSLICE 
 		;; updated_balance
 		;; push identifier balance_
-		GETGLOB 14
+		GETGLOB 13
 		STUR 128
+		STBREFR
 		STBREFR
 		STBREFR
 		ENDC
@@ -3630,7 +3600,7 @@ PUSHCONT {
 		;; if
 		;; get member value
 		;; push identifier owner_address
-		GETGLOB 13
+		GETGLOB 12
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -3651,14 +3621,12 @@ PUSHCONT {
 			RAWRESERVE
 			;; transfer()
 			;; push identifier owner_address
-			GETGLOB 13
+			GETGLOB 12
 			NEWC
 			STSLICECONST x62_
 			STSLICE
-			PUSHINT 109
+			PUSHINT 111
 			STZEROES
-			STSLICECONST 0
-			STSLICECONST 0
 			ENDC
 			PUSHINT 128
 			SENDRAWMSG
@@ -3687,18 +3655,17 @@ PUSHCONT {
 		; end colValue
 		; expValue
 		;; fetch balance_
-		GETGLOB 14
+		GETGLOB 13
 		; end expValue
-		SWAP
 		ADD
 		UFITS 128
 		; colValue
-		SETGLOB 14
+		SETGLOB 13
 		; end colValue
 		;; if
 		;; get member value
 		;; push identifier owner_address
-		GETGLOB 13
+		GETGLOB 12
 		PARSEMSGADDR
 		INDEX 3
 		PLDU 256
@@ -3719,14 +3686,12 @@ PUSHCONT {
 			RAWRESERVE
 			;; transfer()
 			;; push identifier owner_address
-			GETGLOB 13
+			GETGLOB 12
 			NEWC
 			STSLICECONST x62_
 			STSLICE
-			PUSHINT 109
+			PUSHINT 111
 			STZEROES
-			STSLICECONST 0
-			STSLICECONST 0
 			ENDC
 			PUSHINT 128
 			SENDRAWMSG
@@ -3739,15 +3704,14 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
-DROP
 ; end function onBounce
-DROP
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
 
 .macro fallback_macro
-GETGLOB 1
+GETGLOB 8
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -3759,48 +3723,36 @@ CALLREF {
 }
 
 .macro c7_to_c4
+GETGLOB 6
+GETGLOB 3
 GETGLOB 2
 NEWC
 STU 256
-GETGLOB 3
-STUR 64
-GETGLOB 6
-STUR 1
-NEWC
-GETGLOB 13
-GETGLOB 16
-GETGLOB 17
-REVERSE 4, 0
-STSLICE
-STSLICE
-STSLICE
+STU 64
+STU 1
 GETGLOB 10
+STSLICER
 GETGLOB 11
-GETGLOB 12
-GETGLOB 14
-GETGLOB 15
-GETGLOB 18
-REVERSE 8, 0
-STBREF
-STSLICE
-STREF
+NEWC
 STU 256
-STU 128
-SWAP
+GETGLOB 12
+STSLICER
+GETGLOB 13
+STUR 128
+GETGLOB 14
 DUP
 ISNULL
 NOT
 PUSHCONT {
-	NEWC
-	SWAP
-	UNTUPLE 2
-	NEWC
-	PUSH S2
-	STUR 128
-	PUSH S1
-	STSLICER
-	BLKDROP2 2, 1
-	STBR
+	CALLREF {
+		UNTUPLE 2
+		NEWC
+		PUSH S2
+		STUR 128
+		PUSH S1
+		STSLICER
+		BLKDROP2 2, 1
+	}
 	SWAP
 	STSLICECONST 1
 	STBREF
@@ -3810,7 +3762,17 @@ PUSHCONT {
 	STSLICECONST 0
 }
 IFELSE
-STI 1
+GETGLOB 15
+NEWC
+STSLICE 
+GETGLOB 16
+NEWC
+STSLICE 
+GETGLOB 17
+STIR 1
+STBREFR
+STBREFR
+STBREFR
 ENDC
 POP C4
 
@@ -3820,15 +3782,13 @@ CTOS        ; c4
 LDU 256      ; pubkey c4
 LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
-LDREFRTOS
 LDMSGADDR
-LDMSGADDR
-SETGLOB 17
-SETGLOB 16
-SETGLOB 13
-LDMSGADDR
+;; load next cell
 LDREF
+ENDS
+CTOS
 LDU 256
+LDMSGADDR
 LDU 128
 LDOPTREF
 SWAP
@@ -3837,18 +3797,35 @@ ISNULL
 PUSHCONT {
 	CTOS
 	LDU 128
+	LDMSGADDR
+	ENDS
 	TUPLE 2
 }
 IFNOT
+SWAP
+;; load next cell
+LDREF
+ENDS
+CTOS
+LDMSGADDR
+;; load next cell
+LDREF
+ENDS
+CTOS
+LDMSGADDR
+LDI 1
+ENDS
+SETGLOB 17
+SETGLOB 16
 SETGLOB 15
-PLDI 1
-SETGLOB 18
 SETGLOB 14
+SETGLOB 13
 SETGLOB 12
 SETGLOB 11
 SETGLOB 10
 TRUE
-SETGLOB 1   ; pubkey [timestamp] constructor_flag
+SETGLOB 8
+; pubkey [timestamp] constructor_flag
 SETGLOB 6   ; pubkey [timestamp]
 SETGLOB 3   ; D
 SETGLOB 2
@@ -3863,15 +3840,13 @@ PUSHCONT {
 	LDU 256      ; pubkey c4
 	LDU 64      ; pubkey timestamp c4
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
-	LDREFRTOS
 	LDMSGADDR
-	LDMSGADDR
-	SETGLOB 17
-	SETGLOB 16
-	SETGLOB 13
-	LDMSGADDR
+	;; load next cell
 	LDREF
+	ENDS
+	CTOS
 	LDU 256
+	LDMSGADDR
 	LDU 128
 	LDOPTREF
 	SWAP
@@ -3880,18 +3855,35 @@ PUSHCONT {
 	PUSHCONT {
 		CTOS
 		LDU 128
+		LDMSGADDR
+		ENDS
 		TUPLE 2
 	}
 	IFNOT
+	SWAP
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+	LDI 1
+	ENDS
+	SETGLOB 17
+	SETGLOB 16
 	SETGLOB 15
-	PLDI 1
-	SETGLOB 18
 	SETGLOB 14
+	SETGLOB 13
 	SETGLOB 12
 	SETGLOB 11
 	SETGLOB 10
 	TRUE
-	SETGLOB 1   ; pubkey [timestamp] constructor_flag
+	SETGLOB 8
+	; pubkey [timestamp] constructor_flag
 	SETGLOB 6   ; pubkey [timestamp]
 	SETGLOB 3   ; D
 	SETGLOB 2
@@ -3908,19 +3900,8 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 10
-	; init code
-	PUSHINT 2
-	PUSH S1
-	PUSHINT 64
-	DICTUGETREF
-	PUSHCONT {
-		NEWC
-		ENDC
-	}
-	IFNOT
-	SETGLOB 11
 	; init wallet_public_key
-	PUSHINT 3
+	PUSHINT 2
 	PUSH S1
 	PUSHINT 64
 	DICTUGET
@@ -3931,9 +3912,9 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IFELSE
-	SETGLOB 12
+	SETGLOB 11
 	; init owner_address
-	PUSHINT 4
+	PUSHINT 3
 	PUSH S1
 	PUSHINT 64
 	DICTUGET
@@ -3941,22 +3922,22 @@ PUSHCONT {
 		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	}
 	IFNOT
-	SETGLOB 13
+	SETGLOB 12
 	; init balance_
 	PUSHINT 0
-	SETGLOB 14
+	SETGLOB 13
 	; init allowance_
 	NULL
-	SETGLOB 15
+	SETGLOB 14
 	; init receive_callback
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 16
+	SETGLOB 15
 	; init bounced_callback
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 17
+	SETGLOB 16
 	; init allow_non_notifiable
 	PUSHINT 0
-	SETGLOB 18
+	SETGLOB 17
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -3969,8 +3950,8 @@ PUSHCONT {
 	SETGLOB 3
 	PUSHINT 0 ; constructor_flag
 	SETGLOB 6
-	TRUE
-	SETGLOB 1
+TRUE
+SETGLOB 8
 }
 IFELSE
 
@@ -3982,7 +3963,7 @@ IFELSE
 ;; param: msg_balance
 ;; param: int_msg_info
 ;; param: msg_body_slice
-PUSHINT 0  ; main_external trans id
+;; param: transaction_type
 PUSH S2
 CTOS
 LDU 4       ; bounced tail
@@ -4017,7 +3998,8 @@ PUSH S1    ; body
 SEMPTY     ; isEmpty
 IFRET
 PUSH S1 ; body
-LDU 32  ; funcId body'
+LDUQ 32  ; [funcId] body' ok
+THROWIFNOT 60 ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
 SWAP
@@ -4036,7 +4018,6 @@ IF
 
 .internal-alias :main_external, -1
 .internal :main_external
-PUSHINT -1 ; main_external trans id
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 SETGLOB 9
 PUSH S1
@@ -4099,50 +4080,50 @@ IF
 
 .macro public_function_selector
 DUP
-PUSHINT 251812010
+PUSHINT 204468749
 LEQ
 PUSHCONT {
 	DUP
-	PUSHINT 96796687
+	PUSHINT 52547955
 	LEQ
 	PUSHCONT {
+		DUP
+		PUSHINT 24916825
+		EQUAL
+		IFJMPREF {
+			CALL $getWalletCode$
+		}
 		DUP
 		PUSHINT 52547955
 		EQUAL
 		IFJMPREF {
 			CALL $approve$
 		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 188731223
+	LEQ
+	PUSHCONT {
 		DUP
 		PUSHINT 96796687
 		EQUAL
 		IFJMPREF {
 			CALL $setBouncedCallback$
 		}
-	}
-	IFJMP
-	DUP
-	PUSHINT 204468749
-	LEQ
-	PUSHCONT {
 		DUP
 		PUSHINT 188731223
 		EQUAL
 		IFJMPREF {
 			CALL $accept$
 		}
-		DUP
-		PUSHINT 204468749
-		EQUAL
-		IFJMPREF {
-			CALL $burnByRoot$
-		}
 	}
 	IFJMP
 	DUP
-	PUSHINT 251812010
+	PUSHINT 204468749
 	EQUAL
 	IFJMPREF {
-		CALL $destroy$
+		CALL $burnByRoot$
 	}
 }
 IFJMP
@@ -4151,38 +4132,38 @@ PUSHINT 700746110
 LEQ
 PUSHCONT {
 	DUP
-	PUSHINT 409826236
+	PUSHINT 273139972
 	LEQ
 	PUSHCONT {
+		DUP
+		PUSHINT 251812010
+		EQUAL
+		IFJMPREF {
+			CALL $destroy$
+		}
 		DUP
 		PUSHINT 273139972
 		EQUAL
 		IFJMPREF {
 			CALL $burnByOwner$
 		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 416421634
+	LEQ
+	PUSHCONT {
 		DUP
 		PUSHINT 409826236
 		EQUAL
 		IFJMPREF {
 			CALL $allowance$
 		}
-	}
-	IFJMP
-	DUP
-	PUSHINT 655757457
-	LEQ
-	PUSHCONT {
 		DUP
 		PUSHINT 416421634
 		EQUAL
 		IFJMPREF {
 			CALL $internalTransfer$
-		}
-		DUP
-		PUSHINT 655757457
-		EQUAL
-		IFJMPREF {
-			CALL $getDetails$
 		}
 	}
 	IFJMP
@@ -4243,7 +4224,7 @@ PUSHCONT {
 }
 IFJMP
 DUP
-PUSHINT 1970064887
+PUSHINT 2041732833
 LEQ
 PUSHCONT {
 	DUP
@@ -4264,5 +4245,13 @@ PUSHCONT {
 	IFJMPREF {
 		CALL $disapprove$
 	}
+	DUP
+	PUSHINT 2041732833
+	EQUAL
+	IFJMPREF {
+		CALL $getDetails$
+	}
 }
 IFJMP
+
+.pragma selector-save-my-code
