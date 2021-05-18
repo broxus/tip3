@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.43.0;
+pragma ton-solidity ^0.39.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
@@ -31,9 +31,10 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
     bytes public static name;
     bytes public static symbol;
     uint8 public static decimals;
-    TvmCell public static wallet_code;
 
-    uint128 public total_supply;
+    TvmCell static wallet_code;
+
+    uint128 total_supply;
 
     uint256 root_public_key;
     address root_owner_address;
@@ -189,6 +190,7 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
             contr: TONTokenWallet,
             varInit: {
                 root_address: address(this),
+                code: wallet_code,
                 wallet_public_key: wallet_public_key_,
                 owner_address: owner_address_
             },
@@ -257,6 +259,7 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
             pubkey: wallet_public_key_,
             varInit: {
                 root_address: address(this),
+                code: wallet_code,
                 wallet_public_key: wallet_public_key_,
                 owner_address: owner_address_
             }
@@ -494,6 +497,7 @@ IPausable, ITransferOwner, ISendSurplusGas, IVersioned {
             contr: TONTokenWallet,
             varInit: {
                 root_address: address(this),
+                code: wallet_code,
                 wallet_public_key: wallet_public_key_,
                 owner_address: owner_address_
             },

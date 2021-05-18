@@ -186,22 +186,6 @@
 			]
 		},
 		{
-			"name": "wallet_code",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"wallet_code","type":"cell"}
-			]
-		},
-		{
-			"name": "total_supply",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"total_supply","type":"uint128"}
-			]
-		},
-		{
 			"name": "start_gas_balance",
 			"inputs": [
 			],

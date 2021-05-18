@@ -1,6 +1,6 @@
 .macro constructor
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7_with_init_storage$
@@ -11,6 +11,7 @@ THROWIF 51
 PUSHINT 1
 SETGLOB 6
 ;; end constructor protection
+; Decode input parameters
 ENDS
 ; constructor TONTokenWalletHack
 ACCEPT
@@ -23,20 +24,15 @@ SETGLOB 7
 
 .macro mint
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
+; Decode input parameters
+; Decode to
+LDMSGADDR
+; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -46,6 +42,7 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -61,13 +58,14 @@ ENDS
 ;; param: grams
 ; function mint
 ACCEPT
-PUSHREF {
-}
+NEWC
+ENDC
 ;; decl: empty
 ;; Remote call ITONTokenWallet.internalTransfer
 ;; push identifier grams
+PUSH S1
 ;; push identifier to
-PUSH2 S1, S3
+PUSH S4
 FALSE
 NEWC
 STSLICECONST x6_
@@ -77,8 +75,10 @@ STZEROES
 STSLICE
 SWAP
 STGRAMS
-PUSHINT 1
-STUR 107
+PUSHINT 105
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
 NEWC
 STSLICECONST x18d21702
 ;; tokens
@@ -87,29 +87,29 @@ PUSH S4
 STUR 128
 ;; sender_public_key
 ;; push identifier wallet_public_key
-GETGLOB 11
+GETGLOB 12
 STUR 256
 ;; sender_address
 ;; push identifier owner_address
-GETGLOB 12
+GETGLOB 13
 STSLICER
-NEWC
 ;; send_gas_to
 MYADDR
 STSLICER
 ;; notify_receiver
-STZERO
+FALSE
+STIR 1
 ;; payload
 ;; push identifier empty
-PUSH S3
+PUSH S2
 STREFR
-STBREFR
 STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
+DROP
 ; end function mint
-BLKDROP 4
+BLKDROP 3
 IFREF {
 	CALL $c7_to_c4$
 }
@@ -117,21 +117,25 @@ TRUE
 SETGLOB 7
 
 .macro c7_to_c4
-GETGLOB 6
-GETGLOB 3
 GETGLOB 2
 NEWC
 STU 256
-STU 64
-STU 1
-GETGLOB 10
-STSLICER
-GETGLOB 11
+GETGLOB 3
+STUR 64
+GETGLOB 6
+STUR 1
 NEWC
-STU 256
+GETGLOB 13
+SWAP
+STSLICE
+GETGLOB 10
+GETGLOB 11
 GETGLOB 12
-STSLICER
-STBREFR
+REVERSE 5, 0
+STBREF
+STSLICE
+STREF
+STU 256
 ENDC
 POP C4
 
@@ -141,20 +145,16 @@ CTOS        ; c4
 LDU 256      ; pubkey c4
 LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
+LDREFRTOS
+SETGLOB 13
 LDMSGADDR
-;; load next cell
 LDREF
-ENDS
-CTOS
-LDU 256
-LDMSGADDR
-ENDS
+PLDU 256
 SETGLOB 12
 SETGLOB 11
 SETGLOB 10
 TRUE
-SETGLOB 8
-; pubkey [timestamp] constructor_flag
+SETGLOB 1   ; pubkey [timestamp] constructor_flag
 SETGLOB 6   ; pubkey [timestamp]
 SETGLOB 3   ; D
 SETGLOB 2
@@ -169,20 +169,16 @@ PUSHCONT {
 	LDU 256      ; pubkey c4
 	LDU 64      ; pubkey timestamp c4
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
+	LDREFRTOS
+	SETGLOB 13
 	LDMSGADDR
-	;; load next cell
 	LDREF
-	ENDS
-	CTOS
-	LDU 256
-	LDMSGADDR
-	ENDS
+	PLDU 256
 	SETGLOB 12
 	SETGLOB 11
 	SETGLOB 10
 	TRUE
-	SETGLOB 8
-	; pubkey [timestamp] constructor_flag
+	SETGLOB 1   ; pubkey [timestamp] constructor_flag
 	SETGLOB 6   ; pubkey [timestamp]
 	SETGLOB 3   ; D
 	SETGLOB 2
@@ -199,8 +195,19 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 10
-	; init wallet_public_key
+	; init code
 	PUSHINT 2
+	PUSH S1
+	PUSHINT 64
+	DICTUGETREF
+	PUSHCONT {
+		NEWC
+		ENDC
+	}
+	IFNOT
+	SETGLOB 11
+	; init wallet_public_key
+	PUSHINT 3
 	PUSH S1
 	PUSHINT 64
 	DICTUGET
@@ -211,9 +218,9 @@ PUSHCONT {
 		PUSHINT 0
 	}
 	IFELSE
-	SETGLOB 11
+	SETGLOB 12
 	; init owner_address
-	PUSHINT 3
+	PUSHINT 4
 	PUSH S1
 	PUSHINT 64
 	DICTUGET
@@ -221,7 +228,7 @@ PUSHCONT {
 		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	}
 	IFNOT
-	SETGLOB 12
+	SETGLOB 13
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -234,8 +241,8 @@ PUSHCONT {
 	SETGLOB 3
 	PUSHINT 0 ; constructor_flag
 	SETGLOB 6
-TRUE
-SETGLOB 8
+	TRUE
+	SETGLOB 1
 }
 IFELSE
 
@@ -247,7 +254,7 @@ IFELSE
 ;; param: msg_balance
 ;; param: int_msg_info
 ;; param: msg_body_slice
-;; param: transaction_type
+PUSHINT 0  ; main_external trans id
 PUSH S2
 CTOS
 PLDU 4
@@ -257,8 +264,7 @@ PUSH S1    ; body
 SEMPTY     ; isEmpty
 IFRET
 PUSH S1 ; body
-LDUQ 32  ; [funcId] body' ok
-THROWIFNOT 60 ; funcId body'
+LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
 SWAP
@@ -271,6 +277,7 @@ THROWIF 60
 
 .internal-alias :main_external, -1
 .internal :main_external
+PUSHINT -1 ; main_external trans id
 PUSH S1
 CALLREF {
 	CALL $c4_to_c7_with_init_storage$
@@ -316,9 +323,12 @@ DUP
 EQINT -1
 PUSHCONT {
 	GETGLOB 10
-	PUSHSLICE xc0000000000000000000000000bd6d13f5
 	NEWC
-	STSLICE
+	PUSHSLICE xc0000000000000000000000002_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xbd6d13f5
 	PUSH S1
 	STSLICER
 	ENDC
@@ -340,10 +350,13 @@ CALLREF {
 DUP
 EQINT -1
 PUSHCONT {
-	GETGLOB 11
-	PUSHSLICE xc0000000000000000000000000e4f8a61e
+	GETGLOB 12
 	NEWC
-	STSLICE
+	PUSHSLICE xc0000000000000000000000002_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xe4f8a61e
 	PUSH S1
 	STUR 256
 	ENDC
@@ -365,10 +378,13 @@ CALLREF {
 DUP
 EQINT -1
 PUSHCONT {
-	GETGLOB 12
-	PUSHSLICE xc0000000000000000000000000da4604cb
+	GETGLOB 13
 	NEWC
-	STSLICE
+	PUSHSLICE xc0000000000000000000000002_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xda4604cb
 	PUSH S1
 	STSLICER
 	ENDC

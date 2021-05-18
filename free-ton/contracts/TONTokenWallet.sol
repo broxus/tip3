@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.43.0;
+pragma ton-solidity ^0.39.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -22,6 +22,7 @@ import "./interfaces/IVersioned.sol";
 contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenWallet, IBurnableByRootTokenWallet, IVersioned {
 
     address static root_address;
+    TvmCell static code;
     //for external owner
     uint256 static wallet_public_key;
     //for internal owner
@@ -84,7 +85,7 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
         @returns code Token wallet code
     */
     function getWalletCode() override external view responsible returns (TvmCell) {
-        return { value: 0, bounce: false, flag: 64 } tvm.code();
+        return { value: 0, bounce: false, flag: 64 } code;
     }
 
 /*
@@ -203,11 +204,12 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             contr: TONTokenWallet,
             varInit: {
                 root_address: root_address,
+                code: code,
                 wallet_public_key: recipient_public_key,
                 owner_address: recipient_address
             },
             pubkey: recipient_public_key,
-            code: tvm.code()
+            code: code
         });
 
         address to;
@@ -629,11 +631,12 @@ contract TONTokenWallet is ITONTokenWallet, IDestroyable, IBurnableByOwnerTokenW
             contr: TONTokenWallet,
             varInit: {
                 root_address: root_address,
+                code: code,
                 wallet_public_key: wallet_public_key_,
                 owner_address: owner_address_
             },
             pubkey: wallet_public_key_,
-            code: tvm.code()
+            code: code
         });
 
         return address(tvm.hash(stateInit));

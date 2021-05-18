@@ -1,6 +1,6 @@
 .macro constructor
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7_with_init_storage$
@@ -11,6 +11,7 @@ THROWIF 51
 PUSHINT 1
 SETGLOB 6
 ;; end constructor protection
+; Decode input parameters
 ENDS
 ; constructor ExpectedWalletAddressTest
 ACCEPT
@@ -20,24 +21,24 @@ GETGLOB 10
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x41dcd6500000000000000000000000000003_
+PUSHSLICE x41dcd6500000000000000000000000000004_
 STSLICER
+STSLICECONST 0
+STSLICECONST 1
 NEWC
 STSLICECONST x542b1672
 ;; deploy_grams
 PUSHINT 100000000
 STUR 128
 ;; wallet_public_key
-PUSHINT 256
-STZEROES
+PUSHINT 0
+STUR 256
 ;; owner_address
 MYADDR
 STSLICER
-NEWC
 ;; gas_back_address
 MYADDR
 STSLICER
-STBREFR
 STBREFR
 ENDC
 PUSHINT 0
@@ -48,21 +49,21 @@ GETGLOB 10
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x405f5e100000000000000000000000000003_
+PUSHSLICE x405f5e100000000000000000000000000004_
 STSLICER
+STSLICECONST 0
+STSLICECONST 1
 NEWC
 STSLICECONST x55b3a9fb
 ;; wallet_public_key_
-PUSHINT 256
-STZEROES
+PUSHINT 0
+STUR 256
 ;; owner_address_
 MYADDR
 STSLICER
-NEWC
 ;; to
 MYADDR
 STSLICER
-STBREFR
 STBREFR
 ENDC
 PUSHINT 0
@@ -76,20 +77,15 @@ SETGLOB 7
 
 .macro expectedWalletAddressCallback
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
+; Decode input parameters
+; Decode wallet_
+LDMSGADDR
+; Decode wallet_public_key
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -99,6 +95,7 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
+; Decode owner_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -121,7 +118,8 @@ SDEQ
 THROWIFNOT 100
 ;; push identifier wallet_public_key
 PUSH S1
-THROWIF 100
+EQINT 0
+THROWIFNOT 100
 ;; push identifier owner_address
 DUP
 MYADDR
@@ -130,11 +128,12 @@ THROWIFNOT 100
 ; expValue
 ; end expValue
 ;; push identifier wallet_
+PUSH S2
 ; colValue
+SETGLOB 11
 ; end colValue
 ; end function expectedWalletAddressCallback
-DROP2
-SETGLOB 11
+BLKDROP 3
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -142,19 +141,18 @@ TRUE
 SETGLOB 7
 
 .macro c7_to_c4
-GETGLOB 6
-GETGLOB 3
 GETGLOB 2
 NEWC
 STU 256
-STU 64
-STU 1
+GETGLOB 3
+STUR 64
+GETGLOB 6
+STUR 1
 GETGLOB 10
-STSLICER
 GETGLOB 11
-NEWC
-STSLICE 
-STBREFR
+XCHG s2
+STSLICE
+STSLICE
 ENDC
 POP C4
 
@@ -165,17 +163,10 @@ LDU 256      ; pubkey c4
 LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
 LDMSGADDR
-;; load next cell
-LDREF
-ENDS
-CTOS
-LDMSGADDR
-ENDS
 SETGLOB 11
 SETGLOB 10
 TRUE
-SETGLOB 8
-; pubkey [timestamp] constructor_flag
+SETGLOB 1   ; pubkey [timestamp] constructor_flag
 SETGLOB 6   ; pubkey [timestamp]
 SETGLOB 3   ; D
 SETGLOB 2
@@ -191,17 +182,10 @@ PUSHCONT {
 	LDU 64      ; pubkey timestamp c4
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
 	LDMSGADDR
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-	ENDS
 	SETGLOB 11
 	SETGLOB 10
 	TRUE
-	SETGLOB 8
-	; pubkey [timestamp] constructor_flag
+	SETGLOB 1   ; pubkey [timestamp] constructor_flag
 	SETGLOB 6   ; pubkey [timestamp]
 	SETGLOB 3   ; D
 	SETGLOB 2
@@ -233,8 +217,8 @@ PUSHCONT {
 	SETGLOB 3
 	PUSHINT 0 ; constructor_flag
 	SETGLOB 6
-TRUE
-SETGLOB 8
+	TRUE
+	SETGLOB 1
 }
 IFELSE
 
@@ -246,7 +230,7 @@ IFELSE
 ;; param: msg_balance
 ;; param: int_msg_info
 ;; param: msg_body_slice
-;; param: transaction_type
+PUSHINT 0  ; main_external trans id
 PUSH S2
 CTOS
 LDU 4       ; bounced tail
@@ -259,8 +243,7 @@ PUSH S1    ; body
 SEMPTY     ; isEmpty
 IFRET
 PUSH S1 ; body
-LDUQ 32  ; [funcId] body' ok
-THROWIFNOT 60 ; funcId body'
+LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
 SWAP
@@ -273,6 +256,7 @@ THROWIF 60
 
 .internal-alias :main_external, -1
 .internal :main_external
+PUSHINT -1 ; main_external trans id
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 SETGLOB 9
 PUSH S1
@@ -320,9 +304,12 @@ DUP
 EQINT -1
 PUSHCONT {
 	GETGLOB 11
-	PUSHSLICE xc000000000000000000000000094870017
 	NEWC
-	STSLICE
+	PUSHSLICE xc0000000000000000000000002_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST x94870017
 	PUSH S1
 	STSLICER
 	ENDC

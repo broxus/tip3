@@ -535,7 +535,7 @@ describe('Test Fungible Tokens', function () {
             logger.log('######################################################');
             logger.log('Mint 100.000 tokens for BarWallet#Internal');
             const startBalance = await BarWalletInternal.runLocal('balance', {});
-            const startTotalSupply = await RootTokenContractInternalOwner.runLocal('total_supply', {});
+            const startTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             logger.log(`Start balance of BarWallet#Internal: ${startBalance} BAR`);
             logger.log(`Start total supply: ${startTotalSupply} BAR`);
 
@@ -553,7 +553,7 @@ describe('Test Fungible Tokens', function () {
             ).catch(e => console.log(e));
 
             const endBalance = await BarWalletInternal.runLocal('balance', {});
-            const endTotalSupply = await RootTokenContractInternalOwner.runLocal('total_supply', {});
+            const endTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             logger.log(`End balance of barWalletInternal: ${endBalance} BAR`);
             logger.log(`End total supply: ${endTotalSupply} BAR`);
 
@@ -653,7 +653,7 @@ describe('Test Fungible Tokens', function () {
             );
 
             const startBalance = await BarWallet3.runLocal('balance', {});
-            const startTotalSupply = await RootTokenContractInternalOwner.runLocal('total_supply', {});
+            const startTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             const startBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
             const startLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
 
@@ -679,7 +679,7 @@ describe('Test Fungible Tokens', function () {
             ).catch(e => console.log(e));
 
             const endBalance = await BarWallet3.runLocal('balance', {});
-            const endTotalSupply = await RootTokenContractInternalOwner.runLocal('total_supply', {});
+            const endTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             const endBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
             const endLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
             logger.log(`End balance of BarWallet#3: ${endBalance} BAR`);
@@ -740,7 +740,7 @@ describe('Test Fungible Tokens', function () {
             );
 
             const startBalance = await BarWalletInternal.runLocal('balance', {});
-            const startTotalSupply = await RootTokenContractInternalOwner.runLocal('total_supply', {});
+            const startTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             const startBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
             const startLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
 
@@ -767,7 +767,7 @@ describe('Test Fungible Tokens', function () {
             ).catch(e => console.log(e));
 
             const endBalance = await BarWalletInternal.runLocal('balance', {});
-            const endTotalSupply = await RootTokenContractInternalOwner.runLocal('total_supply', {});
+            const endTotalSupply = await RootTokenContractInternalOwner.runLocal('getTotalSupply', {});
             const endBurnedCount = await RootTokenContractInternalOwnerTest.runLocal('getBurnedCount', {});
             const endLatestPayload = await RootTokenContractInternalOwnerTest.runLocal('getLatestPayload', {});
             logger.log(`End balance of BarWallet#Internal: ${endBalance} BAR`);
@@ -820,7 +820,7 @@ describe('Test Fungible Tokens', function () {
             logger.log('######################################################');
             logger.log('Mint 10.000 tokens for non exists address (BarWallet#44)');
 
-            const startTotalSupply = await RootTokenContractExternalOwner.runLocal('total_supply', {});
+            const startTotalSupply = await RootTokenContractExternalOwner.runLocal('getTotalSupply', {});
             logger.log(`Start total supply: ${startTotalSupply} FOO`);
 
             const rootStartGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);
@@ -842,7 +842,7 @@ describe('Test Fungible Tokens', function () {
                 tonWrapper.keys[0]
             ).catch(e => console.log(e));
 
-            const endTotalSupply = await RootTokenContractExternalOwner.runLocal('total_supply', {});
+            const endTotalSupply = await RootTokenContractExternalOwner.runLocal('getTotalSupply', {});
             logger.log(`End total supply: ${endTotalSupply} FOO`);
 
             const rootEndGrams = await tonWrapper.getBalance(RootTokenContractExternalOwner.address);

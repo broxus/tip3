@@ -1,6 +1,6 @@
 .macro constructor
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7_with_init_storage$
@@ -11,6 +11,8 @@ THROWIF 51
 PUSHINT 1
 SETGLOB 6
 ;; end constructor protection
+; Decode input parameters
+; Decode root_public_key_
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -20,6 +22,7 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
+; Decode root_owner_address_
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -122,6 +125,7 @@ GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
+; Decode input parameters
 ENDS
 ; function getVersion
 ;; return
@@ -140,8 +144,11 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHSLICE x0000000000000000000000002b6a534be_
-	STSLICER
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xada94d2f
 	PUSH S1
 	STUR 32
 	ENDC
@@ -167,8 +174,10 @@ PUSHCONT {
 	SWAP
 	STGRAMS
 	STDICT
-	PUSHINT 106
+	PUSHINT 104
 	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	GETGLOB 4
 	INDEX 5
 	STUR 32
@@ -189,7 +198,7 @@ SETGLOB 7
 
 .macro getDetails
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -199,6 +208,7 @@ GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
+; Decode input parameters
 ENDS
 ; function getDetails
 ;; return
@@ -237,8 +247,10 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 1
-	STUR 98
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 1
 	NEWC
 	STSLICECONST xfff7a47c
 	PUSH S2
@@ -281,8 +293,10 @@ PUSHCONT {
 	SWAP
 	STGRAMS
 	STDICT
-	PUSHINT 1
-	STUR 106
+	PUSHINT 104
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 1
 	NEWC
 	GETGLOB 4
 	INDEX 5
@@ -319,7 +333,7 @@ SETGLOB 7
 
 .macro getTotalSupply
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -329,6 +343,7 @@ GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
+; Decode input parameters
 ENDS
 ; function getTotalSupply
 ;; return
@@ -356,8 +371,11 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHSLICE x0000000000000000000000002cc7d4692_
-	STSLICER
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xb31f51a4
 	PUSH S1
 	STUR 128
 	ENDC
@@ -383,8 +401,10 @@ PUSHCONT {
 	SWAP
 	STGRAMS
 	STDICT
-	PUSHINT 106
+	PUSHINT 104
 	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	GETGLOB 4
 	INDEX 5
 	STUR 32
@@ -405,7 +425,7 @@ SETGLOB 7
 
 .macro getWalletCode
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -415,6 +435,7 @@ GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
+; Decode input parameters
 ENDS
 ; function getWalletCode
 ;; return
@@ -442,8 +463,11 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHSLICE x000000000000000000000000205f0cd66_
-	STSLICER
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST x817c3359
 	PUSH S1
 	STREFR
 	ENDC
@@ -469,8 +493,10 @@ PUSHCONT {
 	SWAP
 	STGRAMS
 	STDICT
-	PUSHINT 106
+	PUSHINT 104
 	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	GETGLOB 4
 	INDEX 5
 	STUR 32
@@ -491,7 +517,7 @@ SETGLOB 7
 
 .macro getWalletAddress
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -501,6 +527,8 @@ GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
+; Decode input parameters
+; Decode wallet_public_key_
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -510,6 +538,7 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
+; Decode owner_address_
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -572,8 +601,9 @@ PUSHINT 64
 SETINDEXQ 4
 SETGLOB 4
 ;; push identifier wallet_public_key_
+PUSH S1
 ;; push identifier owner_address_
-DUP2
+PUSH S1
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ; function getExpectedWalletAddress
@@ -591,17 +621,23 @@ PUSHINT 1
 ROT
 PUSHINT 64
 DICTUSET
+;; push identifier wallet_code
+GETGLOB 14
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSETREF
 ;; push identifier wallet_public_key_
 PUSH S2
 NEWC
 STU 256
-PUSHINT 2
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address_
 PUSH S1
-PUSHINT 3
+PUSHINT 4
 ROT
 PUSHINT 64
 DICTUSET
@@ -619,15 +655,18 @@ ENDC
 ;; decl: stateInit
 ;; return
 ;; push identifier stateInit
+DUP
 HASHCU
 NEWC
 STSLICECONST x801_
 STU 256
 ENDC
 CTOS
+NIP
 ; end function getExpectedWalletAddress
+BLKDROP2 2, 1
 ; end function getWalletAddress
-BLKDROP2 4, 1
+BLKDROP2 2, 1
 ;; emitting 1 value(s)
 PUSH S1
 EQINT -1
@@ -641,13 +680,13 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 1
-	STUR 98
-	NEWC
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	STSLICECONST x869a08f8
-	PUSH S2
+	PUSH S1
 	STSLICER
-	STBREFR
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
@@ -671,15 +710,15 @@ PUSHCONT {
 	SWAP
 	STGRAMS
 	STDICT
-	PUSHINT 1
-	STUR 106
-	NEWC
+	PUSHINT 104
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	GETGLOB 4
 	INDEX 5
 	STUR 32
-	PUSH S2
+	PUSH S1
 	STSLICER
-	STBREFR
 	ENDC
 	GETGLOB 4
 	INDEX 4
@@ -695,11 +734,13 @@ SETGLOB 7
 
 .macro sendExpectedWalletAddress
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode wallet_public_key_
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -709,6 +750,7 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
+; Decode owner_address_
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -718,6 +760,7 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -745,8 +788,9 @@ UFITS 128
 PUSHINT 2
 RAWRESERVE
 ;; push identifier wallet_public_key_
+PUSH S2
 ;; push identifier owner_address_
-BLKPUSH 2, 2
+PUSH S2
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ; function getExpectedWalletAddress
@@ -764,17 +808,23 @@ PUSHINT 1
 ROT
 PUSHINT 64
 DICTUSET
+;; push identifier wallet_code
+GETGLOB 14
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSETREF
 ;; push identifier wallet_public_key_
 PUSH S2
 NEWC
 STU 256
-PUSHINT 2
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address_
 PUSH S1
-PUSHINT 3
+PUSHINT 4
 ROT
 PUSHINT 64
 DICTUSET
@@ -792,12 +842,14 @@ ENDC
 ;; decl: stateInit
 ;; return
 ;; push identifier stateInit
+DUP
 HASHCU
 NEWC
 STSLICECONST x801_
 STU 256
 ENDC
 CTOS
+NIP
 ; end function getExpectedWalletAddress
 BLKDROP2 2, 1
 ;; decl: wallet
@@ -807,8 +859,10 @@ PUSH S1
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHINT 1
-STUR 111
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
 NEWC
 STSLICECONST x1173795c
 ;; wallet
@@ -819,18 +873,17 @@ STSLICER
 ;; push identifier wallet_public_key_
 PUSH S5
 STUR 256
-NEWC
 ;; owner_address
 ;; push identifier owner_address_
-PUSH S5
+PUSH S4
 STSLICER
-STBREFR
 STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
+DROP
 ; end function sendExpectedWalletAddress
-BLKDROP 4
+BLKDROP 3
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -839,11 +892,13 @@ SETGLOB 7
 
 .macro deployWallet
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -853,6 +908,7 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode deploy_grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -862,6 +918,7 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode wallet_public_key_
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -871,6 +928,7 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
+; Decode owner_address_
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -880,6 +938,7 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode gas_back_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1043,17 +1102,23 @@ PUSHINT 1
 ROT
 PUSHINT 64
 DICTUSET
+;; push identifier wallet_code
+GETGLOB 14
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSETREF
 ;; push identifier wallet_public_key_
 PUSH S4
 NEWC
 STU 256
-PUSHINT 2
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address_
 PUSH S3
-PUSHINT 3
+PUSHINT 4
 ROT
 PUSHINT 64
 DICTUSET
@@ -1077,7 +1142,8 @@ PUSH S6
 GTINT 0
 PUSHCONT {
 	;; push identifier stateInit
-	PUSH2 S1, S1
+	PUSH S1
+	DUP
 	HASHCU
 	;; get member wid
 	MYADDR
@@ -1090,17 +1156,21 @@ PUSHCONT {
 	ENDC
 	CTOS
 	;; push identifier deploy_grams
-	PUSH2 S8, S0
+	PUSH S8
+	PUSH S1
 	NEWC
 	STSLICECONST x62_
 	STSLICE
 	SWAP
 	STGRAMS
-	PUSHSLICE x000000000000000000000000007_
-	STSLICER
+	PUSHINT 105
+	STZEROES
+	STSLICECONST xc_
+	STSLICECONST 1
 	PUSH S2
 	STREFR
-	STSLICECONST x345aaf9fc_
+	STSLICECONST 0
+	STSLICECONST x68b55f3f
 	ENDC
 	PUSHINT 1
 	SENDRAWMSG
@@ -1113,17 +1183,17 @@ PUSHCONT {
 }
 PUSHCONT {
 	;; push identifier stateInit
-	; expValue
-	; end expValue
-	; colValue
-	DROP
-	DUP
+	PUSH S1
 	HASHCU
 	NEWC
 	STSLICECONST x801_
 	STU 256
+	; expValue
+	; end expValue
+	; colValue
 	ENDC
 	CTOS
+	NIP
 	; end colValue
 }
 IFELSE
@@ -1134,8 +1204,11 @@ DUP
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x3989680000000000000000000000000000167f9eaf_
+PUSHSLICE x3989680000000000000000000000000004_
 STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x0b3fcf57
 ;; tokens
 ;; push identifier tokens
 PUSH S8
@@ -1144,11 +1217,12 @@ ENDC
 PUSHINT 0
 SENDRAWMSG
 ;; push identifier tokens
+PUSH S7
 ; expValue
 ;; fetch total_supply
-; end expValue
 GETGLOB 15
-PUSH S8
+; end expValue
+SWAP
 ADD
 UFITS 128
 ; colValue
@@ -1177,8 +1251,10 @@ PUSHCONT {
 		NEWC
 		STSLICECONST x62_
 		STSLICE
-		PUSHINT 111
+		PUSHINT 109
 		STZEROES
+		STSLICECONST 0
+		STSLICECONST 0
 		ENDC
 		PUSHINT 128
 		SENDRAWMSG
@@ -1190,8 +1266,10 @@ PUSHCONT {
 		NEWC
 		STSLICECONST x62_
 		STSLICE
-		PUSHINT 111
+		PUSHINT 109
 		STZEROES
+		STSLICECONST 0
+		STSLICECONST 0
 		ENDC
 		PUSHINT 128
 		SENDRAWMSG
@@ -1223,13 +1301,13 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 1
-	STUR 98
-	NEWC
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	STSLICECONST xe6211c6f
-	PUSH S2
+	PUSH S1
 	STSLICER
-	STBREFR
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
@@ -1244,11 +1322,13 @@ SETGLOB 7
 
 .macro deployEmptyWallet
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode deploy_grams
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -1258,6 +1338,7 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode wallet_public_key_
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -1267,6 +1348,7 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
+; Decode owner_address_
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1276,6 +1358,7 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode gas_back_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1356,17 +1439,23 @@ PUSHINT 1
 ROT
 PUSHINT 64
 DICTUSET
+;; push identifier wallet_code
+GETGLOB 14
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSETREF
 ;; push identifier wallet_public_key_
 PUSH S3
 NEWC
 STU 256
-PUSHINT 2
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address_
 PUSH S2
-PUSHINT 3
+PUSHINT 4
 ROT
 PUSHINT 64
 DICTUSET
@@ -1389,17 +1478,21 @@ STU 256
 ENDC
 CTOS
 ;; push identifier deploy_grams
-PUSH2 S5, S0
+PUSH S5
+PUSH S1
 NEWC
 STSLICECONST x62_
 STSLICE
 SWAP
 STGRAMS
-PUSHSLICE x000000000000000000000000007_
-STSLICER
+PUSHINT 105
+STZEROES
+STSLICECONST xc_
+STSLICECONST 1
 PUSH S2
 STREFR
-STSLICECONST x345aaf9fc_
+STSLICECONST 0
+STSLICECONST x68b55f3f
 ENDC
 PUSHINT 1
 SENDRAWMSG
@@ -1420,8 +1513,10 @@ PUSHCONT {
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHINT 111
+	PUSHINT 109
 	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	ENDC
 	PUSHINT 128
 	SENDRAWMSG
@@ -1433,8 +1528,10 @@ PUSHCONT {
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHINT 111
+	PUSHINT 109
 	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	ENDC
 	PUSHINT 128
 	SENDRAWMSG
@@ -1443,6 +1540,8 @@ IFELSE
 ;; end if
 ;; return
 ;; push identifier wallet
+DUP
+NIP
 ; end function deployEmptyWallet
 BLKDROP2 4, 1
 ;; emitting 1 value(s)
@@ -1458,13 +1557,13 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 1
-	STUR 98
-	NEWC
+	PUSHINT 96
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	STSLICECONST xd42b1672
-	PUSH S2
+	PUSH S1
 	STSLICER
-	STBREFR
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
@@ -1479,11 +1578,13 @@ SETGLOB 7
 
 .macro mint
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -1493,6 +1594,7 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1569,8 +1671,11 @@ DUP
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x3989680000000000000000000000000000167f9eaf_
+PUSHSLICE x3989680000000000000000000000000004_
 STSLICER
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x0b3fcf57
 ;; tokens
 ;; push identifier tokens
 PUSH S2
@@ -1579,18 +1684,20 @@ ENDC
 PUSHINT 0
 SENDRAWMSG
 ;; push identifier tokens
+PUSH S1
 ; expValue
 ;; fetch total_supply
+GETGLOB 15
 ; end expValue
+SWAP
+ADD
+UFITS 128
 ; colValue
+SETGLOB 15
 ; end colValue
 ; end function mint
 ; end modifier onlyOwner
-DROP
-GETGLOB 15
-ADD
-UFITS 128
-SETGLOB 15
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -1599,11 +1706,13 @@ SETGLOB 7
 
 .macro proxyBurn
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -1613,6 +1722,7 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode sender_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1622,6 +1732,7 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1631,6 +1742,7 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode callback_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1640,6 +1752,7 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode callback_payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -1707,17 +1820,23 @@ PUSHINT 1
 ROT
 PUSHINT 64
 DICTUSET
+;; push identifier wallet_code
+GETGLOB 14
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSETREF
 ;; push identifier wallet_public_key_
 PUSH S2
 NEWC
 STU 256
-PUSHINT 2
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address_
 PUSH S1
-PUSHINT 3
+PUSHINT 4
 ROT
 PUSHINT 64
 DICTUSET
@@ -1735,12 +1854,14 @@ ENDC
 ;; decl: stateInit
 ;; return
 ;; push identifier stateInit
+DUP
 HASHCU
 NEWC
 STSLICECONST x801_
 STU 256
 ENDC
 CTOS
+NIP
 ; end function getExpectedWalletAddress
 BLKDROP2 2, 1
 ;; decl: expectedWalletAddress
@@ -1768,8 +1889,10 @@ DUP
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHINT 1
-STUR 111
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 1
 NEWC
 STSLICECONST x0c2ff20d
 ;; tokens
@@ -1780,23 +1903,22 @@ STUR 128
 ;; push identifier send_gas_to_
 PUSH S3
 STSLICER
-NEWC
 ;; callback_address
 ;; push identifier callback_address
-PUSH S6
+PUSH S5
 STSLICER
 ;; callback_payload
 ;; push identifier callback_payload
-PUSH S5
+PUSH S4
 STREFR
-STBREFR
 STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
+DROP2
 ; end function proxyBurn
 ; end modifier onlyInternalOwner
-BLKDROP 7
+BLKDROP 5
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -1805,11 +1927,13 @@ SETGLOB 7
 
 .macro tokensBurned
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode tokens
 LDUQ 128
 PUSHCONT {
 	;; load next cell
@@ -1819,6 +1943,7 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
+; Decode sender_public_key
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -1828,6 +1953,7 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
+; Decode sender_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1837,6 +1963,7 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode send_gas_to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1846,6 +1973,7 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode callback_address
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -1855,6 +1983,7 @@ PUSHCONT {
 	LDMSGADDR
 }
 IFNOT
+; Decode callback_payload
 ;; decode TvmCell
 LDREF
 ENDS
@@ -1868,10 +1997,12 @@ ENDS
 ;; !
 ;; push identifier paused
 GETGLOB 19
-THROWIF 104
+NOT
+THROWIFNOT 104
 ;; push identifier sender_public_key
+PUSH S4
 ;; push identifier sender_address
-BLKPUSH 2, 4
+PUSH S4
 ;; param: wallet_public_key_
 ;; param: owner_address_
 ; function getExpectedWalletAddress
@@ -1889,17 +2020,23 @@ PUSHINT 1
 ROT
 PUSHINT 64
 DICTUSET
+;; push identifier wallet_code
+GETGLOB 14
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSETREF
 ;; push identifier wallet_public_key_
 PUSH S2
 NEWC
 STU 256
-PUSHINT 2
+PUSHINT 3
 ROT
 PUSHINT 64
 DICTUSETB
 ;; push identifier owner_address_
 PUSH S1
-PUSHINT 3
+PUSHINT 4
 ROT
 PUSHINT 64
 DICTUSET
@@ -1917,12 +2054,14 @@ ENDC
 ;; decl: stateInit
 ;; return
 ;; push identifier stateInit
+DUP
 HASHCU
 NEWC
 STSLICECONST x801_
 STU 256
 ENDC
 CTOS
+NIP
 ; end function getExpectedWalletAddress
 BLKDROP2 2, 1
 ;; decl: expectedWalletAddress
@@ -1945,11 +2084,12 @@ UFITS 128
 PUSHINT 2
 RAWRESERVE
 ;; push identifier tokens
+PUSH S6
 ; expValue
 ;; fetch total_supply
-; end expValue
 GETGLOB 15
-PUSH S7
+; end expValue
+SWAP
 SUB
 UFITS 128
 ; colValue
@@ -1970,8 +2110,10 @@ PUSHCONT {
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHINT 111
+	PUSHINT 109
 	STZEROES
+	STSLICECONST 0
+	STSLICECONST 0
 	ENDC
 	PUSHINT 128
 	SENDRAWMSG
@@ -1983,8 +2125,10 @@ PUSHCONT {
 	NEWC
 	STSLICECONST x62_
 	STSLICE
-	PUSHINT 1
-	STUR 111
+	PUSHINT 109
+	STZEROES
+	STSLICECONST 0
+	STSLICECONST 1
 	NEWC
 	STSLICECONST x3cc9103e
 	;; tokens
@@ -2003,17 +2147,15 @@ PUSHCONT {
 	;; push identifier sender_address
 	PUSH S6
 	STSLICER
-	NEWC
 	;; wallet_address
 	;; push identifier expectedWalletAddress
-	PUSH S3
+	PUSH S2
 	STSLICER
 	NEWC
 	;; send_gas_to
 	;; push identifier send_gas_to
-	PUSH S7
+	PUSH S6
 	STSLICER
-	STBREFR
 	STBREFR
 	STBREFR
 	ENDC
@@ -2022,8 +2164,9 @@ PUSHCONT {
 }
 IFELSE
 ;; end if
+DROP
 ; end function tokensBurned
-BLKDROP 7
+BLKDROP 6
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -2032,11 +2175,13 @@ SETGLOB 7
 
 .macro sendSurplusGas
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode to
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -2082,8 +2227,11 @@ DUP
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x00000000000000000000000000001ddb59f9_
-STSLICER
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x0eedacfc
 ENDC
 PUSHINT 128
 SENDRAWMSG
@@ -2098,11 +2246,13 @@ SETGLOB 7
 
 .macro setPaused
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode value
 LDI 1
 ENDS
 ;; param: value
@@ -2167,11 +2317,13 @@ ACCEPT
 ; expValue
 ; end expValue
 ;; push identifier value
+DUP
 ; colValue
+SETGLOB 19
 ; end colValue
 ; end function setPaused
 ; end modifier onlyOwner
-SETGLOB 19
+DROP
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -2180,12 +2332,15 @@ SETGLOB 7
 
 .macro sendPausedCallbackTo
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode callback_id
 LDU 64
+; Decode callback_addr
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -2217,8 +2372,11 @@ DUP
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHSLICE x0000000000000000000000000000e70de1d1_
-STSLICER
+PUSHINT 109
+STZEROES
+STSLICECONST 0
+STSLICECONST 0
+STSLICECONST x7386f0e8
 ;; callback_id
 ;; push identifier callback_id
 PUSH S2
@@ -2240,11 +2398,13 @@ SETGLOB 7
 
 .macro transferOwner
 DROP
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
+; Decode input parameters
+; Decode root_public_key_
 LDUQ 256
 PUSHCONT {
 	;; load next cell
@@ -2254,6 +2414,7 @@ PUSHCONT {
 	LDU 256
 }
 IFNOT
+; Decode root_owner_address_
 LDMSGADDRQ
 PUSHCONT {
 	;; load next cell
@@ -2366,18 +2527,20 @@ ACCEPT
 ; expValue
 ; end expValue
 ;; push identifier root_public_key_
+PUSH S1
 ; colValue
+SETGLOB 16
 ; end colValue
 ; expValue
 ; end expValue
 ;; push identifier root_owner_address_
+DUP
 ; colValue
+SETGLOB 17
 ; end colValue
 ; end function transferOwner
 ; end modifier onlyOwner
-SWAP
-SETGLOB 16
-SETGLOB 17
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -2385,7 +2548,7 @@ TRUE
 SETGLOB 7
 
 .macro on_bounce_macro
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -2417,26 +2580,30 @@ PUSHCONT {
 	; end colValue
 	;; decl: latest_bounced_tokens
 	;; push identifier latest_bounced_tokens
+	DUP
 	; expValue
 	;; fetch total_supply
-	; end expValue
 	GETGLOB 15
-	; colValue
-	; end colValue
-	SUBR
+	; end expValue
+	SWAP
+	SUB
 	UFITS 128
+	; colValue
 	SETGLOB 15
+	; end colValue
+	DROP
 }
 IF
 ;; end if
+DROP
 ; end function onBounce
-DROP2
+DROP
 CALLREF {
 	CALL $c7_to_c4$
 }
 
 .macro fallback_macro
-GETGLOB 8
+GETGLOB 1
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
@@ -2448,35 +2615,37 @@ CALLREF {
 }
 
 .macro c7_to_c4
-GETGLOB 6
-GETGLOB 3
 GETGLOB 2
 NEWC
 STU 256
-STU 64
-STU 1
-GETGLOB 10
-STUR 256
-GETGLOB 11
-STREFR
-GETGLOB 12
-STREFR
-GETGLOB 13
-STUR 8
-GETGLOB 14
-STREFR
-GETGLOB 15
-STUR 128
-GETGLOB 16
-STUR 256
-GETGLOB 17
+GETGLOB 3
+STUR 64
+GETGLOB 6
+STUR 1
 NEWC
-STSLICE 
+GETGLOB 17
 GETGLOB 18
-STUR 128
+XCHG s2
+STSLICE
+STU 128
+GETGLOB 10
+GETGLOB 11
+GETGLOB 12
+GETGLOB 13
+GETGLOB 14
+GETGLOB 15
+GETGLOB 16
 GETGLOB 19
-STIR 1
-STBREFR
+REVERSE 10, 0
+STBREF
+STU 256
+STREF
+STREF
+STU 8
+STREF
+STU 128
+STU 256
+STI 1
 ENDC
 POP C4
 
@@ -2486,25 +2655,20 @@ CTOS        ; c4
 LDU 256      ; pubkey c4
 LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
+LDREFRTOS
+LDMSGADDR
+PLDU 128
+SETGLOB 18
+SETGLOB 17
 LDU 256
 LDREF
 LDREF
 LDU 8
-;; decode TvmCell
 LDREF
 LDU 128
 LDU 256
-;; load next cell
-LDREF
-ENDS
-CTOS
-LDMSGADDR
-LDU 128
-LDI 1
-ENDS
+PLDI 1
 SETGLOB 19
-SETGLOB 18
-SETGLOB 17
 SETGLOB 16
 SETGLOB 15
 SETGLOB 14
@@ -2513,8 +2677,7 @@ SETGLOB 12
 SETGLOB 11
 SETGLOB 10
 TRUE
-SETGLOB 8
-; pubkey [timestamp] constructor_flag
+SETGLOB 1   ; pubkey [timestamp] constructor_flag
 SETGLOB 6   ; pubkey [timestamp]
 SETGLOB 3   ; D
 SETGLOB 2
@@ -2529,25 +2692,20 @@ PUSHCONT {
 	LDU 256      ; pubkey c4
 	LDU 64      ; pubkey timestamp c4
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
+	LDREFRTOS
+	LDMSGADDR
+	PLDU 128
+	SETGLOB 18
+	SETGLOB 17
 	LDU 256
 	LDREF
 	LDREF
 	LDU 8
-	;; decode TvmCell
 	LDREF
 	LDU 128
 	LDU 256
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-	LDU 128
-	LDI 1
-	ENDS
+	PLDI 1
 	SETGLOB 19
-	SETGLOB 18
-	SETGLOB 17
 	SETGLOB 16
 	SETGLOB 15
 	SETGLOB 14
@@ -2556,8 +2714,7 @@ PUSHCONT {
 	SETGLOB 11
 	SETGLOB 10
 	TRUE
-	SETGLOB 8
-	; pubkey [timestamp] constructor_flag
+	SETGLOB 1   ; pubkey [timestamp] constructor_flag
 	SETGLOB 6   ; pubkey [timestamp]
 	SETGLOB 3   ; D
 	SETGLOB 2
@@ -2583,8 +2740,8 @@ PUSHCONT {
 	PUSHINT 64
 	DICTUGETREF
 	PUSHCONT {
-		PUSHREF {
-		}
+		NEWC
+		ENDC
 	}
 	IFNOT
 	SETGLOB 11
@@ -2594,8 +2751,8 @@ PUSHCONT {
 	PUSHINT 64
 	DICTUGETREF
 	PUSHCONT {
-		PUSHREF {
-		}
+		NEWC
+		ENDC
 	}
 	IFNOT
 	SETGLOB 12
@@ -2618,8 +2775,8 @@ PUSHCONT {
 	PUSHINT 64
 	DICTUGETREF
 	PUSHCONT {
-		PUSHREF {
-		}
+		NEWC
+		ENDC
 	}
 	IFNOT
 	SETGLOB 14
@@ -2650,8 +2807,8 @@ PUSHCONT {
 	SETGLOB 3
 	PUSHINT 0 ; constructor_flag
 	SETGLOB 6
-TRUE
-SETGLOB 8
+	TRUE
+	SETGLOB 1
 }
 IFELSE
 
@@ -2663,7 +2820,7 @@ IFELSE
 ;; param: msg_balance
 ;; param: int_msg_info
 ;; param: msg_body_slice
-;; param: transaction_type
+PUSHINT 0  ; main_external trans id
 PUSH S2
 CTOS
 LDU 4       ; bounced tail
@@ -2698,8 +2855,7 @@ PUSH S1    ; body
 SEMPTY     ; isEmpty
 IFRET
 PUSH S1 ; body
-LDUQ 32  ; [funcId] body' ok
-THROWIFNOT 60 ; funcId body'
+LDU 32  ; funcId body'
 PUSH S1 ; funcId body' funcId
 IFNOTRET
 SWAP
@@ -2718,6 +2874,7 @@ IF
 
 .internal-alias :main_external, -1
 .internal :main_external
+PUSHINT -1 ; main_external trans id
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 SETGLOB 9
 PUSH S1
@@ -2789,9 +2946,12 @@ DUP
 EQINT -1
 PUSHCONT {
 	GETGLOB 11
-	PUSHSLICE xc0000000000000000000000000f985b3f4
 	NEWC
-	STSLICE
+	PUSHSLICE xc0000000000000000000000002_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xf985b3f4
 	PUSH S1
 	STREFR
 	ENDC
@@ -2814,9 +2974,12 @@ DUP
 EQINT -1
 PUSHCONT {
 	GETGLOB 12
-	PUSHSLICE xc0000000000000000000000000c5b3bdfd
 	NEWC
-	STSLICE
+	PUSHSLICE xc0000000000000000000000002_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xc5b3bdfd
 	PUSH S1
 	STREFR
 	ENDC
@@ -2839,61 +3002,14 @@ DUP
 EQINT -1
 PUSHCONT {
 	GETGLOB 13
-	PUSHSLICE xc000000000000000000000000095005b07
 	NEWC
-	STSLICE
+	PUSHSLICE xc0000000000000000000000002_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST x95005b07
 	PUSH S1
 	STUR 8
-	ENDC
-	PUSHINT 0
-	SENDRAWMSG
-}
-IF
-DROP
-TRUE
-SETGLOB 7
-
-.macro wallet_code
-DROP
-ENDS
-CALLREF {
-	CALL $c4_to_c7$
-}
-;; emitting 1 value
-DUP
-EQINT -1
-PUSHCONT {
-	GETGLOB 14
-	PUSHSLICE xc0000000000000000000000000a29719f7
-	NEWC
-	STSLICE
-	PUSH S1
-	STREFR
-	ENDC
-	PUSHINT 0
-	SENDRAWMSG
-}
-IF
-DROP
-TRUE
-SETGLOB 7
-
-.macro total_supply
-DROP
-ENDS
-CALLREF {
-	CALL $c4_to_c7$
-}
-;; emitting 1 value
-DUP
-EQINT -1
-PUSHCONT {
-	GETGLOB 15
-	PUSHSLICE xc0000000000000000000000000ccab94a8
-	NEWC
-	STSLICE
-	PUSH S1
-	STUR 128
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
@@ -2914,9 +3030,12 @@ DUP
 EQINT -1
 PUSHCONT {
 	GETGLOB 18
-	PUSHSLICE xc0000000000000000000000000f26e937f
 	NEWC
-	STSLICE
+	PUSHSLICE xc0000000000000000000000002_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xf26e937f
 	PUSH S1
 	STUR 128
 	ENDC
@@ -2939,9 +3058,12 @@ DUP
 EQINT -1
 PUSHCONT {
 	GETGLOB 19
-	PUSHSLICE xc0000000000000000000000000b08d66d1
 	NEWC
-	STSLICE
+	PUSHSLICE xc0000000000000000000000002_
+	STSLICER
+	STSLICECONST 0
+	STSLICECONST 0
+	STSLICECONST xb08d66d1
 	PUSH S1
 	STIR 1
 	ENDC
@@ -3015,7 +3137,7 @@ PUSHCONT {
 }
 IFJMP
 DUP
-PUSHINT 814573265
+PUSHINT 857690532
 LEQ
 PUSHCONT {
 	DUP
@@ -3037,80 +3159,62 @@ PUSHCONT {
 	}
 	IFJMP
 	DUP
-	PUSHINT 766070063
+	PUSHINT 774408362
 	LEQ
 	PUSHCONT {
-		DUP
-		PUSHINT 580327927
-		EQUAL
-		IFJMPREF {
-			CALL $wallet_code$
-		}
 		DUP
 		PUSHINT 766070063
 		EQUAL
 		IFJMPREF {
 			CALL $getVersion$
 		}
-	}
-	IFJMP
-	DUP
-	PUSHINT 814573265
-	LEQ
-	PUSHCONT {
 		DUP
 		PUSHINT 774408362
 		EQUAL
 		IFJMPREF {
 			CALL $tokensBurned$
 		}
+	}
+	IFJMP
+	DUP
+	PUSHINT 857690532
+	LEQ
+	PUSHCONT {
 		DUP
 		PUSHINT 814573265
 		EQUAL
 		IFJMPREF {
 			CALL $paused$
 		}
-	}
-	IFJMP
-}
-IFJMP
-DUP
-PUSHINT 1437837819
-LEQ
-PUSHCONT {
-	DUP
-	PUSHINT 942155290
-	LEQ
-	PUSHCONT {
 		DUP
 		PUSHINT 857690532
 		EQUAL
 		IFJMPREF {
 			CALL $getTotalSupply$
 		}
+	}
+	IFJMP
+}
+IFJMP
+DUP
+PUSHINT 1916650702
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1169407485
+	LEQ
+	PUSHCONT {
 		DUP
 		PUSHINT 942155290
 		EQUAL
 		IFJMPREF {
 			CALL $transferOwner$
 		}
-	}
-	IFJMP
-	DUP
-	PUSHINT 1286313128
-	LEQ
-	PUSHCONT {
 		DUP
 		PUSHINT 1169407485
 		EQUAL
 		IFJMPREF {
 			CALL $symbol$
-		}
-		DUP
-		PUSHINT 1286313128
-		EQUAL
-		IFJMPREF {
-			CALL $total_supply$
 		}
 	}
 	IFJMP
@@ -3132,12 +3236,6 @@ PUSHCONT {
 		}
 	}
 	IFJMP
-}
-IFJMP
-DUP
-PUSHINT 2146935932
-LEQ
-PUSHCONT {
 	DUP
 	PUSHINT 1916650702
 	LEQ
@@ -3156,24 +3254,24 @@ PUSHCONT {
 		}
 	}
 	IFJMP
+}
+IFJMP
+DUP
+PUSHINT 2146935932
+LEQ
+PUSHCONT {
+	DUP
+	PUSHINT 1919849343
+	EQUAL
+	IFJMPREF {
+		CALL $start_gas_balance$
+	}
 	DUP
 	PUSHINT 2038805492
-	LEQ
-	PUSHCONT {
-		DUP
-		PUSHINT 1919849343
-		EQUAL
-		IFJMPREF {
-			CALL $start_gas_balance$
-		}
-		DUP
-		PUSHINT 2038805492
-		EQUAL
-		IFJMPREF {
-			CALL $name$
-		}
+	EQUAL
+	IFJMPREF {
+		CALL $name$
 	}
-	IFJMP
 	DUP
 	PUSHINT 2146935932
 	EQUAL

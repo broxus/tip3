@@ -197,8 +197,9 @@
 	],
 	"data": [
 		{"key":1,"name":"root_address","type":"address"},
-		{"key":2,"name":"wallet_public_key","type":"uint256"},
-		{"key":3,"name":"owner_address","type":"address"}
+		{"key":2,"name":"code","type":"cell"},
+		{"key":3,"name":"wallet_public_key","type":"uint256"},
+		{"key":4,"name":"owner_address","type":"address"}
 	],
 	"events": [
 	]

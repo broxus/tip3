@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.43.0;
+pragma ton-solidity ^0.39.0;
 
 pragma AbiHeader expire;
 
@@ -6,6 +6,7 @@ import "../interfaces/ITONTokenWallet.sol";
 
 contract TONTokenWalletHack {
     address public static root_address;
+    TvmCell static code;
     //for external owner
     uint256 public static wallet_public_key;
     //for internal owner
