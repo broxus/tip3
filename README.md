@@ -16,8 +16,8 @@ FreeTON env configuration will probably change, keep your eyes on.
 
 ## Compiler & tvm_linker versions
 
- - [Compiler](https://github.com/broxus/TON-Solidity-Compiler/tree/d94aaa25f7e33411716889b5da0b131808d83bae)
- - [Linker](https://github.com/tonlabs/TVM-linker/tree/ff05536502a11f7fd63b37928f4e6fd5c0919e58)
+ - [Compiler](https://github.com/tonlabs/TON-Solidity-Compiler/tree/064c5a4c6e021d294dcb465dad408a06d0b75168)
+ - [Linker](https://github.com/tonlabs/TVM-linker/tree/cd1b33dd972d073a19a47054184ef76bfe408c2f)
 
 ## Local run
 

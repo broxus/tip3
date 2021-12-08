@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.39.0;
+pragma ton-solidity >= 0.39.0;
 
 library RootTokenContractErrors {
     uint8 constant error_message_sender_is_not_my_owner = 100;

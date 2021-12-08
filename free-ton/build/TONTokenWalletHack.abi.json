@@ -1,5 +1,6 @@
 {
 	"ABI version": 2,
+	"version": "2.1",
 	"header": ["time", "expire"],
 	"functions": [
 		{
@@ -51,5 +52,14 @@
 		{"key":4,"name":"owner_address","type":"address"}
 	],
 	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"root_address","type":"address"},
+		{"name":"code","type":"cell"},
+		{"name":"wallet_public_key","type":"uint256"},
+		{"name":"owner_address","type":"address"}
 	]
 }

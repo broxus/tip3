@@ -1,21 +1,18 @@
+.version sol 0.49.0
+
 .macro constructor
 DROP
-GETGLOB 1
+GETGLOB 2
 ISNULL
 IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-;; constructor protection
 GETGLOB 6
 THROWIF 51
-PUSHINT 1
-SETGLOB 6
-;; end constructor protection
-; Decode input parameters
 ENDS
-; constructor Giver
+.loc ../contracts/additional/Giver.sol, 6
 ACCEPT
-; end constructor Giver
+.loc ../contracts/additional/Giver.sol, 0
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -24,14 +21,27 @@ SETGLOB 7
 
 .macro sendGrams
 DROP
-; Decode input parameters
-; Decode dest
-LDMSGADDR
-; Decode amount
-LDU 64
+GETGLOB 6
+THROWIFNOT 76
+.loc ../contracts/additional/Giver.sol, 9
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDUQ 64
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 64
+}
+IFNOT
 ENDS
-;; param: dest
-;; param: amount
+.loc ../contracts/additional/Giver.sol, 0
 CALLREF {
 	CALL $sendGrams_internal_macro$
 }
@@ -46,84 +56,62 @@ SETGLOB 7
 CALL $sendGrams_internal_macro$
 
 .macro sendGrams_internal_macro
-;; param: dest
-;; param: amount
-; function sendGrams
+.loc ../contracts/additional/Giver.sol, 10
 ACCEPT
-;; get member balance
+.loc ../contracts/additional/Giver.sol, 11
 GETPARAM 7
 INDEX 0
-;; >
-;; push identifier amount
-PUSH S1
+OVER
 GREATER
 THROWIFNOT 60
-;; transfer()
-;; push identifier amount
-DUP
-;; push identifier dest
-PUSH S2
+.loc ../contracts/additional/Giver.sol, 12
+SWAP
 NEWC
 STSLICECONST x42_
 STSLICE
 SWAP
 STGRAMS
-PUSHINT 105
+PUSHINT 107
 STZEROES
-STSLICECONST 0
-STSLICECONST 0
 ENDC
 PUSHINT 1
 SENDRAWMSG
-; end function sendGrams
-DROP2
+.loc ../contracts/additional/Giver.sol, 0
 
 .macro c7_to_c4
+GETGLOB 3
 GETGLOB 2
 NEWC
 STU 256
-GETGLOB 3
-STUR 64
-GETGLOB 6
-STUR 1
+STU 64
+STONE
 ENDC
-POP C4
+POPROOT
 
 .macro c4_to_c7
 PUSHROOT
-CTOS        ; c4
-LDU 256      ; pubkey c4
-LDU 64      ; pubkey timestamp c4
-LDU 1       ; pubkey [timestamp] constructor_flag memory
+CTOS
+LDU 256 ; pubkey c4
+LDU 64 ; pubkey timestamp c4
+LDU 1 ; ctor flag
+NIP
 ENDS
-TRUE
-SETGLOB 1   ; pubkey [timestamp] constructor_flag
-SETGLOB 6   ; pubkey [timestamp]
-SETGLOB 3   ; D
+SETGLOB 3
 SETGLOB 2
 
 .macro c4_to_c7_with_init_storage
 PUSHROOT
-CTOS        ; c4
-DUP        ; c4 c4
-SBITS      ; c4 bits
-GTINT 1    ; c4 bits>1
-PUSHCONT {
-	LDU 256      ; pubkey c4
-	LDU 64      ; pubkey timestamp c4
-	LDU 1       ; pubkey [timestamp] constructor_flag memory
-	ENDS
-	TRUE
-	SETGLOB 1   ; pubkey [timestamp] constructor_flag
-	SETGLOB 6   ; pubkey [timestamp]
-	SETGLOB 3   ; D
-	SETGLOB 2
+CTOS
+SBITS
+GTINT 1
+PUSHREFCONT {
+	CALL $c4_to_c7$
 }
 PUSHCONT {
-	PLDDICT   ; D
-	; set contract pubkey
 	PUSHINT 0
-	SWAP
+	PUSHROOT
+	CTOS
+	PLDDICT ; D
 	PUSHINT 64
 	DICTUGET
 	THROWIFNOT 61
@@ -131,34 +119,35 @@ PUSHCONT {
 	SETGLOB 2
 	PUSHINT 0 ; timestamp
 	SETGLOB 3
-	PUSHINT 0 ; constructor_flag
-	SETGLOB 6
-	TRUE
-	SETGLOB 1
 }
 IFELSE
 
 .internal-alias :main_internal, 0
 .internal :main_internal
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Function: main_internal
-;; param: contract_balance
-;; param: msg_balance
-;; param: int_msg_info
-;; param: msg_body_slice
-PUSHINT 0  ; main_external trans id
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
 PUSH S2
 CTOS
 PLDU 4
 MODPOW2 1
 IFRET
-PUSH S1    ; body
-SEMPTY     ; isEmpty
-IFRET
-PUSH S1 ; body
-LDU 32  ; funcId body'
-PUSH S1 ; funcId body' funcId
-IFNOTRET
+OVER
+SEMPTY ; isEmpty
+IFJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+OVER
+LDUQ 32  ; [funcId] body' ok
+THROWIFNOT 60 ; funcId body'
+OVER
+IFNOTJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
 SWAP
 CALLREF {
 	CALL $public_function_selector$
@@ -169,8 +158,12 @@ THROWIF 60
 
 .internal-alias :main_external, -1
 .internal :main_external
-PUSHINT -1 ; main_external trans id
-PUSH S1
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+OVER
 CALLREF {
 	CALL $c4_to_c7_with_init_storage$
 }
@@ -179,24 +172,24 @@ SWAP
 PUSHCONT {
 	PUSHINT 512
 	LDSLICEX ; signatureSlice msgSlice
-	DUP      ; signatureSlice msgSlice msgSlice
-	HASHSU   ; signatureSlice msgSlice hashMsgSlice
+	DUP
+	HASHSU ; signatureSlice msgSlice hashMsgSlice
 	ROT
 	GETGLOB 2
-	CHKSIGNU      ; msgSlice isSigned
+	CHKSIGNU ; msgSlice isSigned
 	THROWIFNOT 40 ; msgSlice
 }
 IF
-LDU 64                         ; timestamp msgSlice
-SWAP                           ; msgSlice timestamp
-CALL $replay_protection_macro$ ; msgSlice
-LDU 32  ; expireAt msgSlice
-SWAP    ; msgSlice expireAt
-NOW     ; msgSlice expireAt now
+LDU 64 ; timestamp msgSlice
+SWAP
+CALL $replay_protection_macro$
+LDU 32 ; expireAt msgSlice
+SWAP
+NOW ; msgSlice expireAt now
 GREATER ; msgSlice expireAt>now
 THROWIFNOT 57
-LDU  32 ; funcId body
-SWAP    ; body funcId
+LDU 32 ; funcId body
+SWAP
 CALLREF {
 	CALL $public_function_selector$
 }
@@ -217,3 +210,4 @@ EQUAL
 IFJMPREF {
 	CALL $constructor$
 }
+

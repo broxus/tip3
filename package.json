@@ -22,9 +22,8 @@
     "solidity-docgen": "^0.5.7",
     "ton-client-js": "^0.28.1",
     "ton-client-node-js": "^0.28.0",
-    "ton-testing-suite": "^1.2.3",
-    "underscore": "^1.12.0",
-    "ton-eth-bridge-contracts": "git://github.com/broxus/ton-eth-bridge-contracts#f36507d5488f19221c50aaa78ba4c53ebec2da17"
+    "ton-testing-suite": "^1.2.4",
+    "underscore": "^1.12.0"
   },
   "devDependencies": {
     "@digix/doxity": "^0.5.2"

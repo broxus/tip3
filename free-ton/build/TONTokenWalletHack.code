@@ -1,21 +1,18 @@
+.version sol 0.49.0
+
 .macro constructor
 DROP
-GETGLOB 1
+GETGLOB 2
 ISNULL
 IFREF {
 	CALL $c4_to_c7_with_init_storage$
 }
-;; constructor protection
 GETGLOB 6
 THROWIF 51
-PUSHINT 1
-SETGLOB 6
-;; end constructor protection
-; Decode input parameters
 ENDS
-; constructor TONTokenWalletHack
+.loc ../contracts/tests/TONTokenWalletHack.sol, 16
 ACCEPT
-; end constructor TONTokenWalletHack
+.loc ../contracts/tests/TONTokenWalletHack.sol, 0
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -24,28 +21,32 @@ SETGLOB 7
 
 .macro mint
 DROP
-GETGLOB 1
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
 ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-; Decode input parameters
-; Decode to
-LDMSGADDR
-; Decode tokens
+.loc ../contracts/tests/TONTokenWalletHack.sol, 19
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
 LDUQ 128
 PUSHCONT {
-	;; load next cell
 	LDREF
 	ENDS
 	CTOS
 	LDU 128
 }
 IFNOT
-; Decode grams
 LDUQ 128
 PUSHCONT {
-	;; load next cell
 	LDREF
 	ENDS
 	CTOS
@@ -53,19 +54,18 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-;; param: to
-;; param: tokens
-;; param: grams
-; function mint
+.loc ../contracts/tests/TONTokenWalletHack.sol, 20
 ACCEPT
-NEWC
-ENDC
-;; decl: empty
-;; Remote call ITONTokenWallet.internalTransfer
-;; push identifier grams
-PUSH S1
-;; push identifier to
-PUSH S4
+.loc ../contracts/tests/TONTokenWalletHack.sol, 21
+PUSHREF {
+}
+.loc ../contracts/tests/TONTokenWalletHack.sol, 22
+FALSE
+MYADDR
+GETGLOB 13
+GETGLOB 12
+BLKSWAP 2, 5
+ROLL 7
 FALSE
 NEWC
 STSLICECONST x6_
@@ -75,41 +75,25 @@ STZEROES
 STSLICE
 SWAP
 STGRAMS
-PUSHINT 105
-STZEROES
-STSLICECONST 0
-STSLICECONST 1
+PUSHINT 1
+STUR 107
+ROLLREV 6
 NEWC
 STSLICECONST x18d21702
-;; tokens
-;; push identifier tokens
-PUSH S4
-STUR 128
-;; sender_public_key
-;; push identifier wallet_public_key
-GETGLOB 12
-STUR 256
-;; sender_address
-;; push identifier owner_address
-GETGLOB 13
-STSLICER
-;; send_gas_to
-MYADDR
-STSLICER
-;; notify_receiver
-FALSE
-STIR 1
-;; payload
-;; push identifier empty
-PUSH S2
-STREFR
+STU 128
+STU 256
+STSLICE
+ROLLREV 3
+NEWC
+STSLICE
+STI 1
+STREF
+STBREFR
 STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-DROP
-; end function mint
-BLKDROP 3
+.loc ../contracts/tests/TONTokenWalletHack.sol, 0
 IFREF {
 	CALL $c7_to_c4$
 }
@@ -117,77 +101,63 @@ TRUE
 SETGLOB 7
 
 .macro c7_to_c4
+GETGLOB 13
+GETGLOB 12
+GETGLOB 11
+GETGLOB 10
+GETGLOB 3
 GETGLOB 2
 NEWC
 STU 256
-GETGLOB 3
-STUR 64
-GETGLOB 6
-STUR 1
-NEWC
-GETGLOB 13
-SWAP
-STSLICE
-GETGLOB 10
-GETGLOB 11
-GETGLOB 12
-REVERSE 5, 0
-STBREF
+STU 64
+STONE
 STSLICE
 STREF
+ROTREV
+NEWC
 STU 256
+STSLICE
+STBREFR
 ENDC
-POP C4
+POPROOT
 
 .macro c4_to_c7
 PUSHROOT
-CTOS        ; c4
-LDU 256      ; pubkey c4
-LDU 64      ; pubkey timestamp c4
-LDU 1       ; pubkey [timestamp] constructor_flag memory
-LDREFRTOS
-SETGLOB 13
+CTOS
+LDU 256 ; pubkey c4
+LDU 64 ; pubkey timestamp c4
+LDU 1 ; ctor flag
+NIP
 LDMSGADDR
 LDREF
-PLDU 256
+LDREF
+ENDS
+CTOS
+LDU 256
+LDMSGADDR
+ENDS
+SETGLOB 13
 SETGLOB 12
 SETGLOB 11
 SETGLOB 10
-TRUE
-SETGLOB 1   ; pubkey [timestamp] constructor_flag
-SETGLOB 6   ; pubkey [timestamp]
-SETGLOB 3   ; D
+SETGLOB 3
 SETGLOB 2
 
 .macro c4_to_c7_with_init_storage
 PUSHROOT
-CTOS        ; c4
-DUP        ; c4 c4
-SBITS      ; c4 bits
-GTINT 1    ; c4 bits>1
-PUSHCONT {
-	LDU 256      ; pubkey c4
-	LDU 64      ; pubkey timestamp c4
-	LDU 1       ; pubkey [timestamp] constructor_flag memory
-	LDREFRTOS
-	SETGLOB 13
-	LDMSGADDR
-	LDREF
-	PLDU 256
-	SETGLOB 12
-	SETGLOB 11
-	SETGLOB 10
-	TRUE
-	SETGLOB 1   ; pubkey [timestamp] constructor_flag
-	SETGLOB 6   ; pubkey [timestamp]
-	SETGLOB 3   ; D
-	SETGLOB 2
+CTOS
+SBITS
+GTINT 1
+PUSHREFCONT {
+	CALL $c4_to_c7$
 }
 PUSHCONT {
-	PLDDICT   ; D
-	; init root_address
+	PUSHINT 0
+	PUSHROOT
+	CTOS
+	PLDDICT ; D
 	PUSHINT 1
-	PUSH S1
+	OVER
 	PUSHINT 64
 	DICTUGET
 	PUSHCONT {
@@ -195,20 +165,18 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 10
-	; init code
 	PUSHINT 2
-	PUSH S1
+	OVER
 	PUSHINT 64
 	DICTUGETREF
 	PUSHCONT {
-		NEWC
-		ENDC
+		PUSHREF {
+		}
 	}
 	IFNOT
 	SETGLOB 11
-	; init wallet_public_key
 	PUSHINT 3
-	PUSH S1
+	OVER
 	PUSHINT 64
 	DICTUGET
 	PUSHCONT {
@@ -219,9 +187,8 @@ PUSHCONT {
 	}
 	IFELSE
 	SETGLOB 12
-	; init owner_address
 	PUSHINT 4
-	PUSH S1
+	OVER
 	PUSHINT 64
 	DICTUGET
 	PUSHCONT {
@@ -229,9 +196,6 @@ PUSHCONT {
 	}
 	IFNOT
 	SETGLOB 13
-	; set contract pubkey
-	PUSHINT 0
-	SWAP
 	PUSHINT 64
 	DICTUGET
 	THROWIFNOT 61
@@ -239,34 +203,35 @@ PUSHCONT {
 	SETGLOB 2
 	PUSHINT 0 ; timestamp
 	SETGLOB 3
-	PUSHINT 0 ; constructor_flag
-	SETGLOB 6
-	TRUE
-	SETGLOB 1
 }
 IFELSE
 
 .internal-alias :main_internal, 0
 .internal :main_internal
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Function: main_internal
-;; param: contract_balance
-;; param: msg_balance
-;; param: int_msg_info
-;; param: msg_body_slice
-PUSHINT 0  ; main_external trans id
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
 PUSH S2
 CTOS
 PLDU 4
 MODPOW2 1
 IFRET
-PUSH S1    ; body
-SEMPTY     ; isEmpty
-IFRET
-PUSH S1 ; body
-LDU 32  ; funcId body'
-PUSH S1 ; funcId body' funcId
-IFNOTRET
+OVER
+SEMPTY ; isEmpty
+IFJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+OVER
+LDUQ 32  ; [funcId] body' ok
+THROWIFNOT 60 ; funcId body'
+OVER
+IFNOTJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
 SWAP
 CALLREF {
 	CALL $public_function_selector$
@@ -277,8 +242,12 @@ THROWIF 60
 
 .internal-alias :main_external, -1
 .internal :main_external
-PUSHINT -1 ; main_external trans id
-PUSH S1
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+OVER
 CALLREF {
 	CALL $c4_to_c7_with_init_storage$
 }
@@ -287,24 +256,24 @@ SWAP
 PUSHCONT {
 	PUSHINT 512
 	LDSLICEX ; signatureSlice msgSlice
-	DUP      ; signatureSlice msgSlice msgSlice
-	HASHSU   ; signatureSlice msgSlice hashMsgSlice
+	DUP
+	HASHSU ; signatureSlice msgSlice hashMsgSlice
 	ROT
 	GETGLOB 2
-	CHKSIGNU      ; msgSlice isSigned
+	CHKSIGNU ; msgSlice isSigned
 	THROWIFNOT 40 ; msgSlice
 }
 IF
-LDU 64                         ; timestamp msgSlice
-SWAP                           ; msgSlice timestamp
-CALL $replay_protection_macro$ ; msgSlice
-LDU 32  ; expireAt msgSlice
-SWAP    ; msgSlice expireAt
-NOW     ; msgSlice expireAt now
+LDU 64 ; timestamp msgSlice
+SWAP
+CALL $replay_protection_macro$
+LDU 32 ; expireAt msgSlice
+SWAP
+NOW ; msgSlice expireAt now
 GREATER ; msgSlice expireAt>now
 THROWIFNOT 57
-LDU  32 ; funcId body
-SWAP    ; body funcId
+LDU 32 ; funcId body
+SWAP
 CALLREF {
 	CALL $public_function_selector$
 }
@@ -318,25 +287,18 @@ ENDS
 CALLREF {
 	CALL $c4_to_c7$
 }
-;; emitting 1 value
-DUP
-EQINT -1
+GETGLOB 10
+OVER
 PUSHCONT {
-	GETGLOB 10
+	PUSHSLICE xc0000000000000000000000000bd6d13f5
 	NEWC
-	PUSHSLICE xc0000000000000000000000002_
-	STSLICER
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xbd6d13f5
-	PUSH S1
-	STSLICER
+	STSLICE
+	STSLICE
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
 }
 IF
-DROP
 TRUE
 SETGLOB 7
 
@@ -346,25 +308,18 @@ ENDS
 CALLREF {
 	CALL $c4_to_c7$
 }
-;; emitting 1 value
-DUP
-EQINT -1
+GETGLOB 12
+OVER
 PUSHCONT {
-	GETGLOB 12
+	PUSHSLICE xc0000000000000000000000000e4f8a61e
 	NEWC
-	PUSHSLICE xc0000000000000000000000002_
-	STSLICER
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xe4f8a61e
-	PUSH S1
-	STUR 256
+	STSLICE
+	STU 256
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
 }
 IF
-DROP
 TRUE
 SETGLOB 7
 
@@ -374,33 +329,26 @@ ENDS
 CALLREF {
 	CALL $c4_to_c7$
 }
-;; emitting 1 value
-DUP
-EQINT -1
+GETGLOB 13
+OVER
 PUSHCONT {
-	GETGLOB 13
+	PUSHSLICE xc0000000000000000000000000da4604cb
 	NEWC
-	PUSHSLICE xc0000000000000000000000002_
-	STSLICER
-	STSLICECONST 0
-	STSLICECONST 0
-	STSLICECONST xda4604cb
-	PUSH S1
-	STSLICER
+	STSLICE
+	STSLICE
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
 }
 IF
-DROP
 TRUE
 SETGLOB 7
 
 .macro public_function_selector
 DUP
-PUSHINT 1030558709
+PUSHINT 1694017054
 LEQ
-PUSHCONT {
+IFJMPREF {
 	DUP
 	PUSHINT 593250132
 	EQUAL
@@ -413,12 +361,6 @@ PUSHCONT {
 	IFJMPREF {
 		CALL $root_address$
 	}
-}
-IFJMP
-DUP
-PUSHINT 1694017054
-LEQ
-PUSHCONT {
 	DUP
 	PUSHINT 1514538187
 	EQUAL
@@ -432,10 +374,10 @@ PUSHCONT {
 		CALL $wallet_public_key$
 	}
 }
-IFJMP
 DUP
 PUSHINT 1756716863
 EQUAL
 IFJMPREF {
 	CALL $constructor$
 }
+

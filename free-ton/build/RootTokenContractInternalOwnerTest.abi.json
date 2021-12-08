@@ -1,5 +1,6 @@
 {
 	"ABI version": 2,
+	"version": "2.1",
 	"header": ["pubkey", "time", "expire"],
 	"functions": [
 		{
@@ -114,5 +115,21 @@
 		{"key":3,"name":"internal_owner_address_","type":"address"}
 	],
 	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"_randomNonce","type":"uint256"},
+		{"name":"external_owner_pubkey_","type":"uint256"},
+		{"name":"internal_owner_address_","type":"address"},
+		{"name":"root_address_","type":"address"},
+		{"name":"start_gas_balance_","type":"uint128"},
+		{"name":"error_message_sender_is_not_my_owner","type":"uint8"},
+		{"name":"error_message_sender_is_not_my_root","type":"uint8"},
+		{"name":"settings_burn_min_value","type":"uint128"},
+		{"name":"settings_deploy_value","type":"uint128"},
+		{"name":"burned_count","type":"uint128"},
+		{"name":"latest_payload","type":"cell"}
 	]
 }

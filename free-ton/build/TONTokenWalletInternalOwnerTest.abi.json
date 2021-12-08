@@ -1,5 +1,6 @@
 {
 	"ABI version": 2,
+	"version": "2.1",
 	"header": ["pubkey", "time", "expire"],
 	"functions": [
 		{
@@ -105,5 +106,15 @@
 		{"key":2,"name":"external_owner_pubkey_","type":"uint256"}
 	],
 	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"_randomNonce","type":"uint256"},
+		{"name":"external_owner_pubkey_","type":"uint256"},
+		{"name":"error_message_sender_is_not_my_owner","type":"uint8"},
+		{"name":"change_directions","type":"map(address,address)"},
+		{"name":"latest_bounced_from","type":"address"}
 	]
 }

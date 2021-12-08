@@ -35,7 +35,7 @@ try {
     
     const [,contractFileName] = path.match(new RegExp('contracts/(.*).sol'));
     
-    const output = execSync(`cd build && solc-ton ./../${path}`);
+    const output = execSync(`cd build && solc-ton-tonlabs-064c5a4 ./../${path}`);
     
     if (output.toString() === '') {
       // No code was compiled, probably interface compilation
@@ -44,7 +44,7 @@ try {
     
     const contractNameNoFolderStructure = contractFileName.split('/')[contractFileName.split('/').length - 1];
     
-    const tvmLinkerLog = execSync(`cd build && tvm_linker compile "${contractNameNoFolderStructure}.code" -a "${contractNameNoFolderStructure}.abi.json"`);
+    const tvmLinkerLog = execSync(`cd build && tvm_linker-cd1b33d compile "${contractNameNoFolderStructure}.code" -a "${contractNameNoFolderStructure}.abi.json"`);
     const [,tvcFile] = tvmLinkerLog.toString().match(new RegExp('Saved contract to file (.*)'));
     execSync(`cd build && base64 < ${tvcFile} > ${contractNameNoFolderStructure}.base64`);
     

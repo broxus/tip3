@@ -1,5 +1,6 @@
 {
 	"ABI version": 2,
+	"version": "2.1",
 	"header": ["pubkey", "time", "expire"],
 	"functions": [
 		{
@@ -12,7 +13,7 @@
 		{
 			"name": "getVersion",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"name":"value0","type":"uint32"}
@@ -21,7 +22,7 @@
 		{
 			"name": "balance",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"name":"value0","type":"uint128"}
@@ -30,7 +31,7 @@
 		{
 			"name": "getDetails",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"components":[{"name":"root_address","type":"address"},{"name":"wallet_public_key","type":"uint256"},{"name":"owner_address","type":"address"},{"name":"balance","type":"uint128"},{"name":"receive_callback","type":"address"},{"name":"bounced_callback","type":"address"},{"name":"allow_non_notifiable","type":"bool"}],"name":"value0","type":"tuple"}
@@ -39,7 +40,7 @@
 		{
 			"name": "getWalletCode",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"name":"value0","type":"cell"}
@@ -56,7 +57,7 @@
 		{
 			"name": "allowance",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"components":[{"name":"remaining_tokens","type":"uint128"},{"name":"spender","type":"address"}],"name":"value0","type":"tuple"}
@@ -202,5 +203,19 @@
 		{"key":4,"name":"owner_address","type":"address"}
 	],
 	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"root_address","type":"address"},
+		{"name":"code","type":"cell"},
+		{"name":"wallet_public_key","type":"uint256"},
+		{"name":"owner_address","type":"address"},
+		{"name":"balance_","type":"uint128"},
+		{"components":[{"name":"remaining_tokens","type":"uint128"},{"name":"spender","type":"address"}],"name":"allowance_","type":"optional(tuple)"},
+		{"name":"receive_callback","type":"address"},
+		{"name":"bounced_callback","type":"address"},
+		{"name":"allow_non_notifiable","type":"bool"}
 	]
 }

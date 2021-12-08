@@ -1,5 +1,6 @@
 {
 	"ABI version": 2,
+	"version": "2.1",
 	"header": ["pubkey", "time", "expire"],
 	"functions": [
 		{
@@ -14,7 +15,7 @@
 		{
 			"name": "getVersion",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"name":"value0","type":"uint32"}
@@ -23,7 +24,7 @@
 		{
 			"name": "getDetails",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"components":[{"name":"name","type":"bytes"},{"name":"symbol","type":"bytes"},{"name":"decimals","type":"uint8"},{"name":"root_public_key","type":"uint256"},{"name":"root_owner_address","type":"address"},{"name":"total_supply","type":"uint128"}],"name":"value0","type":"tuple"}
@@ -32,7 +33,7 @@
 		{
 			"name": "getTotalSupply",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"name":"value0","type":"uint128"}
@@ -41,7 +42,7 @@
 		{
 			"name": "getWalletCode",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"name":"value0","type":"cell"}
@@ -50,7 +51,7 @@
 		{
 			"name": "getWalletAddress",
 			"inputs": [
-				{"name":"_answer_id","type":"uint32"},
+				{"name":"answerId","type":"uint32"},
 				{"name":"wallet_public_key_","type":"uint256"},
 				{"name":"owner_address_","type":"address"}
 			],
@@ -210,5 +211,20 @@
 		{"key":5,"name":"wallet_code","type":"cell"}
 	],
 	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"_randomNonce","type":"uint256"},
+		{"name":"name","type":"bytes"},
+		{"name":"symbol","type":"bytes"},
+		{"name":"decimals","type":"uint8"},
+		{"name":"wallet_code","type":"cell"},
+		{"name":"total_supply","type":"uint128"},
+		{"name":"root_public_key","type":"uint256"},
+		{"name":"root_owner_address","type":"address"},
+		{"name":"start_gas_balance","type":"uint128"},
+		{"name":"paused","type":"bool"}
 	]
 }
