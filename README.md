@@ -14,6 +14,11 @@ FreeTON env configuration will probably change, keep your eyes on.
 - Use `SEED` to generate keys. Seed can be generated with `tonos-cli genphrase`
 - Leave `RANDOM_TRUFFLE_NONCE` blank if you need to determine contract address. Means, that test can be run only once. Set it `1` to deploy new addresses each time.
 
+## Compiler & tvm_linker versions
+
+ - [Compiler](https://github.com/broxus/TON-Solidity-Compiler/tree/d94aaa25f7e33411716889b5da0b131808d83bae)
+ - [Linker](https://github.com/tonlabs/TVM-linker/tree/ff05536502a11f7fd63b37928f4e6fd5c0919e58)
+
 ## Local run
 
 This section explains how to run and test contracts locally.
