@@ -1,0 +1,2894 @@
+.version sol 0.49.0
+
+.macro constructor
+DROP
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+GETGLOB 6
+THROWIF 51
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDUQ 128
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+LDIQ 1
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+LDIQ 1
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+LDIQ 1
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 50
+GETGLOB 5
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	PUSHINT 0
+}
+IF
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 51
+	GETGLOB 5
+	DUP
+	ISNULL
+	PUSHCONT {
+		DROP
+		PUSHINT 0
+	}
+	IF
+	GETGLOB 2
+	EQUAL
+	THROWIFNOT 1020
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 52
+	GETPARAM 7
+	INDEX 0
+	PUSHINT 2000000000
+	GEQ
+	THROWIFNOT 2000
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 53
+	ACCEPT
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 55
+	GETGLOB 9
+	GETGLOB 15
+	SDEQ
+	THROWIFNOT 1020
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 56
+	DEPTH
+	ADDCONST -2
+	PICK
+	PUSHINT 2000000000
+	GEQ
+	THROWIFNOT 2000
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+IFELSE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 59
+PUSHINT 0
+SETGLOB 18
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 60
+ROLL 3
+SETGLOB 19
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 61
+ROT
+SETGLOB 20
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 62
+SWAP
+SETGLOB 21
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 63
+PUSHINT 1000000000
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 64
+PUSH S2
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	OVER
+	NEQINT 0
+}
+IF
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 65
+	PUSHREF {
+	}
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 66
+	PUSH2 S2, S3
+	PUSHINT 100000000
+	PUSH S4
+	FALSE
+	ROLL 5
+	CALLREF {
+		CALL $_mint_internal_macro$
+	}
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+PUSHCONT {
+	DUP
+	PARSEMSGADDR
+	INDEX 3
+	PLDU 256
+	PUSHCONT {
+		.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 68
+		DUP
+		NEWC
+		STSLICECONST x42_
+		STSLICE
+		PUSHINT 111
+		STZEROES
+		ENDC
+		PUSHINT 128
+		ADDCONST 2
+		UFITS 8
+		SENDRAWMSG
+		.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+	}
+	IF
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+IFELSE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+BLKDROP 3
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro fallback_macro
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+
+.macro getVersion
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 79
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 80
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+PUSHINT 5
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x0000000000000000000000002b6a534be_
+	STSLICER
+	STU 32
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STU 32
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro getDetails
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 91
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 92
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 11
+GETGLOB 12
+GETGLOB 13
+GETGLOB 15
+GETGLOB 18
+TUPLE 5
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	SWAP
+	NEWC
+	STSLICECONST x896860d1
+	SWAP
+	UNTUPLE 5
+	REVERSE 6, 0
+	STREF
+	STREF
+	STU 8
+	STSLICE
+	STU 128
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 1
+	STUR 106
+	SWAP
+	NEWC
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	SWAP
+	UNTUPLE 5
+	REVERSE 6, 0
+	STREF
+	STREF
+	STU 8
+	STSLICE
+	STU 128
+	STBREFR
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro getTotalSupply
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 105
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 106
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 18
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x0000000000000000000000002cc7d4692_
+	STSLICER
+	STU 128
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STU 128
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro getWalletCode
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 113
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 114
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 14
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x000000000000000000000000205f0cd66_
+	STSLICER
+	STREF
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STREF
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro getPlatformCode
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 117
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 118
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 16
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x0000000000000000000000002c504857e_
+	STSLICER
+	STREF
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STREF
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro deriveWalletAddress
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 126
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 133
+DUP
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+THROWIFNOT 1021
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 134
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+CALLREF {
+	CALL $_getExpectedWalletAddress_internal_macro$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	SWAP
+	NEWC
+	STSLICECONST xbeaf2c12
+	STSLICE
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 1
+	STUR 106
+	SWAP
+	NEWC
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STSLICE
+	STBREFR
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro mint
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 149
+LDUQ 128
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDUQ 128
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDIQ 1
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+LDREF
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 161
+PUSHINT 2100
+GETGLOB 19
+NOT
+THROWANYIFNOT
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 162
+PUSH S5
+GTINT 0
+THROWIFNOT 1050
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 163
+PUSH S4
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+THROWIFNOT 1030
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 164
+PUSH S3
+PUSHINT 100000000
+GEQ
+DUP
+PUSHCONT {
+	DROP
+	PUSH S3
+	EQINT 0
+}
+IFNOT
+THROWIFNOT 2010
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 166
+DEPTH
+ADDCONST -2
+PICK
+PUSH S4
+PUSHINT 300000000
+ADD
+UFITS 128
+GREATER
+THROWIFNOT 2000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 415
+PUSHINT 1000000000
+GETPARAM 7
+INDEX 0
+DEPTH
+ADDCONST -2
+PICK
+SUB
+UFITS 128
+MAX
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 169
+CALLREF {
+	CALL $_mint_internal_macro$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro disableMint
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 178
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 179
+TRUE
+SETGLOB 19
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 180
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 19
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x0000000000000000000000003f36d9cd6_
+	STSLICER
+	STI 1
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STI 1
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro isMintDisabled
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 187
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 188
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 19
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x00000000000000000000000024f2a492a_
+	STSLICER
+	STI 1
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STI 1
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro deployWallet
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 197
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDUQ 128
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 198
+PUSH S2
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+THROWIFNOT 1021
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 200
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+GETGLOB 17
+GETGLOB 14
+NEWDICT
+PUSHINT 0
+NEWC
+STU 256
+PUSHINT 0
+ROT
+PUSHINT 64
+DICTUSETB
+MYADDR
+PUSHINT 1
+ROT
+PUSHINT 64
+DICTUSET
+ROLL 6
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSET
+NEWC
+STDICT
+ENDC
+GETGLOB 16
+NEWC
+STSLICECONST x2_
+STOPTREF
+STOPTREF
+STZERO
+ENDC
+DUP
+HASHCU
+MYADDR
+PARSEMSGADDR
+INDEX 2
+NEWC
+STSLICECONST x9_
+STI 8
+STU 256
+NEWC
+STSLICECONST x42_
+STB
+PUSHSLICE x0000000000000000000000000007_
+STSLICER
+STREF
+STSLICECONST 1
+ROLLREV 4
+NEWC
+STSLICECONST x15a038fb
+STREF
+STU 32
+STSLICE
+SWAP
+NEWC
+STSLICE
+STBREFR
+STBREFR
+ENDC
+PUSHINT 64
+SENDRAWMSG
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro proxyDeployedCallback
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 214
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDUQ 32
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 32
+}
+IFNOT
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 222
+GETGLOB 9
+PUSH S3
+CALLREF {
+	CALL $_getExpectedWalletAddress_internal_macro$
+}
+SDEQ
+THROWIFNOT 1100
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 224
+GETGLOB 9
+SWAP2
+FALSE
+NEWC
+STSLICECONST x6_
+STI 1
+PUSHINT 3
+STZEROES
+STSLICE
+PUSHINT 1
+STUR 111
+ROLLREV 3
+NEWC
+STSLICECONST x6924711e
+STSLICE
+ROTREV
+NEWC
+STSLICE
+STU 32
+STBREFR
+STBREFR
+ENDC
+PUSHINT 64
+SENDRAWMSG
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro burnTokens
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 245
+LDUQ 128
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDREF
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 256
+PUSHINT 2200
+GETGLOB 21
+NOT
+THROWANYIFNOT
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 257
+PUSHINT 2210
+GETGLOB 20
+NOT
+THROWANYIFNOT
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 258
+PUSH S4
+GTINT 0
+THROWIFNOT 1050
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 259
+PUSH S3
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+THROWIFNOT 1021
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 261
+SWAP
+PUSH S2
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+PUSHCONT {
+	PUSH S2
+}
+PUSHCONT {
+	GETGLOB 15
+}
+IFELSE
+BLKSWAP 2, 4
+CALLREF {
+	CALL $_getExpectedWalletAddress_internal_macro$
+}
+TRUE
+NEWC
+STSLICECONST x6_
+STI 1
+PUSHINT 3
+STZEROES
+STSLICE
+PUSHINT 1
+STUR 111
+ROLLREV 4
+NEWC
+STSLICECONST x0c2ff20d
+STU 128
+STSLICE
+ROTREV
+NEWC
+STSLICE
+STREF
+STBREFR
+STBREFR
+ENDC
+PUSHINT 64
+SENDRAWMSG
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro disableBurnByRoot
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 273
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 274
+TRUE
+SETGLOB 20
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 275
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 20
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x00000000000000000000000036a3b32de_
+	STSLICER
+	STI 1
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STI 1
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro isBurnByRootDisabled
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 278
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 279
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 20
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x0000000000000000000000002a34a801a_
+	STSLICER
+	STI 1
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STI 1
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro isBurnPaused
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 286
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 287
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 21
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x000000000000000000000000390e889de_
+	STSLICER
+	STI 1
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STI 1
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro setBurnPaused
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 297
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+LDI 1
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 298
+SETGLOB 21
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 299
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 21
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x0000000000000000000000003ffbb313e_
+	STSLICER
+	STI 1
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STI 1
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro tokensBurned
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 314
+LDUQ 128
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDREF
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 324
+PUSHINT 2200
+GETGLOB 21
+NOT
+THROWANYIFNOT
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 325
+GETGLOB 9
+PUSH S4
+CALLREF {
+	CALL $_getExpectedWalletAddress_internal_macro$
+}
+SDEQ
+THROWIFNOT 1100
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 327
+GETGLOB 18
+PUSH S5
+SUB
+UFITS 128
+SETGLOB 18
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 329
+OVER
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 332
+	PUSH2 S0, S2
+	GETGLOB 9
+	PUSH3 S6, S7, S4
+	FALSE
+	NEWC
+	STSLICECONST x6_
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	PUSHINT 1
+	STUR 111
+	ROLLREV 5
+	NEWC
+	STSLICECONST x415066f5
+	STU 128
+	STSLICE
+	ROLLREV 3
+	NEWC
+	STSLICE
+	ROTREV
+	NEWC
+	STSLICE
+	STREF
+	STBREFR
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 64
+	SENDRAWMSG
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 330
+	PUSH S2
+	NEWC
+	STSLICECONST x42_
+	STSLICE
+	PUSHINT 111
+	STZEROES
+	ENDC
+	PUSHINT 64
+	ADDCONST 2
+	UFITS 8
+	SENDRAWMSG
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+IFELSE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+BLKDROP 5
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro sendSurplusGas
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 348
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 349
+PUSHINT 1000000000
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 350
+NEWC
+STSLICECONST x42_
+STSLICE
+PUSHINT 111
+STZEROES
+ENDC
+PUSHINT 128
+ADDCONST 2
+UFITS 8
+SENDRAWMSG
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro transferOwnership
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 362
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 363
+SETGLOB 15
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro requestUpgradeWallet
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 366
+LDU 32
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 375
+GETGLOB 9
+ROT
+CALLREF {
+	CALL $_getExpectedWalletAddress_internal_macro$
+}
+SDEQ
+THROWIFNOT 1100
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 415
+PUSHINT 1000000000
+GETPARAM 7
+INDEX 0
+DEPTH
+ADDCONST -2
+PICK
+SUB
+UFITS 128
+MAX
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 379
+SWAP
+GETGLOB 17
+EQUAL
+DUP
+PUSHCONT {
+	DROP
+	DEPTH
+	ADDCONST -2
+	PICK
+	PUSHINT 1000000000
+	LESS
+}
+IFNOT
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 380
+	DUP
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	PUSHINT 111
+	STZEROES
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 382
+	DUP
+	GETGLOB 17
+	GETGLOB 14
+	GETGLOB 9
+	FALSE
+	NEWC
+	STSLICECONST x6_
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	PUSHINT 1
+	STUR 111
+	ROLLREV 3
+	NEWC
+	STSLICECONST x64a578c8
+	STREF
+	STU 32
+	STSLICE
+	STBREFR
+	ENDC
+	PUSHINT 128
+	SENDRAWMSG
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+IFELSE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro setWalletCode
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 390
+LDREF
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 391
+SETGLOB 14
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 392
+GETGLOB 17
+INC
+UFITS 32
+SETGLOB 17
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro upgrade
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 395
+LDREF
+ENDS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 408
+GETGLOB 15
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 15
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 397
+DUP
+SETCODE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 398
+CTOS
+DUP
+PUSHSLICE x8adb35
+SDEQ
+PUSHCONT {
+	PLDREFIDX 1
+	CTOS
+}
+IF
+PLDREF
+CTOS
+BLESS
+POP C3
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 399
+PUSHREF {
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 400
+CALLREF {
+	CALL $:onCodeUpgrade$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.internal-alias :onCodeUpgrade, 2
+.internal :onCodeUpgrade
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+COMMIT
+THROW 0
+
+.globl	_mint_internal
+.type	_mint_internal, @function
+CALL $_mint_internal_macro$
+
+.macro _mint_internal_macro
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 428
+NEWDICT
+PUSHINT 0
+NEWC
+STU 256
+PUSHINT 0
+ROT
+PUSHINT 64
+DICTUSETB
+MYADDR
+PUSHINT 1
+ROT
+PUSHINT 64
+DICTUSET
+ROLL 5
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSET
+NEWC
+STDICT
+ENDC
+GETGLOB 16
+NEWC
+STSLICECONST x2_
+STOPTREF
+STOPTREF
+STZERO
+ENDC
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 438
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 440
+PUSH S5
+GTINT 0
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 441
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	GETGLOB 17
+	GETGLOB 14
+	PUSH2 S5, S5
+	HASHCU
+	MYADDR
+	PARSEMSGADDR
+	INDEX 2
+	NEWC
+	STSLICECONST x9_
+	STI 8
+	STU 256
+	ENDC
+	CTOS
+	ROLLREV 5
+	PUSH2 S11, S5
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	SWAP
+	STGRAMS
+	PUSHSLICE x000000000000000000000000007_
+	STSLICER
+	STREF
+	STSLICECONST 1
+	ROLLREV 4
+	NEWC
+	STSLICECONST x15a038fb
+	STREF
+	STU 32
+	STSLICE
+	SWAP
+	NEWC
+	STSLICE
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+	NIP
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 448
+	OVER
+	HASHCU
+	NEWC
+	STSLICECONST x801_
+	STU 256
+	ENDC
+	CTOS
+	NIP
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+IFELSE
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 451
+GETGLOB 18
+PUSH S7
+ADD
+UFITS 128
+SETGLOB 18
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 453
+ROT
+ROLL 3
+PUSH S4
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+PUSHCONT {
+	PUSH S4
+}
+PUSHCONT {
+	GETGLOB 15
+}
+IFELSE
+ROLL 7
+ROLL 4
+TRUE
+NEWC
+STSLICECONST x6_
+STI 1
+PUSHINT 3
+STZEROES
+STSLICE
+PUSHINT 1
+STUR 111
+ROLLREV 4
+NEWC
+STSLICECONST x65e27cbb
+STU 128
+STSLICE
+STI 1
+STREF
+STBREFR
+ENDC
+PUSHINT 128
+SENDRAWMSG
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+BLKDROP 3
+
+.globl	_getExpectedWalletAddress_internal
+.type	_getExpectedWalletAddress_internal, @function
+CALL $_getExpectedWalletAddress_internal_macro$
+
+.macro _getExpectedWalletAddress_internal_macro
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 467
+NEWDICT
+PUSHINT 0
+NEWC
+STU 256
+PUSHINT 0
+ROT
+PUSHINT 64
+DICTUSETB
+MYADDR
+PUSHINT 1
+ROT
+PUSHINT 64
+DICTUSET
+SWAP
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSET
+NEWC
+STDICT
+ENDC
+GETGLOB 16
+NEWC
+STSLICECONST x2_
+STOPTREF
+STOPTREF
+STZERO
+ENDC
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 477
+HASHCU
+NEWC
+STSLICECONST x801_
+STU 256
+ENDC
+CTOS
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+
+.macro on_bounce_macro
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 485
+DUP
+LDU 32
+POP S2
+PUSHINT 1709341883
+EQUAL
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 486
+	DUP
+	LDU 128
+	POP S2
+	GETGLOB 18
+	SUBR
+	UFITS 128
+	SETGLOB 18
+	.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+}
+IF
+.loc ../contracts/upgradeable/TokenRootUpgradeable.sol, 0
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+
+.macro c7_to_c4
+GETGLOB 21
+GETGLOB 20
+GETGLOB 19
+GETGLOB 18
+GETGLOB 17
+GETGLOB 16
+GETGLOB 15
+GETGLOB 14
+GETGLOB 13
+GETGLOB 12
+GETGLOB 11
+GETGLOB 10
+GETGLOB 3
+GETGLOB 2
+NEWC
+STU 256
+STU 64
+STONE
+STU 256
+STREF
+STREF
+STU 8
+STREF
+ROLLREV 7
+NEWC
+STSLICE
+STREF
+STU 32
+STU 128
+STI 1
+STI 1
+STI 1
+STBREFR
+ENDC
+POPROOT
+
+.macro c4_to_c7
+PUSHROOT
+CTOS
+LDU 256 ; pubkey c4
+LDU 64 ; pubkey timestamp c4
+LDU 1 ; ctor flag
+NIP
+LDU 256
+LDREF
+LDREF
+LDU 8
+LDREF
+LDREF
+ENDS
+CTOS
+LDMSGADDR
+LDREF
+LDU 32
+LDU 128
+LDI 1
+LDI 1
+LDI 1
+ENDS
+SETGLOB 21
+SETGLOB 20
+SETGLOB 19
+SETGLOB 18
+SETGLOB 17
+SETGLOB 16
+SETGLOB 15
+SETGLOB 14
+SETGLOB 13
+SETGLOB 12
+SETGLOB 11
+SETGLOB 10
+SETGLOB 3
+SETGLOB 2
+
+.macro c4_to_c7_with_init_storage
+PUSHROOT
+CTOS
+SBITS
+GTINT 1
+PUSHREFCONT {
+	CALL $c4_to_c7$
+}
+PUSHCONT {
+	PUSHINT 0
+	PUSHROOT
+	CTOS
+	PLDDICT ; D
+	PUSHINT 1
+	OVER
+	PUSHINT 64
+	DICTUGET
+	PUSHCONT {
+		PLDU 256
+	}
+	PUSHCONT {
+		PUSHINT 0
+	}
+	IFELSE
+	SETGLOB 10
+	PUSHINT 2
+	OVER
+	PUSHINT 64
+	DICTUGETREF
+	PUSHCONT {
+		PUSHREF {
+		}
+	}
+	IFNOT
+	SETGLOB 11
+	PUSHINT 3
+	OVER
+	PUSHINT 64
+	DICTUGETREF
+	PUSHCONT {
+		PUSHREF {
+		}
+	}
+	IFNOT
+	SETGLOB 12
+	PUSHINT 4
+	OVER
+	PUSHINT 64
+	DICTUGET
+	PUSHCONT {
+		PLDU 8
+	}
+	PUSHCONT {
+		PUSHINT 0
+	}
+	IFELSE
+	SETGLOB 13
+	PUSHINT 5
+	OVER
+	PUSHINT 64
+	DICTUGETREF
+	PUSHCONT {
+		PUSHREF {
+		}
+	}
+	IFNOT
+	SETGLOB 14
+	PUSHINT 6
+	OVER
+	PUSHINT 64
+	DICTUGET
+	PUSHCONT {
+		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	}
+	IFNOT
+	SETGLOB 15
+	PUSHINT 7
+	OVER
+	PUSHINT 64
+	DICTUGETREF
+	PUSHCONT {
+		PUSHREF {
+		}
+	}
+	IFNOT
+	SETGLOB 16
+	PUSHINT 0
+	SETGLOB 17
+	PUSHINT 0
+	SETGLOB 18
+	PUSHINT 0
+	SETGLOB 19
+	PUSHINT 0
+	SETGLOB 20
+	PUSHINT 0
+	SETGLOB 21
+	PUSHINT 64
+	DICTUGET
+	THROWIFNOT 61
+	PLDU 256
+	SETGLOB 2
+	PUSHINT 0 ; timestamp
+	SETGLOB 3
+}
+IFELSE
+
+.internal-alias :main_internal, 0
+.internal :main_internal
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+PUSH S2
+CTOS
+LDU 4 ; bounced tail
+LDMSGADDR ; bounced src tail
+DROP
+SETGLOB 9
+MODPOW2 1
+GETGLOB 4
+TRUE
+SETINDEXQ 1
+PUSHINT 10000000
+SETINDEXQ 2
+NULL
+SETINDEXQ 3
+PUSHINT 0
+SETINDEXQ 4
+SETGLOB 4
+IFJMPREF {
+	OVER
+	LDSLICE 32
+	NIP
+	CALL $on_bounce_macro$
+}
+OVER
+SEMPTY ; isEmpty
+IFJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+OVER
+LDUQ 32  ; [funcId] body' ok
+PUSHCONT {
+	DROP
+	CALLREF {
+		CALL $fallback_macro$
+	}
+	THROW 0
+}
+IFNOT
+OVER
+IFNOTJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+SWAP
+CALLREF {
+	CALL $public_function_selector$
+}
+GETGLOB 7
+ISNULL
+PUSHCONT {
+	DROP2
+	CALLREF {
+		CALL $fallback_macro$
+	}
+}
+IF
+
+.internal-alias :main_external, -1
+.internal :main_external
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+SETGLOB 9
+OVER
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+LDU 1 ; haveSign msgSlice
+SWAP
+PUSHCONT {
+	PUSHINT 512
+	LDSLICEX ; signatureSlice msgSlice
+	DUP
+	HASHSU ; signatureSlice msgSlice hashMsgSlice
+	SWAP
+	LDU 1 ; signatureSlice hashMsgSlice havePubkey msgSlice
+	SWAP
+	PUSHCONT {
+		LDU 256 ; signatureSlice hashMsgSlice pubkey msgSlice
+		XCHG S3
+		SWAP
+	}
+	PUSHCONT {
+		XCHG S2
+		GETGLOB 2
+	}
+	IFELSE
+	DUP
+	SETGLOB 5
+	CHKSIGNU ; msgSlice isSigned
+	THROWIFNOT 40 ; msgSlice
+}
+PUSHCONT {
+	LDU 1 ; havePubkey msgSlice
+	SWAP
+	THROWIF 58 ; msgSlice
+}
+IFELSE
+LDU 64 ; timestamp msgSlice
+SWAP
+CALL $replay_protection_macro$
+LDU 32 ; expireAt msgSlice
+SWAP
+NOW ; msgSlice expireAt now
+GREATER ; msgSlice expireAt>now
+THROWIFNOT 57
+LDU 32 ; funcId body
+SWAP
+CALLREF {
+	CALL $public_function_selector$
+}
+GETGLOB 7
+ISNULL
+PUSHCONT {
+	DROP2
+	CALLREF {
+		CALL $fallback_macro$
+	}
+}
+IF
+
+.macro public_function_selector
+DUP
+PUSHINT 1051667474
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 235197086
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 24916825
+		EQUAL
+		IFJMPREF {
+			CALL $getWalletCode$
+		}
+		DUP
+		PUSHINT 157835473
+		EQUAL
+		IFJMPREF {
+			CALL $getDetails$
+		}
+		DUP
+		PUSHINT 211314732
+		EQUAL
+		IFJMPREF {
+			CALL $burnTokens$
+		}
+		DUP
+		PUSHINT 235197086
+		EQUAL
+		IFJMPREF {
+			CALL $transferOwnership$
+		}
+	}
+	DUP
+	PUSHINT 549434296
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 332042826
+		EQUAL
+		IFJMPREF {
+			CALL $isMintDisabled$
+		}
+		DUP
+		PUSHINT 352169376
+		EQUAL
+		IFJMPREF {
+			CALL $requestUpgradeWallet$
+		}
+		DUP
+		PUSHINT 388172858
+		EQUAL
+		IFJMPREF {
+			CALL $upgrade$
+		}
+		DUP
+		PUSHINT 549434296
+		EQUAL
+		IFJMPREF {
+			CALL $mint$
+		}
+	}
+	DUP
+	PUSHINT 766070063
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 552322925
+		EQUAL
+		IFJMPREF {
+			CALL $sendSurplusGas$
+		}
+		DUP
+		PUSHINT 684892166
+		EQUAL
+		IFJMPREF {
+			CALL $isBurnByRootDisabled$
+		}
+		DUP
+		PUSHINT 686107205
+		EQUAL
+		IFJMPREF {
+			CALL $proxyDeployedCallback$
+		}
+		DUP
+		PUSHINT 766070063
+		EQUAL
+		IFJMPREF {
+			CALL $getVersion$
+		}
+	}
+	DUP
+	PUSHINT 1051667474
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 826351967
+		EQUAL
+		IFJMPREF {
+			CALL $getPlatformCode$
+		}
+		DUP
+		PUSHINT 857690532
+		EQUAL
+		IFJMPREF {
+			CALL $getTotalSupply$
+		}
+		DUP
+		PUSHINT 1047219759
+		EQUAL
+		IFJMPREF {
+			CALL $tokensBurned$
+		}
+		DUP
+		PUSHINT 1051667474
+		EQUAL
+		IFJMPREF {
+			CALL $deriveWalletAddress$
+		}
+	}
+}
+DUP
+PUSHINT 2146356303
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1911415692
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 1179195358
+		EQUAL
+		IFJMPREF {
+			CALL $constructor$
+		}
+		DUP
+		PUSHINT 1519307959
+		EQUAL
+		IFJMPREF {
+			CALL $disableBurnByRoot$
+		}
+		DUP
+		PUSHINT 1681531511
+		EQUAL
+		IFJMPREF {
+			CALL $isBurnPaused$
+		}
+		DUP
+		PUSHINT 1911415692
+		EQUAL
+		IFJMPREF {
+			CALL $setWalletCode$
+		}
+	}
+	DUP
+	PUSHINT 2146356303
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 2094753589
+		EQUAL
+		IFJMPREF {
+			CALL $disableMint$
+		}
+		DUP
+		PUSHINT 2105494520
+		EQUAL
+		IFJMPREF {
+			CALL $deployWallet$
+		}
+		DUP
+		PUSHINT 2146356303
+		EQUAL
+		IFJMPREF {
+			CALL $setBurnPaused$
+		}
+	}
+}
+

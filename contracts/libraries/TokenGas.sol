@@ -7,6 +7,7 @@ library TokenGas {
 
     uint128 constant MINT_MIN_VALUE                                 = 0.3 ton;
 
+    uint128 constant WALLET_UPGRADE_MIN_VALUE                       = 1 ton;
     uint128 constant WALLET_DEPLOY_MIN_VALUE                        = 0.1 ton;
     uint128 constant WALLET_DEPLOY_WITH_CALLBACK_ADDITIONAL_VALUE   = 0.2 ton;
 }

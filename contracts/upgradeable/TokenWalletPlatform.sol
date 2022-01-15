@@ -1,0 +1,53 @@
+pragma ton-solidity >= 0.39.0;
+
+import "../../node_modules/@broxus/contracts/contracts/libraries/MsgFlag.sol";
+
+
+contract TokenWalletPlatform {
+    address static root;
+    address static owner;
+
+    constructor(TvmCell walletCode, uint32 walletVersion, address sender, address callbackTo) public {
+        if (msg.sender == root || (sender.value != 0 && _getExpectedAddress(sender) == msg.sender)) {
+           initialize(walletCode, walletVersion, callbackTo);
+        } else {
+            msg.sender.transfer({
+                value: 0,
+                flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.DESTROY_IF_ZERO,
+                bounce: false
+            });
+        }
+    }
+
+    function _getExpectedAddress(address owner_) private view returns (address) {
+        TvmCell stateInit = tvm.buildStateInit({
+            contr: TokenWalletPlatform,
+            varInit: {
+                root: root,
+                owner: owner_
+            },
+            pubkey: 0,
+            code: tvm.code()
+        });
+
+        return address(tvm.hash(stateInit));
+    }
+
+    function initialize(TvmCell walletCode, uint32 walletVersion, address callbackTo) private {
+        TvmBuilder builder;
+
+        builder.store(root);
+        builder.store(owner);
+        builder.store(uint32(0));
+        builder.store(walletVersion);
+        builder.store(callbackTo);
+        builder.store(tvm.code());
+
+        tvm.setcode(walletCode);
+        tvm.setCurrentCode(walletCode);
+
+        onCodeUpgrade(builder.toCell());
+    }
+
+    function onCodeUpgrade(TvmCell data) private {}
+}

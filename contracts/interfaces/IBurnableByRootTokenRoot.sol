@@ -9,6 +9,7 @@ rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
              IBurnTokensCallback(callbackTo).burnCallback(...) -> ...
 */
 
+
 interface IBurnableByRootTokenRoot is IBurnableTokenRoot {
 
     /*
