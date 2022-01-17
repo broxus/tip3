@@ -5,7 +5,7 @@ const {
     isNumeric,
     Migration,
     ZERO_ADDRESS
-} = require('./utils');
+} = require('../utils');
 
 const BigNumber = require('bignumber.js');
 BigNumber.config({EXPONENTIAL_AT: 257});
@@ -151,8 +151,9 @@ async function main() {
         initialSupply = options.initial_supply || '0';
     }
 
-    const TokenRoot = await locklift.factory.getContract('TokenRoot');
-    const TokenWallet = await locklift.factory.getContract('TokenWallet');
+    const TokenRoot = await locklift.factory.getContract('TokenRootUpgradeable');
+    const TokenWallet = await locklift.factory.getContract('TokenWalletUpgradeable');
+    const TokenWalletPlatform = await locklift.factory.getContract('TokenWalletPlatform');
 
     let tokenRoot = await locklift.giver.deployContract({
         contract: TokenRoot,
@@ -170,7 +171,8 @@ async function main() {
             name: name,
             symbol: symbol,
             decimals: decimals,
-            walletCode: TokenWallet.code
+            walletCode: TokenWallet.code,
+            platformCode: TokenWalletPlatform.code
         },
         keyPair: keyPairs[0],
     }, locklift.utils.convertCrystal('3', 'nano'));

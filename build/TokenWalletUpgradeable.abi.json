@@ -47,6 +47,15 @@
 			]
 		},
 		{
+			"name": "getPlatformCode",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"cell"}
+			]
+		},
+		{
 			"name": "getDetails",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
@@ -135,8 +144,38 @@
 			]
 		},
 		{
+			"name": "onDeployRetry",
+			"id": "0x15A038FB",
+			"inputs": [
+				{"name":"value0","type":"cell"},
+				{"name":"value1","type":"uint32"},
+				{"name":"sender","type":"address"},
+				{"name":"remainingGasTo","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "destroy",
 			"inputs": [
+				{"name":"remainingGasTo","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "requestUpgrade",
+			"inputs": [
+				{"name":"remainingGasTo","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "upgrade",
+			"inputs": [
+				{"name":"code","type":"cell"},
+				{"name":"newVersion","type":"uint32"},
 				{"name":"remainingGasTo","type":"address"}
 			],
 			"outputs": [
@@ -144,8 +183,6 @@
 		}
 	],
 	"data": [
-		{"key":1,"name":"root","type":"address"},
-		{"key":2,"name":"owner","type":"address"}
 	],
 	"events": [
 	],
@@ -158,6 +195,7 @@
 		{"name":"balance","type":"uint128"},
 		{"name":"callback_","type":"address"},
 		{"name":"onlyNotifiableTransfers_","type":"bool"},
-		{"name":"version","type":"uint32"}
+		{"name":"version","type":"uint32"},
+		{"name":"platformCode","type":"cell"}
 	]
 }

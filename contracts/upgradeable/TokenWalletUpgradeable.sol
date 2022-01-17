@@ -3,45 +3,39 @@ pragma ton-solidity >= 0.39.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "./interfaces/IDestroyable.sol";
-import "./interfaces/ITokenWallet.sol";
-import "./interfaces/ITokenRoot.sol";
-import "./interfaces/IBurnableTokenWallet.sol";
-import "./interfaces/IBurnableByRootTokenWallet.sol";
-import "./interfaces/IBurnableTokenRoot.sol";
-import "./interfaces/IAcceptMintedTokensCallback.sol";
-import "./interfaces/ITokenBurnRevertedCallback.sol";
-import "./interfaces/ITokenWalletCallback.sol";
-import "./libraries/TokenErrors.sol";
-import "./libraries/TokenGas.sol";
-import "./interfaces/IVersioned.sol";
-import "../node_modules/@broxus/contracts/contracts/libraries/MsgFlag.sol";
+import "../interfaces/IDestroyable.sol";
+import "../interfaces/ITokenWalletUpgradeable.sol";
+import "../interfaces/ITokenRootUpgradeable.sol";
+import "../interfaces/IBurnableTokenWallet.sol";
+import "../interfaces/IBurnableByRootTokenWallet.sol";
+import "../interfaces/IBurnableTokenRoot.sol";
+import "../interfaces/IAcceptMintedTokensCallback.sol";
+import "../interfaces/ITokenBurnRevertedCallback.sol";
+import "../interfaces/ITokenWalletCallback.sol";
+import "../libraries/TokenErrors.sol";
+import "../libraries/TokenGas.sol";
+import "../interfaces/IVersioned.sol";
+import "../../node_modules/@broxus/contracts/contracts/libraries/MsgFlag.sol";
+import "./TokenWalletPlatform.sol";
 
 
 /*
     @title Fungible token wallet contract
 */
-contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurnableByRootTokenWallet, IVersioned {
+contract TokenWalletUpgradeable is ITokenWalletUpgradeable, IDestroyable, IBurnableTokenWallet, IBurnableByRootTokenWallet, IVersioned {
 
-    address static root;
-    address static owner;
+    address root;
+    address owner;
 
     uint128 balance;
     address callback_;
     bool onlyNotifiableTransfers_;
 
-    uint32 version = uint32(5);
+    uint32 version;
+    TvmCell platformCode;
 
-    /*
-        @notice Creates new token wallet
-        @dev All the parameters are specified as initial data
-        @dev Owner will be notified with .notifyWalletDeployed
-    */
     constructor() public {
-        require(tvm.pubkey() == 0, TokenErrors.NON_ZERO_PUBLIC_KEY);
-        require(owner.value != 0, TokenErrors.WRONG_WALLET_OWNER);
-
-        onlyNotifiableTransfers_ = false;
+        revert();
     }
 
     fallback() external {
@@ -61,6 +55,10 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
 
     function getWalletCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } tvm.code();
+    }
+
+    function getPlatformCode() external view responsible returns (TvmCell) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } platformCode;
     }
 
     /*
@@ -150,24 +148,24 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         tvm.rawReserve(reserve, 0);
 
         TvmCell stateInit = tvm.buildStateInit({
-            contr: TokenWallet,
+            contr: TokenWalletPlatform,
             varInit: {
                 root: root,
                 owner: recipient
             },
             pubkey: 0,
-            code: tvm.code()
+            code: platformCode
         });
 
         address recipientWallet;
 
         if(deployWalletValue > 0) {
-            recipientWallet = new TokenWallet {
+            recipientWallet = new TokenWalletPlatform {
                 stateInit: stateInit,
                 value: deployWalletValue,
                 wid: address(this).wid,
                 flag: MsgFlag.SENDER_PAYS_FEES
-            }();
+            }(tvm.code(), version, owner, remainingGasTo.value != 0 ? remainingGasTo : owner);
         } else {
             recipientWallet = address(tvm.hash(stateInit));
         }
@@ -230,7 +228,13 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         @param notify Notify receiver on incoming transfer
         @param payload Notification payload
     */
-    function internalTransfer(uint128 amount, address sender, address remainingGasTo, bool notify, TvmCell payload)
+    function internalTransfer(
+        uint128 amount,
+        address sender,
+        address remainingGasTo,
+        bool notify,
+        TvmCell payload
+    )
         override
         external
     {
@@ -337,8 +341,24 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
             ITokenWalletCallback(callback).callbackConfigured{
                 value: 0,
                 flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
-bounce: false
+                bounce: false
             }(onlyNotifiableTransfers_);
+        }
+    }
+
+
+    /*
+        0x15A038FB is TokenWalletPlatform constructor functionID
+    */
+    function onDeployRetry(TvmCell, uint32, address sender, address remainingGasTo)
+        external
+        view
+        functionID(0x15A038FB)
+    {
+        require(msg.sender == root || (sender.value != 0 && _getExpectedAddress(sender) == msg.sender));
+        _reserve();
+        if (remainingGasTo.value != 0) {
+            remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS, bounce: false });
         }
     }
 
@@ -352,39 +372,40 @@ bounce: false
         remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.DESTROY_IF_ZERO, bounce: false });
     }
 
-    // =============== Support functions ==================
-
-    modifier onlyRoot() {
-        require(root == msg.sender, TokenErrors.NOT_ROOT);
-        _;
+    function requestUpgrade(address remainingGasTo) override external onlyOwner {
+        require(msg.value > TokenGas.WALLET_UPGRADE_MIN_VALUE, TokenErrors.LOW_GAS_VALUE);
+        ITokenRootUpgradeable(root).requestUpgradeWallet{ value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false }(
+            version,
+            owner,
+            remainingGasTo
+        );
     }
 
-    modifier onlyOwner() {
-        require(owner == msg.sender, TokenErrors.NOT_OWNER);
-        _;
-    }
+    function upgrade(TvmCell code, uint32 newVersion, address remainingGasTo) override external onlyRoot {
+        _reserve();
+        if (version == newVersion) {
+            remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS, bounce: false });
+        } else {
+            TvmBuilder builder;
 
-    function _reserve() private view inline {
-        tvm.rawReserve(math.max(TokenGas.TARGET_WALLET_BALANCE, address(this).balance - msg.value), 0);
-    }
+            builder.store(root);
+            builder.store(owner);
+            builder.store(version);
+            builder.store(newVersion);
+            builder.store(remainingGasTo);
 
-    /*
-        @notice Derive token wallet contract address from owner credentials
-        @param wallet_public_key_ Token wallet owner public key
-        @param owner_ Token wallet owner address
-    */
-    function _getExpectedAddress(address owner_) private view returns (address) {
-        TvmCell stateInit = tvm.buildStateInit({
-            contr: TokenWallet,
-            varInit: {
-                root: root,
-                owner: owner_
-            },
-            pubkey: 0,
-            code: tvm.code()
-        });
+            builder.store(platformCode);
 
-        return address(tvm.hash(stateInit));
+            TvmBuilder ref2;
+            ref2.store(balance);
+            ref2.store(callback_);
+            ref2.store(onlyNotifiableTransfers_);
+            builder.storeRef(ref2);
+
+            tvm.setcode(code);
+            tvm.setCurrentCode(code);
+            onCodeUpgrade(builder.toCell());
+        }
     }
 
     /*
@@ -434,6 +455,78 @@ bounce: false
                 _reserve();
                 owner.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS, bounce: false });
             }
+        }
+    }
+
+    // =============== Modifiers ==================
+
+    modifier onlyRoot() {
+        require(root == msg.sender, TokenErrors.NOT_ROOT);
+        _;
+    }
+
+    modifier onlyOwner() {
+        require(owner == msg.sender, TokenErrors.NOT_OWNER);
+        _;
+    }
+
+    // =============== Private functions ==================
+
+    function _reserve() private view inline {
+        tvm.rawReserve(math.max(TokenGas.TARGET_WALLET_BALANCE, address(this).balance - msg.value), 0);
+    }
+
+    /*
+        @notice Derive token wallet contract address from owner credentials
+        @param wallet_public_key_ Token wallet owner public key
+        @param owner_ Token wallet owner address
+    */
+    function _getExpectedAddress(address owner_) private view returns (address) {
+        TvmCell stateInit = tvm.buildStateInit({
+            contr: TokenWalletPlatform,
+            varInit: {
+                root: root,
+                owner: owner_
+            },
+            pubkey: 0,
+            code: platformCode
+        });
+
+        return address(tvm.hash(stateInit));
+    }
+
+    function onCodeUpgrade(TvmCell data) private {
+        tvm.resetStorage();
+
+        uint32 oldVersion;
+        address remainingGasTo;
+
+        TvmSlice s = data.toSlice();
+        (root, owner, oldVersion, version, remainingGasTo) = s.decode(
+            address,
+            address,
+            uint32,
+            uint32,
+            address
+        );
+        platformCode = s.loadRef();
+
+        if (oldVersion == 0) {
+            balance = 0;
+            callback_ = address(0);
+            onlyNotifiableTransfers_ = false;
+        } else {
+            TvmSlice ref = s.loadRefAsSlice();
+            (balance, callback_, onlyNotifiableTransfers_) = ref.decode(uint128, address, bool);
+        }
+
+        if (remainingGasTo.value != 0) {
+            _reserve();
+            remainingGasTo.transfer({
+                value: 0,
+                flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
+                bounce: false
+            });
         }
     }
 }
