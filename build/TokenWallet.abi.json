@@ -11,14 +11,6 @@
 			]
 		},
 		{
-			"name": "requestDeployedCallback",
-			"inputs": [
-				{"name":"callbackTo","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "getVersion",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}

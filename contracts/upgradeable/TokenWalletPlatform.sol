@@ -7,11 +7,11 @@ contract TokenWalletPlatform {
     address static root;
     address static owner;
 
-    constructor(TvmCell walletCode, uint32 walletVersion, address sender, address callbackTo) public {
+    constructor(TvmCell walletCode, uint32 walletVersion, address sender, address remainingGasTo) public {
         if (msg.sender == root || (sender.value != 0 && _getExpectedAddress(sender) == msg.sender)) {
-           initialize(walletCode, walletVersion, callbackTo);
+           initialize(walletCode, walletVersion, remainingGasTo);
         } else {
-            msg.sender.transfer({
+            remainingGasTo.transfer({
                 value: 0,
                 flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.DESTROY_IF_ZERO,
                 bounce: false
@@ -33,14 +33,15 @@ contract TokenWalletPlatform {
         return address(tvm.hash(stateInit));
     }
 
-    function initialize(TvmCell walletCode, uint32 walletVersion, address callbackTo) private {
+    function initialize(TvmCell walletCode, uint32 walletVersion, address remainingGasTo) private {
         TvmBuilder builder;
 
         builder.store(root);
         builder.store(owner);
         builder.store(uint32(0));
         builder.store(walletVersion);
-        builder.store(callbackTo);
+        builder.store(remainingGasTo);
+
         builder.store(tvm.code());
 
         tvm.setcode(walletCode);

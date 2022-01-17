@@ -43,7 +43,7 @@ interface ITokenRoot {
         @param walletOwner TokenWallet owner address
         @returns tokenWallet Token wallet address
     */
-    function deriveWalletAddress(address walletOwner) external view responsible returns(address);
+    function deriveWalletAddress(address walletOwner) external view responsible returns(address tokenWallet);
 
     /*
         @notice Mint tokens to recipient with deploy wallet optional
@@ -74,19 +74,6 @@ interface ITokenRoot {
     */
     function deployWallet(
         address walletOwner,
-        uint128 deployWalletValue,
-        address callbackTo
-    ) external;
-
-    /*
-        @notice Support method for ITokenWalletDeployedCallback.onTokenWalletDeployed
-        @dev Called by TokenWallet in constructor, cant be called in other cases
-        @param walletOwner Token wallet owner address
-        @param callbackTo Address which will receive ITokenWalletDeployedCallback.onTokenWalletDeployed
-    */
-    function proxyDeployedCallback(
-        address walletOwner,
-        address callbackTo,
-        uint32 walletVersion
-    ) external;
+        uint128 deployWalletValue
+    ) external responsible returns(address tokenWallet);
 }

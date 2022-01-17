@@ -9,7 +9,6 @@ import "./interfaces/ITokenRoot.sol";
 import "./interfaces/IBurnableTokenWallet.sol";
 import "./interfaces/IBurnableByRootTokenWallet.sol";
 import "./interfaces/IBurnableTokenRoot.sol";
-import "./interfaces/ITokenWalletDeployedCallback.sol";
 import "./interfaces/IAcceptMintedTokensCallback.sol";
 import "./interfaces/ITokenBurnRevertedCallback.sol";
 import "./interfaces/ITokenWalletCallback.sol";
@@ -46,14 +45,6 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
     }
 
     fallback() external {
-    }
-
-    function requestDeployedCallback(address callbackTo) external view onlyRoot {
-        ITokenRoot(root).proxyDeployedCallback{
-            value: 0,
-            bounce: false,
-            flag: MsgFlag.REMAINING_GAS
-        }(owner, callbackTo, version);
     }
 
     function getVersion() override external view responsible returns (uint32) {
@@ -256,7 +247,11 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         tvm.rawReserve(reserve, 0);
 
         if (notify && callback_.value != 0) {
-            ITokenWalletCallback(callback_).onTokenTransferReceived{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + 2, bounce: false }(
+            ITokenWalletCallback(callback_).onTokenTransferReceived{
+                value: 0,
+                flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
+                bounce: false
+            }(
                 address(this),
                 root,
                 amount,

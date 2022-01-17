@@ -105,21 +105,12 @@
 		{
 			"name": "deployWallet",
 			"inputs": [
+				{"name":"answerId","type":"uint32"},
 				{"name":"walletOwner","type":"address"},
-				{"name":"value1","type":"uint128"},
-				{"name":"callbackTo","type":"address"}
+				{"name":"deployWalletValue","type":"uint128"}
 			],
 			"outputs": [
-			]
-		},
-		{
-			"name": "proxyDeployedCallback",
-			"inputs": [
-				{"name":"walletOwner","type":"address"},
-				{"name":"callbackTo","type":"address"},
-				{"name":"walletVersion_","type":"uint32"}
-			],
-			"outputs": [
+				{"name":"tokenWallet","type":"address"}
 			]
 		},
 		{

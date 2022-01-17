@@ -7,7 +7,6 @@ import "../interfaces/IBurnableTokenRoot.sol";
 import "../interfaces/IBurnableByRootTokenRoot.sol";
 import "../interfaces/IDisableableMintTokenRoot.sol";
 import "../interfaces/IBurnTokensCallback.sol";
-import "../interfaces/ITokenWalletDeployedCallback.sol";
 import "../interfaces/ITokenRootUpgradeable.sol";
 import "../interfaces/ITokenWalletUpgradeable.sol";
 import "../libraries/TokenErrors.sol";
@@ -194,12 +193,21 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         @param walletOwner Token wallet owner address
         @param callbackTo When != 0:0 then will lead to send ITokenWalletDeployedCallback(callbackTo).onTokenWalletDeployed from root
     */
-    function deployWallet(address walletOwner, uint128, address callbackTo) override external {
+    function deployWallet(
+        address walletOwner,
+        uint128 deployWalletValue
+    )
+        external
+        override
+        responsible
+        returns(address tokenWallet)
+    {
         require(walletOwner.value != 0, TokenErrors.WRONG_WALLET_OWNER);
+        tvm.rawReserve(address(this).balance - msg.value, 0);
 
-        new TokenWalletPlatform {
-            value: 0,
-            flag: MsgFlag.REMAINING_GAS,
+        tokenWallet = new TokenWalletPlatform {
+            value: deployWalletValue,
+            flag: MsgFlag.SENDER_PAYS_FEES,
             bounce: false,
             varInit: {
                 root: address(this),
@@ -208,28 +216,9 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
             pubkey: 0,
             code: platformCode,
             wid: address(this).wid
-        }(walletCode, walletVersion, address(0), callbackTo);
-    }
+        }(walletCode, walletVersion, address(0), address(0));
 
-    function proxyDeployedCallback(
-        address walletOwner,
-        address callbackTo,
-        uint32 walletVersion_
-    )
-        external
-        override
-    {
-        require(msg.sender == _getExpectedWalletAddress(walletOwner), TokenErrors.SENDER_IS_NOT_VALID_WALLET);
-
-        ITokenWalletDeployedCallback(callbackTo).onTokenWalletDeployed{
-            value: 0,
-            bounce: false,
-            flag: MsgFlag.REMAINING_GAS
-        }(
-            walletOwner,
-            msg.sender,
-            walletVersion_
-        );
+        return { value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: false } tokenWallet;
     }
 
     /*
@@ -392,14 +381,52 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         walletVersion++;
     }
 
+
     function upgrade(TvmCell code) override external onlyRootOwner {
-        // TODO:
+        TvmBuilder builder;
+
+        builder.store(rootOwner);
+        builder.store(totalSupply);
+        builder.store(decimals);
+
+        TvmBuilder codes;
+        codes.store(walletVersion);
+        codes.store(platformCode);
+        codes.store(walletCode);
+
+        TvmBuilder naming;
+        codes.store(name);
+        codes.store(symbol);
+
+        TvmBuilder params;
+        params.store(mintDisabled_);
+        params.store(burnByRootDisabled_);
+        params.store(burnPaused_);
+
+        builder.storeRef(naming);
+        builder.storeRef(codes);
+        builder.storeRef(params);
+
         tvm.setcode(code);
         tvm.setCurrentCode(code);
-        TvmCell empty;
-        onCodeUpgrade(empty);
+        onCodeUpgrade(builder.toCell());
     }
 
+    /*
+        data:
+
+        [ address rootOwner, uint128 totalSupply, uint8 decimals,
+            ref_1: [ uint32 walletVersion,
+                ref_1_1: platformCode,
+                ref_1_2: walletCode
+            ],
+            ref_2: [
+                ref_2_1: name,
+                ref_2_2: symbol
+            ],
+            ref_3: [ bool mintDisabled_, bool burnByRootDisabled_, bool burnPaused_]
+        ]
+    */
     function onCodeUpgrade(TvmCell data) private { }
 
     // =============== Modifiers ==================
@@ -437,13 +464,13 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
 
         address recipientWallet;
 
-        if(deployWalletValue > 0) {
+        if (deployWalletValue > 0) {
             recipientWallet = new TokenWalletPlatform {
                 stateInit: stateInit,
                 value: deployWalletValue,
                 wid: address(this).wid,
                 flag: MsgFlag.SENDER_PAYS_FEES
-            }(walletCode, walletVersion, address(0), address(0));
+            }(walletCode, walletVersion, address(0), remainingGasTo);
         } else {
             recipientWallet = address(tvm.hash(stateInit));
         }

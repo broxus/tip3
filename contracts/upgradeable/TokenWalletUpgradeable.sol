@@ -9,7 +9,6 @@ import "../interfaces/ITokenRootUpgradeable.sol";
 import "../interfaces/IBurnableTokenWallet.sol";
 import "../interfaces/IBurnableByRootTokenWallet.sol";
 import "../interfaces/IBurnableTokenRoot.sol";
-import "../interfaces/ITokenWalletDeployedCallback.sol";
 import "../interfaces/IAcceptMintedTokensCallback.sol";
 import "../interfaces/ITokenBurnRevertedCallback.sol";
 import "../interfaces/ITokenWalletCallback.sol";
@@ -166,7 +165,7 @@ contract TokenWalletUpgradeable is ITokenWalletUpgradeable, IDestroyable, IBurna
                 value: deployWalletValue,
                 wid: address(this).wid,
                 flag: MsgFlag.SENDER_PAYS_FEES
-            }(tvm.code(), version, owner, address(0));
+            }(tvm.code(), version, owner, remainingGasTo.value != 0 ? remainingGasTo : owner);
         } else {
             recipientWallet = address(tvm.hash(stateInit));
         }
@@ -252,7 +251,11 @@ contract TokenWalletUpgradeable is ITokenWalletUpgradeable, IDestroyable, IBurna
         tvm.rawReserve(reserve, 0);
 
         if (notify && callback_.value != 0) {
-            ITokenWalletCallback(callback_).onTokenTransferReceived{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + 2, bounce: false }(
+            ITokenWalletCallback(callback_).onTokenTransferReceived{
+                value: 0,
+                flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
+                bounce: false
+            }(
                 address(this),
                 root,
                 amount,
@@ -343,23 +346,19 @@ contract TokenWalletUpgradeable is ITokenWalletUpgradeable, IDestroyable, IBurna
         }
     }
 
-    function handleDeployCallback(
-        TvmCell,
-        uint32,
-        address,
-        address callbackTo
-    )
+
+    /*
+        0x15A038FB is TokenWalletPlatform constructor functionID
+    */
+    function onDeployRetry(TvmCell, uint32, address sender, address remainingGasTo)
         external
         view
-        onlyRoot
         functionID(0x15A038FB)
     {
-        if (callbackTo.value != 0) {
-            ITokenRootUpgradeable(root).proxyDeployedCallback{ value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false }(
-                owner,
-                callbackTo,
-                version
-            );
+        require(msg.sender == root || (sender.value != 0 && _getExpectedAddress(sender) == msg.sender));
+        _reserve();
+        if (remainingGasTo.value != 0) {
+            remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS, bounce: false });
         }
     }
 
@@ -373,18 +372,19 @@ contract TokenWalletUpgradeable is ITokenWalletUpgradeable, IDestroyable, IBurna
         remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.DESTROY_IF_ZERO, bounce: false });
     }
 
-    function requestUpgrade(address callbackTo) override external onlyOwner {
+    function requestUpgrade(address remainingGasTo) override external onlyOwner {
         require(msg.value > TokenGas.WALLET_UPGRADE_MIN_VALUE, TokenErrors.LOW_GAS_VALUE);
         ITokenRootUpgradeable(root).requestUpgradeWallet{ value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false }(
             version,
             owner,
-            callbackTo
+            remainingGasTo
         );
     }
 
-    function upgrade(TvmCell code, uint32 newVersion, address callbackTo) override external onlyRoot {
+    function upgrade(TvmCell code, uint32 newVersion, address remainingGasTo) override external onlyRoot {
+        _reserve();
         if (version == newVersion) {
-            callbackTo.transfer({ value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false });
+            remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS, bounce: false });
         } else {
             TvmBuilder builder;
 
@@ -392,7 +392,7 @@ contract TokenWalletUpgradeable is ITokenWalletUpgradeable, IDestroyable, IBurna
             builder.store(owner);
             builder.store(version);
             builder.store(newVersion);
-            builder.store(callbackTo);
+            builder.store(remainingGasTo);
 
             builder.store(platformCode);
 
@@ -499,10 +499,10 @@ contract TokenWalletUpgradeable is ITokenWalletUpgradeable, IDestroyable, IBurna
         tvm.resetStorage();
 
         uint32 oldVersion;
-        address callbackTo;
+        address remainingGasTo;
 
         TvmSlice s = data.toSlice();
-        (root, owner, oldVersion, version, callbackTo) = s.decode(
+        (root, owner, oldVersion, version, remainingGasTo) = s.decode(
             address,
             address,
             uint32,
@@ -520,13 +520,13 @@ contract TokenWalletUpgradeable is ITokenWalletUpgradeable, IDestroyable, IBurna
             (balance, callback_, onlyNotifiableTransfers_) = ref.decode(uint128, address, bool);
         }
 
-        if (callbackTo.value != 0) {
+        if (remainingGasTo.value != 0) {
             _reserve();
-            ITokenRootUpgradeable(root).proxyDeployedCallback{
+            remainingGasTo.transfer({
                 value: 0,
                 flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
                 bounce: false
-            }(owner, callbackTo, version);
+            });
         }
     }
 }

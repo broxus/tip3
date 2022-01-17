@@ -4,6 +4,6 @@ import "./ITokenWallet.sol";
 
 
 interface ITokenWalletUpgradeable is ITokenWallet {
-    function requestUpgrade(address callbackTo) external;
-    function upgrade(TvmCell code, uint32 newVersion, address callbackTo) external;
+    function requestUpgrade(address remainingGasTo) external;
+    function upgrade(TvmCell code, uint32 newVersion, address remainingGasTo) external;
 }

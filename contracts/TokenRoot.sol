@@ -186,13 +186,21 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
         @param walletOwner Token wallet owner address
         @param callbackTo When != 0:0 then will lead to send ITokenWalletDeployedCallback(callbackTo).onTokenWalletDeployed from root
     */
-    function deployWallet(address walletOwner, uint128 deployWalletValue, address callbackTo) override external {
+    function deployWallet(
+        address walletOwner,
+        uint128 deployWalletValue
+    )
+        external
+        override
+        responsible
+        returns(address tokenWallet)
+    {
         require(walletOwner.value != 0, TokenErrors.WRONG_WALLET_OWNER);
         tvm.rawReserve(address(this).balance - msg.value, 0);
 
-        address wallet = new TokenWallet {
-            value: callbackTo.value == 0 ? 0 : deployWalletValue,
-            flag: callbackTo.value == 0 ? MsgFlag.ALL_NOT_RESERVED : MsgFlag.SENDER_PAYS_FEES,
+        tokenWallet = new TokenWallet {
+            value: deployWalletValue,
+            flag: MsgFlag.SENDER_PAYS_FEES,
             bounce: false,
             code: walletCode,
             pubkey: 0,
@@ -202,31 +210,7 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
             }
         }();
 
-        if (callbackTo.value != 0) {
-            TokenWallet(wallet).requestDeployedCallback{
-                value: 0,
-                bounce: false,
-                flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS
-            }(callbackTo);
-        }
-    }
-
-    function proxyDeployedCallback(
-        address walletOwner,
-        address callbackTo,
-        uint32 walletVersion_
-    ) external override {
-        require(msg.sender == _getExpectedWalletAddress(walletOwner), TokenErrors.SENDER_IS_NOT_VALID_WALLET);
-
-        ITokenWalletDeployedCallback(callbackTo).onTokenWalletDeployed{
-            value: 0,
-            bounce: false,
-            flag: MsgFlag.REMAINING_GAS
-        }(
-            walletOwner,
-            msg.sender,
-            walletVersion_
-        );
+        return { value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: false } tokenWallet;
     }
 
     /*
@@ -261,7 +245,7 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
             flag: MsgFlag.REMAINING_GAS
         }(
             amount,
-            remainingGasTo.value == 0 ? rootOwner : remainingGasTo,
+            remainingGasTo,
             callbackTo,
             payload
         );
@@ -409,7 +393,7 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
 
         ITokenWallet(recipientWallet).acceptMinted{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
             amount,
-            remainingGasTo.value == 0 ? rootOwner : remainingGasTo,
+            remainingGasTo,
             notify,
             payload
         );

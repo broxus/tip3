@@ -9,7 +9,7 @@
 				{"name":"walletCode","type":"cell"},
 				{"name":"walletVersion","type":"uint32"},
 				{"name":"sender","type":"address"},
-				{"name":"callbackTo","type":"address"}
+				{"name":"remainingGasTo","type":"address"}
 			],
 			"outputs": [
 			]

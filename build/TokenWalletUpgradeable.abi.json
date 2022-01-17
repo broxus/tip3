@@ -144,13 +144,13 @@
 			]
 		},
 		{
-			"name": "handleDeployCallback",
+			"name": "onDeployRetry",
 			"id": "0x15A038FB",
 			"inputs": [
 				{"name":"value0","type":"cell"},
 				{"name":"value1","type":"uint32"},
-				{"name":"value2","type":"address"},
-				{"name":"callbackTo","type":"address"}
+				{"name":"sender","type":"address"},
+				{"name":"remainingGasTo","type":"address"}
 			],
 			"outputs": [
 			]
@@ -166,7 +166,7 @@
 		{
 			"name": "requestUpgrade",
 			"inputs": [
-				{"name":"callbackTo","type":"address"}
+				{"name":"remainingGasTo","type":"address"}
 			],
 			"outputs": [
 			]
@@ -176,7 +176,7 @@
 			"inputs": [
 				{"name":"code","type":"cell"},
 				{"name":"newVersion","type":"uint32"},
-				{"name":"callbackTo","type":"address"}
+				{"name":"remainingGasTo","type":"address"}
 			],
 			"outputs": [
 			]
