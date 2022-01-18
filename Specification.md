@@ -100,7 +100,7 @@ does not have enough tokens to spend.
 
 If `deployWalletValue` is greater than `0`, token wallet MUST send a deployment message for recipient token wallet.
 
-If `notify` is `true` and transfer callback recipient 
+If transfer callback recipient in recipient token wallet is not a zero address, then `onTokenTransferReceived` hook should be called with `payload`.
 
 The rest of the attached value MUST be transferred to the `remainingGasTo`.
 
@@ -109,7 +109,6 @@ function transfer(
     uint128 amount,
     address recipient,
     uint128 deployWalletValue,
-    bool notify,
     TvmCell payload,
     address remainingGasTo
 ) public;
