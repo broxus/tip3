@@ -6,7 +6,6 @@ const chai = require('chai');
 chai.use(require('chai-bignumber')());
 
 const EMPTY_TVM_CELL = 'te6ccgEBAQEAAgAAAA==';
-const ZERO_ADDRESS = '0:0000000000000000000000000000000000000000000000000000000000000000'
 
 const getRandomNonce = () => Math.random() * 64000 | 0;
 
@@ -133,6 +132,5 @@ module.exports = {
   afterRun,
   isValidTonAddress,
   isNumeric,
-  EMPTY_TVM_CELL,
-  ZERO_ADDRESS
+  EMPTY_TVM_CELL
 }

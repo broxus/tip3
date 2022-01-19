@@ -41,5 +41,5 @@ interface IBurnableByRootTokenRoot is IBurnableTokenRoot {
     /*
         @notice Get `burnTokens` disabled status
     */
-    function isBurnByRootDisabled() external view responsible returns(bool);
+    function burnByRootDisabled() external view responsible returns(bool);
 }

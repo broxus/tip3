@@ -11,7 +11,7 @@
 			]
 		},
 		{
-			"name": "getVersion",
+			"name": "version",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
 			],
@@ -20,7 +20,7 @@
 			]
 		},
 		{
-			"name": "getBalance",
+			"name": "balance",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
 			],
@@ -29,7 +29,7 @@
 			]
 		},
 		{
-			"name": "getOwner",
+			"name": "owner",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
 			],
@@ -38,7 +38,16 @@
 			]
 		},
 		{
-			"name": "getWalletCode",
+			"name": "root",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "walletCode",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
 			],
@@ -52,7 +61,7 @@
 				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
-				{"components":[{"name":"root","type":"address"},{"name":"owner","type":"address"},{"name":"balance","type":"uint128"},{"name":"callback","type":"address"},{"name":"onlyNotifiableTransfers","type":"bool"}],"name":"value0","type":"tuple"}
+				{"components":[{"name":"root","type":"address"},{"name":"owner","type":"address"},{"name":"balance","type":"uint128"}],"name":"value0","type":"tuple"}
 			]
 		},
 		{
@@ -126,15 +135,6 @@
 			]
 		},
 		{
-			"name": "setCallback",
-			"inputs": [
-				{"name":"callback","type":"address"},
-				{"name":"onlyNotifiableTransfers","type":"bool"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "destroy",
 			"inputs": [
 				{"name":"remainingGasTo","type":"address"}
@@ -144,8 +144,8 @@
 		}
 	],
 	"data": [
-		{"key":1,"name":"root","type":"address"},
-		{"key":2,"name":"owner","type":"address"}
+		{"key":1,"name":"root_","type":"address"},
+		{"key":2,"name":"owner_","type":"address"}
 	],
 	"events": [
 	],
@@ -153,11 +153,9 @@
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"name":"root","type":"address"},
-		{"name":"owner","type":"address"},
-		{"name":"balance","type":"uint128"},
-		{"name":"callback_","type":"address"},
-		{"name":"onlyNotifiableTransfers_","type":"bool"},
-		{"name":"version","type":"uint32"}
+		{"name":"root_","type":"address"},
+		{"name":"owner_","type":"address"},
+		{"name":"balance_","type":"uint128"},
+		{"name":"version_","type":"uint32"}
 	]
 }

@@ -3,8 +3,7 @@ const {
     logContract,
     isValidTonAddress,
     isNumeric,
-    Migration,
-    ZERO_ADDRESS
+    Migration
 } = require('../utils');
 
 const BigNumber = require('bignumber.js');
@@ -130,7 +129,7 @@ async function main() {
 
     const response = await prompts(promptsData);
 
-    const initialSupplyTo = options.initial_supply_to || response.initialSupplyTo || ZERO_ADDRESS;
+    const initialSupplyTo = options.initial_supply_to || response.initialSupplyTo || locklift.utils.zeroAddress;
     const rootOwner = options.root_owner || response.rootOwner;
     const name = options.name || response.name;
     const symbol = options.symbol || response.symbol;
@@ -140,7 +139,7 @@ async function main() {
     pauseBurn = typeof(pauseBurn) === 'boolean' ? pauseBurn : response.pauseBurn === 'true';
 
     let initialSupply;
-    if (!options.initial_supply && initialSupplyTo !== ZERO_ADDRESS) {
+    if (!options.initial_supply && initialSupplyTo !== locklift.utils.zeroAddress) {
         initialSupply = (await prompts({
             type: 'text',
             name: 'initialSupply',
@@ -160,19 +159,21 @@ async function main() {
         constructorParams: {
             initialSupplyTo: initialSupplyTo,
             initialSupply: new BigNumber(initialSupply).shiftedBy(decimals).toFixed(),
+            deployWalletValue: locklift.utils.convertCrystal('0.2', 'nano'),
             mintDisabled: disableMint,
             burnByRootDisabled: disableBurnByRoot,
             burnPaused: pauseBurn,
-            remainingGasTo: ZERO_ADDRESS
+            remainingGasTo: locklift.utils.zeroAddress
         },
         initParams: {
-            _randomNonce: Math.random() * 6400 | 0,
-            rootOwner: rootOwner,
-            name: name,
-            symbol: symbol,
-            decimals: decimals,
-            walletCode: TokenWallet.code,
-            platformCode: TokenWalletPlatform.code
+            randomNonce_: Math.random() * 6400 | 0,
+            deployer_: locklift.utils.zeroAddress,
+            name_: name,
+            symbol_: symbol,
+            decimals_: decimals,
+            walletCode_: TokenWallet.code,
+            rootOwner_: rootOwner,
+            platformCode_: TokenWalletPlatform.code
         },
         keyPair: keyPairs[0],
     }, locklift.utils.convertCrystal('3', 'nano'));

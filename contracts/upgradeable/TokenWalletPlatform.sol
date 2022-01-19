@@ -38,6 +38,7 @@ contract TokenWalletPlatform {
 
         builder.store(root);
         builder.store(owner);
+        builder.store(uint128(0));
         builder.store(uint32(0));
         builder.store(walletVersion);
         builder.store(remainingGasTo);

@@ -21,17 +21,18 @@ import "./TokenWalletPlatform.sol";
 */
 contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoot, IBurnableTokenRoot, IBurnableByRootTokenRoot, IVersioned {
 
-    uint256 static _randomNonce;
-    string static name;
-    string static symbol;
-    uint8 static decimals;
-    TvmCell static walletCode;
-    address static rootOwner;
+    uint256 static randomNonce_;
+    address static deployer_;
+    string static name_;
+    string static symbol_;
+    uint8 static decimals_;
+    TvmCell static walletCode_;
+    address static rootOwner_;
 
-    TvmCell static platformCode;
-    uint32 walletVersion;
+    TvmCell static platformCode_;
+    uint32 walletVersion_;
 
-    uint128 totalSupply;
+    uint128 totalSupply_;
     bool mintDisabled_;
     bool burnByRootDisabled_;
     bool burnPaused_;
@@ -39,6 +40,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
     constructor(
         address initialSupplyTo,
         uint128 initialSupply,
+        uint128 deployWalletValue,
         bool mintDisabled,
         bool burnByRootDisabled,
         bool burnPaused,
@@ -47,23 +49,23 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         public
     {
         if (msg.pubkey() != 0) {
-            require(msg.pubkey() == tvm.pubkey(), TokenErrors.WRONG_ROOT_OWNER);
-            require(address(this).balance >= TokenGas.TOKEN_ROOT_DEPLOY_MIN_VALUE, TokenErrors.LOW_GAS_VALUE);
+            require(msg.pubkey() == tvm.pubkey() && deployer_.value == 0, TokenErrors.WRONG_ROOT_OWNER);
             tvm.accept();
         } else {
-            require(msg.sender == rootOwner, TokenErrors.WRONG_ROOT_OWNER);
-            require(msg.value >= TokenGas.TOKEN_ROOT_DEPLOY_MIN_VALUE, TokenErrors.LOW_GAS_VALUE);
+            require(deployer_.value != 0 && msg.sender == deployer_ ||
+                    deployer_.value == 0 && msg.sender == rootOwner_, TokenErrors.WRONG_ROOT_OWNER);
         }
 
-        totalSupply = 0;
+        totalSupply_ = 0;
         mintDisabled_ = mintDisabled;
         burnByRootDisabled_ = burnByRootDisabled;
         burnPaused_ = burnPaused;
         tvm.rawReserve(TokenGas.TARGET_ROOT_BALANCE, 0);
+
         if (initialSupplyTo.value != 0 && initialSupply != 0) {
             TvmCell empty;
-            _mint(initialSupply, initialSupplyTo, TokenGas.WALLET_DEPLOY_MIN_VALUE, remainingGasTo, false, empty);
-        } else if (remainingGasTo.value != 0) {
+            _mint(initialSupply, initialSupplyTo, deployWalletValue, remainingGasTo, false, empty);
+        } else if (remainingGasTo.value != 0 && remainingGasTo != address(this)) {
             remainingGasTo.transfer({
                 value: 0,
                 flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
@@ -75,46 +77,62 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
     fallback() external {
     }
 
-    function getVersion() override external view responsible returns (uint32) {
+    function version() override external view responsible returns (uint32) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } uint32(5);
     }
 
     /*
         @notice Get root token details
-        @returns name Token name
-        @returns symbol Token symbol
-        @returns decimals Token decimals
-        @returns rootOwner Owner address
-        @returns totalSupply Token total supply
+        @returns name_ Token name_
+        @returns symbol_ Token symbol_
+        @returns decimals_ Token decimals_
+        @returns rootOwner_ Owner address
+        @returns totalSupply_ Token total supply
     */
     function getDetails() override external view responsible returns (TokenRootDetails) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } TokenRootDetails(
-            name,
-            symbol,
-            decimals,
-            rootOwner,
-            totalSupply
+            name_,
+            symbol_,
+            decimals_,
+            rootOwner_,
+            totalSupply_
         );
     }
 
     /*
         @notice Get total supply
-        @returns totalSupply Token total supply
+        @returns totalSupply_ Token total supply
     */
-    function getTotalSupply() override external view responsible returns (uint128) {
-        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } totalSupply;
+    function totalSupply() override external view responsible returns (uint128) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } totalSupply_;
     }
 
     /*
         @notice Get Token wallet code
         @returns code Token wallet code
     */
-    function getWalletCode() override external view responsible returns (TvmCell) {
-        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } walletCode;
+    function walletCode() override external view responsible returns (TvmCell) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } walletCode_;
     }
 
-    function getPlatformCode() external view responsible returns (TvmCell) {
-        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } platformCode;
+    /*
+        @notice Get Token wallet code
+        @returns code Token wallet code
+    */
+    function walletVersion() override external view responsible returns (uint32) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } walletVersion_;
+    }
+
+    function platformCode() override external view responsible returns (TvmCell) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } platformCode_;
+    }
+
+    /*
+        @notice Get TokenRoot owner
+        @returns TokenRoot owner
+    */
+    function rootOwner() override external view responsible returns (address) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } rootOwner_;
     }
 
     /*
@@ -122,7 +140,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         @param walletOwner Token wallet owner address
         @returns walletOwner Token wallet address
     */
-    function deriveWalletAddress(address walletOwner)
+    function walletOf(address walletOwner)
         override
         external
         view
@@ -160,9 +178,6 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         require(!mintDisabled_, TokenErrors.MINT_DISABLED);
         require(amount > 0, TokenErrors.WRONG_AMOUNT);
         require(recipient.value != 0, TokenErrors.WRONG_RECIPIENT);
-        require(deployWalletValue >= TokenGas.WALLET_DEPLOY_MIN_VALUE || deployWalletValue == 0,
-            TokenErrors.DEPLOY_WALLET_VALUE_TOO_LOW);
-        require(msg.value > deployWalletValue + TokenGas.MINT_MIN_VALUE, TokenErrors.LOW_GAS_VALUE);
 
         _reserve();
         _mint(amount, recipient, deployWalletValue, remainingGasTo, notify, payload);
@@ -170,7 +185,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
 
     /*
     @notice Disable 'mint' forever
-        @dev Can be called only by rootOwner
+        @dev Can be called only by rootOwner_
         @dev This is an irreversible action
         @returns true
     */
@@ -183,7 +198,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         @notice Get mint disabled status
         @returns is 'disableMint' already called
     */
-    function isMintDisabled() override external view responsible returns(bool) {
+    function mintDisabled() override external view responsible returns(bool) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } mintDisabled_;
     }
 
@@ -214,9 +229,9 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
                 owner: walletOwner
             },
             pubkey: 0,
-            code: platformCode,
+            code: platformCode_,
             wid: address(this).wid
-        }(walletCode, walletVersion, address(0), address(0));
+        }(walletCode_, walletVersion_, address(0), address(0));
 
         return { value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: false } tokenWallet;
     }
@@ -253,7 +268,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
             flag: MsgFlag.REMAINING_GAS
         }(
             amount,
-            remainingGasTo.value == 0 ? rootOwner : remainingGasTo,
+            remainingGasTo.value == 0 ? rootOwner_ : remainingGasTo,
             callbackTo,
             payload
         );
@@ -264,7 +279,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } burnByRootDisabled_;
     }
 
-    function isBurnByRootDisabled() override external view responsible returns(bool) {
+    function burnByRootDisabled() override external view responsible returns(bool) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } burnByRootDisabled_;
     }
 
@@ -272,13 +287,13 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         @notice Get burn paused status
         @returns paused
     */
-    function isBurnPaused() override external view responsible returns(bool) {
+    function burnPaused() override external view responsible returns(bool) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } burnPaused_;
     }
 
     /*
         @notice Pause/Unpause token burns
-        @dev Can be called only by rootOwner
+        @dev Can be called only by rootOwner_
         @dev if paused, then all burned tokens will be bounced to TokenWallet
         @param paused
         @returns paused
@@ -313,7 +328,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         require(!burnPaused_, TokenErrors.BURN_PAUSED);
         require(msg.sender == _getExpectedWalletAddress(walletOwner), TokenErrors.SENDER_IS_NOT_VALID_WALLET);
 
-        totalSupply -= amount;
+        totalSupply_ -= amount;
 
         if (callbackTo.value == 0) {
             remainingGasTo.transfer({ value: 0, flag: MsgFlag.REMAINING_GAS + MsgFlag.IGNORE_ERRORS, bounce: false });
@@ -349,13 +364,13 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
         @param new_owner Root token new owner address
     */
     function transferOwnership(address newRootOwner) external onlyRootOwner {
-        rootOwner = newRootOwner;
+        rootOwner_ = newRootOwner;
     }
 
     function requestUpgradeWallet(
         uint32 currentVersion,
         address walletOwner,
-        address callbackTo
+        address remainingGasTo
     )
         override
         external
@@ -365,38 +380,38 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
 
         _reserve();
 
-        if (currentVersion == walletVersion || msg.value < TokenGas.WALLET_UPGRADE_MIN_VALUE) {
-            callbackTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED });
+        if (currentVersion == walletVersion_) {
+            remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED });
         } else {
-            ITokenWalletUpgradeable(msg.sender).upgrade{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: false }(
-                walletCode,
-                walletVersion,
-                callbackTo
+            ITokenWalletUpgradeable(msg.sender).upgradeInternal{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: false }(
+                walletCode_,
+                walletVersion_,
+                remainingGasTo
             );
         }
     }
 
     function setWalletCode(TvmCell code) override external onlyRootOwner {
-        walletCode = code;
-        walletVersion++;
+        walletCode_ = code;
+        walletVersion_++;
     }
 
 
     function upgrade(TvmCell code) override external onlyRootOwner {
         TvmBuilder builder;
 
-        builder.store(rootOwner);
-        builder.store(totalSupply);
-        builder.store(decimals);
+        builder.store(rootOwner_);
+        builder.store(totalSupply_);
+        builder.store(decimals_);
 
         TvmBuilder codes;
-        codes.store(walletVersion);
-        codes.store(platformCode);
-        codes.store(walletCode);
+        codes.store(walletVersion_);
+        codes.store(platformCode_);
+        codes.store(walletCode_);
 
         TvmBuilder naming;
-        codes.store(name);
-        codes.store(symbol);
+        codes.store(name_);
+        codes.store(symbol_);
 
         TvmBuilder params;
         params.store(mintDisabled_);
@@ -415,14 +430,14 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
     /*
         data:
 
-        [ address rootOwner, uint128 totalSupply, uint8 decimals,
-            ref_1: [ uint32 walletVersion,
-                ref_1_1: platformCode,
-                ref_1_2: walletCode
+        [ address rootOwner_, uint128 totalSupply_, uint8 decimals_,
+            ref_1: [ uint32 walletVersion_,
+                ref_1_1: platformCode_,
+                ref_1_2: walletCode_
             ],
             ref_2: [
-                ref_2_1: name,
-                ref_2_2: symbol
+                ref_2_1: name_,
+                ref_2_2: symbol_
             ],
             ref_3: [ bool mintDisabled_, bool burnByRootDisabled_, bool burnPaused_]
         ]
@@ -432,7 +447,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
     // =============== Modifiers ==================
 
     modifier onlyRootOwner() {
-        require(rootOwner.value != 0 && rootOwner == msg.sender, TokenErrors.NOT_OWNER);
+        require(rootOwner_.value != 0 && rootOwner_ == msg.sender, TokenErrors.NOT_OWNER);
         _;
     }
 
@@ -459,7 +474,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
                 owner: recipient
             },
             pubkey: 0,
-            code: platformCode
+            code: platformCode_
         });
 
         address recipientWallet;
@@ -470,16 +485,16 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
                 value: deployWalletValue,
                 wid: address(this).wid,
                 flag: MsgFlag.SENDER_PAYS_FEES
-            }(walletCode, walletVersion, address(0), remainingGasTo);
+            }(walletCode_, walletVersion_, address(0), remainingGasTo);
         } else {
             recipientWallet = address(tvm.hash(stateInit));
         }
 
-        totalSupply += amount;
+        totalSupply_ += amount;
 
         ITokenWalletUpgradeable(recipientWallet).acceptMinted{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
             amount,
-            remainingGasTo.value == 0 ? rootOwner : remainingGasTo,
+            remainingGasTo.value == 0 ? rootOwner_ : remainingGasTo,
             notify,
             payload
         );
@@ -498,7 +513,7 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
                 owner: walletOwner
             },
             pubkey: 0,
-            code: platformCode
+            code: platformCode_
         });
 
         return address(tvm.hash(stateInit));
@@ -506,11 +521,11 @@ contract TokenRootUpgradeable is ITokenRootUpgradeable, IDisableableMintTokenRoo
 
     /*
         @notice On-bounce handler
-        @dev Used in case token wallet .accept fails so the totalSupply can be decreased back
+        @dev Used in case token wallet .accept fails so the totalSupply_ can be decreased back
     */
     onBounce(TvmSlice slice) external {
         if (slice.decode(uint32) == tvm.functionId(ITokenWallet.acceptMinted)) {
-            totalSupply -= slice.decode(uint128);
+            totalSupply_ -= slice.decode(uint128);
         }
     }
 

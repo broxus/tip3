@@ -44,5 +44,5 @@ interface IBurnableTokenRoot {
         @notice Get burn paused status
         @returns paused
     */
-    function isBurnPaused() external view responsible returns(bool);
+    function burnPaused() external view responsible returns(bool);
 }

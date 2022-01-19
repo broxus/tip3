@@ -159,13 +159,17 @@ STSLICE
 .loc ../contracts/upgradeable/TokenWalletPlatform.sol, 41
 PUSHINT 0
 SWAP
-STU 32
+STU 128
 .loc ../contracts/upgradeable/TokenWalletPlatform.sol, 42
-XCHG S1, S2
+PUSHINT 0
+SWAP
 STU 32
 .loc ../contracts/upgradeable/TokenWalletPlatform.sol, 43
+XCHG S1, S2
+STU 32
+.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 44
 STSLICE
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 45
+.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 46
 GETGLOB 1
 PUSHREF {
 	DUP
@@ -180,10 +184,10 @@ STSLICE
 ENDC
 SWAP
 STREF
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 47
+.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 48
 OVER
 SETCODE
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 48
+.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 49
 SWAP
 CTOS
 DUP
@@ -198,7 +202,7 @@ PLDREF
 CTOS
 BLESS
 POP C3
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 50
+.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 51
 ENDC
 CALLREF {
 	CALL $:onCodeUpgrade$

@@ -12,7 +12,7 @@ IFREF {
 GETGLOB 6
 THROWIF 51
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 38
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 36
 THROW 100
 .loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 
@@ -29,7 +29,7 @@ CALLREF {
 	CALL $c7_to_c4$
 }
 
-.macro getVersion
+.macro version
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -38,14 +38,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 44
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 42
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 45
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 43
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -54,7 +54,7 @@ SETINDEXQ 4
 FALSE
 SETINDEXQ 1
 SETGLOB 4
-GETGLOB 15
+GETGLOB 13
 .loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 OVER
 PUSHCONT {
@@ -67,7 +67,7 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHSLICE x0000000000000000000000002b6a534be_
+	PUSHSLICE x00000000000000000000000024ccaa4c6_
 	STSLICER
 	STU 32
 	ENDC
@@ -111,7 +111,7 @@ IFREF {
 TRUE
 SETGLOB 7
 
-.macro getBalance
+.macro balance
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -120,14 +120,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 48
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 46
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 49
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 47
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -149,7 +149,7 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHSLICE x0000000000000000000000003ed5e2fda_
+	PUSHSLICE x000000000000000000000000325a561fe_
 	STSLICER
 	STU 128
 	ENDC
@@ -193,7 +193,7 @@ IFREF {
 TRUE
 SETGLOB 7
 
-.macro getOwner
+.macro owner
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -202,14 +202,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 52
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 50
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 53
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 51
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -235,7 +235,7 @@ PUSHCONT {
 	STUR 98
 	SWAP
 	NEWC
-	STSLICECONST xe2c3961c
+	STSLICECONST x9f013291
 	STSLICE
 	STBREFR
 	ENDC
@@ -282,7 +282,7 @@ IFREF {
 TRUE
 SETGLOB 7
 
-.macro getWalletCode
+.macro root
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -291,14 +291,103 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 56
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 54
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 57
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 55
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 10
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	SWAP
+	NEWC
+	STSLICECONST xc4574284
+	STSLICE
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 1
+	STUR 106
+	SWAP
+	NEWC
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STSLICE
+	STBREFR
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro walletCode
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 58
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 59
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -331,7 +420,7 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHSLICE x000000000000000000000000205f0cd66_
+	PUSHSLICE x000000000000000000000000399773a7e_
 	STSLICER
 	STREF
 	ENDC
@@ -375,7 +464,7 @@ IFREF {
 TRUE
 SETGLOB 7
 
-.macro getPlatformCode
+.macro platformCode
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -384,14 +473,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 60
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 62
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 61
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 63
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -400,7 +489,7 @@ SETINDEXQ 4
 FALSE
 SETINDEXQ 1
 SETGLOB 4
-GETGLOB 16
+GETGLOB 14
 .loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 OVER
 PUSHCONT {
@@ -413,7 +502,7 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHSLICE x0000000000000000000000002c504857e_
+	PUSHSLICE x00000000000000000000000020215fbea_
 	STSLICER
 	STREF
 	ENDC
@@ -466,14 +555,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 72
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 74
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 73
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 75
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -485,9 +574,7 @@ SETGLOB 4
 GETGLOB 10
 GETGLOB 11
 GETGLOB 12
-GETGLOB 13
-GETGLOB 14
-TUPLE 5
+TRIPLE
 .loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 OVER
 PUSHCONT {
@@ -504,20 +591,15 @@ PUSHCONT {
 	STUR 98
 	SWAP
 	NEWC
-	STSLICECONST x8b1638d4
+	STSLICECONST xd78a750c
 	SWAP
-	UNTUPLE 5
-	REVERSE 6, 0
+	UNTRIPLE
+	REVERSE 4, 0
 	STSLICE
-	ROLLREV 4
-	NEWC
-	STSLICE
-	STU 128
 	ROTREV
 	NEWC
 	STSLICE
-	STI 1
-	STBREFR
+	STU 128
 	STBREFR
 	STBREFR
 	ENDC
@@ -551,18 +633,13 @@ PUSHCONT {
 	INDEX 5
 	STUR 32
 	SWAP
-	UNTUPLE 5
-	REVERSE 6, 0
+	UNTRIPLE
+	REVERSE 4, 0
 	STSLICE
-	ROLLREV 4
-	NEWC
-	STSLICE
-	STU 128
 	ROTREV
 	NEWC
 	STSLICE
-	STI 1
-	STBREFR
+	STU 128
 	STBREFR
 	STBREFR
 	ENDC
@@ -613,12 +690,18 @@ PUSHCONT {
 IFNOT
 LDREF
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 464
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 416
 GETGLOB 10
 GETGLOB 9
 SDEQ
 THROWIFNOT 1010
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 476
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 96
+GETGLOB 12
+PUSH S4
+ADD
+UFITS 128
+SETGLOB 12
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
 PUSHINT 100000000
 GETPARAM 7
 INDEX 0
@@ -630,30 +713,13 @@ UFITS 128
 MAX
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 97
-GETGLOB 12
-PUSH S4
-ADD
-UFITS 128
-SETGLOB 12
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 99
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 100
 SWAP
-DUP
 PUSHCONT {
-	DROP
-	GETGLOB 13
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
-	NEQINT 0
-}
-IF
-PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 100
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 101
 	PUSH3 S0, S1, S2
 	GETGLOB 10
-	MYADDR
-	GETGLOB 13
+	GETGLOB 11
 	FALSE
 	NEWC
 	STSLICECONST x6_
@@ -663,12 +729,9 @@ PUSHCONT {
 	STSLICE
 	PUSHINT 1
 	STUR 111
-	ROLLREV 5
-	NEWC
-	STSLICECONST x2d078672
-	STSLICE
 	ROLLREV 4
 	NEWC
+	STSLICECONST x70064935
 	STSLICE
 	STU 128
 	ROTREV
@@ -677,9 +740,10 @@ PUSHCONT {
 	STREF
 	STBREFR
 	STBREFR
-	STBREFR
 	ENDC
 	PUSHINT 128
+	ADDCONST 2
+	UFITS 8
 	SENDRAWMSG
 	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 }
@@ -688,6 +752,16 @@ PUSHCONT {
 	PARSEMSGADDR
 	INDEX 3
 	PLDU 256
+	NEQINT 0
+	DUP
+	PUSHCONT {
+		DROP
+		OVER
+		MYADDR
+		SDEQ
+		NOT
+	}
+	IF
 	PUSHCONT {
 		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 112
 		OVER
@@ -767,7 +841,7 @@ PUSHCONT {
 IFNOT
 LDREF
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 469
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 421
 GETGLOB 11
 GETGLOB 9
 SDEQ
@@ -797,19 +871,7 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1030
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 142
-PUSH S3
-PUSHINT 100000000
-GEQ
-DUP
-PUSHCONT {
-	DROP
-	PUSH S3
-	EQINT 0
-}
-IFNOT
-THROWIFNOT 2010
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 144
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
 PUSHINT 100000000
 GETPARAM 7
 INDEX 0
@@ -819,22 +881,9 @@ PICK
 SUB
 UFITS 128
 MAX
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 145
-GETPARAM 7
-INDEX 0
-OVER
-PUSHINT 100000000
-ADD
-UFITS 128
-PUSH S6
-ADD
-UFITS 128
-GREATER
-THROWIFNOT 2000
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 148
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 150
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 145
 NEWDICT
 PUSHINT 0
 NEWC
@@ -856,33 +905,23 @@ DICTUSET
 NEWC
 STDICT
 ENDC
-GETGLOB 16
+GETGLOB 14
 NEWC
 STSLICECONST x2_
 STOPTREF
 STOPTREF
 STZERO
 ENDC
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 160
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 155
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 162
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 157
 PUSH S5
 GTINT 0
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 163
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 158
 	PUSH S4
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
-	PUSHCONT {
-		PUSH S4
-	}
-	PUSHCONT {
-		GETGLOB 11
-	}
-	IFELSE
 	GETGLOB 11
-	GETGLOB 15
+	GETGLOB 13
 	GETGLOB 1
 	PUSHREF {
 		DUP
@@ -935,7 +974,7 @@ PUSHCONT {
 	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 }
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 170
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 165
 	OVER
 	HASHCU
 	NEWC
@@ -947,28 +986,18 @@ PUSHCONT {
 	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 }
 IFELSE
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 173
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 168
 GETGLOB 12
 PUSH S7
 SUB
 UFITS 128
 SETGLOB 12
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 175
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 170
 ROT
 ROLL 3
-PUSH S4
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-PUSHCONT {
-	PUSH S4
-}
-PUSHCONT {
-	GETGLOB 11
-}
-IFELSE
+ROLL 4
 GETGLOB 11
-ROLL 8
+ROLL 7
 ROLL 5
 TRUE
 NEWC
@@ -995,7 +1024,7 @@ ENDC
 PUSHINT 128
 SENDRAWMSG
 .loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-BLKDROP 3
+DROP2
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -1011,7 +1040,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 193
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 188
 LDUQ 128
 PUSHCONT {
 	LDREF
@@ -1046,21 +1075,21 @@ PUSHCONT {
 IFNOT
 LDREF
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 469
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 421
 GETGLOB 11
 GETGLOB 9
 SDEQ
 THROWIFNOT 1000
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 204
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 199
 PUSH S4
 GTINT 0
 THROWIFNOT 1050
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 205
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 200
 PUSH S4
 GETGLOB 12
 LEQ
 THROWIFNOT 1060
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 206
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 201
 PUSH S3
 PARSEMSGADDR
 INDEX 3
@@ -1076,7 +1105,7 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1030
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 207
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
 PUSHINT 100000000
 GETPARAM 7
 INDEX 0
@@ -1086,39 +1115,18 @@ PICK
 SUB
 UFITS 128
 MAX
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 208
-GETPARAM 7
-INDEX 0
-OVER
-PUSHINT 100000000
-ADD
-UFITS 128
-GREATER
-THROWIFNOT 2000
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 209
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 211
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 205
 GETGLOB 12
 PUSH S5
 SUB
 UFITS 128
 SETGLOB 12
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 213
-SWAP
-PUSH S2
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-PUSHCONT {
-	PUSH S2
-}
-PUSHCONT {
-	GETGLOB 11
-}
-IFELSE
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 207
+XCHG S2
 GETGLOB 11
-BLKSWAP 2, 5
+BLKSWAP 2, 4
 TRUE
 NEWC
 STSLICECONST x6_
@@ -1144,7 +1152,6 @@ ENDC
 PUSHINT 128
 SENDRAWMSG
 .loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-DROP
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -1160,7 +1167,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 231
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 225
 LDUQ 128
 PUSHCONT {
 	LDREF
@@ -1195,40 +1202,27 @@ PUSHCONT {
 IFNOT
 LDREF
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 241
-PUSH2 S1, S1
-PUSHCONT {
-	DROP
-	GETGLOB 14
-	NOT
-	DUP
-	PUSHCONT {
-		DROP
-		GETGLOB 13
-		PARSEMSGADDR
-		INDEX 3
-		PLDU 256
-		EQINT 0
-	}
-	IFNOT
-}
-IFNOT
-THROWIFNOT 1200
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 243
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 235
 PUSH S3
 CALLREF {
 	CALL $_getExpectedAddress_internal_macro$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 244
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 236
 GETGLOB 9
 SDEQ
 THROWIFNOT 1100
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 245
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 237
 PUSH S3
 GETGLOB 11
 SDEQ
 THROWIF 1030
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 246
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 239
+GETGLOB 12
+PUSH S5
+ADD
+UFITS 128
+SETGLOB 12
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
 PUSHINT 100000000
 GETPARAM 7
 INDEX 0
@@ -1238,41 +1232,17 @@ PICK
 SUB
 UFITS 128
 MAX
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 247
-GETPARAM 7
-INDEX 0
-OVER
-GREATER
-THROWIFNOT 2000
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 249
-GETGLOB 12
-PUSH S6
-ADD
-UFITS 128
-SETGLOB 12
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 251
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 253
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 243
 SWAP
-DUP
 PUSHCONT {
-	DROP
-	GETGLOB 13
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
-	NEQINT 0
-}
-IF
-PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 254
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 244
 	PUSH2 S0, S1
 	GETGLOB 9
 	PUSH2 S5, S6
 	GETGLOB 10
-	MYADDR
-	GETGLOB 13
+	GETGLOB 11
 	FALSE
 	NEWC
 	STSLICECONST x6_
@@ -1282,12 +1252,9 @@ PUSHCONT {
 	STSLICE
 	PUSHINT 1
 	STUR 111
-	ROLLREV 7
-	NEWC
-	STSLICECONST x4b3e3640
-	STSLICE
 	ROLLREV 6
 	NEWC
+	STSLICECONST x7ab367c4
 	STSLICE
 	STU 128
 	ROLLREV 4
@@ -1304,7 +1271,6 @@ PUSHCONT {
 	STBREFR
 	STBREFR
 	STBREFR
-	STBREFR
 	ENDC
 	PUSHINT 128
 	ADDCONST 2
@@ -1313,7 +1279,7 @@ PUSHCONT {
 	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 }
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 268
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 257
 	OVER
 	NEWC
 	STSLICECONST x42_
@@ -1345,7 +1311,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 281
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 270
 LDUQ 128
 PUSHCONT {
 	LDREF
@@ -1372,21 +1338,21 @@ PUSHCONT {
 IFNOT
 LDREF
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 469
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 421
 GETGLOB 11
 GETGLOB 9
 SDEQ
 THROWIFNOT 1000
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 286
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 275
 PUSH S3
 GTINT 0
 THROWIFNOT 1050
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 287
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 276
 PUSH S3
 GETGLOB 12
 LEQ
 THROWIFNOT 1060
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 476
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
 PUSHINT 100000000
 GETPARAM 7
 INDEX 0
@@ -1398,27 +1364,16 @@ UFITS 128
 MAX
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 291
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 280
 GETGLOB 12
 PUSH S4
 SUB
 UFITS 128
 SETGLOB 12
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 293
-SWAP
-PUSH S2
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-PUSHCONT {
-	PUSH S2
-}
-PUSHCONT {
-	GETGLOB 11
-}
-IFELSE
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 282
+XCHG S2
 GETGLOB 11
-ROLL 5
+ROLL 4
 GETGLOB 10
 TRUE
 NEWC
@@ -1448,7 +1403,6 @@ ENDC
 PUSHINT 128
 SENDRAWMSG
 .loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-DROP
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -1464,7 +1418,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 310
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 299
 LDUQ 128
 PUSHCONT {
 	LDREF
@@ -1491,27 +1445,27 @@ PUSHCONT {
 IFNOT
 LDREF
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 464
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 416
 GETGLOB 10
 GETGLOB 9
 SDEQ
 THROWIFNOT 1010
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 315
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 304
 PUSH S3
 GTINT 0
 THROWIFNOT 1050
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 316
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 305
 PUSH S3
 GETGLOB 12
 LEQ
 THROWIFNOT 1060
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 318
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 307
 GETGLOB 12
 PUSH S4
 SUB
 UFITS 128
 SETGLOB 12
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 320
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 309
 XCHG S2
 GETGLOB 11
 ROLL 4
@@ -1550,90 +1504,6 @@ CALLREF {
 TRUE
 SETGLOB 7
 
-.macro setCallback
-DROP
-GETGLOB 6
-THROWIFNOT 76
-GETGLOB 2
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 335
-LDMSGADDRQ
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-LDIQ 1
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDI 1
-}
-IFNOT
-ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 469
-GETGLOB 11
-GETGLOB 9
-SDEQ
-THROWIFNOT 1000
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 336
-OVER
-SETGLOB 13
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 337
-SETGLOB 14
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 339
-DUP
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 476
-	PUSHINT 100000000
-	GETPARAM 7
-	INDEX 0
-	DEPTH
-	ADDCONST -2
-	PICK
-	SUB
-	UFITS 128
-	MAX
-	PUSHINT 0
-	RAWRESERVE
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 341
-	GETGLOB 14
-	OVER
-	FALSE
-	NEWC
-	STSLICECONST x6_
-	STI 1
-	PUSHINT 3
-	STZEROES
-	STSLICE
-	PUSHSLICE x00000000000000000000000000005948e2f5_
-	STSLICER
-	STI 1
-	ENDC
-	PUSHINT 128
-	ADDCONST 2
-	UFITS 8
-	SENDRAWMSG
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-}
-IF
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-DROP
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
 .macro onDeployRetry
 DROP
 GETGLOB 6
@@ -1643,7 +1513,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 353
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 322
 LDREF
 LDU 32
 LDMSGADDRQ
@@ -1663,7 +1533,7 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 358
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 327
 GETGLOB 9
 GETGLOB 10
 SDEQ
@@ -1689,7 +1559,7 @@ PUSHCONT {
 }
 IFNOT
 THROWIFNOT 100
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 476
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
 PUSHINT 100000000
 GETPARAM 7
 INDEX 0
@@ -1701,13 +1571,23 @@ UFITS 128
 MAX
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 360
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 329
 DUP
 PARSEMSGADDR
 INDEX 3
 PLDU 256
+NEQINT 0
+DUP
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 361
+	DROP
+	DUP
+	MYADDR
+	SDEQ
+	NOT
+}
+IF
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 330
 	DUP
 	NEWC
 	STSLICECONST x42_
@@ -1739,7 +1619,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 370
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 339
 LDMSGADDRQ
 PUSHCONT {
 	LDREF
@@ -1749,15 +1629,15 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 469
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 421
 GETGLOB 11
 GETGLOB 9
 SDEQ
 THROWIFNOT 1000
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 371
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 340
 GETGLOB 12
 THROWIF 1070
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 372
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 341
 NEWC
 STSLICECONST x42_
 STSLICE
@@ -1775,7 +1655,7 @@ CALLREF {
 TRUE
 SETGLOB 7
 
-.macro requestUpgrade
+.macro upgrade
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -1784,7 +1664,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 375
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 344
 LDMSGADDRQ
 PUSHCONT {
 	LDREF
@@ -1794,21 +1674,14 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 469
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 421
 GETGLOB 11
 GETGLOB 9
 SDEQ
 THROWIFNOT 1000
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 376
-DEPTH
-ADDCONST -2
-PICK
-PUSHINT 1000000000
-GREATER
-THROWIFNOT 2000
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 377
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 345
 GETGLOB 11
-GETGLOB 15
+GETGLOB 13
 GETGLOB 10
 FALSE
 NEWC
@@ -1839,7 +1712,7 @@ CALLREF {
 TRUE
 SETGLOB 7
 
-.macro upgrade
+.macro upgradeInternal
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -1848,7 +1721,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 384
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 352
 LDREF
 LDU 32
 LDMSGADDRQ
@@ -1860,12 +1733,12 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 464
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 416
 GETGLOB 10
 GETGLOB 9
 SDEQ
 THROWIFNOT 1010
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 476
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
 PUSHINT 100000000
 GETPARAM 7
 INDEX 0
@@ -1877,12 +1750,12 @@ UFITS 128
 MAX
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 386
-GETGLOB 15
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 354
+GETGLOB 13
 PUSH S2
 EQUAL
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 387
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 355
 	DUP
 	NEWC
 	STSLICECONST x42_
@@ -1897,50 +1770,39 @@ PUSHCONT {
 	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 }
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 389
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 357
 	GETGLOB 10
 	NEWC
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 391
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 359
 	STSLICE
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 392
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 360
 	GETGLOB 11
 	SWAP
 	STSLICE
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 393
-	GETGLOB 15
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 361
+	GETGLOB 12
+	SWAP
+	STU 128
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 362
+	GETGLOB 13
 	SWAP
 	STU 32
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 394
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 363
 	PUSH S2
 	SWAP
 	STU 32
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 395
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 364
 	OVER
 	SWAP
 	STSLICE
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 397
-	GETGLOB 16
-	SWAP
-	STREF
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 399
-	GETGLOB 12
-	NEWC
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 400
-	STU 128
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 401
-	GETGLOB 13
-	SWAP
-	STSLICE
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 402
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 366
 	GETGLOB 14
 	SWAP
-	STI 1
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 403
-	STBREFR
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 405
+	STREF
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 368
 	PUSH S3
 	SETCODE
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 406
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 369
 	PUSH S3
 	CTOS
 	DUP
@@ -1955,7 +1817,7 @@ PUSHCONT {
 	CTOS
 	BLESS
 	POP C3
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 407
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 370
 	ENDC
 	CALLREF {
 		CALL $:onCodeUpgrade$
@@ -1979,26 +1841,26 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 420
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 383
 DUP
 LDU 32
 POP S2
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 422
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 385
 DUP
 PUSHINT 1945802543
 EQUAL
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 423
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 386
 	OVER
 	LDU 128
 	POP S3
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 424
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 387
 	GETGLOB 12
 	OVER
 	ADD
 	UFITS 128
 	SETGLOB 12
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 476
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
 	PUSHINT 100000000
 	GETPARAM 7
 	INDEX 0
@@ -2010,18 +1872,67 @@ PUSHCONT {
 	MAX
 	PUSHINT 0
 	RAWRESERVE
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 426
-	GETGLOB 13
-	PARSEMSGADDR
-	INDEX 3
-	PLDU 256
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 389
+	GETGLOB 9
+	SWAP
+	GETGLOB 10
+	GETGLOB 11
+	FALSE
+	NEWC
+	STSLICECONST x6_
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	PUSHINT 1
+	STUR 111
+	ROLLREV 3
+	NEWC
+	STSLICECONST x02d2d2a2
+	STSLICE
+	STU 128
+	SWAP
+	NEWC
+	STSLICE
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 128
+	ADDCONST 2
+	UFITS 8
+	SENDRAWMSG
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
+}
+PUSHCONT {
+	DUP
+	PUSHINT 1047219759
+	EQUAL
 	PUSHCONT {
-		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 427
-		GETGLOB 9
+		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 399
 		OVER
+		LDU 128
+		POP S3
+		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 400
+		GETGLOB 12
+		OVER
+		ADD
+		UFITS 128
+		SETGLOB 12
+		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
+		PUSHINT 100000000
+		GETPARAM 7
+		INDEX 0
+		DEPTH
+		ADDCONST -2
+		PICK
+		SUB
+		UFITS 128
+		MAX
+		PUSHINT 0
+		RAWRESERVE
+		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 402
 		GETGLOB 10
-		MYADDR
-		GETGLOB 13
+		GETGLOB 11
 		FALSE
 		NEWC
 		STSLICECONST x6_
@@ -2031,139 +1942,17 @@ PUSHCONT {
 		STSLICE
 		PUSHINT 1
 		STUR 111
-		ROLLREV 4
+		ROTREV
 		NEWC
-		STSLICECONST x1508b455
-		STSLICE
-		ROLLREV 3
-		NEWC
+		STSLICECONST x61daa38a
 		STSLICE
 		STU 128
-		SWAP
-		NEWC
-		STSLICE
-		STBREFR
-		STBREFR
 		STBREFR
 		ENDC
 		PUSHINT 128
 		ADDCONST 2
 		UFITS 8
 		SENDRAWMSG
-		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-	}
-	PUSHCONT {
-		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 438
-		GETGLOB 11
-		NEWC
-		STSLICECONST x42_
-		STSLICE
-		PUSHINT 111
-		STZEROES
-		ENDC
-		PUSHINT 128
-		ADDCONST 2
-		UFITS 8
-		SENDRAWMSG
-		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-	}
-	IFELSE
-	DROP
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-}
-PUSHCONT {
-	DUP
-	PUSHINT 1047219759
-	EQUAL
-	PUSHCONT {
-		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 441
-		OVER
-		LDU 128
-		POP S3
-		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 442
-		GETGLOB 12
-		OVER
-		ADD
-		UFITS 128
-		SETGLOB 12
-		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 443
-		GETGLOB 13
-		PARSEMSGADDR
-		INDEX 3
-		PLDU 256
-		PUSHCONT {
-			.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 476
-			PUSHINT 100000000
-			GETPARAM 7
-			INDEX 0
-			DEPTH
-			ADDCONST -2
-			PICK
-			SUB
-			UFITS 128
-			MAX
-			PUSHINT 0
-			RAWRESERVE
-			.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 445
-			DUP
-			GETGLOB 10
-			MYADDR
-			GETGLOB 13
-			FALSE
-			NEWC
-			STSLICECONST x6_
-			STI 1
-			PUSHINT 3
-			STZEROES
-			STSLICE
-			PUSHINT 1
-			STUR 111
-			ROLLREV 3
-			NEWC
-			STSLICECONST x1f629bfa
-			STSLICE
-			ROTREV
-			NEWC
-			STSLICE
-			STU 128
-			STBREFR
-			STBREFR
-			ENDC
-			PUSHINT 128
-			ADDCONST 2
-			UFITS 8
-			SENDRAWMSG
-			.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-		}
-		PUSHCONT {
-			.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 476
-			PUSHINT 100000000
-			GETPARAM 7
-			INDEX 0
-			DEPTH
-			ADDCONST -2
-			PICK
-			SUB
-			UFITS 128
-			MAX
-			PUSHINT 0
-			RAWRESERVE
-			.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 456
-			GETGLOB 11
-			NEWC
-			STSLICECONST x42_
-			STSLICE
-			PUSHINT 111
-			STZEROES
-			ENDC
-			PUSHINT 128
-			ADDCONST 2
-			UFITS 8
-			SENDRAWMSG
-			.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-		}
-		IFELSE
-		DROP
 		.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
 	}
 	IF
@@ -2181,7 +1970,7 @@ CALLREF {
 CALL $_getExpectedAddress_internal_macro$
 
 .macro _getExpectedAddress_internal_macro
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 485
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 437
 NEWDICT
 PUSHINT 0
 NEWC
@@ -2203,14 +1992,14 @@ DICTUSET
 NEWC
 STDICT
 ENDC
-GETGLOB 16
+GETGLOB 14
 NEWC
 STSLICECONST x2_
 STOPTREF
 STOPTREF
 STZERO
 ENDC
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 495
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 447
 HASHCU
 NEWC
 STSLICECONST x801_
@@ -2221,86 +2010,62 @@ CTOS
 
 .internal-alias :onCodeUpgrade, 2
 .internal :onCodeUpgrade
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 499
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 451
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 SETGLOB 10
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 SETGLOB 11
 PUSHINT 0
 SETGLOB 12
-PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+PUSHINT 0
 SETGLOB 13
-PUSHINT 0
-SETGLOB 14
-PUSHINT 0
-SETGLOB 15
 PUSHREF {
 }
-SETGLOB 16
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 501
+SETGLOB 14
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 453
 PUSHINT 0
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 502
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 454
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 504
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 456
 ROT
 CTOS
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 505
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 457
 DUP
 LDMSGADDR
 LDMSGADDR
+LDU 128
 LDU 32
 LDU 32
 LDMSGADDR
-POP S6
-REVERSE 5, 0
+POP S7
+REVERSE 6, 0
 SETGLOB 10
 SETGLOB 11
-POP S5
-SETGLOB 15
+SETGLOB 12
+DROP
+SETGLOB 13
 POP S2
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 512
-DUP
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 466
 LDREF
-POP S2
-SETGLOB 16
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 514
-ROT
-PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 519
-	DUP
-	LDREFRTOS
-	BLKDROP2 1, 2
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 520
-	LDU 128
-	LDMSGADDR
-	LDI 1
-	DROP
-	XCHG S2
-	SETGLOB 12
-	SETGLOB 13
-	SETGLOB 14
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-}
-PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 515
-	PUSHINT 0
-	SETGLOB 12
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 516
-	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 13
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 517
-	FALSE
-	SETGLOB 14
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 0
-}
-IFELSE
-.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 523
-OVER
+DROP
+SETGLOB 14
+.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 468
+DUP
 PARSEMSGADDR
 INDEX 3
 PLDU 256
+NEQINT 0
+DUP
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 476
+	DROP
+	DUP
+	MYADDR
+	SDEQ
+	NOT
+}
+IF
+PUSHCONT {
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 428
 	PUSHINT 100000000
 	GETPARAM 7
 	INDEX 0
@@ -2312,8 +2077,8 @@ PUSHCONT {
 	MAX
 	PUSHINT 0
 	RAWRESERVE
-	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 525
-	OVER
+	.loc ../contracts/upgradeable/TokenWalletUpgradeable.sol, 470
+	DUP
 	NEWC
 	STSLICECONST x42_
 	STSLICE
@@ -2336,8 +2101,6 @@ COMMIT
 THROW 0
 
 .macro c7_to_c4
-GETGLOB 16
-GETGLOB 15
 GETGLOB 14
 GETGLOB 13
 GETGLOB 12
@@ -2350,17 +2113,12 @@ STU 256
 STU 64
 STONE
 STSLICE
-ROLLREV 6
-NEWC
-STSLICE
-STU 128
 ROLLREV 4
 NEWC
 STSLICE
-STI 1
+STU 128
 STU 32
 STREF
-STBREFR
 STBREFR
 ENDC
 POPROOT
@@ -2378,16 +2136,9 @@ ENDS
 CTOS
 LDMSGADDR
 LDU 128
-LDREF
-ENDS
-CTOS
-LDMSGADDR
-LDI 1
 LDU 32
 LDREF
 ENDS
-SETGLOB 16
-SETGLOB 15
 SETGLOB 14
 SETGLOB 13
 SETGLOB 12
@@ -2415,15 +2166,11 @@ PUSHCONT {
 	SETGLOB 11
 	PUSHINT 0
 	SETGLOB 12
-	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	PUSHINT 0
 	SETGLOB 13
-	PUSHINT 0
-	SETGLOB 14
-	PUSHINT 0
-	SETGLOB 15
 	PUSHREF {
 	}
-	SETGLOB 16
+	SETGLOB 14
 	PUSHINT 64
 	DICTUGET
 	THROWIFNOT 61
@@ -2570,20 +2317,14 @@ PUSHINT 1945802543
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 251812010
+	PUSHINT 322087217
 	LEQ
 	IFJMPREF {
 		DUP
-		PUSHINT 24916825
+		PUSHINT 8748794
 		EQUAL
 		IFJMPREF {
-			CALL $getWalletCode$
-		}
-		DUP
-		PUSHINT 186005716
-		EQUAL
-		IFJMPREF {
-			CALL $getDetails$
+			CALL $platformCode$
 		}
 		DUP
 		PUSHINT 204468749
@@ -2597,9 +2338,15 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $destroy$
 		}
+		DUP
+		PUSHINT 322087217
+		EQUAL
+		IFJMPREF {
+			CALL $version$
+		}
 	}
 	DUP
-	PUSHINT 1159129904
+	PUSHINT 1185535980
 	LEQ
 	IFJMPREF {
 		DUP
@@ -2609,33 +2356,33 @@ IFJMPREF {
 			CALL $onDeployRetry$
 		}
 		DUP
-		PUSHINT 766070063
+		PUSHINT 520172177
 		EQUAL
 		IFJMPREF {
-			CALL $getVersion$
+			CALL $owner$
 		}
 		DUP
-		PUSHINT 826351967
+		PUSHINT 1146569348
 		EQUAL
 		IFJMPREF {
-			CALL $getPlatformCode$
+			CALL $root$
 		}
-		DUP
-		PUSHINT 1159129904
-		EQUAL
-		IFJMPREF {
-			CALL $setCallback$
-		}
-	}
-	DUP
-	PUSHINT 1688565960
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1185535980
 		EQUAL
 		IFJMPREF {
 			CALL $transferToWallet$
+		}
+	}
+	DUP
+	PUSHINT 1709341883
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 1231640703
+		EQUAL
+		IFJMPREF {
+			CALL $balance$
 		}
 		DUP
 		PUSHINT 1445284013
@@ -2644,16 +2391,16 @@ IFJMPREF {
 			CALL $burn$
 		}
 		DUP
-		PUSHINT 1656985116
+		PUSHINT 1468691724
 		EQUAL
 		IFJMPREF {
-			CALL $getOwner$
+			CALL $getDetails$
 		}
 		DUP
-		PUSHINT 1688565960
+		PUSHINT 1709341883
 		EQUAL
 		IFJMPREF {
-			CALL $upgrade$
+			CALL $acceptMinted$
 		}
 	}
 	DUP
@@ -2661,10 +2408,10 @@ IFJMPREF {
 	LEQ
 	IFJMPREF {
 		DUP
-		PUSHINT 1709341883
+		PUSHINT 1717423775
 		EQUAL
 		IFJMPREF {
-			CALL $acceptMinted$
+			CALL $walletCode$
 		}
 		DUP
 		PUSHINT 1756716863
@@ -2687,20 +2434,20 @@ IFJMPREF {
 	}
 }
 DUP
-PUSHINT 2069335030
+PUSHINT 2104488532
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 2067098323
+	PUSHINT 2074309816
 	EQUAL
 	IFJMPREF {
-		CALL $requestUpgrade$
+		CALL $upgradeInternal$
 	}
 	DUP
-	PUSHINT 2069335030
+	PUSHINT 2104488532
 	EQUAL
 	IFJMPREF {
-		CALL $getBalance$
+		CALL $upgrade$
 	}
 }
 

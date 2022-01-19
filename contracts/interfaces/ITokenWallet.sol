@@ -8,18 +8,8 @@ interface ITokenWallet {
         address root;
         // TokenWallet owner
         address owner;
-
         // Balance of TokenWallet in tokens
         uint128 balance;
-
-        // Address for callbacks (see ITokenWalletCallback),
-        // can be specified using 'setCallback' method
-        address callback;
-
-        // When true, then TokenWallet revert incoming token transfers without notify=true
-        // ignored when callback == 0:0,
-        // can be specified using 'setCallback' method
-        bool onlyNotifiableTransfers;
     }
 
     /*
@@ -36,28 +26,25 @@ interface ITokenWallet {
         @notice Get TokenWallet code
         @returns code TokenWallet code
     */
-    function getWalletCode() external view responsible returns (TvmCell);
+    function walletCode() external view responsible returns (TvmCell);
 
     /*
         @notice Get TokenWallet balance in tokens
         @returns balance TokenWallet balance in tokens
     */
-    function getBalance() external view responsible returns (uint128);
+    function balance() external view responsible returns (uint128);
+
+    /*
+        @notice Get TokenRoot address
+        @returns TokenRoot address
+    */
+    function root() external view responsible returns (address);
 
     /*
         @notice Get TokenWallet owner address
         @returns owner TokenWallet owner address
     */
-    function getOwner() external view responsible returns (address);
-
-    /*
-        @notice Set new callbacks address (see ITokenWalletCallback)
-        @dev Set 0:0 in case you want to disable callbacks
-        @dev Can be called only by TokenWallet owner
-        @param callback callbacks receiver
-        @param onlyNotifiableTransfers Wallet don't receive transfers without notify
-    */
-    function setCallback(address callback, bool allowNonNotifiable) external;
+    function owner() external view responsible returns (address);
 
     /*
         @notice Accept minted tokens from root

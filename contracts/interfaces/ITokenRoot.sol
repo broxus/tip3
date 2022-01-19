@@ -30,20 +30,26 @@ interface ITokenRoot {
         @notice Get total supply
         @returns totalSupply Token total supply
     */
-    function getTotalSupply() external view responsible returns (uint128);
+    function totalSupply() external view responsible returns (uint128);
+
+    /*
+        @notice Get root owner
+        @returns rootOwner
+    */
+    function rootOwner() external view responsible returns (address);
 
     /*
         @notice Get TokenWallet code
         @returns code TokenWallet code
     */
-    function getWalletCode() external view responsible returns (TvmCell);
+    function walletCode() external view responsible returns (TvmCell);
 
     /*
         @notice Derive TokenWallet address from owner address
         @param walletOwner TokenWallet owner address
         @returns tokenWallet Token wallet address
     */
-    function deriveWalletAddress(address walletOwner) external view responsible returns(address tokenWallet);
+    function walletOf(address _owner) external view responsible returns(address tokenWallet);
 
     /*
         @notice Mint tokens to recipient with deploy wallet optional

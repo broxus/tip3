@@ -14,5 +14,5 @@ interface IDisableableMintTokenRoot {
         @notice Get mint disabled status
         @returns is 'disableMint' already called
     */
-    function isMintDisabled() external view responsible returns(bool);
+    function mintDisabled() external view responsible returns(bool);
 }
