@@ -10,8 +10,6 @@ Herein, we standardize the following:
 
 - How interfaces are identified
 - How a contract will publish the interfaces it implements
-- How to detect if a contract implements TIP4
-- How to detect if a contract implements any given interface
 
 ## Motivation
 
@@ -44,7 +42,7 @@ contract Selector {
 A contract that is compliant with TIP4 shall implement the following interface (referred as TIP4.sol):
 
 ```solidity
-interface ERC165 {
+interface TIP4 {
     /// @notice Query if a contract implements an interface
     /// @param interfaceID The interface identifier, as specified in TIP4
     /// @dev Interface identification is specified in TIP4.
@@ -56,7 +54,7 @@ interface ERC165 {
 
 The interface identifier for this interface is **TO BE DEFINED**. You can calculate this by running `bytes4(tvm.hash('supportsInterface(bytes4)'))`; or using the Selector contract above.
 
-Therefore, the implementing contract will have a supportsInterface function that returns:
+Therefore, the implementing contract will have a `supportsInterface` function that returns:
 
 - `true` when `interfaceID` is `TIP4 ID` (TIP4 interface)
 - `false` when `interfaceID` is `0xffffffff`

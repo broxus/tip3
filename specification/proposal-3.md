@@ -4,7 +4,7 @@
 
 A standard interface for fungible tokens.
 
-Requires: [TIP2](./proposal-4.md)
+Requires: [TIP4](./proposal-4.md)
 
 ## Abstract
 
