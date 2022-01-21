@@ -6,7 +6,9 @@ import "./interfaces/IBurnableByRootTokenWallet.sol";
 import "./interfaces/IBurnableTokenRoot.sol";
 import "./interfaces/IBurnableByRootTokenRoot.sol";
 import "./interfaces/IDisableableMintTokenRoot.sol";
-import "./interfaces/IBurnTokensCallback.sol";
+import "./interfaces/IAcceptTokensBurnCallback.sol";
+import "./interfaces/TIP3TokenWallet.sol";
+import "./interfaces/TIP3TokenRoot.sol";
 import "./interfaces/ITokenRoot.sol";
 import "./interfaces/ITokenWallet.sol";
 import "./TokenWallet.sol";
@@ -18,7 +20,7 @@ import "../node_modules/@broxus/contracts/contracts/libraries/MsgFlag.sol";
 /*
     @title Fungible token  root contract
 */
-contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot, IBurnableByRootTokenRoot, IVersioned {
+contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot, IBurnableByRootTokenRoot {
 
     uint256 static randomNonce_;
     address static deployer_;
@@ -74,18 +76,22 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
     fallback() external {
     }
 
-    function version() override external view responsible returns (uint32) {
-        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } uint32(5);
+    // TODO
+    function supportsInterface(bytes4 interfaceID) override external view responsible returns (bool) {
+        bytes4 tip3TokenRoot = bytes4(
+            tvm.functionId(TIP3TokenRoot.name) ^
+            tvm.functionId(TIP3TokenRoot.symbol) ^
+            tvm.functionId(TIP3TokenRoot.decimals) ^
+            tvm.functionId(TIP3TokenRoot.totalSupply) ^
+            tvm.functionId(TIP3TokenRoot.walletCode) ^
+            tvm.functionId(TIP3TokenRoot.acceptBurn)
+        );
+
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } (
+            interfaceID == tip3TokenRoot
+        );
     }
 
-    /*
-        @notice Get root token details
-        @returns name_ Token name_
-        @returns symbol_ Token symbol_
-        @returns decimals_ Token decimals_
-        @returns rootOwner_ Owner address
-        @returns totalSupply_ Token total supply
-    */
     function getDetails() override external view responsible returns (TokenRootDetails) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } TokenRootDetails(
             name_,
@@ -96,28 +102,32 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
         );
     }
 
-    /*
-        @notice Get total supply
-        @returns totalSupply_ Token total supply
-    */
+    function name() override external view responsible returns (string) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } name_;
+    }
+
+    function symbol() override external view responsible returns (string) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } symbol_;
+    }
+
+    function decimals() override external view responsible returns (uint8) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } decimals_;
+    }
+
     function totalSupply() override external view responsible returns (uint128) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } totalSupply_;
     }
 
-    /*
-        @notice Get Token wallet code
-        @returns code Token wallet code
-    */
     function walletCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } walletCode_;
     }
 
-    /*
-        @notice Get TokenRoot owner
-        @returns TokenRoot owner
-    */
     function rootOwner() override external view responsible returns (address) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } rootOwner_;
+    }
+
+    function mintDisabled() override external view responsible returns(bool) {
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } mintDisabled_;
     }
 
     /*
@@ -127,13 +137,43 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
     */
     function walletOf(address walletOwner)
         override
-        external
+        public
         view
         responsible
         returns (address)
     {
         require(walletOwner.value != 0, TokenErrors.WRONG_WALLET_OWNER);
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } _getExpectedWalletAddress(walletOwner);
+    }
+
+    /*
+        @notice Deploy new token wallet with empty tokens balance
+        @dev Can be called by anyone to deploy new token wallet
+        @param walletOwner Token wallet owner address
+        @param deployWalletValue
+    */
+    function deployWallet(address walletOwner, uint128 deployWalletValue)
+        public
+        override
+        responsible
+        returns(address tokenWallet)
+    {
+        require(walletOwner.value != 0, TokenErrors.WRONG_WALLET_OWNER);
+        tvm.rawReserve(_reserve(), 0);
+
+        tokenWallet = new TokenWallet {
+            value: deployWalletValue,
+            flag: MsgFlag.SENDER_PAYS_FEES,
+            bounce: false,
+            code: walletCode_,
+            pubkey: 0,
+            varInit: {
+                root_: address(this),
+                owner_: walletOwner
+            }
+        }();
+
+        return { value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: false } tokenWallet;
     }
 
     /*
@@ -144,9 +184,9 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
         @param deployWalletValue How much EVERs send to wallet on deployment, when == 0 then not deploy wallet before mint
         @param remainingGasTo Receiver the remaining balance after deployment. root owner by default
         @param notify - when TRUE and recipient specified 'callback' on his own TokenWallet,
-                        then send ITokenWalletCallback.onAcceptMintedTokens to specified callback address,
+                        then send IAcceptTokensTransferCallback.onAcceptTokensMint to specified callback address,
                         else this param will be ignored
-        @param payload - custom payload for ITokenWalletCallback.onAcceptMintedTokens
+        @param payload - custom payload for IAcceptTokensTransferCallback.onAcceptTokensMint
     */
     function mint(
         uint128 amount,
@@ -164,7 +204,7 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
         require(amount > 0, TokenErrors.WRONG_AMOUNT);
         require(recipient.value != 0, TokenErrors.WRONG_RECIPIENT);
 
-        _reserve();
+        tvm.rawReserve(_reserve(), 0);
         _mint(amount, recipient, deployWalletValue, remainingGasTo, notify, payload);
     }
 
@@ -177,47 +217,6 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
     function disableMint() override external responsible onlyRootOwner returns(bool) {
         mintDisabled_ = true;
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } mintDisabled_;
-    }
-
-    /*
-        @notice Get mint disabled status
-        @returns is 'disableMint' already called
-    */
-    function mintDisabled() override external view responsible returns(bool) {
-        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } mintDisabled_;
-    }
-
-    /*
-        @notice Deploy new token wallet with empty tokens balance
-        @dev Can be called by anyone to deploy new token wallet
-        @param walletOwner Token wallet owner address
-        @param callbackTo When != 0:0 then will lead to send ITokenWalletDeployedCallback(callbackTo).onTokenWalletDeployed from root
-    */
-    function deployWallet(
-        address walletOwner,
-        uint128 deployWalletValue
-    )
-        external
-        override
-        responsible
-        returns(address tokenWallet)
-    {
-        require(walletOwner.value != 0, TokenErrors.WRONG_WALLET_OWNER);
-        tvm.rawReserve(address(this).balance - msg.value, 0);
-
-        tokenWallet = new TokenWallet {
-            value: deployWalletValue,
-            flag: MsgFlag.SENDER_PAYS_FEES,
-            bounce: false,
-            code: walletCode_,
-            pubkey: 0,
-            varInit: {
-                root_: address(this),
-                owner_: walletOwner
-            }
-        }();
-
-        return { value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: false } tokenWallet;
     }
 
     /*
@@ -299,25 +298,34 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
         @param callback_address Callback receiver address
         @param callback_payload Callback payload
     */
-    function tokensBurned(
+    function acceptBurn(
         uint128 amount,
-        address walletOwner,
-        address remainingGasTo,
-        address callbackTo,
-        TvmCell payload
+        TvmCell meta
     )
         override
         external
     {
         require(!burnPaused_, TokenErrors.BURN_PAUSED);
+        TvmSlice metaSlice = meta.toSlice();
+        address walletOwner = metaSlice.decode(address);
         require(msg.sender == _getExpectedWalletAddress(walletOwner), TokenErrors.SENDER_IS_NOT_VALID_WALLET);
+
+        tvm.rawReserve(address(this).balance - msg.value, 2);
+
+        address remainingGasTo = metaSlice.decode(address);
+        address callbackTo = metaSlice.decode(address);
+        TvmCell payload = metaSlice.loadRef();
 
         totalSupply_ -= amount;
 
         if (callbackTo.value == 0) {
-            remainingGasTo.transfer({ value: 0, flag: MsgFlag.REMAINING_GAS + MsgFlag.IGNORE_ERRORS, bounce: false });
+            remainingGasTo.transfer({
+                value: 0,
+                flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
+                bounce: false
+            });
         } else {
-            IBurnTokensCallback(callbackTo).burnCallback{ value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false }(
+            IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: false }(
                 amount,
                 walletOwner,
                 msg.sender,
@@ -358,8 +366,8 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
         _;
     }
 
-    function _reserve() private view inline {
-        tvm.rawReserve(math.max(TokenGas.TARGET_ROOT_BALANCE, address(this).balance - msg.value), 0);
+    function _reserve() internal pure returns (uint128) {
+        return math.max(address(this).balance - msg.value, TokenGas.TARGET_WALLET_BALANCE);
     }
 
     function _mint(
@@ -370,17 +378,9 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
         bool notify,
         TvmCell payload
     )
-        private
+        internal
     {
-        TvmCell stateInit = tvm.buildStateInit({
-            contr: TokenWallet,
-            varInit: {
-                root_: address(this),
-                owner_: recipient
-            },
-            pubkey: 0,
-            code: walletCode_
-        });
+        TvmCell stateInit = _buildWalletInitData(recipient);
 
         address recipientWallet;
 
@@ -398,11 +398,14 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
 
         totalSupply_ += amount;
 
-        ITokenWallet(recipientWallet).acceptMinted{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
+        TvmBuilder metaBuilder;
+        metaBuilder.store(remainingGasTo);
+        metaBuilder.store(notify);
+        metaBuilder.store(payload);
+
+        TIP3TokenWallet(recipientWallet).acceptMint{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
             amount,
-            remainingGasTo,
-            notify,
-            payload
+            metaBuilder.toCell()
         );
     }
 
@@ -411,8 +414,8 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
         @param wallet_public_key_ Token wallet owner public key
         @param owner_address_ Token wallet owner address
     */
-    function _getExpectedWalletAddress(address walletOwner) private view returns (address) {
-        TvmCell stateInit = tvm.buildStateInit({
+    function _buildWalletInitData(address walletOwner) private view returns (TvmCell) {
+        return tvm.buildStateInit({
             contr: TokenWallet,
             varInit: {
                 root_: address(this),
@@ -421,8 +424,15 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
             pubkey: 0,
             code: walletCode_
         });
+    }
 
-        return address(tvm.hash(stateInit));
+    /*
+        @notice Derive wallet address from owner
+        @param wallet_public_key_ Token wallet owner public key
+        @param owner_address_ Token wallet owner address
+    */
+    function _getExpectedWalletAddress(address walletOwner) private view returns (address) {
+        return address(tvm.hash(_buildWalletInitData(walletOwner)));
     }
 
     /*
@@ -430,7 +440,7 @@ contract TokenRoot is ITokenRoot, IDisableableMintTokenRoot, IBurnableTokenRoot,
         @dev Used in case token wallet .accept fails so the totalSupply_ can be decreased back
     */
     onBounce(TvmSlice slice) external {
-        if (slice.decode(uint32) == tvm.functionId(ITokenWallet.acceptMinted)) {
+        if (slice.decode(uint32) == tvm.functionId(TIP3TokenWallet.acceptMint)) {
             totalSupply_ -= slice.decode(uint128);
         }
     }

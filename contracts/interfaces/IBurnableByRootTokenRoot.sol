@@ -6,7 +6,7 @@ import "./IBurnableTokenRoot.sol";
 rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
              IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
              IBurnableTokenRoot(root).tokensBurned(...) ->
-             IBurnTokensCallback(callbackTo).burnCallback(...) -> ...
+             IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
 */
 
 
@@ -19,9 +19,9 @@ interface IBurnableByRootTokenRoot is IBurnableTokenRoot {
         @param amount Amount tokens to burn
         @param walletOwner TokenWallet owner address
         @param remainingGasTo Receiver of the remaining EVERs
-        @param callbackTo address of contract, which implement IBurnTokensCallback.burnCallback
+        @param callbackTo address of contract, which implement IAcceptTokensBurnCallback.onAcceptTokensBurn
                if it equals to 0:0 then no callbacks
-        @param payload Custom data will be delivered into IBurnTokensCallback.burnCallback
+        @param payload Custom data will be delivered into IAcceptTokensBurnCallback.onAcceptTokensBurn
     */
     function burnTokens(
         uint128 amount,

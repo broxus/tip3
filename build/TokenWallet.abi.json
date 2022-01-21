@@ -11,12 +11,13 @@
 			]
 		},
 		{
-			"name": "version",
+			"name": "supportsInterface",
 			"inputs": [
-				{"name":"answerId","type":"uint32"}
+				{"name":"answerId","type":"uint32"},
+				{"name":"interfaceID","type":"uint32"}
 			],
 			"outputs": [
-				{"name":"value0","type":"uint32"}
+				{"name":"value0","type":"bool"}
 			]
 		},
 		{
@@ -65,17 +66,6 @@
 			]
 		},
 		{
-			"name": "acceptMinted",
-			"inputs": [
-				{"name":"amount","type":"uint128"},
-				{"name":"remainingGasTo","type":"address"},
-				{"name":"notify","type":"bool"},
-				{"name":"payload","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "transfer",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
@@ -101,13 +91,19 @@
 			]
 		},
 		{
-			"name": "internalTransfer",
+			"name": "acceptTransfer",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
-				{"name":"sender","type":"address"},
-				{"name":"remainingGasTo","type":"address"},
-				{"name":"notify","type":"bool"},
-				{"name":"payload","type":"cell"}
+				{"name":"meta","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "acceptMint",
+			"inputs": [
+				{"name":"amount","type":"uint128"},
+				{"name":"meta","type":"cell"}
 			],
 			"outputs": [
 			]

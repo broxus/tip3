@@ -1,7 +1,9 @@
 pragma ton-solidity >= 0.39.0;
 
+import "./TIP3TokenRoot.sol";
+import "./TIP4.sol";
 
-interface ITokenRoot {
+interface ITokenRoot is TIP3TokenRoot, TIP4 {
 
     struct TokenRootDetails {
         // Basic info about token
@@ -27,29 +29,17 @@ interface ITokenRoot {
     function getDetails() external view responsible returns (TokenRootDetails);
 
     /*
-        @notice Get total supply
-        @returns totalSupply Token total supply
-    */
-    function totalSupply() external view responsible returns (uint128);
-
-    /*
         @notice Get root owner
         @returns rootOwner
     */
     function rootOwner() external view responsible returns (address);
 
     /*
-        @notice Get TokenWallet code
-        @returns code TokenWallet code
-    */
-    function walletCode() external view responsible returns (TvmCell);
-
-    /*
         @notice Derive TokenWallet address from owner address
-        @param walletOwner TokenWallet owner address
-        @returns tokenWallet Token wallet address
+        @param _owner TokenWallet owner address
+        @returns Token wallet address
     */
-    function walletOf(address _owner) external view responsible returns(address tokenWallet);
+    function walletOf(address _owner) external view responsible returns(address);
 
     /*
         @notice Mint tokens to recipient with deploy wallet optional
@@ -59,17 +49,17 @@ interface ITokenRoot {
         @param deployWalletValue How much EVERs send to wallet on deployment, when == 0 then not deploy wallet before mint
         @param remainingGasTo Receiver the remaining balance after deployment. root owner by default
         @param notify - when TRUE and recipient specified 'callback' on his own TokenWallet,
-                        then send ITokenWalletCallback.onAcceptMintedTokens to specified callback address,
+                        then send IAcceptTokensTransferCallback.onAcceptTokensMint to specified callback address,
                         else this param will be ignored
-        @param payload - custom payload for ITokenWalletCallback.onAcceptMintedTokens
+        @param payload - custom payload for IAcceptTokensTransferCallback.onAcceptTokensMint
     */
     function mint(
-        uint128 amount,
-        address recipient,
-        uint128 deployWalletValue,
-        address remainingGasTo,
-        bool notify,
-        TvmCell payload
+        uint128 _amount,
+        address _recipient,
+        uint128 _deployWalletValue,
+        address _remainingGasTo,
+        bool _notify,
+        TvmCell _payload
     ) external;
 
     /*
@@ -79,7 +69,7 @@ interface ITokenRoot {
         @param callbackTo When != 0:0 then will lead to send ITokenWalletDeployedCallback(callbackTo).onTokenWalletDeployed from root
     */
     function deployWallet(
-        address walletOwner,
-        uint128 deployWalletValue
-    ) external responsible returns(address tokenWallet);
+        address _owner,
+        uint128 _deployWalletValue
+    ) external responsible returns(address);
 }

@@ -18,12 +18,13 @@
 			]
 		},
 		{
-			"name": "version",
+			"name": "supportsInterface",
 			"inputs": [
-				{"name":"answerId","type":"uint32"}
+				{"name":"answerId","type":"uint32"},
+				{"name":"interfaceID","type":"uint32"}
 			],
 			"outputs": [
-				{"name":"value0","type":"uint32"}
+				{"name":"value0","type":"bool"}
 			]
 		},
 		{
@@ -33,6 +34,33 @@
 			],
 			"outputs": [
 				{"components":[{"name":"name","type":"string"},{"name":"symbol","type":"string"},{"name":"decimals","type":"uint8"},{"name":"rootOwner","type":"address"},{"name":"totalSupply","type":"uint128"}],"name":"value0","type":"tuple"}
+			]
+		},
+		{
+			"name": "name",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"string"}
+			]
+		},
+		{
+			"name": "symbol",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"string"}
+			]
+		},
+		{
+			"name": "decimals",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint8"}
 			]
 		},
 		{
@@ -182,13 +210,10 @@
 			]
 		},
 		{
-			"name": "tokensBurned",
+			"name": "acceptBurn",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
-				{"name":"walletOwner","type":"address"},
-				{"name":"remainingGasTo","type":"address"},
-				{"name":"callbackTo","type":"address"},
-				{"name":"payload","type":"cell"}
+				{"name":"meta","type":"cell"}
 			],
 			"outputs": [
 			]

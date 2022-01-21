@@ -4,14 +4,17 @@ pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
 import "./interfaces/IDestroyable.sol";
+import "./interfaces/TIP3TokenWallet.sol";
+import "./interfaces/TIP3TokenRoot.sol";
 import "./interfaces/ITokenWallet.sol";
 import "./interfaces/ITokenRoot.sol";
 import "./interfaces/IBurnableTokenWallet.sol";
 import "./interfaces/IBurnableByRootTokenWallet.sol";
 import "./interfaces/IBurnableTokenRoot.sol";
-import "./interfaces/IAcceptMintedTokensCallback.sol";
-import "./interfaces/ITokenBurnRevertedCallback.sol";
-import "./interfaces/ITokenWalletCallback.sol";
+import "./interfaces/IAcceptTokensTransferCallback.sol";
+import "./interfaces/IAcceptTokensMintCallback.sol";
+import "./interfaces/IRevertTokensTransferCallback.sol";
+import "./interfaces/IRevertTokensBurnCallback.sol";
 import "./libraries/TokenErrors.sol";
 import "./libraries/TokenGas.sol";
 import "./interfaces/IVersioned.sol";
@@ -21,7 +24,7 @@ import "../node_modules/@broxus/contracts/contracts/libraries/MsgFlag.sol";
 /*
     @title Fungible token wallet contract
 */
-contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurnableByRootTokenWallet, IVersioned {
+contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurnableByRootTokenWallet {
 
     address static root_;
     address static owner_;
@@ -42,8 +45,19 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
     fallback() external {
     }
 
-    function version() override external view responsible returns (uint32) {
-        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } version_;
+    // TODO
+    function supportsInterface(bytes4 interfaceID) override external view responsible returns (bool) {
+        bytes4 tip3TokenWallet = bytes4(
+            tvm.functionId(TIP3TokenWallet.root) ^
+            tvm.functionId(TIP3TokenWallet.balance) ^
+            tvm.functionId(TIP3TokenWallet.walletCode) ^
+            tvm.functionId(TIP3TokenWallet.acceptTransfer) ^
+            tvm.functionId(TIP3TokenWallet.acceptMint)
+        );
+
+        return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } (
+            interfaceID == tip3TokenWallet
+        );
     }
 
     function balance() override external view responsible returns (uint128) {
@@ -62,51 +76,12 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } tvm.code();
     }
 
-    /*
-        @notice Get details about token wallet
-        @returns root Token root address
-        @returns owner Token wallet owner address
-        @returns balance Token wallet balance in tokens
-    */
     function getDetails() override external view responsible returns (TokenWalletDetails) {
         return { value: 0, flag: MsgFlag.REMAINING_GAS, bounce: false } TokenWalletDetails(
             root_,
             owner_,
             balance_
         );
-    }
-
-    /*
-        @notice Accept minted tokens from root
-        @dev Can be called only by root token
-        @param amount How much tokens to accept
-        @param remainingGasTo Remaining gas receiver
-        @param notify Notify receiver on incoming mint
-        @param payload Notification payload
-    */
-    function acceptMinted(uint128 amount, address remainingGasTo, bool notify, TvmCell payload)
-        override
-        external
-        onlyRoot
-    {
-        balance_ += amount;
-
-        _reserve();
-
-        if (notify) {
-            IAcceptMintedTokensCallback(owner_).onAcceptMintedTokens{
-                value: 0,
-                bounce: false,
-                flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS
-            }(
-                root_,
-                amount,
-                remainingGasTo,
-                payload
-            );
-        } else if (remainingGasTo.value != 0 && remainingGasTo != address(this)) {
-            remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS, bounce: false });
-        }
     }
 
     /*
@@ -136,17 +111,9 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         require(amount <= balance_, TokenErrors.NOT_ENOUGH_BALANCE);
         require(recipient.value != 0 && recipient != owner_, TokenErrors.WRONG_RECIPIENT);
 
-        _reserve();
+        tvm.rawReserve(_reserve(), 0);
 
-        TvmCell stateInit = tvm.buildStateInit({
-            contr: TokenWallet,
-            varInit: {
-                root_: root_,
-                owner_: recipient
-            },
-            pubkey: 0,
-            code: tvm.code()
-        });
+        TvmCell stateInit = _buildWalletInitData(recipient);
 
         address recipientWallet;
 
@@ -162,13 +129,16 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         }
             
         balance_ -= amount;
-        
-        ITokenWallet(recipientWallet).internalTransfer{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
+
+        TvmBuilder metaBuilder;
+        metaBuilder.store(owner_);
+        metaBuilder.store(remainingGasTo);
+        metaBuilder.store(notify);
+        metaBuilder.store(payload);
+
+        TIP3TokenWallet(recipientWallet).acceptTransfer{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
             amount,
-            owner_,
-            remainingGasTo,
-            notify,
-            payload
+            metaBuilder.toCell()
         );
     }
 
@@ -196,16 +166,19 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         require(amount <= balance_, TokenErrors.NOT_ENOUGH_BALANCE);
         require(recipientTokenWallet.value != 0 && recipientTokenWallet != address(this), TokenErrors.WRONG_RECIPIENT);
 
-        _reserve();
+        tvm.rawReserve(_reserve(), 0);
 
         balance_ -= amount;
 
-        ITokenWallet(recipientTokenWallet).internalTransfer{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
+        TvmBuilder metaBuilder;
+        metaBuilder.store(owner_);
+        metaBuilder.store(remainingGasTo);
+        metaBuilder.store(notify);
+        metaBuilder.store(payload);
+
+        TIP3TokenWallet(recipientTokenWallet).acceptTransfer{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
             amount,
-            owner_,
-            remainingGasTo,
-            notify,
-            payload
+            metaBuilder.toCell()
         );
     }
 
@@ -213,24 +186,23 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         @notice Callback for transfer operation
         @dev Can be called only by another valid TokenWallet contract with same root
         @param amount How much tokens to receive
-        @param sender Sender TokenWallet owner address
-        @param remainingGasTo Remaining gas receiver
-        @param payload Notification payload
+        @param meta Additional data
     */
-    function internalTransfer(uint128 amount, address sender, address remainingGasTo, bool notify, TvmCell payload)
-        override
-        external
-    {
-        address expectedSenderWallet = _getExpectedAddress(sender);
-        require(msg.sender == expectedSenderWallet, TokenErrors.SENDER_IS_NOT_VALID_WALLET);
-        require(sender != owner_, TokenErrors.WRONG_RECIPIENT);
+    function acceptTransfer(uint128 amount, TvmCell meta) override external {
+        TvmSlice metaSlice = meta.toSlice();
+        address sender = metaSlice.decode(address);
+        require(msg.sender == address(tvm.hash(_buildWalletInitData(sender))), TokenErrors.SENDER_IS_NOT_VALID_WALLET);
+
+        tvm.rawReserve(_reserve(), 2);
+
+        address remainingGasTo = metaSlice.decode(address);
+        bool notify = metaSlice.decode(bool);
 
         balance_ += amount;
 
-        _reserve();
-
         if (notify) {
-            ITokenWalletCallback(owner_).onTokenTransferReceived{
+            TvmCell payload = metaSlice.loadRef();
+            IAcceptTokensTransferCallback(owner_).onAcceptTokensTransfer{
                 value: 0,
                 flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
                 bounce: false
@@ -243,6 +215,42 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
                 payload
             );
         } else {
+            remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS, bounce: false });
+        }
+    }
+
+    /*
+        @notice Accept minted tokens from root
+        @dev Can be called only by root token
+        @param amount How much tokens to accept
+        @param data Additional data
+    */
+    function acceptMint(uint128 amount, TvmCell meta)
+        override
+        external
+        onlyRoot
+    {
+        tvm.rawReserve(_reserve(), 2);
+
+        TvmSlice metaSlice = meta.toSlice();
+        address remainingGasTo = metaSlice.decode(address);
+        bool notify = metaSlice.decode(bool);
+
+        balance_ += amount;
+
+        if (notify) {
+            TvmCell payload = metaSlice.loadRef();
+            IAcceptTokensMintCallback(owner_).onAcceptTokensMint{
+                value: 0,
+                bounce: false,
+                flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS
+            }(
+                root_,
+                amount,
+                remainingGasTo,
+                payload
+            );
+        } else if (remainingGasTo.value != 0 && remainingGasTo != address(this)) {
             remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS, bounce: false });
         }
     }
@@ -261,20 +269,7 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         external
         onlyOwner
     {
-        require(amount > 0, TokenErrors.WRONG_AMOUNT);
-        require(amount <= balance_, TokenErrors.NOT_ENOUGH_BALANCE);
-
-        _reserve();
-
-        balance_ -= amount;
-
-        IBurnableTokenRoot(root_).tokensBurned{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
-            amount,
-            owner_,
-            remainingGasTo,
-            callbackTo,
-            payload
-        );
+        _burn(amount, remainingGasTo, callbackTo, payload, _reserve());
     }
 
     /*
@@ -290,25 +285,9 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         external
         onlyRoot
     {
-        require(amount > 0, TokenErrors.WRONG_AMOUNT);
-        require(amount <= balance_, TokenErrors.NOT_ENOUGH_BALANCE);
-
-        balance_ -= amount;
-
-        IBurnableTokenRoot(root_).tokensBurned{ value: 0, flag: MsgFlag.REMAINING_GAS, bounce: true }(
-            amount,
-            owner_,
-            remainingGasTo,
-            callbackTo,
-            payload
-        );
+        _burn(amount, remainingGasTo, callbackTo, payload, address(this).balance - msg.value);
     }
 
-    /*
-        @notice Destroy token wallet and withdraw EVERs balance
-        @dev Requires 0 token balance
-        @param gas_dest EVERs receiver
-    */
     function destroy(address remainingGasTo) override external onlyOwner {
         require(balance_ == 0, TokenErrors.NON_EMPTY_BALANCE);
         remainingGasTo.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.DESTROY_IF_ZERO, bounce: false });
@@ -326,17 +305,38 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
         _;
     }
 
-    function _reserve() private view inline {
-        tvm.rawReserve(math.max(TokenGas.TARGET_WALLET_BALANCE, address(this).balance - msg.value), 0);
+    function _reserve() internal pure returns (uint128) {
+        return math.max(address(this).balance - msg.value, TokenGas.TARGET_WALLET_BALANCE);
     }
 
-    /*
-        @notice Derive token wallet contract address from owner credentials
-        @param wallet_public_key_ Token wallet owner public key
-        @param owner_ Token wallet owner address
-    */
-    function _getExpectedAddress(address walletOwner) private view returns (address) {
-        TvmCell stateInit = tvm.buildStateInit({
+    function _burn(
+        uint128 amount,
+        address remainingGasTo,
+        address callbackTo,
+        TvmCell payload,
+        uint128 reserve
+    ) internal {
+        require(amount > 0, TokenErrors.WRONG_AMOUNT);
+        require(amount <= balance_, TokenErrors.NOT_ENOUGH_BALANCE);
+
+        tvm.rawReserve(reserve, 0);
+
+        balance_ -= amount;
+
+        TvmBuilder metaBuilder;
+        metaBuilder.store(owner_);
+        metaBuilder.store(remainingGasTo);
+        metaBuilder.store(callbackTo);
+        metaBuilder.store(payload);
+
+        TIP3TokenRoot(root_).acceptBurn{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED, bounce: true }(
+            amount,
+            metaBuilder.toCell()
+        );
+    }
+
+    function _buildWalletInitData(address walletOwner) internal view returns (TvmCell) {
+        return tvm.buildStateInit({
             contr: TokenWallet,
             varInit: {
                 root_: root_,
@@ -345,24 +345,23 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
             pubkey: 0,
             code: tvm.code()
         });
-
-        return address(tvm.hash(stateInit));
     }
 
     /*
         @notice On-bounce handler
-        @dev Catch bounce if internalTransfer or tokensBurned fails
+        @dev Catch bounce if acceptTransfer or tokensBurned fails
         @dev If transfer fails - increase back tokens balance and notify owner
         @dev If tokens burn root token callback fails - increase back tokens balance and notify owner
     */
     onBounce(TvmSlice body) external {
+        tvm.rawReserve(_reserve(), 2);
+
         uint32 functionId = body.decode(uint32);
 
-        if (functionId == tvm.functionId(ITokenWallet.internalTransfer)) {
+        if (functionId == tvm.functionId(TIP3TokenWallet.acceptTransfer)) {
             uint128 amount = body.decode(uint128);
             balance_ += amount;
-            _reserve();
-            ITokenWalletCallback(owner_).onTokenTransferReverted{
+            IRevertTokensTransferCallback(owner_).onRevertTokensTransfer{
                 value: 0,
                 flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
                 bounce: false
@@ -371,11 +370,10 @@ contract TokenWallet is ITokenWallet, IDestroyable, IBurnableTokenWallet, IBurna
                 amount,
                 msg.sender
             );
-        } else if (functionId == tvm.functionId(IBurnableTokenRoot.tokensBurned)) {
+        } else if (functionId == tvm.functionId(TIP3TokenRoot.acceptBurn)) {
             uint128 amount = body.decode(uint128);
             balance_ += amount;
-            _reserve();
-            ITokenBurnRevertedCallback(owner_).onTokenBurnReverted{
+            IRevertTokensBurnCallback(owner_).onRevertTokensBurn{
                 value: 0,
                 flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.IGNORE_ERRORS,
                 bounce: false

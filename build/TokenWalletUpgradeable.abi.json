@@ -11,6 +11,16 @@
 			]
 		},
 		{
+			"name": "supportsInterface",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"interfaceID","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
 			"name": "version",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
@@ -74,17 +84,6 @@
 			]
 		},
 		{
-			"name": "acceptMinted",
-			"inputs": [
-				{"name":"amount","type":"uint128"},
-				{"name":"remainingGasTo","type":"address"},
-				{"name":"notify","type":"bool"},
-				{"name":"payload","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "transfer",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
@@ -110,24 +109,30 @@
 			]
 		},
 		{
-			"name": "internalTransfer",
-			"inputs": [
-				{"name":"amount","type":"uint128"},
-				{"name":"sender","type":"address"},
-				{"name":"remainingGasTo","type":"address"},
-				{"name":"notify","type":"bool"},
-				{"name":"payload","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "burn",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
 				{"name":"remainingGasTo","type":"address"},
 				{"name":"callbackTo","type":"address"},
 				{"name":"payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "acceptTransfer",
+			"inputs": [
+				{"name":"amount","type":"uint128"},
+				{"name":"meta","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "acceptMint",
+			"inputs": [
+				{"name":"amount","type":"uint128"},
+				{"name":"meta","type":"cell"}
 			],
 			"outputs": [
 			]
@@ -172,9 +177,9 @@
 			]
 		},
 		{
-			"name": "upgradeInternal",
+			"name": "acceptUpgrade",
 			"inputs": [
-				{"name":"code","type":"cell"},
+				{"name":"newCode","type":"cell"},
 				{"name":"newVersion","type":"uint32"},
 				{"name":"remainingGasTo","type":"address"}
 			],

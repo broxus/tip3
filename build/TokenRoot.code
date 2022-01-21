@@ -66,7 +66,7 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-.loc ../contracts/TokenRoot.sol, 48
+.loc ../contracts/TokenRoot.sol, 50
 GETGLOB 5
 DUP
 ISNULL
@@ -76,7 +76,7 @@ PUSHCONT {
 }
 IF
 PUSHCONT {
-	.loc ../contracts/TokenRoot.sol, 49
+	.loc ../contracts/TokenRoot.sol, 51
 	GETGLOB 5
 	DUP
 	ISNULL
@@ -98,12 +98,12 @@ PUSHCONT {
 	}
 	IF
 	THROWIFNOT 1020
-	.loc ../contracts/TokenRoot.sol, 50
+	.loc ../contracts/TokenRoot.sol, 52
 	ACCEPT
 	.loc ../contracts/TokenRoot.sol, 0
 }
 PUSHCONT {
-	.loc ../contracts/TokenRoot.sol, 52
+	.loc ../contracts/TokenRoot.sol, 54
 	GETGLOB 11
 	PARSEMSGADDR
 	INDEX 3
@@ -139,23 +139,23 @@ PUSHCONT {
 	.loc ../contracts/TokenRoot.sol, 0
 }
 IFELSE
-.loc ../contracts/TokenRoot.sol, 56
+.loc ../contracts/TokenRoot.sol, 58
 PUSHINT 0
 SETGLOB 17
-.loc ../contracts/TokenRoot.sol, 57
+.loc ../contracts/TokenRoot.sol, 59
 ROLL 3
 SETGLOB 18
-.loc ../contracts/TokenRoot.sol, 58
+.loc ../contracts/TokenRoot.sol, 60
 ROT
 SETGLOB 19
-.loc ../contracts/TokenRoot.sol, 59
+.loc ../contracts/TokenRoot.sol, 61
 SWAP
 SETGLOB 20
-.loc ../contracts/TokenRoot.sol, 61
+.loc ../contracts/TokenRoot.sol, 63
 PUSHINT 1000000000
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/TokenRoot.sol, 62
+.loc ../contracts/TokenRoot.sol, 64
 PUSH S3
 PARSEMSGADDR
 INDEX 3
@@ -169,10 +169,10 @@ PUSHCONT {
 }
 IF
 PUSHCONT {
-	.loc ../contracts/TokenRoot.sol, 63
+	.loc ../contracts/TokenRoot.sol, 65
 	PUSHREF {
 	}
-	.loc ../contracts/TokenRoot.sol, 64
+	.loc ../contracts/TokenRoot.sol, 66
 	PUSH3 S3, S4, S2
 	PUSH S4
 	FALSE
@@ -188,7 +188,7 @@ PUSHCONT {
 	INDEX 3
 	PLDU 256
 	PUSHCONT {
-		.loc ../contracts/TokenRoot.sol, 66
+		.loc ../contracts/TokenRoot.sol, 68
 		DUP
 		NEWC
 		STSLICECONST x42_
@@ -227,7 +227,7 @@ CALLREF {
 	CALL $c7_to_c4$
 }
 
-.macro version
+.macro supportsInterface
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -236,14 +236,27 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 77
+.loc ../contracts/TokenRoot.sol, 80
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
+LDU 32
 ENDS
-.loc ../contracts/TokenRoot.sol, 78
+.loc ../contracts/TokenRoot.sol, 81
+PUSHINT 428082246
+PUSHINT 394429597
+XOR
+PUSHINT 1394526076
+XOR
+PUSHINT 1629421668
+XOR
+PUSHINT 1717423775
+XOR
+PUSHINT 436983925
+XOR
+.loc ../contracts/TokenRoot.sol, 90
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -252,7 +265,7 @@ SETINDEXQ 4
 FALSE
 SETINDEXQ 1
 SETGLOB 4
-PUSHINT 5
+EQUAL
 .loc ../contracts/TokenRoot.sol, 0
 OVER
 PUSHCONT {
@@ -265,9 +278,9 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHSLICE x00000000000000000000000024ccaa4c6_
+	PUSHSLICE x0000000000000000000000002c813b0a6_
 	STSLICER
-	STU 32
+	STI 1
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
@@ -296,7 +309,7 @@ PUSHCONT {
 	GETGLOB 4
 	INDEX 5
 	STUR 32
-	STU 32
+	STI 1
 	ENDC
 	GETGLOB 4
 	INDEX 4
@@ -318,14 +331,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 89
+.loc ../contracts/TokenRoot.sol, 95
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRoot.sol, 90
+.loc ../contracts/TokenRoot.sol, 96
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -417,6 +430,252 @@ IFREF {
 TRUE
 SETGLOB 7
 
+.macro name
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/TokenRoot.sol, 105
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/TokenRoot.sol, 106
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 12
+.loc ../contracts/TokenRoot.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x00000000000000000000000026610111a_
+	STSLICER
+	STREF
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STREF
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro symbol
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/TokenRoot.sol, 109
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/TokenRoot.sol, 110
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 13
+.loc ../contracts/TokenRoot.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x00000000000000000000000025e0a1276_
+	STSLICER
+	STREF
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STREF
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro decimals
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/TokenRoot.sol, 113
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/TokenRoot.sol, 114
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 14
+.loc ../contracts/TokenRoot.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x00000000000000000000000034c7b1df2_
+	STSLICER
+	STU 8
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STU 8
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
 .macro totalSupply
 DROP
 GETGLOB 6
@@ -426,14 +685,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 103
+.loc ../contracts/TokenRoot.sol, 117
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRoot.sol, 104
+.loc ../contracts/TokenRoot.sol, 118
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -508,14 +767,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 111
+.loc ../contracts/TokenRoot.sol, 121
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRoot.sol, 112
+.loc ../contracts/TokenRoot.sol, 122
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -590,14 +849,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 119
+.loc ../contracts/TokenRoot.sol, 125
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRoot.sol, 120
+.loc ../contracts/TokenRoot.sol, 126
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -670,316 +929,6 @@ IFREF {
 TRUE
 SETGLOB 7
 
-.macro walletOf
-DROP
-GETGLOB 6
-THROWIFNOT 76
-GETGLOB 2
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-.loc ../contracts/TokenRoot.sol, 128
-LDU 32
-GETGLOB 4
-ROT
-SETINDEXQ 5
-SETGLOB 4
-LDMSGADDRQ
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-ENDS
-.loc ../contracts/TokenRoot.sol, 135
-DUP
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-THROWIFNOT 1021
-.loc ../contracts/TokenRoot.sol, 136
-GETGLOB 4
-PUSHINT 0
-SETINDEXQ 2
-PUSHINT 64
-SETINDEXQ 4
-FALSE
-SETINDEXQ 1
-SETGLOB 4
-CALLREF {
-	CALL $_getExpectedWalletAddress_internal_macro$
-}
-.loc ../contracts/TokenRoot.sol, 0
-OVER
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHINT 1
-	STUR 98
-	SWAP
-	NEWC
-	STSLICECONST xac160545
-	STSLICE
-	STBREFR
-	ENDC
-	PUSHINT 0
-	SENDRAWMSG
-}
-PUSHCONT {
-	GETGLOB 4
-	DUP
-	INDEX 3
-	OVER
-	INDEX 2
-	GETGLOB 9
-	ROLL 3
-	INDEX 1
-	NEWC
-	PUSHINT 2
-	STZEROES
-	STI 1
-	PUSHINT 3
-	STZEROES
-	STSLICE
-	SWAP
-	STGRAMS
-	STDICT
-	PUSHINT 1
-	STUR 106
-	SWAP
-	NEWC
-	GETGLOB 4
-	INDEX 5
-	STUR 32
-	STSLICE
-	STBREFR
-	ENDC
-	GETGLOB 4
-	INDEX 4
-	SENDRAWMSG
-}
-IFELSE
-IFREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.macro mint
-DROP
-GETGLOB 6
-THROWIFNOT 76
-GETGLOB 2
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-.loc ../contracts/TokenRoot.sol, 151
-LDUQ 128
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-LDMSGADDRQ
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-LDUQ 128
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-LDMSGADDRQ
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-LDIQ 1
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDI 1
-}
-IFNOT
-LDREF
-ENDS
-.loc ../contracts/TokenRoot.sol, 357
-GETGLOB 16
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-DUP
-PUSHCONT {
-	DROP
-	GETGLOB 16
-	GETGLOB 9
-	SDEQ
-}
-IF
-THROWIFNOT 1000
-.loc ../contracts/TokenRoot.sol, 163
-PUSHINT 2100
-GETGLOB 18
-NOT
-THROWANYIFNOT
-.loc ../contracts/TokenRoot.sol, 164
-PUSH S5
-GTINT 0
-THROWIFNOT 1050
-.loc ../contracts/TokenRoot.sol, 165
-PUSH S4
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-THROWIFNOT 1030
-.loc ../contracts/TokenRoot.sol, 362
-PUSHINT 1000000000
-GETPARAM 7
-INDEX 0
-DEPTH
-ADDCONST -2
-PICK
-SUB
-UFITS 128
-MAX
-PUSHINT 0
-RAWRESERVE
-.loc ../contracts/TokenRoot.sol, 168
-CALLREF {
-	CALL $_mint_internal_macro$
-}
-.loc ../contracts/TokenRoot.sol, 0
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.macro disableMint
-DROP
-GETGLOB 6
-THROWIFNOT 76
-GETGLOB 2
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-.loc ../contracts/TokenRoot.sol, 177
-LDU 32
-GETGLOB 4
-ROT
-SETINDEXQ 5
-SETGLOB 4
-ENDS
-.loc ../contracts/TokenRoot.sol, 357
-GETGLOB 16
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-NEQINT 0
-DUP
-PUSHCONT {
-	DROP
-	GETGLOB 16
-	GETGLOB 9
-	SDEQ
-}
-IF
-THROWIFNOT 1000
-.loc ../contracts/TokenRoot.sol, 178
-TRUE
-SETGLOB 18
-.loc ../contracts/TokenRoot.sol, 179
-GETGLOB 4
-PUSHINT 0
-SETINDEXQ 2
-PUSHINT 64
-SETINDEXQ 4
-FALSE
-SETINDEXQ 1
-SETGLOB 4
-GETGLOB 18
-.loc ../contracts/TokenRoot.sol, 0
-OVER
-PUSHCONT {
-	PUSH S3
-	CTOS
-	LDU 2
-	LDMSGADDR
-	DROP
-	NIP
-	NEWC
-	STSLICECONST xc
-	STSLICE
-	PUSHSLICE x0000000000000000000000003f36d9cd6_
-	STSLICER
-	STI 1
-	ENDC
-	PUSHINT 0
-	SENDRAWMSG
-}
-PUSHCONT {
-	GETGLOB 4
-	DUP
-	INDEX 3
-	OVER
-	INDEX 2
-	GETGLOB 9
-	ROLL 3
-	INDEX 1
-	NEWC
-	PUSHINT 2
-	STZEROES
-	STI 1
-	PUSHINT 3
-	STZEROES
-	STSLICE
-	SWAP
-	STGRAMS
-	STDICT
-	PUSHINT 106
-	STZEROES
-	GETGLOB 4
-	INDEX 5
-	STUR 32
-	STI 1
-	ENDC
-	GETGLOB 4
-	INDEX 4
-	SENDRAWMSG
-}
-IFELSE
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
 .macro mintDisabled
 DROP
 GETGLOB 6
@@ -989,14 +938,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 186
+.loc ../contracts/TokenRoot.sol, 129
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRoot.sol, 187
+.loc ../contracts/TokenRoot.sol, 130
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -1062,6 +1011,121 @@ IFREF {
 TRUE
 SETGLOB 7
 
+.macro walletOf
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/TokenRoot.sol, 138
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+.loc ../contracts/TokenRoot.sol, 0
+CALLREF {
+	CALL $walletOf_internal_macro$
+}
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	SWAP
+	NEWC
+	STSLICECONST xac160545
+	STSLICE
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 1
+	STUR 106
+	SWAP
+	NEWC
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STSLICE
+	STBREFR
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	walletOf_internal
+.type	walletOf_internal, @function
+CALL $walletOf_internal_macro$
+
+.macro walletOf_internal_macro
+.loc ../contracts/TokenRoot.sol, 145
+DUP
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+THROWIFNOT 1021
+.loc ../contracts/TokenRoot.sol, 146
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+CALLREF {
+	CALL $_getExpectedWalletAddress_internal_macro$
+}
+.loc ../contracts/TokenRoot.sol, 0
+
 .macro deployWallet
 DROP
 GETGLOB 6
@@ -1071,7 +1135,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 196
+.loc ../contracts/TokenRoot.sol, 155
 LDU 32
 GETGLOB 4
 ROT
@@ -1094,82 +1158,10 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-.loc ../contracts/TokenRoot.sol, 205
-OVER
-PARSEMSGADDR
-INDEX 3
-PLDU 256
-THROWIFNOT 1021
-.loc ../contracts/TokenRoot.sol, 206
-GETPARAM 7
-INDEX 0
-DEPTH
-ADDCONST -2
-PICK
-SUB
-UFITS 128
-PUSHINT 0
-RAWRESERVE
-.loc ../contracts/TokenRoot.sol, 208
-NEWDICT
-PUSHINT 0
-NEWC
-STU 256
-PUSHINT 0
-ROT
-PUSHINT 64
-DICTUSETB
-MYADDR
-PUSHINT 1
-ROT
-PUSHINT 64
-DICTUSET
-ROT
-PUSHINT 2
-ROT
-PUSHINT 64
-DICTUSET
-NEWC
-STDICT
-ENDC
-GETGLOB 15
-NEWC
-STSLICECONST x2_
-STOPTREF
-STOPTREF
-STZERO
-ENDC
-DUP
-HASHCU
-NEWC
-STSLICECONST x801_
-STU 256
-ENDC
-CTOS
-XCHG S2
-PUSH S2
-NEWC
-STSLICECONST x42_
-STSLICE
-SWAP
-STGRAMS
-PUSHSLICE x000000000000000000000000007_
-STSLICER
-STREF
-STSLICECONST x345aaf9fc_
-ENDC
-PUSHINT 1
-SENDRAWMSG
-.loc ../contracts/TokenRoot.sol, 220
-GETGLOB 4
-PUSHINT 0
-SETINDEXQ 2
-PUSHINT 128
-SETINDEXQ 4
-FALSE
-SETINDEXQ 1
-SETGLOB 4
 .loc ../contracts/TokenRoot.sol, 0
+CALLREF {
+	CALL $deployWallet_internal_macro$
+}
 OVER
 PUSHCONT {
 	PUSH S3
@@ -1232,6 +1224,283 @@ CALLREF {
 TRUE
 SETGLOB 7
 
+.globl	deployWallet_internal
+.type	deployWallet_internal, @function
+CALL $deployWallet_internal_macro$
+
+.macro deployWallet_internal_macro
+.loc ../contracts/TokenRoot.sol, 161
+OVER
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+THROWIFNOT 1021
+.loc ../contracts/TokenRoot.sol, 162
+CALLREF {
+	CALL $_reserve_internal_macro$
+}
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/TokenRoot.sol, 164
+NEWDICT
+PUSHINT 0
+NEWC
+STU 256
+PUSHINT 0
+ROT
+PUSHINT 64
+DICTUSETB
+MYADDR
+PUSHINT 1
+ROT
+PUSHINT 64
+DICTUSET
+ROT
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSET
+NEWC
+STDICT
+ENDC
+GETGLOB 15
+NEWC
+STSLICECONST x2_
+STOPTREF
+STOPTREF
+STZERO
+ENDC
+DUP
+HASHCU
+NEWC
+STSLICECONST x801_
+STU 256
+ENDC
+CTOS
+XCHG S2
+PUSH S2
+NEWC
+STSLICECONST x42_
+STSLICE
+SWAP
+STGRAMS
+PUSHSLICE x000000000000000000000000007_
+STSLICER
+STREF
+STSLICECONST x345aaf9fc_
+ENDC
+PUSHINT 1
+SENDRAWMSG
+.loc ../contracts/TokenRoot.sol, 176
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 128
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+.loc ../contracts/TokenRoot.sol, 0
+
+.macro mint
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/TokenRoot.sol, 191
+LDUQ 128
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDUQ 128
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+LDMSGADDRQ
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDIQ 1
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+LDREF
+ENDS
+.loc ../contracts/TokenRoot.sol, 365
+GETGLOB 16
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 16
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/TokenRoot.sol, 203
+PUSHINT 2100
+GETGLOB 18
+NOT
+THROWANYIFNOT
+.loc ../contracts/TokenRoot.sol, 204
+PUSH S5
+GTINT 0
+THROWIFNOT 1050
+.loc ../contracts/TokenRoot.sol, 205
+PUSH S4
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+THROWIFNOT 1030
+.loc ../contracts/TokenRoot.sol, 207
+CALLREF {
+	CALL $_reserve_internal_macro$
+}
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/TokenRoot.sol, 208
+CALLREF {
+	CALL $_mint_internal_macro$
+}
+.loc ../contracts/TokenRoot.sol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro disableMint
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/TokenRoot.sol, 217
+LDU 32
+GETGLOB 4
+ROT
+SETINDEXQ 5
+SETGLOB 4
+ENDS
+.loc ../contracts/TokenRoot.sol, 365
+GETGLOB 16
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 16
+	GETGLOB 9
+	SDEQ
+}
+IF
+THROWIFNOT 1000
+.loc ../contracts/TokenRoot.sol, 218
+TRUE
+SETGLOB 18
+.loc ../contracts/TokenRoot.sol, 219
+GETGLOB 4
+PUSHINT 0
+SETINDEXQ 2
+PUSHINT 64
+SETINDEXQ 4
+FALSE
+SETINDEXQ 1
+SETGLOB 4
+GETGLOB 18
+.loc ../contracts/TokenRoot.sol, 0
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x0000000000000000000000003f36d9cd6_
+	STSLICER
+	STI 1
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	GETGLOB 4
+	DUP
+	INDEX 3
+	OVER
+	INDEX 2
+	GETGLOB 9
+	ROLL 3
+	INDEX 1
+	NEWC
+	PUSHINT 2
+	STZEROES
+	STI 1
+	PUSHINT 3
+	STZEROES
+	STSLICE
+	SWAP
+	STGRAMS
+	STDICT
+	PUSHINT 106
+	STZEROES
+	GETGLOB 4
+	INDEX 5
+	STUR 32
+	STI 1
+	ENDC
+	GETGLOB 4
+	INDEX 4
+	SENDRAWMSG
+}
+IFELSE
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
 .macro burnTokens
 DROP
 GETGLOB 6
@@ -1241,7 +1510,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 233
+.loc ../contracts/TokenRoot.sol, 232
 LDUQ 128
 PUSHCONT {
 	LDREF
@@ -1276,7 +1545,7 @@ PUSHCONT {
 IFNOT
 LDREF
 ENDS
-.loc ../contracts/TokenRoot.sol, 357
+.loc ../contracts/TokenRoot.sol, 365
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1291,27 +1560,27 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1000
-.loc ../contracts/TokenRoot.sol, 244
+.loc ../contracts/TokenRoot.sol, 243
 PUSHINT 2200
 GETGLOB 20
 NOT
 THROWANYIFNOT
-.loc ../contracts/TokenRoot.sol, 245
+.loc ../contracts/TokenRoot.sol, 244
 PUSHINT 2210
 GETGLOB 19
 NOT
 THROWANYIFNOT
-.loc ../contracts/TokenRoot.sol, 246
+.loc ../contracts/TokenRoot.sol, 245
 PUSH S4
 GTINT 0
 THROWIFNOT 1050
-.loc ../contracts/TokenRoot.sol, 247
+.loc ../contracts/TokenRoot.sol, 246
 PUSH S3
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 THROWIFNOT 1021
-.loc ../contracts/TokenRoot.sol, 249
+.loc ../contracts/TokenRoot.sol, 248
 XCHG S2
 BLKSWAP 2, 3
 CALLREF {
@@ -1356,14 +1625,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 261
+.loc ../contracts/TokenRoot.sol, 260
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRoot.sol, 357
+.loc ../contracts/TokenRoot.sol, 365
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1378,10 +1647,10 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1000
-.loc ../contracts/TokenRoot.sol, 262
+.loc ../contracts/TokenRoot.sol, 261
 TRUE
 SETGLOB 19
-.loc ../contracts/TokenRoot.sol, 263
+.loc ../contracts/TokenRoot.sol, 262
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -1456,14 +1725,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 266
+.loc ../contracts/TokenRoot.sol, 265
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRoot.sol, 267
+.loc ../contracts/TokenRoot.sol, 266
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -1538,14 +1807,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 274
+.loc ../contracts/TokenRoot.sol, 273
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRoot.sol, 275
+.loc ../contracts/TokenRoot.sol, 274
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -1620,7 +1889,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 285
+.loc ../contracts/TokenRoot.sol, 284
 LDU 32
 GETGLOB 4
 ROT
@@ -1628,7 +1897,7 @@ SETINDEXQ 5
 SETGLOB 4
 LDI 1
 ENDS
-.loc ../contracts/TokenRoot.sol, 357
+.loc ../contracts/TokenRoot.sol, 365
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1643,9 +1912,9 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1000
-.loc ../contracts/TokenRoot.sol, 286
+.loc ../contracts/TokenRoot.sol, 285
 SETGLOB 20
-.loc ../contracts/TokenRoot.sol, 287
+.loc ../contracts/TokenRoot.sol, 286
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -1711,7 +1980,7 @@ CALLREF {
 TRUE
 SETGLOB 7
 
-.macro tokensBurned
+.macro acceptBurn
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -1720,7 +1989,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 302
+.loc ../contracts/TokenRoot.sol, 301
 LDUQ 128
 PUSHCONT {
 	LDREF
@@ -1729,58 +1998,62 @@ PUSHCONT {
 	LDU 128
 }
 IFNOT
-LDMSGADDRQ
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-LDMSGADDRQ
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-LDMSGADDRQ
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
 LDREF
 ENDS
-.loc ../contracts/TokenRoot.sol, 312
+.loc ../contracts/TokenRoot.sol, 308
 PUSHINT 2200
 GETGLOB 20
 NOT
 THROWANYIFNOT
-.loc ../contracts/TokenRoot.sol, 313
+.loc ../contracts/TokenRoot.sol, 309
+CTOS
+.loc ../contracts/TokenRoot.sol, 310
+DUP
+LDMSGADDR
+POP S2
+.loc ../contracts/TokenRoot.sol, 311
 GETGLOB 9
-PUSH S4
+OVER
 CALLREF {
 	CALL $_getExpectedWalletAddress_internal_macro$
 }
 SDEQ
 THROWIFNOT 1100
+.loc ../contracts/TokenRoot.sol, 313
+GETPARAM 7
+INDEX 0
+DEPTH
+ADDCONST -2
+PICK
+SUB
+UFITS 128
+PUSHINT 2
+RAWRESERVE
 .loc ../contracts/TokenRoot.sol, 315
+OVER
+LDMSGADDR
+POP S3
+.loc ../contracts/TokenRoot.sol, 316
+PUSH S2
+LDMSGADDR
+POP S4
+.loc ../contracts/TokenRoot.sol, 317
+ROLL 3
+LDREF
+DROP
+.loc ../contracts/TokenRoot.sol, 319
 GETGLOB 17
 PUSH S5
 SUB
 UFITS 128
 SETGLOB 17
-.loc ../contracts/TokenRoot.sol, 317
+.loc ../contracts/TokenRoot.sol, 321
 OVER
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 PUSHCONT {
-	.loc ../contracts/TokenRoot.sol, 320
+	.loc ../contracts/TokenRoot.sol, 328
 	PUSH2 S0, S2
 	GETGLOB 9
 	PUSH3 S6, S7, S4
@@ -1795,7 +2068,7 @@ PUSHCONT {
 	STUR 111
 	ROLLREV 5
 	NEWC
-	STSLICECONST x415066f5
+	STSLICECONST x68088d9b
 	STU 128
 	STSLICE
 	ROLLREV 3
@@ -1809,12 +2082,12 @@ PUSHCONT {
 	STBREFR
 	STBREFR
 	ENDC
-	PUSHINT 64
+	PUSHINT 128
 	SENDRAWMSG
 	.loc ../contracts/TokenRoot.sol, 0
 }
 PUSHCONT {
-	.loc ../contracts/TokenRoot.sol, 318
+	.loc ../contracts/TokenRoot.sol, 322
 	PUSH S2
 	NEWC
 	STSLICECONST x42_
@@ -1822,15 +2095,15 @@ PUSHCONT {
 	PUSHINT 111
 	STZEROES
 	ENDC
-	PUSHINT 64
+	PUSHINT 128
 	ADDCONST 2
 	UFITS 8
 	SENDRAWMSG
 	.loc ../contracts/TokenRoot.sol, 0
 }
 IFELSE
-.loc ../contracts/TokenRoot.sol, 0
 BLKDROP 5
+.loc ../contracts/TokenRoot.sol, 0
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -1846,7 +2119,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 336
+.loc ../contracts/TokenRoot.sol, 344
 LDMSGADDRQ
 PUSHCONT {
 	LDREF
@@ -1856,7 +2129,7 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-.loc ../contracts/TokenRoot.sol, 357
+.loc ../contracts/TokenRoot.sol, 365
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1871,11 +2144,11 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1000
-.loc ../contracts/TokenRoot.sol, 337
+.loc ../contracts/TokenRoot.sol, 345
 PUSHINT 1000000000
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/TokenRoot.sol, 338
+.loc ../contracts/TokenRoot.sol, 346
 NEWC
 STSLICECONST x42_
 STSLICE
@@ -1902,7 +2175,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 350
+.loc ../contracts/TokenRoot.sol, 358
 LDMSGADDRQ
 PUSHCONT {
 	LDREF
@@ -1912,7 +2185,7 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-.loc ../contracts/TokenRoot.sol, 357
+.loc ../contracts/TokenRoot.sol, 365
 GETGLOB 16
 PARSEMSGADDR
 INDEX 3
@@ -1927,7 +2200,7 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1000
-.loc ../contracts/TokenRoot.sol, 351
+.loc ../contracts/TokenRoot.sol, 359
 SETGLOB 16
 .loc ../contracts/TokenRoot.sol, 0
 CALLREF {
@@ -1936,40 +2209,33 @@ CALLREF {
 TRUE
 SETGLOB 7
 
+.globl	_reserve_internal
+.type	_reserve_internal, @function
+CALL $_reserve_internal_macro$
+
+.macro _reserve_internal_macro
+.loc ../contracts/TokenRoot.sol, 370
+GETPARAM 7
+INDEX 0
+DEPTH
+ADDCONST -2
+PICK
+SUB
+UFITS 128
+PUSHINT 100000000
+MAX
+.loc ../contracts/TokenRoot.sol, 0
+
 .globl	_mint_internal
 .type	_mint_internal, @function
 CALL $_mint_internal_macro$
 
 .macro _mint_internal_macro
-.loc ../contracts/TokenRoot.sol, 375
-NEWDICT
-PUSHINT 0
-NEWC
-STU 256
-PUSHINT 0
-ROT
-PUSHINT 64
-DICTUSETB
-MYADDR
-PUSHINT 1
-ROT
-PUSHINT 64
-DICTUSET
-ROLL 5
-PUSHINT 2
-ROT
-PUSHINT 64
-DICTUSET
-NEWC
-STDICT
-ENDC
-GETGLOB 15
-NEWC
-STSLICECONST x2_
-STOPTREF
-STOPTREF
-STZERO
-ENDC
+.loc ../contracts/TokenRoot.sol, 383
+ROLL 4
+CALLREF {
+	CALL $_buildWalletInitData_internal_macro$
+}
 .loc ../contracts/TokenRoot.sol, 385
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 .loc ../contracts/TokenRoot.sol, 387
@@ -2025,11 +2291,23 @@ ADD
 UFITS 128
 SETGLOB 17
 .loc ../contracts/TokenRoot.sol, 401
-ROT
+NEWC
+.loc ../contracts/TokenRoot.sol, 402
+ROLL 5
+SWAP
+STSLICE
+.loc ../contracts/TokenRoot.sol, 403
+ROLL 4
+SWAP
+STI 1
+.loc ../contracts/TokenRoot.sol, 404
 ROLL 3
+SWAP
+STREF
+.loc ../contracts/TokenRoot.sol, 406
+ENDC
 ROLL 4
-ROLL 6
-ROLL 4
+ROT
 TRUE
 NEWC
 STSLICECONST x6_
@@ -2037,28 +2315,22 @@ STI 1
 PUSHINT 3
 STZEROES
 STSLICE
-PUSHINT 1
-STUR 111
-ROLLREV 4
-NEWC
-STSLICECONST x65e27cbb
+PUSHSLICE x0000000000000000000000000000b3f8ab2d_
+STSLICER
 STU 128
-STSLICE
-STI 1
 STREF
-STBREFR
 ENDC
 PUSHINT 128
 SENDRAWMSG
 .loc ../contracts/TokenRoot.sol, 0
 DROP2
 
-.globl	_getExpectedWalletAddress_internal
-.type	_getExpectedWalletAddress_internal, @function
-CALL $_getExpectedWalletAddress_internal_macro$
+.globl	_buildWalletInitData_internal
+.type	_buildWalletInitData_internal, @function
+CALL $_buildWalletInitData_internal_macro$
 
-.macro _getExpectedWalletAddress_internal_macro
-.loc ../contracts/TokenRoot.sol, 415
+.macro _buildWalletInitData_internal_macro
+.loc ../contracts/TokenRoot.sol, 418
 NEWDICT
 PUSHINT 0
 NEWC
@@ -2087,7 +2359,17 @@ STOPTREF
 STOPTREF
 STZERO
 ENDC
-.loc ../contracts/TokenRoot.sol, 425
+.loc ../contracts/TokenRoot.sol, 0
+
+.globl	_getExpectedWalletAddress_internal
+.type	_getExpectedWalletAddress_internal, @function
+CALL $_getExpectedWalletAddress_internal_macro$
+
+.macro _getExpectedWalletAddress_internal_macro
+.loc ../contracts/TokenRoot.sol, 435
+CALLREF {
+	CALL $_buildWalletInitData_internal_macro$
+}
 HASHCU
 NEWC
 STSLICECONST x801_
@@ -2104,14 +2386,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRoot.sol, 433
+.loc ../contracts/TokenRoot.sol, 443
 DUP
 LDU 32
 POP S2
-PUSHINT 1709341883
+PUSHINT 1509709206
 EQUAL
 PUSHCONT {
-	.loc ../contracts/TokenRoot.sol, 434
+	.loc ../contracts/TokenRoot.sol, 444
 	DUP
 	LDU 128
 	POP S2
@@ -2442,7 +2724,7 @@ IF
 
 .macro public_function_selector
 DUP
-PUSHINT 1717423775
+PUSHINT 1394526076
 LEQ
 IFJMPREF {
 	DUP
@@ -2475,14 +2757,26 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 739640645
+	PUSHINT 549434296
 	LEQ
 	IFJMPREF {
 		DUP
-		PUSHINT 322087217
+		PUSHINT 394429597
 		EQUAL
 		IFJMPREF {
-			CALL $version$
+			CALL $symbol$
+		}
+		DUP
+		PUSHINT 428082246
+		EQUAL
+		IFJMPREF {
+			CALL $name$
+		}
+		DUP
+		PUSHINT 436983925
+		EQUAL
+		IFJMPREF {
+			CALL $acceptBurn$
 		}
 		DUP
 		PUSHINT 549434296
@@ -2490,6 +2784,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $mint$
 		}
+	}
+	DUP
+	PUSHINT 839183401
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 552322925
 		EQUAL
@@ -2502,17 +2801,23 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $walletOf$
 		}
-	}
-	DUP
-	PUSHINT 1047219759
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 837670087
 		EQUAL
 		IFJMPREF {
 			CALL $deployWallet$
 		}
+		DUP
+		PUSHINT 839183401
+		EQUAL
+		IFJMPREF {
+			CALL $supportsInterface$
+		}
+	}
+	DUP
+	PUSHINT 1394526076
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 911978585
 		EQUAL
@@ -2526,22 +2831,27 @@ IFJMPREF {
 			CALL $burnPaused$
 		}
 		DUP
-		PUSHINT 1047219759
-		EQUAL
-		IFJMPREF {
-			CALL $tokensBurned$
-		}
-	}
-	DUP
-	PUSHINT 1717423775
-	LEQ
-	IFJMPREF {
-		DUP
 		PUSHINT 1323395199
 		EQUAL
 		IFJMPREF {
 			CALL $burnByRootDisabled$
 		}
+		DUP
+		PUSHINT 1394526076
+		EQUAL
+		IFJMPREF {
+			CALL $decimals$
+		}
+	}
+}
+DUP
+PUSHINT 2146356303
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 2085541327
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1519307959
 		EQUAL
@@ -2560,29 +2870,29 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $walletCode$
 		}
-	}
-}
-DUP
-PUSHINT 2146356303
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 2085541327
-	EQUAL
-	IFJMPREF {
-		CALL $mintDisabled$
-	}
-	DUP
-	PUSHINT 2094753589
-	EQUAL
-	IFJMPREF {
-		CALL $disableMint$
+		DUP
+		PUSHINT 2085541327
+		EQUAL
+		IFJMPREF {
+			CALL $mintDisabled$
+		}
 	}
 	DUP
 	PUSHINT 2146356303
-	EQUAL
+	LEQ
 	IFJMPREF {
-		CALL $setBurnPaused$
+		DUP
+		PUSHINT 2094753589
+		EQUAL
+		IFJMPREF {
+			CALL $disableMint$
+		}
+		DUP
+		PUSHINT 2146356303
+		EQUAL
+		IFJMPREF {
+			CALL $setBurnPaused$
+		}
 	}
 }
 
