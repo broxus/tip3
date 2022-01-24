@@ -1,16 +1,16 @@
 pragma ton-solidity >= 0.39.0;
 
-import "./IBurnableTokenRoot.sol";
+import "./IBurnPausableTokenRoot.sol";
 
 /*
 rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
              IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
-             IBurnableTokenRoot(root).tokensBurned(...) ->
+             IBurnPausableTokenRoot(root).tokensBurned(...) ->
              IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
 */
 
 
-interface IBurnableByRootTokenRoot is IBurnableTokenRoot {
+interface IBurnableByRootTokenRoot {
 
     /*
         @notice Allows for rootOwner burn tokens from any TokenWallet

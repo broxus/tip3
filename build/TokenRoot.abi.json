@@ -28,12 +28,70 @@
 			]
 		},
 		{
-			"name": "getDetails",
+			"name": "burnTokens",
+			"inputs": [
+				{"name":"amount","type":"uint128"},
+				{"name":"walletOwner","type":"address"},
+				{"name":"remainingGasTo","type":"address"},
+				{"name":"callbackTo","type":"address"},
+				{"name":"payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "disableBurnByRoot",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
-				{"components":[{"name":"name","type":"string"},{"name":"symbol","type":"string"},{"name":"decimals","type":"uint8"},{"name":"rootOwner","type":"address"},{"name":"totalSupply","type":"uint128"}],"name":"value0","type":"tuple"}
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
+			"name": "burnByRootDisabled",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
+			"name": "burnPaused",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
+			"name": "setBurnPaused",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"paused","type":"bool"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
+			"name": "disableMint",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
+			"name": "mintDisabled",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
 			]
 		},
 		{
@@ -91,15 +149,6 @@
 			]
 		},
 		{
-			"name": "mintDisabled",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
 			"name": "walletOf",
 			"inputs": [
 				{"name":"answerId","type":"uint32"},
@@ -134,68 +183,14 @@
 			]
 		},
 		{
-			"name": "disableMint",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
-			"name": "burnTokens",
+			"name": "acceptBurn",
+			"id": "0x192B51B1",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
 				{"name":"walletOwner","type":"address"},
 				{"name":"remainingGasTo","type":"address"},
 				{"name":"callbackTo","type":"address"},
 				{"name":"payload","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "disableBurnByRoot",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
-			"name": "burnByRootDisabled",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
-			"name": "burnPaused",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
-			"name": "setBurnPaused",
-			"inputs": [
-				{"name":"answerId","type":"uint32"},
-				{"name":"paused","type":"bool"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
-			"name": "acceptBurn",
-			"inputs": [
-				{"name":"amount","type":"uint128"},
-				{"name":"meta","type":"cell"}
 			],
 			"outputs": [
 			]
@@ -218,13 +213,13 @@
 		}
 	],
 	"data": [
-		{"key":1,"name":"randomNonce_","type":"uint256"},
-		{"key":2,"name":"deployer_","type":"address"},
-		{"key":3,"name":"name_","type":"string"},
-		{"key":4,"name":"symbol_","type":"string"},
-		{"key":5,"name":"decimals_","type":"uint8"},
-		{"key":6,"name":"walletCode_","type":"cell"},
-		{"key":7,"name":"rootOwner_","type":"address"}
+		{"key":1,"name":"name_","type":"string"},
+		{"key":2,"name":"symbol_","type":"string"},
+		{"key":3,"name":"decimals_","type":"uint8"},
+		{"key":4,"name":"rootOwner_","type":"address"},
+		{"key":5,"name":"walletCode_","type":"cell"},
+		{"key":6,"name":"randomNonce_","type":"uint256"},
+		{"key":7,"name":"deployer_","type":"address"}
 	],
 	"events": [
 	],
@@ -232,16 +227,16 @@
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"name":"randomNonce_","type":"uint256"},
-		{"name":"deployer_","type":"address"},
 		{"name":"name_","type":"string"},
 		{"name":"symbol_","type":"string"},
 		{"name":"decimals_","type":"uint8"},
-		{"name":"walletCode_","type":"cell"},
 		{"name":"rootOwner_","type":"address"},
+		{"name":"walletCode_","type":"cell"},
 		{"name":"totalSupply_","type":"uint128"},
 		{"name":"mintDisabled_","type":"bool"},
+		{"name":"burnPaused_","type":"bool"},
 		{"name":"burnByRootDisabled_","type":"bool"},
-		{"name":"burnPaused_","type":"bool"}
+		{"name":"randomNonce_","type":"uint256"},
+		{"name":"deployer_","type":"address"}
 	]
 }

@@ -4,12 +4,12 @@ pragma ton-solidity >= 0.39.0;
 
 1)
 walletOwner -> IBurnableTokenWallet(wallet).burn(...) ->
-               IBurnableTokenRoot(root).tokensBurned(...) ->
+               IBurnPausableTokenRoot(root).tokensBurned(...) ->
                IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
 2)
 rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
              IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
-             IBurnableTokenRoot(root).tokensBurned(...) ->
+             IBurnPausableTokenRoot(root).tokensBurned(...) ->
              IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
 */
 

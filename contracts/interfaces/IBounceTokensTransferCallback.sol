@@ -1,7 +1,7 @@
 pragma ton-solidity >= 0.39.0;
 
 
-interface IRevertTokensTransferCallback {
+interface IBounceTokensTransferCallback {
 
     /*
         @notice Callback from TokenWallet when tokens transfer reverted
@@ -10,7 +10,7 @@ interface IRevertTokensTransferCallback {
         @param amount Reverted tokens amount
         @param revertedFrom Address which declained acceptTransfer
     */
-    function onRevertTokensTransfer(
+    function onBounceTokensTransfer(
         address tokenRoot,
         uint128 amount,
         address revertedFrom

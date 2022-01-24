@@ -1,15 +1,7 @@
 pragma ton-solidity >= 0.39.0;
 pragma AbiHeader expire;
 
-/*
-
-walletOwner -> IBurnableTokenWallet(wallet).burn(...) ->
-               IBurnableTokenRoot(root).tokensBurned(...) ->
-               IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...)
-*/
-
-
-interface IBurnableTokenRoot {
+interface IBurnPausableTokenRoot {
 
     /*
         @notice Pause/Unpause token burns

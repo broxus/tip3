@@ -28,60 +28,6 @@
 			]
 		},
 		{
-			"name": "getDetails",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"components":[{"name":"name","type":"string"},{"name":"symbol","type":"string"},{"name":"decimals","type":"uint8"},{"name":"rootOwner","type":"address"},{"name":"totalSupply","type":"uint128"}],"name":"value0","type":"tuple"}
-			]
-		},
-		{
-			"name": "name",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"string"}
-			]
-		},
-		{
-			"name": "symbol",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"string"}
-			]
-		},
-		{
-			"name": "decimals",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"uint8"}
-			]
-		},
-		{
-			"name": "totalSupply",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"uint128"}
-			]
-		},
-		{
-			"name": "walletCode",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"cell"}
-			]
-		},
-		{
 			"name": "walletVersion",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
@@ -100,64 +46,29 @@
 			]
 		},
 		{
-			"name": "rootOwner",
+			"name": "requestUpgradeWallet",
 			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"address"}
-			]
-		},
-		{
-			"name": "walletOf",
-			"inputs": [
-				{"name":"answerId","type":"uint32"},
-				{"name":"walletOwner","type":"address"}
-			],
-			"outputs": [
-				{"name":"value0","type":"address"}
-			]
-		},
-		{
-			"name": "mint",
-			"inputs": [
-				{"name":"amount","type":"uint128"},
-				{"name":"recipient","type":"address"},
-				{"name":"deployWalletValue","type":"uint128"},
-				{"name":"remainingGasTo","type":"address"},
-				{"name":"notify","type":"bool"},
-				{"name":"payload","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "disableMint",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
-			"name": "mintDisabled",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
-			"name": "deployWallet",
-			"inputs": [
-				{"name":"answerId","type":"uint32"},
+				{"name":"currentVersion","type":"uint32"},
 				{"name":"walletOwner","type":"address"},
-				{"name":"deployWalletValue","type":"uint128"}
+				{"name":"remainingGasTo","type":"address"}
 			],
 			"outputs": [
-				{"name":"tokenWallet","type":"address"}
+			]
+		},
+		{
+			"name": "setWalletCode",
+			"inputs": [
+				{"name":"code","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "upgrade",
+			"inputs": [
+				{"name":"code","type":"cell"}
+			],
+			"outputs": [
 			]
 		},
 		{
@@ -210,10 +121,120 @@
 			]
 		},
 		{
-			"name": "acceptBurn",
+			"name": "disableMint",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
+			"name": "mintDisabled",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
+			"name": "name",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"string"}
+			]
+		},
+		{
+			"name": "symbol",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"string"}
+			]
+		},
+		{
+			"name": "decimals",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint8"}
+			]
+		},
+		{
+			"name": "totalSupply",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "walletCode",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"cell"}
+			]
+		},
+		{
+			"name": "rootOwner",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "walletOf",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"walletOwner","type":"address"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "deployWallet",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"walletOwner","type":"address"},
+				{"name":"deployWalletValue","type":"uint128"}
+			],
+			"outputs": [
+				{"name":"tokenWallet","type":"address"}
+			]
+		},
+		{
+			"name": "mint",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
-				{"name":"meta","type":"cell"}
+				{"name":"recipient","type":"address"},
+				{"name":"deployWalletValue","type":"uint128"},
+				{"name":"remainingGasTo","type":"address"},
+				{"name":"notify","type":"bool"},
+				{"name":"payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "acceptBurn",
+			"id": "0x192B51B1",
+			"inputs": [
+				{"name":"amount","type":"uint128"},
+				{"name":"walletOwner","type":"address"},
+				{"name":"remainingGasTo","type":"address"},
+				{"name":"callbackTo","type":"address"},
+				{"name":"payload","type":"cell"}
 			],
 			"outputs": [
 			]
@@ -233,42 +254,16 @@
 			],
 			"outputs": [
 			]
-		},
-		{
-			"name": "requestUpgradeWallet",
-			"inputs": [
-				{"name":"currentVersion","type":"uint32"},
-				{"name":"walletOwner","type":"address"},
-				{"name":"remainingGasTo","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "setWalletCode",
-			"inputs": [
-				{"name":"code","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "upgrade",
-			"inputs": [
-				{"name":"code","type":"cell"}
-			],
-			"outputs": [
-			]
 		}
 	],
 	"data": [
-		{"key":1,"name":"randomNonce_","type":"uint256"},
-		{"key":2,"name":"deployer_","type":"address"},
-		{"key":3,"name":"name_","type":"string"},
-		{"key":4,"name":"symbol_","type":"string"},
-		{"key":5,"name":"decimals_","type":"uint8"},
-		{"key":6,"name":"walletCode_","type":"cell"},
-		{"key":7,"name":"rootOwner_","type":"address"},
+		{"key":1,"name":"name_","type":"string"},
+		{"key":2,"name":"symbol_","type":"string"},
+		{"key":3,"name":"decimals_","type":"uint8"},
+		{"key":4,"name":"rootOwner_","type":"address"},
+		{"key":5,"name":"walletCode_","type":"cell"},
+		{"key":6,"name":"randomNonce_","type":"uint256"},
+		{"key":7,"name":"deployer_","type":"address"},
 		{"key":8,"name":"platformCode_","type":"cell"}
 	],
 	"events": [
@@ -277,18 +272,18 @@
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"name":"randomNonce_","type":"uint256"},
-		{"name":"deployer_","type":"address"},
 		{"name":"name_","type":"string"},
 		{"name":"symbol_","type":"string"},
 		{"name":"decimals_","type":"uint8"},
-		{"name":"walletCode_","type":"cell"},
 		{"name":"rootOwner_","type":"address"},
-		{"name":"platformCode_","type":"cell"},
-		{"name":"walletVersion_","type":"uint32"},
+		{"name":"walletCode_","type":"cell"},
 		{"name":"totalSupply_","type":"uint128"},
 		{"name":"mintDisabled_","type":"bool"},
+		{"name":"burnPaused_","type":"bool"},
 		{"name":"burnByRootDisabled_","type":"bool"},
-		{"name":"burnPaused_","type":"bool"}
+		{"name":"randomNonce_","type":"uint256"},
+		{"name":"deployer_","type":"address"},
+		{"name":"platformCode_","type":"cell"},
+		{"name":"walletVersion_","type":"uint32"}
 	]
 }

@@ -1,7 +1,6 @@
 pragma ton-solidity >= 0.39.0;
 
-import "../../node_modules/@broxus/contracts/contracts/libraries/MsgFlag.sol";
-
+import "./libraries/TokenMsgFlag.sol";
 
 contract TokenWalletPlatform {
     address static root;
@@ -13,13 +12,13 @@ contract TokenWalletPlatform {
         } else {
             remainingGasTo.transfer({
                 value: 0,
-                flag: MsgFlag.ALL_NOT_RESERVED + MsgFlag.DESTROY_IF_ZERO,
+                flag: TokenMsgFlag.ALL_NOT_RESERVED + TokenMsgFlag.DESTROY_IF_ZERO,
                 bounce: false
             });
         }
     }
 
-    function _getExpectedAddress(address owner_) private view returns (address) {
+    function _getExpectedAddress(address owner_) private view returns(address) {
         TvmCell stateInit = tvm.buildStateInit({
             contr: TokenWalletPlatform,
             varInit: {

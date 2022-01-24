@@ -1,13 +1,13 @@
 pragma ton-solidity >= 0.39.0;
 
-/*
-rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
-             IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
-             IBurnPausableTokenRoot(root).tokensBurned(...) ->
-             IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
-*/
+pragma AbiHeader expire;
+pragma AbiHeader pubkey;
 
-interface IBurnableByRootTokenWallet {
+import "./TokenWalletBurnableBase.sol";
+import "../interfaces/IBurnableByRootTokenWallet.sol";
+
+
+abstract contract TokenWalletBurnableByRootBase is TokenWalletBurnableBase, IBurnableByRootTokenWallet {
 
     /*
         @notice Allows for rootOwner burn tokens from TokenWallet
@@ -18,10 +18,12 @@ interface IBurnableByRootTokenWallet {
                if it equals to 0:0 then no callbacks
         @param payload Custom data will be delivered into IAcceptTokensBurnCallback.onAcceptTokensBurn
     */
-    function burnByRoot(
-        uint128 amount,
-        address remainingGasTo,
-        address callbackTo,
-        TvmCell payload
-    ) external;
+    function burnByRoot(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)
+        override
+        external
+        onlyRoot
+    {
+        _burn(amount, remainingGasTo, callbackTo, payload, address(this).balance - msg.value);
+    }
+
 }

@@ -1,32 +1,15 @@
 pragma ton-solidity >= 0.39.0;
 
 import "./TIP3TokenWallet.sol";
-import "./TIP4.sol";
+import "./TIP5.sol";
 
-interface ITokenWallet is TIP3TokenWallet, TIP4 {
-
-    struct TokenWalletDetails {
-        // TokenRoot address
-        address root;
-        // TokenWallet owner
-        address owner;
-        // Balance of TokenWallet in tokens
-        uint128 balance;
-    }
-
-    /*
-        @notice Get details about token wallet
-        @returns root TokenRoot address
-        @returns owner TokenWallet owner
-        @returns balance Tokens balance of TokenWallet
-    */
-    function getDetails() external view responsible returns (TokenWalletDetails);
+interface ITokenWallet is TIP3TokenWallet, TIP5 {
 
     /*
         @notice Get TokenWallet owner address
         @returns owner TokenWallet owner address
     */
-    function owner() external view responsible returns (address);
+    function owner() external view responsible returns(address);
 
     /*
         @notice Transfer tokens and optionally deploy TokenWallet for recipient
@@ -65,4 +48,35 @@ interface ITokenWallet is TIP3TokenWallet, TIP4 {
         TvmCell _payload
     ) external;
 
+    /*
+        @notice Callback for transfer operation
+        @dev Can be called only by another valid TokenWallet contract with same root
+        @param amount How much tokens to receive
+        @param sender Sender TokenWallet owner address
+        @param remainingGasTo Remaining gas receiver
+        @param notify Notify receiver on incoming transfer
+        @param payload Notification payload
+    */
+    function acceptTransfer(
+        uint128 amount,
+        address sender,
+        address remainingGasTo,
+        bool notify,
+        TvmCell payload
+    ) external functionID(0x67A0B95F);
+
+    /*
+        @notice Accept minted tokens from root
+        @dev Can be called only by TokenRoot
+        @param amount How much tokens to accept
+        @param remainingGasTo Remaining gas receiver
+        @param notify Notify receiver on incoming mint
+        @param payload Notification payload
+    */
+    function acceptMint(
+        uint128 amount,
+        address remainingGasTo,
+        bool notify,
+        TvmCell payload
+    ) external functionID(0x4384F298);
 }

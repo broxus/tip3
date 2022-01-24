@@ -11,6 +11,15 @@
 			]
 		},
 		{
+			"name": "platformCode",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"cell"}
+			]
+		},
+		{
 			"name": "supportsInterface",
 			"inputs": [
 				{"name":"answerId","type":"uint32"},
@@ -21,12 +30,72 @@
 			]
 		},
 		{
+			"name": "onDeployRetry",
+			"id": "0x15A038FB",
+			"inputs": [
+				{"name":"value0","type":"cell"},
+				{"name":"value1","type":"uint32"},
+				{"name":"sender","type":"address"},
+				{"name":"remainingGasTo","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "version",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "upgrade",
+			"inputs": [
+				{"name":"remainingGasTo","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "acceptUpgrade",
+			"inputs": [
+				{"name":"newCode","type":"cell"},
+				{"name":"newVersion","type":"uint32"},
+				{"name":"remainingGasTo","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "burnByRoot",
+			"inputs": [
+				{"name":"amount","type":"uint128"},
+				{"name":"remainingGasTo","type":"address"},
+				{"name":"callbackTo","type":"address"},
+				{"name":"payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "burn",
+			"inputs": [
+				{"name":"amount","type":"uint128"},
+				{"name":"remainingGasTo","type":"address"},
+				{"name":"callbackTo","type":"address"},
+				{"name":"payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "destroy",
+			"inputs": [
+				{"name":"sendGasTo","type":"address"}
+			],
+			"outputs": [
 			]
 		},
 		{
@@ -66,24 +135,6 @@
 			]
 		},
 		{
-			"name": "platformCode",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"cell"}
-			]
-		},
-		{
-			"name": "getDetails",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"components":[{"name":"root","type":"address"},{"name":"owner","type":"address"},{"name":"balance","type":"uint128"}],"name":"value0","type":"tuple"}
-			]
-		},
-		{
 			"name": "transfer",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
@@ -109,85 +160,34 @@
 			]
 		},
 		{
-			"name": "burn",
-			"inputs": [
-				{"name":"amount","type":"uint128"},
-				{"name":"remainingGasTo","type":"address"},
-				{"name":"callbackTo","type":"address"},
-				{"name":"payload","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "acceptTransfer",
+			"id": "0x67A0B95F",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
-				{"name":"meta","type":"cell"}
+				{"name":"sender","type":"address"},
+				{"name":"remainingGasTo","type":"address"},
+				{"name":"notify","type":"bool"},
+				{"name":"payload","type":"cell"}
 			],
 			"outputs": [
 			]
 		},
 		{
 			"name": "acceptMint",
-			"inputs": [
-				{"name":"amount","type":"uint128"},
-				{"name":"meta","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "burnByRoot",
+			"id": "0x4384F298",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
 				{"name":"remainingGasTo","type":"address"},
-				{"name":"callbackTo","type":"address"},
+				{"name":"notify","type":"bool"},
 				{"name":"payload","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "onDeployRetry",
-			"id": "0x15A038FB",
-			"inputs": [
-				{"name":"value0","type":"cell"},
-				{"name":"value1","type":"uint32"},
-				{"name":"sender","type":"address"},
-				{"name":"remainingGasTo","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "destroy",
-			"inputs": [
-				{"name":"remainingGasTo","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "upgrade",
-			"inputs": [
-				{"name":"remainingGasTo","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "acceptUpgrade",
-			"inputs": [
-				{"name":"newCode","type":"cell"},
-				{"name":"newVersion","type":"uint32"},
-				{"name":"remainingGasTo","type":"address"}
 			],
 			"outputs": [
 			]
 		}
 	],
 	"data": [
+		{"key":1,"name":"root_","type":"address"},
+		{"key":2,"name":"owner_","type":"address"}
 	],
 	"events": [
 	],

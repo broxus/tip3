@@ -1,38 +1,15 @@
 pragma ton-solidity >= 0.39.0;
 
 import "./TIP3TokenRoot.sol";
-import "./TIP4.sol";
+import "./TIP5.sol";
 
-interface ITokenRoot is TIP3TokenRoot, TIP4 {
-
-    struct TokenRootDetails {
-        // Basic info about token
-        string name;
-        string symbol;
-        uint8 decimals;
-
-        // TokenRoot owner
-        address rootOwner;
-
-        // Token total supply
-        uint128 totalSupply;
-    }
-
-    /*
-        @notice Get root token details
-        @returns name Token name
-        @returns symbol Token symbol
-        @returns decimals Token decimals
-        @returns rootOwner Owner address
-        @returns totalSupply Token total supply
-    */
-    function getDetails() external view responsible returns (TokenRootDetails);
+interface ITokenRoot is TIP3TokenRoot, TIP5 {
 
     /*
         @notice Get root owner
         @returns rootOwner
     */
-    function rootOwner() external view responsible returns (address);
+    function rootOwner() external view responsible returns(address);
 
     /*
         @notice Derive TokenWallet address from owner address
@@ -40,6 +17,26 @@ interface ITokenRoot is TIP3TokenRoot, TIP4 {
         @returns Token wallet address
     */
     function walletOf(address _owner) external view responsible returns(address);
+
+    /*
+        @notice Called by TokenWallet, when
+        @dev Decrease total supply
+        @dev Can be called only by correct token wallet contract
+        @dev Fails if root token burn paused
+        @param amount How much tokens was burned
+        @param walletOwner Burner TokenWallet owner address
+        @param remainingGasTo Receiver of the remaining EVERs
+        @param callbackTo address of contract, which implement IBurnTokensCallback.burnCallback
+               if it equals to 0:0 then no callbacks
+        @param payload Custom data will be delivered into IBurnTokensCallback.burnCallback
+    */
+    function acceptBurn(
+        uint128 amount,
+        address walletOwner,
+        address remainingGasTo,
+        address callbackTo,
+        TvmCell payload
+    ) external functionID(0x192B51B1);
 
     /*
         @notice Mint tokens to recipient with deploy wallet optional

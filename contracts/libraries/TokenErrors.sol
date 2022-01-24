@@ -20,6 +20,6 @@ library TokenErrors {
 
     uint16 constant MINT_DISABLED                                   = 2100;
 
-    uint16 constant BURN_PAUSED                                     = 2200;
+    uint16 constant BURN_DISABLED                                   = 2200;
     uint16 constant BURN_BY_ROOT_DISABLED                           = 2210;
 }

@@ -30,7 +30,7 @@ PUSHCONT {
 }
 IFNOT
 ENDS
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 11
+.loc ../contracts/TokenWalletPlatform.sol, 10
 GETGLOB 9
 GETGLOB 10
 SDEQ
@@ -56,16 +56,16 @@ PUSHCONT {
 }
 IFNOT
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 12
+	.loc ../contracts/TokenWalletPlatform.sol, 11
 	OVER2
 	PUSH S2
 	CALLREF {
 		CALL $initialize_internal_macro$
 	}
-	.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 0
+	.loc ../contracts/TokenWalletPlatform.sol, 0
 }
 PUSHCONT {
-	.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 14
+	.loc ../contracts/TokenWalletPlatform.sol, 13
 	DUP
 	NEWC
 	STSLICECONST x42_
@@ -77,10 +77,10 @@ PUSHCONT {
 	ADDCONST 32
 	UFITS 8
 	SENDRAWMSG
-	.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 0
+	.loc ../contracts/TokenWalletPlatform.sol, 0
 }
 IFELSE
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 0
+.loc ../contracts/TokenWalletPlatform.sol, 0
 BLKDROP 4
 CALLREF {
 	CALL $c7_to_c4$
@@ -93,7 +93,7 @@ SETGLOB 7
 CALL $_getExpectedAddress_internal_macro$
 
 .macro _getExpectedAddress_internal_macro
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 23
+.loc ../contracts/TokenWalletPlatform.sol, 22
 NEWDICT
 PUSHINT 0
 NEWC
@@ -133,43 +133,43 @@ STOPTREF
 STOPTREF
 STZERO
 ENDC
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 33
+.loc ../contracts/TokenWalletPlatform.sol, 32
 HASHCU
 NEWC
 STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 0
+.loc ../contracts/TokenWalletPlatform.sol, 0
 
 .globl	initialize_internal
 .type	initialize_internal, @function
 CALL $initialize_internal_macro$
 
 .macro initialize_internal_macro
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 37
+.loc ../contracts/TokenWalletPlatform.sol, 36
 GETGLOB 10
 NEWC
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 39
+.loc ../contracts/TokenWalletPlatform.sol, 38
 STSLICE
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 40
+.loc ../contracts/TokenWalletPlatform.sol, 39
 GETGLOB 11
 SWAP
 STSLICE
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 41
+.loc ../contracts/TokenWalletPlatform.sol, 40
 PUSHINT 0
 SWAP
 STU 128
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 42
+.loc ../contracts/TokenWalletPlatform.sol, 41
 PUSHINT 0
 SWAP
 STU 32
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 43
+.loc ../contracts/TokenWalletPlatform.sol, 42
 XCHG S1, S2
 STU 32
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 44
+.loc ../contracts/TokenWalletPlatform.sol, 43
 STSLICE
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 46
+.loc ../contracts/TokenWalletPlatform.sol, 45
 GETGLOB 1
 PUSHREF {
 	DUP
@@ -184,10 +184,10 @@ STSLICE
 ENDC
 SWAP
 STREF
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 48
+.loc ../contracts/TokenWalletPlatform.sol, 47
 OVER
 SETCODE
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 49
+.loc ../contracts/TokenWalletPlatform.sol, 48
 SWAP
 CTOS
 DUP
@@ -202,16 +202,16 @@ PLDREF
 CTOS
 BLESS
 POP C3
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 51
+.loc ../contracts/TokenWalletPlatform.sol, 50
 ENDC
 CALLREF {
 	CALL $:onCodeUpgrade$
 }
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 0
+.loc ../contracts/TokenWalletPlatform.sol, 0
 
 .internal-alias :onCodeUpgrade, 2
 .internal :onCodeUpgrade
-.loc ../contracts/upgradeable/TokenWalletPlatform.sol, 0
+.loc ../contracts/TokenWalletPlatform.sol, 0
 DROP
 CALLREF {
 	CALL $c7_to_c4$
