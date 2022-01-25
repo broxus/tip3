@@ -10,7 +10,7 @@ interface IBurnPausableTokenRoot {
         @param paused
         @returns paused
     */
-    function setBurnPaused(bool _paused) external responsible returns (bool);
+    function setBurnPaused(bool paused) external responsible returns (bool);
 
     /*
         @notice Get burn paused status

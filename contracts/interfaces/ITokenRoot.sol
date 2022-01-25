@@ -16,7 +16,7 @@ interface ITokenRoot is TIP3TokenRoot, SID {
         @param _owner TokenWallet owner address
         @returns Token wallet address
     */
-    function walletOf(address _owner) external view responsible returns (address);
+    function walletOf(address owner) external view responsible returns (address);
 
     /*
         @notice Called by TokenWallet, when
@@ -51,12 +51,12 @@ interface ITokenRoot is TIP3TokenRoot, SID {
         @param payload - custom payload for IAcceptTokensTransferCallback.onAcceptTokensMint
     */
     function mint(
-        uint128 _amount,
-        address _recipient,
-        uint128 _deployWalletValue,
-        address _remainingGasTo,
-        bool _notify,
-        TvmCell _payload
+        uint128 amount,
+        address recipient,
+        uint128 deployWalletValue,
+        address remainingGasTo,
+        bool notify,
+        TvmCell payload
     ) external;
 
     /*
@@ -66,7 +66,7 @@ interface ITokenRoot is TIP3TokenRoot, SID {
         @param callbackTo When != 0:0 then will lead to send ITokenWalletDeployedCallback(callbackTo).onTokenWalletDeployed from root
     */
     function deployWallet(
-        address _owner,
-        uint128 _deployWalletValue
+        address owner,
+        uint128 deployWalletValue
     ) external responsible returns (address);
 }

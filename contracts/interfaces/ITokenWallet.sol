@@ -23,12 +23,12 @@ interface ITokenWallet is TIP3TokenWallet, SID {
         @param payload Notification payload
     */
     function transfer(
-        uint128 _amount,
-        address _recipient,
-        uint128 _deployWalletValue,
-        address _remainingGasTo,
-        bool _notify,
-        TvmCell _payload
+        uint128 amount,
+        address recipient,
+        uint128 deployWalletValue,
+        address remainingGasTo,
+        bool notify,
+        TvmCell payload
     ) external;
 
     /*
@@ -41,11 +41,11 @@ interface ITokenWallet is TIP3TokenWallet, SID {
         @param payload Notification payload
     */
     function transferToWallet(
-        uint128 _amount,
-        address _recipientTokenWallet,
-        address _remainingGasTo,
-        bool _notify,
-        TvmCell _payload
+        uint128 amount,
+        address recipientTokenWallet,
+        address remainingGasTo,
+        bool notify,
+        TvmCell payload
     ) external;
 
     /*
