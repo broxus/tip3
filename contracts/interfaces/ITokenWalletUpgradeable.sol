@@ -5,7 +5,7 @@ import "./IVersioned.sol";
 
 
 interface ITokenWalletUpgradeable is ITokenWallet, IVersioned {
-    function platformCode() external view responsible returns(TvmCell);
+    function platformCode() external view responsible returns (TvmCell);
     function upgrade(address remainingGasTo) external;
     function acceptUpgrade(TvmCell code, uint32 newVersion, address remainingGasTo) external;
 }

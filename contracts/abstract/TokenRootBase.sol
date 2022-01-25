@@ -33,27 +33,27 @@ abstract contract TokenRootBase is ITokenRoot {
         _;
     }
 
-    function name() override external view responsible returns(string) {
+    function name() override external view responsible returns (string) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } name_;
     }
 
-    function symbol() override external view responsible returns(string) {
+    function symbol() override external view responsible returns (string) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } symbol_;
     }
 
-    function decimals() override external view responsible returns(uint8) {
+    function decimals() override external view responsible returns (uint8) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } decimals_;
     }
 
-    function totalSupply() override external view responsible returns(uint128) {
+    function totalSupply() override external view responsible returns (uint128) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } totalSupply_;
     }
 
-    function walletCode() override external view responsible returns(TvmCell) {
+    function walletCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } walletCode_;
     }
 
-    function rootOwner() override external view responsible returns(address) {
+    function rootOwner() override external view responsible returns (address) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } rootOwner_;
     }
 
@@ -67,7 +67,7 @@ abstract contract TokenRootBase is ITokenRoot {
         public
         view
         responsible
-        returns(address)
+        returns (address)
     {
         require(walletOwner.value != 0, TokenErrors.WRONG_WALLET_OWNER);
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } _getExpectedWalletAddress(walletOwner);
@@ -83,7 +83,7 @@ abstract contract TokenRootBase is ITokenRoot {
         public
         override
         responsible
-        returns(address tokenWallet)
+        returns (address tokenWallet)
     {
         require(walletOwner.value != 0, TokenErrors.WRONG_WALLET_OWNER);
         tvm.rawReserve(_reserve(), 0);
@@ -235,7 +235,7 @@ abstract contract TokenRootBase is ITokenRoot {
         @param wallet_public_key_ Token wallet owner public key
         @param owner_address_ Token wallet owner address
     */
-    function _getExpectedWalletAddress(address walletOwner) internal view returns(address) {
+    function _getExpectedWalletAddress(address walletOwner) internal view returns (address) {
         return address(tvm.hash(_buildWalletInitData(walletOwner)));
     }
 
@@ -249,10 +249,10 @@ abstract contract TokenRootBase is ITokenRoot {
         }
     }
 
-    function _mintEnabled() virtual internal view returns(bool);
-    function _burnEnabled() virtual internal view returns(bool);
-    function _reserve() virtual internal pure returns(uint128);
-    function _buildWalletInitData(address walletOwner) virtual internal view returns(TvmCell);
-    function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) virtual internal view returns(address);
+    function _mintEnabled() virtual internal view returns (bool);
+    function _burnEnabled() virtual internal view returns (bool);
+    function _reserve() virtual internal pure returns (uint128);
+    function _buildWalletInitData(address walletOwner) virtual internal view returns (TvmCell);
+    function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) virtual internal view returns (address);
 
 }

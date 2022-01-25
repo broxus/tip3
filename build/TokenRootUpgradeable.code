@@ -240,9 +240,59 @@ SETINDEXQ 4
 FALSE
 SETINDEXQ 1
 SETGLOB 4
-PUSHINT 1131534573
+DUP
+PUSHINT 839183401
 EQUAL
+DUP
+PUSHCONT {
+	DROP
+	DUP
+	PUSHINT 1131534573
+	EQUAL
+	DUP
+	PUSHCONT {
+		DROP
+		DUP
+		PUSHINT 186634851
+		EQUAL
+		DUP
+		PUSHCONT {
+			DROP
+			DUP
+			PUSHINT 418893028
+			EQUAL
+			DUP
+			PUSHCONT {
+				DROP
+				DUP
+				PUSHINT 9810682
+				EQUAL
+				DUP
+				PUSHCONT {
+					DROP
+					DUP
+					PUSHINT 1170810452
+					EQUAL
+					DUP
+					PUSHCONT {
+						DROP
+						DUP
+						PUSHINT 929947644
+						EQUAL
+					}
+					IFNOT
+				}
+				IFNOT
+			}
+			IFNOT
+		}
+		IFNOT
+	}
+	IFNOT
+}
+IFNOT
 .loc ../contracts/TokenRootUpgradeable.sol, 0
+NIP
 OVER
 PUSHCONT {
 	PUSH S3
@@ -307,14 +357,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRootUpgradeable.sol, 70
+.loc ../contracts/TokenRootUpgradeable.sol, 76
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRootUpgradeable.sol, 71
+.loc ../contracts/TokenRootUpgradeable.sol, 77
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -389,14 +439,14 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRootUpgradeable.sol, 74
+.loc ../contracts/TokenRootUpgradeable.sol, 80
 LDU 32
 GETGLOB 4
 ROT
 SETINDEXQ 5
 SETGLOB 4
 ENDS
-.loc ../contracts/TokenRootUpgradeable.sol, 75
+.loc ../contracts/TokenRootUpgradeable.sol, 81
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -471,7 +521,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRootUpgradeable.sol, 78
+.loc ../contracts/TokenRootUpgradeable.sol, 84
 LDU 32
 LDMSGADDRQ
 PUSHCONT {
@@ -505,7 +555,7 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1000
-.loc ../contracts/TokenRootUpgradeable.sol, 87
+.loc ../contracts/TokenRootUpgradeable.sol, 93
 GETGLOB 9
 ROT
 CALLREF {
@@ -513,18 +563,18 @@ CALLREF {
 }
 SDEQ
 THROWIFNOT 1100
-.loc ../contracts/TokenRootUpgradeable.sol, 89
+.loc ../contracts/TokenRootUpgradeable.sol, 95
 CALLREF {
 	CALL $_reserve_internal_macro$
 }
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/TokenRootUpgradeable.sol, 91
+.loc ../contracts/TokenRootUpgradeable.sol, 97
 SWAP
 GETGLOB 22
 EQUAL
 PUSHCONT {
-	.loc ../contracts/TokenRootUpgradeable.sol, 92
+	.loc ../contracts/TokenRootUpgradeable.sol, 98
 	DUP
 	NEWC
 	STSLICECONST x62_
@@ -537,7 +587,7 @@ PUSHCONT {
 	.loc ../contracts/TokenRootUpgradeable.sol, 0
 }
 PUSHCONT {
-	.loc ../contracts/TokenRootUpgradeable.sol, 94
+	.loc ../contracts/TokenRootUpgradeable.sol, 100
 	DUP
 	GETGLOB 22
 	GETGLOB 14
@@ -581,7 +631,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRootUpgradeable.sol, 102
+.loc ../contracts/TokenRootUpgradeable.sol, 108
 LDREF
 ENDS
 .loc ../contracts/abstract/TokenRootBase.sol, 32
@@ -599,9 +649,9 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1000
-.loc ../contracts/TokenRootUpgradeable.sol, 103
+.loc ../contracts/TokenRootUpgradeable.sol, 109
 SETGLOB 14
-.loc ../contracts/TokenRootUpgradeable.sol, 104
+.loc ../contracts/TokenRootUpgradeable.sol, 110
 GETGLOB 22
 INC
 UFITS 32
@@ -622,7 +672,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/TokenRootUpgradeable.sol, 108
+.loc ../contracts/TokenRootUpgradeable.sol, 114
 LDREF
 ENDS
 .loc ../contracts/abstract/TokenRootBase.sol, 32
@@ -640,73 +690,73 @@ PUSHCONT {
 }
 IF
 THROWIFNOT 1000
-.loc ../contracts/TokenRootUpgradeable.sol, 109
+.loc ../contracts/TokenRootUpgradeable.sol, 115
 GETGLOB 13
 NEWC
-.loc ../contracts/TokenRootUpgradeable.sol, 111
+.loc ../contracts/TokenRootUpgradeable.sol, 117
 STSLICE
-.loc ../contracts/TokenRootUpgradeable.sol, 112
+.loc ../contracts/TokenRootUpgradeable.sol, 118
 GETGLOB 15
 SWAP
 STU 128
-.loc ../contracts/TokenRootUpgradeable.sol, 113
+.loc ../contracts/TokenRootUpgradeable.sol, 119
 GETGLOB 12
 SWAP
 STU 8
-.loc ../contracts/TokenRootUpgradeable.sol, 115
+.loc ../contracts/TokenRootUpgradeable.sol, 121
 GETGLOB 22
 NEWC
-.loc ../contracts/TokenRootUpgradeable.sol, 116
+.loc ../contracts/TokenRootUpgradeable.sol, 122
 STU 32
-.loc ../contracts/TokenRootUpgradeable.sol, 117
+.loc ../contracts/TokenRootUpgradeable.sol, 123
 GETGLOB 21
 SWAP
 STREF
-.loc ../contracts/TokenRootUpgradeable.sol, 118
+.loc ../contracts/TokenRootUpgradeable.sol, 124
 GETGLOB 14
 SWAP
 STREF
-.loc ../contracts/TokenRootUpgradeable.sol, 120
+.loc ../contracts/TokenRootUpgradeable.sol, 126
 NEWC
-.loc ../contracts/TokenRootUpgradeable.sol, 121
+.loc ../contracts/TokenRootUpgradeable.sol, 127
 GETGLOB 10
 PUSH S2
 STREF
 POP S2
-.loc ../contracts/TokenRootUpgradeable.sol, 122
+.loc ../contracts/TokenRootUpgradeable.sol, 128
 GETGLOB 11
 PUSH S2
 STREF
 POP S2
-.loc ../contracts/TokenRootUpgradeable.sol, 124
+.loc ../contracts/TokenRootUpgradeable.sol, 130
 GETGLOB 16
 NEWC
-.loc ../contracts/TokenRootUpgradeable.sol, 125
+.loc ../contracts/TokenRootUpgradeable.sol, 131
 STI 1
-.loc ../contracts/TokenRootUpgradeable.sol, 126
+.loc ../contracts/TokenRootUpgradeable.sol, 132
 GETGLOB 18
 SWAP
 STI 1
-.loc ../contracts/TokenRootUpgradeable.sol, 127
+.loc ../contracts/TokenRootUpgradeable.sol, 133
 GETGLOB 17
 SWAP
 STI 1
-.loc ../contracts/TokenRootUpgradeable.sol, 129
+.loc ../contracts/TokenRootUpgradeable.sol, 135
 PUSH S3
 ROT
 STBREFR
 POP S3
-.loc ../contracts/TokenRootUpgradeable.sol, 130
+.loc ../contracts/TokenRootUpgradeable.sol, 136
 PUSH S2
 ROT
 STBREFR
 POP S2
-.loc ../contracts/TokenRootUpgradeable.sol, 131
+.loc ../contracts/TokenRootUpgradeable.sol, 137
 STBREFR
-.loc ../contracts/TokenRootUpgradeable.sol, 133
+.loc ../contracts/TokenRootUpgradeable.sol, 139
 OVER
 SETCODE
-.loc ../contracts/TokenRootUpgradeable.sol, 134
+.loc ../contracts/TokenRootUpgradeable.sol, 140
 SWAP
 CTOS
 DUP
@@ -721,7 +771,7 @@ PLDREF
 CTOS
 BLESS
 POP C3
-.loc ../contracts/TokenRootUpgradeable.sol, 135
+.loc ../contracts/TokenRootUpgradeable.sol, 141
 ENDC
 CALLREF {
 	CALL $:onCodeUpgrade$
@@ -748,7 +798,7 @@ THROW 0
 CALL $_reserve_internal_macro$
 
 .macro _reserve_internal_macro
-.loc ../contracts/TokenRootUpgradeable.sol, 156
+.loc ../contracts/TokenRootUpgradeable.sol, 162
 GETPARAM 7
 INDEX 0
 DEPTH
@@ -765,7 +815,7 @@ MAX
 CALL $_buildWalletInitData_internal_macro$
 
 .macro _buildWalletInitData_internal_macro
-.loc ../contracts/TokenRootUpgradeable.sol, 160
+.loc ../contracts/TokenRootUpgradeable.sol, 166
 NEWDICT
 PUSHINT 0
 NEWC
@@ -801,7 +851,7 @@ ENDC
 CALL $_deployWallet_internal_macro$
 
 .macro _deployWallet_internal_macro
-.loc ../contracts/TokenRootUpgradeable.sol, 177
+.loc ../contracts/TokenRootUpgradeable.sol, 183
 PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 GETGLOB 22
 GETGLOB 14

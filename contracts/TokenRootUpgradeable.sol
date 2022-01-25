@@ -61,17 +61,23 @@ contract TokenRootUpgradeable is TokenRootBurnableByRootBase, ITokenRootUpgradea
         }
     }
 
-    function supportsInterface(bytes4 interfaceID) override external view responsible returns(bool) {
+    function supportsInterface(bytes4 interfaceID) override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } (
-            interfaceID == bytes4(0x4371D8ED)
+            interfaceID == bytes4(0x3204ec29) ||    // SID
+            interfaceID == bytes4(0x4371d8ed) ||    // TIP3TokenRoot
+            interfaceID == bytes4(0x0b1fd263) ||    // ITokenRoot
+            interfaceID == bytes4(0x18f7cce4) ||    // IBurnableByRootTokenRoot
+            interfaceID == bytes4(0x0095b2fa) ||    // IDisableableMintTokenRoot
+            interfaceID == bytes4(0x45c92654) ||    // IBurnPausableTokenRoot
+            interfaceID == bytes4(0x376ddffc)       // ITokenRootUpgradeable
         );
     }
 
-    function walletVersion() override external view responsible returns(uint32) {
+    function walletVersion() override external view responsible returns (uint32) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } walletVersion_;
     }
 
-    function platformCode() override external view responsible returns(TvmCell) {
+    function platformCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } platformCode_;
     }
 
@@ -152,11 +158,11 @@ contract TokenRootUpgradeable is TokenRootBurnableByRootBase, ITokenRootUpgradea
     */
     function onCodeUpgrade(TvmCell data) private { }
 
-    function _reserve() override internal pure returns(uint128) {
+    function _reserve() override internal pure returns (uint128) {
         return math.max(address(this).balance - msg.value, TokenGas.TARGET_ROOT_BALANCE);
     }
 
-    function _buildWalletInitData(address walletOwner) override internal view returns(TvmCell) {
+    function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {
         return tvm.buildStateInit({
             contr: TokenWalletPlatform,
             varInit: {
@@ -172,7 +178,7 @@ contract TokenRootUpgradeable is TokenRootBurnableByRootBase, ITokenRootUpgradea
         override
         internal
         view
-        returns(address)
+        returns (address)
     {
        address tokenWallet = new TokenWalletPlatform {
             stateInit: initData,

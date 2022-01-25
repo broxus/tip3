@@ -5,7 +5,7 @@ import "./IBurnPausableTokenRoot.sol";
 /*
 rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
              IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
-             IBurnPausableTokenRoot(root).tokensBurned(...) ->
+             ITokenRoot(root).acceptBurn(...) ->
              IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
 */
 
@@ -36,10 +36,10 @@ interface IBurnableByRootTokenRoot {
         @notice Allows to disable `burnTokens` method forever
         @dev Can be called only by rootOwner
     */
-    function disableBurnByRoot() external responsible returns(bool);
+    function disableBurnByRoot() external responsible returns (bool);
 
     /*
         @notice Get `burnTokens` disabled status
     */
-    function burnByRootDisabled() external view responsible returns(bool);
+    function burnByRootDisabled() external view responsible returns (bool);
 }

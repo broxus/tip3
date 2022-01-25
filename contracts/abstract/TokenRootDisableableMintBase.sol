@@ -13,16 +13,16 @@ abstract contract TokenRootDisableableMintBase is TokenRootBase, IDisableableMin
 
     bool mintDisabled_;
 
-    function disableMint() override external responsible onlyRootOwner returns(bool) {
+    function disableMint() override external responsible onlyRootOwner returns (bool) {
         mintDisabled_ = true;
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } mintDisabled_;
     }
 
-    function mintDisabled() override external view responsible returns(bool) {
+    function mintDisabled() override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } mintDisabled_;
     }
 
-    function _mintEnabled() override internal view returns(bool) {
+    function _mintEnabled() override internal view returns (bool) {
         return !mintDisabled_;
     }
 

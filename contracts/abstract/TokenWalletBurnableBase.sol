@@ -6,7 +6,6 @@ pragma AbiHeader pubkey;
 import "./TokenWalletDestroyableBase.sol";
 import "../interfaces/ITokenRoot.sol";
 import "../interfaces/IBurnableTokenWallet.sol";
-import "../interfaces/IBurnPausableTokenRoot.sol";
 import "../libraries/TokenErrors.sol";
 import "../libraries/TokenMsgFlag.sol";
 
@@ -53,5 +52,5 @@ abstract contract TokenWalletBurnableBase is TokenWalletDestroyableBase, IBurnab
             payload
         );
     }
-    function _reserve() override virtual internal pure returns(uint128);
+    function _reserve() override virtual internal pure returns (uint128);
 }

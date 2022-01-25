@@ -18,7 +18,7 @@ contract TokenWalletPlatform {
         }
     }
 
-    function _getExpectedAddress(address owner_) private view returns(address) {
+    function _getExpectedAddress(address owner_) private view returns (address) {
         TvmCell stateInit = tvm.buildStateInit({
             contr: TokenWalletPlatform,
             varInit: {

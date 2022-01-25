@@ -25,14 +25,20 @@ contract TokenWalletUpgradeable is TokenWalletBurnableByRootBase, ITokenWalletUp
         revert();
     }
 
-    function platformCode() override external view responsible returns(TvmCell) {
-        return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } platformCode_;
+    function supportsInterface(bytes4 interfaceID) override external view responsible returns (bool) {
+        return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } (
+            interfaceID == bytes4(0x3204ec29) ||    // SID
+            interfaceID == bytes4(0x4f479fa3) ||    // TIP3TokenWallet
+            interfaceID == bytes4(0x2a4ac43e) ||    // ITokenWallet
+            interfaceID == bytes4(0x562548ad) ||    // IBurnableTokenWallet
+            interfaceID == bytes4(0x0c2ff20d) ||    // IBurnableByRootTokenWallet
+            interfaceID == bytes4(0x7edc1d37) ||    // ITokenWalletUpgradeable
+            interfaceID == bytes4(0x0f0258aa)        // IDestroyable
+        );
     }
 
-    function supportsInterface(bytes4 interfaceID) override external view responsible returns(bool) {
-        return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } (
-            interfaceID == 0x4F479FA3
-        );
+    function platformCode() override external view responsible returns (TvmCell) {
+        return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } platformCode_;
     }
 
     /*
@@ -56,7 +62,7 @@ contract TokenWalletUpgradeable is TokenWalletBurnableByRootBase, ITokenWalletUp
         }
     }
 
-    function version() override external view responsible returns(uint32) {
+    function version() override external view responsible returns (uint32) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } version_;
     }
 
@@ -121,11 +127,11 @@ contract TokenWalletUpgradeable is TokenWalletBurnableByRootBase, ITokenWalletUp
         }
     }
 
-    function _reserve() override internal pure returns(uint128) {
+    function _reserve() override internal pure returns (uint128) {
         return math.max(address(this).balance - msg.value, TokenGas.TARGET_WALLET_BALANCE);
     }
 
-    function _buildWalletInitData(address walletOwner) override internal view returns(TvmCell) {
+    function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {
         return tvm.buildStateInit({
             contr: TokenWalletPlatform,
             varInit: {
@@ -145,7 +151,7 @@ contract TokenWalletUpgradeable is TokenWalletBurnableByRootBase, ITokenWalletUp
         override
         internal
         view
-        returns(address)
+        returns (address)
     {
         address wallet = new TokenWalletPlatform {
             stateInit: initData,

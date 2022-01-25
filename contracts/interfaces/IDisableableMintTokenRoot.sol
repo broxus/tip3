@@ -8,11 +8,11 @@ interface IDisableableMintTokenRoot {
         @dev This is an irreversible action
         @returns true
     */
-    function disableMint() external responsible returns(bool);
+    function disableMint() external responsible returns (bool);
 
     /*
         @notice Get mint disabled status
         @returns is 'disableMint' already called
     */
-    function mintDisabled() external view responsible returns(bool);
+    function mintDisabled() external view responsible returns (bool);
 }

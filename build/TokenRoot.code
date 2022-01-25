@@ -240,9 +240,51 @@ SETINDEXQ 4
 FALSE
 SETINDEXQ 1
 SETGLOB 4
-PUSHINT 1131534573
+DUP
+PUSHINT 839183401
 EQUAL
+DUP
+PUSHCONT {
+	DROP
+	DUP
+	PUSHINT 1131534573
+	EQUAL
+	DUP
+	PUSHCONT {
+		DROP
+		DUP
+		PUSHINT 186634851
+		EQUAL
+		DUP
+		PUSHCONT {
+			DROP
+			DUP
+			PUSHINT 418893028
+			EQUAL
+			DUP
+			PUSHCONT {
+				DROP
+				DUP
+				PUSHINT 9810682
+				EQUAL
+				DUP
+				PUSHCONT {
+					DROP
+					DUP
+					PUSHINT 1170810452
+					EQUAL
+				}
+				IFNOT
+			}
+			IFNOT
+		}
+		IFNOT
+	}
+	IFNOT
+}
+IFNOT
 .loc ../contracts/TokenRoot.sol, 0
+NIP
 OVER
 PUSHCONT {
 	PUSH S3
@@ -303,7 +345,7 @@ SETGLOB 7
 CALL $_reserve_internal_macro$
 
 .macro _reserve_internal_macro
-.loc ../contracts/TokenRoot.sol, 64
+.loc ../contracts/TokenRoot.sol, 69
 GETPARAM 7
 INDEX 0
 DEPTH
@@ -320,7 +362,7 @@ MAX
 CALL $_buildWalletInitData_internal_macro$
 
 .macro _buildWalletInitData_internal_macro
-.loc ../contracts/TokenRoot.sol, 68
+.loc ../contracts/TokenRoot.sol, 73
 NEWDICT
 PUSHINT 0
 NEWC
@@ -356,7 +398,7 @@ ENDC
 CALL $_deployWallet_internal_macro$
 
 .macro _deployWallet_internal_macro
-.loc ../contracts/TokenRoot.sol, 85
+.loc ../contracts/TokenRoot.sol, 90
 ROT
 DUP
 HASHCU

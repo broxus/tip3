@@ -1,15 +1,15 @@
 pragma ton-solidity >= 0.39.0;
 
 import "./TIP3TokenWallet.sol";
-import "./TIP5.sol";
+import "./SID.sol";
 
-interface ITokenWallet is TIP3TokenWallet, TIP5 {
+interface ITokenWallet is TIP3TokenWallet, SID {
 
     /*
         @notice Get TokenWallet owner address
         @returns owner TokenWallet owner address
     */
-    function owner() external view responsible returns(address);
+    function owner() external view responsible returns (address);
 
     /*
         @notice Transfer tokens and optionally deploy TokenWallet for recipient

@@ -54,9 +54,51 @@ SETINDEXQ 4
 FALSE
 SETINDEXQ 1
 SETGLOB 4
-PUSHINT 1330093987
+DUP
+PUSHINT 839183401
 EQUAL
+DUP
+PUSHCONT {
+	DROP
+	DUP
+	PUSHINT 1330093987
+	EQUAL
+	DUP
+	PUSHCONT {
+		DROP
+		DUP
+		PUSHINT 709542974
+		EQUAL
+		DUP
+		PUSHCONT {
+			DROP
+			DUP
+			PUSHINT 1445284013
+			EQUAL
+			DUP
+			PUSHCONT {
+				DROP
+				DUP
+				PUSHINT 204468749
+				EQUAL
+				DUP
+				PUSHCONT {
+					DROP
+					DUP
+					PUSHINT 251812010
+					EQUAL
+				}
+				IFNOT
+			}
+			IFNOT
+		}
+		IFNOT
+	}
+	IFNOT
+}
+IFNOT
 .loc ../contracts/TokenWallet.sol, 0
+NIP
 OVER
 PUSHCONT {
 	PUSH S3
@@ -117,7 +159,7 @@ SETGLOB 7
 CALL $_reserve_internal_macro$
 
 .macro _reserve_internal_macro
-.loc ../contracts/TokenWallet.sol, 34
+.loc ../contracts/TokenWallet.sol, 39
 GETPARAM 7
 INDEX 0
 DEPTH
@@ -134,7 +176,7 @@ MAX
 CALL $_buildWalletInitData_internal_macro$
 
 .macro _buildWalletInitData_internal_macro
-.loc ../contracts/TokenWallet.sol, 38
+.loc ../contracts/TokenWallet.sol, 43
 NEWDICT
 PUSHINT 0
 NEWC
@@ -181,7 +223,7 @@ ENDC
 CALL $_deployWallet_internal_macro$
 
 .macro _deployWallet_internal_macro
-.loc ../contracts/TokenWallet.sol, 55
+.loc ../contracts/TokenWallet.sol, 60
 ROT
 DUP
 HASHCU
@@ -280,7 +322,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 26
+.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 25
 LDUQ 128
 PUSHCONT {
 	LDREF
@@ -312,7 +354,7 @@ GETGLOB 11
 GETGLOB 9
 SDEQ
 THROWIFNOT 1000
-.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 31
+.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 30
 CALLREF {
 	CALL $_reserve_internal_macro$
 }
@@ -331,25 +373,25 @@ SETGLOB 7
 CALL $_burn_internal_macro$
 
 .macro _burn_internal_macro
-.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 41
+.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 40
 PUSH S4
 GTINT 0
 THROWIFNOT 1050
-.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 42
+.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 41
 PUSH S4
 GETGLOB 12
 LEQ
 THROWIFNOT 1060
-.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 44
+.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 43
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 46
+.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 45
 GETGLOB 12
 PUSH S4
 SUB
 UFITS 128
 SETGLOB 12
-.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 48
+.loc ../contracts/abstract/TokenWalletBurnableBase.sol, 47
 XCHG S2
 GETGLOB 11
 ROLL 4

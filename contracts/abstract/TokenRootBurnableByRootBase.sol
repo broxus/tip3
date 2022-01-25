@@ -52,12 +52,12 @@ abstract contract TokenRootBurnableByRootBase is TokenRootBurnPausableBase, IBur
         );
     }
 
-    function disableBurnByRoot() override external responsible onlyRootOwner returns(bool) {
+    function disableBurnByRoot() override external responsible onlyRootOwner returns (bool) {
         burnByRootDisabled_ = true;
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } burnByRootDisabled_;
     }
 
-    function burnByRootDisabled() override external view responsible returns(bool) {
+    function burnByRootDisabled() override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } burnByRootDisabled_;
     }
 

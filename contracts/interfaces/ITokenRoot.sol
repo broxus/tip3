@@ -1,22 +1,22 @@
 pragma ton-solidity >= 0.39.0;
 
 import "./TIP3TokenRoot.sol";
-import "./TIP5.sol";
+import "./SID.sol";
 
-interface ITokenRoot is TIP3TokenRoot, TIP5 {
+interface ITokenRoot is TIP3TokenRoot, SID {
 
     /*
         @notice Get root owner
         @returns rootOwner
     */
-    function rootOwner() external view responsible returns(address);
+    function rootOwner() external view responsible returns (address);
 
     /*
         @notice Derive TokenWallet address from owner address
         @param _owner TokenWallet owner address
         @returns Token wallet address
     */
-    function walletOf(address _owner) external view responsible returns(address);
+    function walletOf(address _owner) external view responsible returns (address);
 
     /*
         @notice Called by TokenWallet, when
@@ -68,5 +68,5 @@ interface ITokenRoot is TIP3TokenRoot, TIP5 {
     function deployWallet(
         address _owner,
         uint128 _deployWalletValue
-    ) external responsible returns(address);
+    ) external responsible returns (address);
 }

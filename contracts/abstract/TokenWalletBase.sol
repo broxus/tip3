@@ -30,19 +30,19 @@ abstract contract TokenWalletBase is ITokenWallet {
         _;
     }
 
-    function balance() override external view responsible returns(uint128) {
+    function balance() override external view responsible returns (uint128) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } balance_;
     }
 
-    function owner() override external view responsible returns(address) {
+    function owner() override external view responsible returns (address) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } owner_;
     }
 
-    function root() override external view responsible returns(address) {
+    function root() override external view responsible returns (address) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } root_;
     }
 
-    function walletCode() override external view responsible returns(TvmCell) {
+    function walletCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } tvm.code();
     }
 
@@ -235,7 +235,7 @@ abstract contract TokenWalletBase is ITokenWallet {
         }
     }
 
-    function _reserve() virtual internal pure returns(uint128);
-    function _buildWalletInitData(address walletOwner) virtual internal view returns(TvmCell);
-    function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) virtual internal view returns(address);
+    function _reserve() virtual internal pure returns (uint128);
+    function _buildWalletInitData(address walletOwner) virtual internal view returns (TvmCell);
+    function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) virtual internal view returns (address);
 }

@@ -24,17 +24,22 @@ contract TokenWallet is TokenWalletBurnableByRootBase {
         require(owner_.value != 0, TokenErrors.WRONG_WALLET_OWNER);
     }
 
-    function supportsInterface(bytes4 interfaceID) override external view responsible returns(bool) {
+    function supportsInterface(bytes4 interfaceID) override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } (
-            interfaceID == 0x4F479FA3
+            interfaceID == bytes4(0x3204ec29) ||    // SID
+            interfaceID == bytes4(0x4f479fa3) ||    // TIP3TokenWallet
+            interfaceID == bytes4(0x2a4ac43e) ||    // TokenWallet
+            interfaceID == bytes4(0x562548ad) ||    // BurnableTokenWallet
+            interfaceID == bytes4(0x0c2ff20d) ||    // BurnableByRootTokenWallet
+            interfaceID == bytes4(0x0f0258aa)        // Destroyable
         );
     }
 
-    function _reserve() override internal pure returns(uint128) {
+    function _reserve() override internal pure returns (uint128) {
         return math.max(address(this).balance - msg.value, TokenGas.TARGET_WALLET_BALANCE);
     }
 
-    function _buildWalletInitData(address walletOwner) override internal view returns(TvmCell) {
+    function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {
         return tvm.buildStateInit({
             contr: TokenWallet,
             varInit: {
@@ -50,7 +55,7 @@ contract TokenWallet is TokenWalletBurnableByRootBase {
         override
         internal
         view
-        returns(address)
+        returns (address)
     {
         address wallet = new TokenWallet {
             stateInit: initData,

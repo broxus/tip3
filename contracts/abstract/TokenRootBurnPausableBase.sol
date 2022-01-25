@@ -12,16 +12,16 @@ abstract contract TokenRootBurnPausableBase is TokenRootDisableableMintBase, IBu
 
     bool burnPaused_;
 
-    function burnPaused() override external view responsible returns(bool) {
+    function burnPaused() override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } burnPaused_;
     }
 
-    function setBurnPaused(bool paused) override external responsible onlyRootOwner returns(bool) {
+    function setBurnPaused(bool paused) override external responsible onlyRootOwner returns (bool) {
         burnPaused_ = paused;
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } burnPaused_;
     }
 
-    function _burnEnabled() override internal view returns(bool) {
+    function _burnEnabled() override internal view returns (bool) {
         return !burnPaused_;
     }
 
