@@ -3,14 +3,14 @@ pragma ton-solidity >= 0.39.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "./TokenRootBurnPausableBase.sol";
+import "./TokenRootBase.sol";
 import "../interfaces/IBurnableByRootTokenRoot.sol";
 import "../interfaces/IBurnableByRootTokenWallet.sol";
 import "../libraries/TokenErrors.sol";
 import "../libraries/TokenMsgFlag.sol";
 
 
-abstract contract TokenRootBurnableByRootBase is TokenRootBurnPausableBase, IBurnableByRootTokenRoot {
+abstract contract TokenRootBurnableByRootBase is TokenRootBase, IBurnableByRootTokenRoot {
 
     bool burnByRootDisabled_;
 
@@ -35,7 +35,6 @@ abstract contract TokenRootBurnableByRootBase is TokenRootBurnPausableBase, IBur
         external
         onlyRootOwner
     {
-        require(_burnEnabled(), TokenErrors.BURN_DISABLED);
         require(!burnByRootDisabled_, TokenErrors.BURN_BY_ROOT_DISABLED);
         require(amount > 0, TokenErrors.WRONG_AMOUNT);
         require(walletOwner.value != 0, TokenErrors.WRONG_WALLET_OWNER);

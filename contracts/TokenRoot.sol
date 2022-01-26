@@ -2,8 +2,11 @@ pragma ton-solidity >= 0.39.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "./TokenWallet.sol";
+import "./abstract/TokenRootBurnPausableBase.sol";
 import "./abstract/TokenRootBurnableByRootBase.sol";
+import "./abstract/TokenRootDisableableMintBase.sol";
+
+import "./TokenWallet.sol";
 import "./libraries/TokenErrors.sol";
 import "./libraries/TokenMsgFlag.sol";
 
@@ -11,7 +14,11 @@ import "./libraries/TokenMsgFlag.sol";
 /*
     @title Fungible token  root contract
 */
-contract TokenRoot is TokenRootBurnableByRootBase {
+contract TokenRoot is
+    TokenRootBurnPausableBase,
+    TokenRootBurnableByRootBase,
+    TokenRootDisableableMintBase
+{
 
     uint256 static randomNonce_;
     address static deployer_;

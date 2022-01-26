@@ -235,6 +235,28 @@ abstract contract TokenWalletBase is ITokenWallet {
         }
     }
 
+    function _burn(
+        uint128 amount,
+        address remainingGasTo,
+        address callbackTo,
+        TvmCell payload
+    ) internal {
+        require(amount > 0, TokenErrors.WRONG_AMOUNT);
+        require(amount <= balance_, TokenErrors.NOT_ENOUGH_BALANCE);
+
+        tvm.rawReserve(_reserve(), 0);
+
+        balance_ -= amount;
+
+        ITokenRoot(root_).acceptBurn{ value: 0, flag: TokenMsgFlag.ALL_NOT_RESERVED, bounce: true }(
+            amount,
+            owner_,
+            remainingGasTo,
+            callbackTo,
+            payload
+        );
+    }
+
     function _reserve() virtual internal pure returns (uint128);
     function _buildWalletInitData(address walletOwner) virtual internal view returns (TvmCell);
     function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) virtual internal view returns (address);

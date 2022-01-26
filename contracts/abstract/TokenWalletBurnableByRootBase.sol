@@ -3,11 +3,11 @@ pragma ton-solidity >= 0.39.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "./TokenWalletBurnableBase.sol";
+import "./TokenWalletBase.sol";
 import "../interfaces/IBurnableByRootTokenWallet.sol";
 
 
-abstract contract TokenWalletBurnableByRootBase is TokenWalletBurnableBase, IBurnableByRootTokenWallet {
+abstract contract TokenWalletBurnableByRootBase is TokenWalletBase, IBurnableByRootTokenWallet {
 
     /*
         @notice Allows for rootOwner burn tokens from TokenWallet
@@ -23,7 +23,7 @@ abstract contract TokenWalletBurnableByRootBase is TokenWalletBurnableBase, IBur
         external
         onlyRoot
     {
-        _burn(amount, remainingGasTo, callbackTo, payload, address(this).balance - msg.value);
+        _burn(amount, remainingGasTo, callbackTo, payload);
     }
 
 }

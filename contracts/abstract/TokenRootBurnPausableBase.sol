@@ -3,12 +3,12 @@ pragma ton-solidity >= 0.39.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "./TokenRootDisableableMintBase.sol";
+import "./TokenRootBase.sol";
 import "../interfaces/IBurnPausableTokenRoot.sol";
 import "../libraries/TokenMsgFlag.sol";
 
 
-abstract contract TokenRootBurnPausableBase is TokenRootDisableableMintBase, IBurnPausableTokenRoot {
+abstract contract TokenRootBurnPausableBase is TokenRootBase, IBurnPausableTokenRoot {
 
     bool burnPaused_;
 

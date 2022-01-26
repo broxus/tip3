@@ -72,6 +72,24 @@
 			]
 		},
 		{
+			"name": "disableMint",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
+			"name": "mintDisabled",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
 			"name": "burnTokens",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
@@ -115,24 +133,6 @@
 			"inputs": [
 				{"name":"answerId","type":"uint32"},
 				{"name":"paused","type":"bool"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
-			"name": "disableMint",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
-			]
-		},
-		{
-			"name": "mintDisabled",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"name":"value0","type":"bool"}
@@ -278,9 +278,9 @@
 		{"name":"rootOwner_","type":"address"},
 		{"name":"walletCode_","type":"cell"},
 		{"name":"totalSupply_","type":"uint128"},
-		{"name":"mintDisabled_","type":"bool"},
 		{"name":"burnPaused_","type":"bool"},
 		{"name":"burnByRootDisabled_","type":"bool"},
+		{"name":"mintDisabled_","type":"bool"},
 		{"name":"randomNonce_","type":"uint256"},
 		{"name":"deployer_","type":"address"},
 		{"name":"platformCode_","type":"cell"},

@@ -2,7 +2,10 @@ pragma ton-solidity >= 0.39.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
+import "./abstract/TokenRootBurnPausableBase.sol";
 import "./abstract/TokenRootBurnableByRootBase.sol";
+import "./abstract/TokenRootDisableableMintBase.sol";
+
 import "./interfaces/ITokenRootUpgradeable.sol";
 import "./interfaces/ITokenWalletUpgradeable.sol";
 import "./interfaces/IVersioned.sol";
@@ -15,7 +18,12 @@ import "./TokenWalletPlatform.sol";
 /*
     @title Fungible token  root contract
 */
-contract TokenRootUpgradeable is TokenRootBurnableByRootBase, ITokenRootUpgradeable {
+contract TokenRootUpgradeable is
+    TokenRootBurnPausableBase,
+    TokenRootBurnableByRootBase,
+    TokenRootDisableableMintBase,
+    ITokenRootUpgradeable
+{
 
     uint256 static randomNonce_;
     address static deployer_;

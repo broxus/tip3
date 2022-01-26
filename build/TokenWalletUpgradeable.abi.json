@@ -80,20 +80,20 @@
 			]
 		},
 		{
+			"name": "destroy",
+			"inputs": [
+				{"name":"sendGasTo","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "burn",
 			"inputs": [
 				{"name":"amount","type":"uint128"},
 				{"name":"remainingGasTo","type":"address"},
 				{"name":"callbackTo","type":"address"},
 				{"name":"payload","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "destroy",
-			"inputs": [
-				{"name":"sendGasTo","type":"address"}
 			],
 			"outputs": [
 			]

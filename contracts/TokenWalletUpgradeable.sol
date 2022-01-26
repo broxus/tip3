@@ -4,6 +4,9 @@ pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
 import "./abstract/TokenWalletBurnableByRootBase.sol";
+import "./abstract/TokenWalletBurnableBase.sol";
+import "./abstract/TokenWalletDestroyableBase.sol";
+
 import "./interfaces/ITokenWalletUpgradeable.sol";
 import "./interfaces/ITokenRootUpgradeable.sol";
 import "./interfaces/IVersioned.sol";
@@ -16,7 +19,12 @@ import "./TokenWalletPlatform.sol";
 /*
     @title Fungible token wallet contract
 */
-contract TokenWalletUpgradeable is TokenWalletBurnableByRootBase, ITokenWalletUpgradeable {
+contract TokenWalletUpgradeable is
+    TokenWalletBurnableBase,
+    TokenWalletDestroyableBase,
+    TokenWalletBurnableByRootBase,
+    ITokenWalletUpgradeable
+{
 
     uint32 version_;
     TvmCell platformCode_;

@@ -4,6 +4,9 @@ pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
 import "./abstract/TokenWalletBurnableByRootBase.sol";
+import "./abstract/TokenWalletBurnableBase.sol";
+import "./abstract/TokenWalletDestroyableBase.sol";
+
 import "./libraries/TokenErrors.sol";
 import "./libraries/TokenGas.sol";
 import "./libraries/TokenMsgFlag.sol";
@@ -13,7 +16,11 @@ import "./interfaces/IVersioned.sol";
 /*
     @title Fungible token wallet contract
 */
-contract TokenWallet is TokenWalletBurnableByRootBase {
+contract TokenWallet is
+    TokenWalletBurnableBase,
+    TokenWalletBurnableByRootBase,
+    TokenWalletDestroyableBase
+{
 
     /*
         @notice Creates new token wallet
@@ -31,7 +38,7 @@ contract TokenWallet is TokenWalletBurnableByRootBase {
             interfaceID == bytes4(0x2a4ac43e) ||    // TokenWallet
             interfaceID == bytes4(0x562548ad) ||    // BurnableTokenWallet
             interfaceID == bytes4(0x0c2ff20d) ||    // BurnableByRootTokenWallet
-            interfaceID == bytes4(0x0f0258aa)        // Destroyable
+            interfaceID == bytes4(0x0f0258aa)       // Destroyable
         );
     }
 
