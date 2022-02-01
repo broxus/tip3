@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.39.0;
+pragma ton-solidity >= 0.56.0;
 
 library TokenGas {
     uint128 constant TARGET_ROOT_BALANCE                            = 1 ton;

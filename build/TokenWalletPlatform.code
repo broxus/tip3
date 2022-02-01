@@ -1,4 +1,4 @@
-.version sol 0.49.0
+.version sol 0.56.0
 
 .pragma selector-save-my-code
 
@@ -11,24 +11,24 @@ IFREF {
 }
 GETGLOB 6
 THROWIF 51
+OVER
+PUSHCONT {
+	LDREF
+	LDU 32
+	LDREF
+	ENDS
+	CTOS
+}
+PUSHCONT {
+	LDREF
+	LDU 32
+}
+IFELSE
+LDMSGADDR
 LDREF
-LDU 32
-LDMSGADDRQ
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-LDMSGADDRQ
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
+ENDS
+CTOS
+LDMSGADDR
 ENDS
 .loc ../contracts/TokenWalletPlatform.sol, 10
 GETGLOB 9
@@ -62,7 +62,6 @@ PUSHCONT {
 	CALLREF {
 		CALL $initialize_internal_macro$
 	}
-	.loc ../contracts/TokenWalletPlatform.sol, 0
 }
 PUSHCONT {
 	.loc ../contracts/TokenWalletPlatform.sol, 13
@@ -77,7 +76,6 @@ PUSHCONT {
 	ADDCONST 32
 	UFITS 8
 	SENDRAWMSG
-	.loc ../contracts/TokenWalletPlatform.sol, 0
 }
 IFELSE
 .loc ../contracts/TokenWalletPlatform.sol, 0
@@ -85,8 +83,7 @@ BLKDROP 4
 CALLREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	_getExpectedAddress_internal
 .type	_getExpectedAddress_internal, @function
@@ -94,12 +91,11 @@ CALL $_getExpectedAddress_internal_macro$
 
 .macro _getExpectedAddress_internal_macro
 .loc ../contracts/TokenWalletPlatform.sol, 22
-NEWDICT
 PUSHINT 0
 NEWC
 STU 256
 PUSHINT 0
-ROT
+NEWDICT
 PUSHINT 64
 DICTUSETB
 GETGLOB 10
@@ -147,10 +143,9 @@ CTOS
 CALL $initialize_internal_macro$
 
 .macro initialize_internal_macro
-.loc ../contracts/TokenWalletPlatform.sol, 36
+.loc ../contracts/TokenWalletPlatform.sol, 38
 GETGLOB 10
 NEWC
-.loc ../contracts/TokenWalletPlatform.sol, 38
 STSLICE
 .loc ../contracts/TokenWalletPlatform.sol, 39
 GETGLOB 11
@@ -211,30 +206,13 @@ CALLREF {
 
 .internal-alias :onCodeUpgrade, 2
 .internal :onCodeUpgrade
-.loc ../contracts/TokenWalletPlatform.sol, 0
 DROP
+.loc ../contracts/TokenWalletPlatform.sol, 0
 CALLREF {
 	CALL $c7_to_c4$
 }
 COMMIT
 THROW 0
-
-.macro c7_to_c4
-GETGLOB 11
-GETGLOB 10
-GETGLOB 3
-GETGLOB 2
-NEWC
-STU 256
-STU 64
-STONE
-STSLICE
-SWAP
-NEWC
-STSLICE
-STBREFR
-ENDC
-POPROOT
 
 .macro c4_to_c7
 PUSHROOT
@@ -259,9 +237,6 @@ PUSHROOT
 CTOS
 SBITS
 GTINT 1
-PUSHREFCONT {
-	CALL $c4_to_c7$
-}
 PUSHCONT {
 	PUSHINT 0
 	PUSHROOT
@@ -272,19 +247,23 @@ PUSHCONT {
 	PUSHINT 64
 	DICTUGET
 	PUSHCONT {
-		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+		PUSHREFSLICE {
+			.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+		}
 	}
 	IFNOT
-	SETGLOB 10
 	PUSHINT 2
-	OVER
+	PUSH S2
 	PUSHINT 64
 	DICTUGET
 	PUSHCONT {
-		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+		PUSHREFSLICE {
+			.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+		}
 	}
 	IFNOT
 	SETGLOB 11
+	SETGLOB 10
 	PUSHINT 64
 	DICTUGET
 	THROWIFNOT 61
@@ -293,7 +272,40 @@ PUSHCONT {
 	PUSHINT 0 ; timestamp
 	SETGLOB 3
 }
-IFELSE
+IFREFELSE {
+	CALL $c4_to_c7$
+}
+
+.macro c7_to_c4
+GETGLOB 10
+GETGLOB 3
+GETGLOB 2
+NEWC
+STU 256
+STU 64
+STONE
+STSLICE
+GETGLOB 11
+NEWC
+STSLICE
+STBREFR
+ENDC
+POPROOT
+
+.macro upd_only_time_in_c4
+PUSHROOT
+CTOS
+LDU 256
+LDU 64
+NIP
+GETGLOB 3
+ROT
+NEWC
+STU 256
+STU 64
+STSLICE
+ENDC
+POPROOT
 
 .internal-alias :main_internal, 0
 .internal :main_internal
@@ -318,7 +330,7 @@ IFJMPREF {
 }
 OVER
 LDUQ 32  ; [funcId] body' ok
-THROWIFNOT 60 ; funcId body'
+THROWIFNOT 60
 OVER
 IFNOTJMPREF {
 	GETGLOB 6
@@ -328,9 +340,7 @@ SWAP
 CALLREF {
 	CALL $public_function_selector$
 }
-GETGLOB 7
-ISNULL
-THROWIF 60
+THROW 60
 
 .internal-alias :main_external, -1
 .internal :main_external
@@ -339,7 +349,9 @@ CTOS
 SBITS
 NEQINT 1
 SETGLOB 6
-PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+PUSHREFSLICE {
+	.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+}
 SETGLOB 9
 OVER
 CALLREF {
@@ -355,7 +367,7 @@ PUSHCONT {
 	ROT
 	GETGLOB 2
 	CHKSIGNU ; msgSlice isSigned
-	THROWIFNOT 40 ; msgSlice
+	THROWIFNOT 40
 }
 IF
 LDU 64 ; timestamp msgSlice
@@ -366,9 +378,7 @@ SWAP
 CALLREF {
 	CALL $public_function_selector$
 }
-GETGLOB 7
-ISNULL
-THROWIF 60
+THROW 60
 
 .macro public_function_selector
 DUP

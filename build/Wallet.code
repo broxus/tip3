@@ -1,4 +1,4 @@
-.version sol 0.49.0
+.version sol 0.56.0
 
 .macro constructor
 DROP
@@ -40,8 +40,7 @@ CALLREF {
 CALLREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .macro sendTransaction
 DROP
@@ -53,38 +52,17 @@ IFREF {
 	CALL $c4_to_c7$
 }
 .loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 31
-LDMSGADDRQ
+OVER
 PUSHCONT {
 	LDREF
 	ENDS
 	CTOS
-	LDMSGADDR
 }
-IFNOT
-LDUQ 128
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-LDIQ 1
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDI 1
-}
-IFNOT
-LDUQ 8
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-	LDU 8
-}
-IFNOT
+IF
+LDMSGADDR
+LDU 128
+LDI 1
+LDU 8
 LDREF
 ENDS
 .loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 0
@@ -92,10 +70,9 @@ CALLREF {
 	CALL $sendTransaction_internal_macro$
 }
 IFREF {
-	CALL $c7_to_c4$
+	CALL $upd_only_time_in_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	sendTransaction_internal
 .type	sendTransaction_internal, @function
@@ -168,6 +145,17 @@ IFREF {
 .loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 33
 LDU 256
 ENDS
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 0
+CALLREF {
+	CALL $transferOwnership_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.macro transferOwnership_internal_macro
 .loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 14
 GETGLOB 5
 DUP
@@ -190,25 +178,6 @@ CALLREF {
 	CALL $setOwnership_internal_macro$
 }
 .loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 0
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.macro c7_to_c4
-GETGLOB 11
-GETGLOB 10
-GETGLOB 3
-GETGLOB 2
-NEWC
-STU 256
-STU 64
-STONE
-STU 256
-STU 256
-ENDC
-POPROOT
 
 .macro c4_to_c7
 PUSHROOT
@@ -230,18 +199,14 @@ PUSHROOT
 CTOS
 SBITS
 GTINT 1
-PUSHREFCONT {
-	CALL $c4_to_c7$
-}
 PUSHCONT {
 	PUSHINT 0
 	PUSHROOT
 	CTOS
 	PLDDICT ; D
 	PUSHINT 0
-	SETGLOB 10
 	PUSHINT 1
-	OVER
+	PUSH S2
 	PUSHINT 64
 	DICTUGET
 	PUSHCONT {
@@ -252,6 +217,7 @@ PUSHCONT {
 	}
 	IFELSE
 	SETGLOB 11
+	SETGLOB 10
 	PUSHINT 64
 	DICTUGET
 	THROWIFNOT 61
@@ -260,7 +226,38 @@ PUSHCONT {
 	PUSHINT 0 ; timestamp
 	SETGLOB 3
 }
-IFELSE
+IFREFELSE {
+	CALL $c4_to_c7$
+}
+
+.macro c7_to_c4
+GETGLOB 11
+GETGLOB 10
+GETGLOB 3
+GETGLOB 2
+NEWC
+STU 256
+STU 64
+STONE
+STU 256
+STU 256
+ENDC
+POPROOT
+
+.macro upd_only_time_in_c4
+PUSHROOT
+CTOS
+LDU 256
+LDU 64
+NIP
+GETGLOB 3
+ROT
+NEWC
+STU 256
+STU 64
+STSLICE
+ENDC
+POPROOT
 
 .internal-alias :main_internal, 0
 .internal :main_internal
@@ -282,7 +279,7 @@ IFJMPREF {
 }
 OVER
 LDUQ 32  ; [funcId] body' ok
-THROWIFNOT 60 ; funcId body'
+THROWIFNOT 60
 OVER
 IFNOTJMPREF {
 	GETGLOB 6
@@ -292,9 +289,7 @@ SWAP
 CALLREF {
 	CALL $public_function_selector$
 }
-GETGLOB 7
-ISNULL
-THROWIF 60
+THROW 60
 
 .internal-alias :main_external, -1
 .internal :main_external
@@ -319,7 +314,7 @@ PUSHCONT {
 	DUP
 	SETGLOB 5
 	CHKSIGNU ; msgSlice isSigned
-	THROWIFNOT 40 ; msgSlice
+	THROWIFNOT 40
 }
 IF
 LDU 64 ; timestamp msgSlice
@@ -330,9 +325,7 @@ SWAP
 CALLREF {
 	CALL $public_function_selector$
 }
-GETGLOB 7
-ISNULL
-THROWIF 60
+THROW 60
 
 .macro owner
 DROP
@@ -352,8 +345,7 @@ PUSHCONT {
 	SENDRAWMSG
 }
 IF
-TRUE
-SETGLOB 7
+THROW 0
 
 .macro _randomNonce
 DROP
@@ -373,8 +365,7 @@ PUSHCONT {
 	SENDRAWMSG
 }
 IF
-TRUE
-SETGLOB 7
+THROW 0
 
 .macro public_function_selector
 DUP

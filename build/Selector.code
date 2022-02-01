@@ -1,4 +1,4 @@
-.version sol 0.49.0
+.version sol 0.56.0
 
 .macro constructor
 DROP
@@ -16,8 +16,7 @@ ACCEPT
 CALLREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .macro calculateAcceptTransferSelector
 DROP
@@ -54,8 +53,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateAcceptTransferSelector_internal
 .type	calculateAcceptTransferSelector_internal, @function
@@ -103,8 +101,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateAcceptMintSelector_internal
 .type	calculateAcceptMintSelector_internal, @function
@@ -152,8 +149,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateAcceptBurnSelector_internal
 .type	calculateAcceptBurnSelector_internal, @function
@@ -201,8 +197,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateTIP3TokenRootInterfaceID_internal
 .type	calculateTIP3TokenRootInterfaceID_internal, @function
@@ -260,8 +255,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateTIP3TokenWalletInterfaceID_internal
 .type	calculateTIP3TokenWalletInterfaceID_internal, @function
@@ -319,8 +313,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateSIDInterfaceID_internal
 .type	calculateSIDInterfaceID_internal, @function
@@ -366,8 +359,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateVersionedInterfaceID_internal
 .type	calculateVersionedInterfaceID_internal, @function
@@ -413,8 +405,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateTokenRootInterfaceID_internal
 .type	calculateTokenRootInterfaceID_internal, @function
@@ -466,8 +457,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateTokenWalletInterfaceID_internal
 .type	calculateTokenWalletInterfaceID_internal, @function
@@ -517,8 +507,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateBurnableTokenWalletInterfaceID_internal
 .type	calculateBurnableTokenWalletInterfaceID_internal, @function
@@ -564,8 +553,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateBurnableByRootTokenRootInterfaceID_internal
 .type	calculateBurnableByRootTokenRootInterfaceID_internal, @function
@@ -615,8 +603,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateBurnableByRootTokenWalletInterfaceID_internal
 .type	calculateBurnableByRootTokenWalletInterfaceID_internal, @function
@@ -662,8 +649,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateDestroyableInterfaceID_internal
 .type	calculateDestroyableInterfaceID_internal, @function
@@ -709,8 +695,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateDisableableMintTokenRootInterfaceID_internal
 .type	calculateDisableableMintTokenRootInterfaceID_internal, @function
@@ -758,8 +743,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateBurnPausableTokenRootInterfaceID_internal
 .type	calculateBurnPausableTokenRootInterfaceID_internal, @function
@@ -807,8 +791,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateTokenWalletUpgradeableInterfaceID_internal
 .type	calculateTokenWalletUpgradeableInterfaceID_internal, @function
@@ -858,8 +841,7 @@ IFELSE
 IFREF {
 	CALL $c7_to_c4$
 }
-TRUE
-SETGLOB 7
+THROW 0
 
 .globl	calculateTokenRootUpgradeableInterfaceID_internal
 .type	calculateTokenRootUpgradeableInterfaceID_internal, @function
@@ -877,18 +859,6 @@ XOR
 PUSHINT 388172858
 XOR
 .loc ../contracts/additional/Selector.sol, 0
-
-.macro c7_to_c4
-GETGLOB 10
-GETGLOB 3
-GETGLOB 2
-NEWC
-STU 256
-STU 64
-STONE
-STU 256
-ENDC
-POPROOT
 
 .macro c4_to_c7
 PUSHROOT
@@ -908,9 +878,6 @@ PUSHROOT
 CTOS
 SBITS
 GTINT 1
-PUSHREFCONT {
-	CALL $c4_to_c7$
-}
 PUSHCONT {
 	PUSHINT 0
 	PUSHROOT
@@ -936,7 +903,36 @@ PUSHCONT {
 	PUSHINT 0 ; timestamp
 	SETGLOB 3
 }
-IFELSE
+IFREFELSE {
+	CALL $c4_to_c7$
+}
+
+.macro c7_to_c4
+GETGLOB 10
+GETGLOB 3
+GETGLOB 2
+NEWC
+STU 256
+STU 64
+STONE
+STU 256
+ENDC
+POPROOT
+
+.macro upd_only_time_in_c4
+PUSHROOT
+CTOS
+LDU 256
+LDU 64
+NIP
+GETGLOB 3
+ROT
+NEWC
+STU 256
+STU 64
+STSLICE
+ENDC
+POPROOT
 
 .internal-alias :main_internal, 0
 .internal :main_internal
@@ -958,7 +954,7 @@ IFJMPREF {
 }
 OVER
 LDUQ 32  ; [funcId] body' ok
-THROWIFNOT 60 ; funcId body'
+THROWIFNOT 60
 OVER
 IFNOTJMPREF {
 	GETGLOB 6
@@ -968,9 +964,7 @@ SWAP
 CALLREF {
 	CALL $public_function_selector$
 }
-GETGLOB 7
-ISNULL
-THROWIF 60
+THROW 60
 
 .internal-alias :main_external, -1
 .internal :main_external
@@ -993,7 +987,7 @@ PUSHCONT {
 	ROT
 	GETGLOB 2
 	CHKSIGNU ; msgSlice isSigned
-	THROWIFNOT 40 ; msgSlice
+	THROWIFNOT 40
 }
 IF
 LDU 64 ; timestamp msgSlice
@@ -1004,9 +998,7 @@ SWAP
 CALLREF {
 	CALL $public_function_selector$
 }
-GETGLOB 7
-ISNULL
-THROWIF 60
+THROW 60
 
 .macro public_function_selector
 DUP

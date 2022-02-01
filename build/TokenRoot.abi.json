@@ -1,6 +1,6 @@
 {
 	"ABI version": 2,
-	"version": "2.1",
+	"version": "2.2",
 	"header": ["pubkey", "time", "expire"],
 	"functions": [
 		{
@@ -206,7 +206,9 @@
 		{
 			"name": "transferOwnership",
 			"inputs": [
-				{"name":"newRootOwner","type":"address"}
+				{"name":"newOwner","type":"address"},
+				{"name":"remainingGasTo","type":"address"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"flag","type":"uint8"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
 			],
 			"outputs": [
 			]

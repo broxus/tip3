@@ -1,8 +1,9 @@
-pragma ton-solidity >= 0.39.0;
+pragma ton-solidity >= 0.56.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
+import "../interfaces/ITransferTokenRootOwnershipCallback.sol";
 import "../interfaces/IAcceptTokensBurnCallback.sol";
 import "../interfaces/ITokenRoot.sol";
 import "../interfaces/ITokenWallet.sol";
@@ -190,12 +191,31 @@ abstract contract TokenRootBase is ITokenRoot {
         });
     }
 
-    /*
-        @notice Transfer root token ownership
-        @param new_owner Root token new owner address
-    */
-    function transferOwnership(address newRootOwner) external onlyRootOwner {
-        rootOwner_ = newRootOwner;
+    function transferOwnership(
+        address newOwner,
+        address remainingGasTo,
+        mapping(address => CallbackParams) callbacks
+    ) override external onlyRootOwner {
+
+        tvm.rawReserve(_reserve(), 0);
+
+        address ownerBuff = rootOwner_;
+        rootOwner_ = newOwner;
+
+        for ((address dest, CallbackParams params) : callbacks) {
+            ITransferTokenRootOwnershipCallback(dest).onTransferTokenRootOwnership{
+                value: params.value,
+                flag: params.flag,
+                bounce: false
+            }(ownerBuff, rootOwner_, remainingGasTo, params.payload);
+        }
+
+        remainingGasTo.transfer({
+            value: 0,
+            flag: TokenMsgFlag.ALL_NOT_RESERVED + TokenMsgFlag.IGNORE_ERRORS,
+            bounce: false
+        });
+
     }
 
     // =============== Support functions ==================
