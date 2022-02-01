@@ -139,6 +139,16 @@
 			]
 		},
 		{
+			"name": "transferOwnership",
+			"inputs": [
+				{"name":"newOwner","type":"address"},
+				{"name":"remainingGasTo","type":"address"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "name",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
@@ -243,16 +253,6 @@
 			"name": "sendSurplusGas",
 			"inputs": [
 				{"name":"to","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "transferOwnership",
-			"inputs": [
-				{"name":"newOwner","type":"address"},
-				{"name":"remainingGasTo","type":"address"},
-				{"components":[{"name":"value","type":"uint128"},{"name":"flag","type":"uint8"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
 			],
 			"outputs": [
 			]

@@ -15,6 +15,7 @@ async function main() {
         'SID',
         'TokenRoot',
         'TokenWallet',
+        'TransferableOwnership',
         'BurnableTokenWallet',
         'BurnableByRootTokenRoot',
         'BurnableByRootTokenWallet',

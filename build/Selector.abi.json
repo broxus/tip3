@@ -123,6 +123,14 @@
 			]
 		},
 		{
+			"name": "calculateTransferableOwnershipInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
 			"name": "calculateBurnPausableTokenRootInterfaceID",
 			"inputs": [
 			],

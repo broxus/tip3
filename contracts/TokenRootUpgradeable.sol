@@ -2,6 +2,7 @@ pragma ton-solidity >= 0.56.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
+import "./abstract/TokenRootTransferableOwnershipBase.sol";
 import "./abstract/TokenRootBurnPausableBase.sol";
 import "./abstract/TokenRootBurnableByRootBase.sol";
 import "./abstract/TokenRootDisableableMintBase.sol";
@@ -19,6 +20,7 @@ import "./TokenWalletPlatform.sol";
     @title Fungible token  root contract
 */
 contract TokenRootUpgradeable is
+    TokenRootTransferableOwnershipBase,
     TokenRootBurnPausableBase,
     TokenRootBurnableByRootBase,
     TokenRootDisableableMintBase,
@@ -77,7 +79,8 @@ contract TokenRootUpgradeable is
             interfaceID == bytes4(0x18f7cce4) ||    // IBurnableByRootTokenRoot
             interfaceID == bytes4(0x0095b2fa) ||    // IDisableableMintTokenRoot
             interfaceID == bytes4(0x45c92654) ||    // IBurnPausableTokenRoot
-            interfaceID == bytes4(0x376ddffc)       // ITokenRootUpgradeable
+            interfaceID == bytes4(0x376ddffc) ||    // IBurnPausableTokenRoot
+            interfaceID == bytes4(0x1df385c6)
         );
     }
 

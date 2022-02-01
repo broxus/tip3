@@ -1,10 +1,9 @@
 pragma ton-solidity >= 0.56.0;
 
 import "./TIP3TokenRoot.sol";
-import "../structures/ICallbackParamsStructure.sol";
 import "./SID.sol";
 
-interface ITokenRoot is TIP3TokenRoot, SID, ICallbackParamsStructure {
+interface ITokenRoot is TIP3TokenRoot, SID {
 
     /*
         @notice Get root owner
@@ -70,16 +69,4 @@ interface ITokenRoot is TIP3TokenRoot, SID, ICallbackParamsStructure {
         address owner,
         uint128 deployWalletValue
     ) external responsible returns (address);
-
-    /*
-        @notice Transfer ownership to new owner
-        @dev Can be called only by rootOwner
-        @param newOwner New TokenRoot owner
-        @param callbackTo When != 0:0 then will lead to send ITokenWalletDeployedCallback(callbackTo).onTokenWalletDeployed from root
-    */
-    function transferOwnership(
-        address newOwner,
-        address remainingGasTo,
-        mapping(address => CallbackParams) callbacks
-    ) external;
 }

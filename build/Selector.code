@@ -10,7 +10,7 @@ IFREF {
 GETGLOB 6
 THROWIF 51
 ENDS
-.loc ../contracts/additional/Selector.sol, 28
+.loc ../contracts/additional/Selector.sol, 29
 ACCEPT
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -22,7 +22,7 @@ THROW 0
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 31
+.loc ../contracts/additional/Selector.sol, 32
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -60,7 +60,7 @@ THROW 0
 CALL $calculateAcceptTransferSelector_internal_macro$
 
 .macro calculateAcceptTransferSelector_internal_macro
-.loc ../contracts/additional/Selector.sol, 33
+.loc ../contracts/additional/Selector.sol, 34
 PUSHINT 1738586464
 DEC
 UFITS 32
@@ -70,7 +70,7 @@ UFITS 32
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 36
+.loc ../contracts/additional/Selector.sol, 37
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -108,7 +108,7 @@ THROW 0
 CALL $calculateAcceptMintSelector_internal_macro$
 
 .macro calculateAcceptMintSelector_internal_macro
-.loc ../contracts/additional/Selector.sol, 38
+.loc ../contracts/additional/Selector.sol, 39
 PUSHINT 1132786329
 DEC
 UFITS 32
@@ -118,7 +118,7 @@ UFITS 32
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 41
+.loc ../contracts/additional/Selector.sol, 42
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -156,7 +156,7 @@ THROW 0
 CALL $calculateAcceptBurnSelector_internal_macro$
 
 .macro calculateAcceptBurnSelector_internal_macro
-.loc ../contracts/additional/Selector.sol, 43
+.loc ../contracts/additional/Selector.sol, 44
 PUSHINT 422269362
 DEC
 UFITS 32
@@ -166,7 +166,7 @@ UFITS 32
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 46
+.loc ../contracts/additional/Selector.sol, 47
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -204,7 +204,7 @@ THROW 0
 CALL $calculateTIP3TokenRootInterfaceID_internal_macro$
 
 .macro calculateTIP3TokenRootInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 49
+.loc ../contracts/additional/Selector.sol, 50
 PUSHINT 428082246
 PUSHINT 394429597
 XOR
@@ -224,7 +224,7 @@ XOR
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 58
+.loc ../contracts/additional/Selector.sol, 59
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -262,7 +262,7 @@ THROW 0
 CALL $calculateTIP3TokenWalletInterfaceID_internal_macro$
 
 .macro calculateTIP3TokenWalletInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 61
+.loc ../contracts/additional/Selector.sol, 62
 PUSHINT 1146569348
 PUSHINT 1231640703
 XOR
@@ -282,7 +282,7 @@ XOR
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 68
+.loc ../contracts/additional/Selector.sol, 69
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -320,7 +320,7 @@ THROW 0
 CALL $calculateSIDInterfaceID_internal_macro$
 
 .macro calculateSIDInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 71
+.loc ../contracts/additional/Selector.sol, 72
 PUSHINT 839183401
 .loc ../contracts/additional/Selector.sol, 0
 
@@ -328,7 +328,7 @@ PUSHINT 839183401
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 74
+.loc ../contracts/additional/Selector.sol, 75
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -366,7 +366,7 @@ THROW 0
 CALL $calculateVersionedInterfaceID_internal_macro$
 
 .macro calculateVersionedInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 77
+.loc ../contracts/additional/Selector.sol, 78
 PUSHINT 322087217
 .loc ../contracts/additional/Selector.sol, 0
 
@@ -374,7 +374,7 @@ PUSHINT 322087217
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 80
+.loc ../contracts/additional/Selector.sol, 81
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -412,7 +412,7 @@ THROW 0
 CALL $calculateTokenRootInterfaceID_internal_macro$
 
 .macro calculateTokenRootInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 83
+.loc ../contracts/additional/Selector.sol, 84
 PUSHINT 911978585
 PUSHINT 739640645
 XOR
@@ -426,7 +426,7 @@ XOR
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 91
+.loc ../contracts/additional/Selector.sol, 92
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -464,7 +464,7 @@ THROW 0
 CALL $calculateTokenWalletInterfaceID_internal_macro$
 
 .macro calculateTokenWalletInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 94
+.loc ../contracts/additional/Selector.sol, 95
 PUSHINT 520172177
 PUSHINT 1944199491
 XOR
@@ -476,7 +476,7 @@ XOR
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 101
+.loc ../contracts/additional/Selector.sol, 102
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -514,7 +514,7 @@ THROW 0
 CALL $calculateBurnableTokenWalletInterfaceID_internal_macro$
 
 .macro calculateBurnableTokenWalletInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 104
+.loc ../contracts/additional/Selector.sol, 105
 PUSHINT 1445284013
 .loc ../contracts/additional/Selector.sol, 0
 
@@ -522,7 +522,7 @@ PUSHINT 1445284013
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 107
+.loc ../contracts/additional/Selector.sol, 108
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -560,7 +560,7 @@ THROW 0
 CALL $calculateBurnableByRootTokenRootInterfaceID_internal_macro$
 
 .macro calculateBurnableByRootTokenRootInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 110
+.loc ../contracts/additional/Selector.sol, 111
 PUSHINT 211314732
 PUSHINT 1519307959
 XOR
@@ -572,7 +572,7 @@ XOR
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 117
+.loc ../contracts/additional/Selector.sol, 118
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -610,7 +610,7 @@ THROW 0
 CALL $calculateBurnableByRootTokenWalletInterfaceID_internal_macro$
 
 .macro calculateBurnableByRootTokenWalletInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 120
+.loc ../contracts/additional/Selector.sol, 121
 PUSHINT 204468749
 .loc ../contracts/additional/Selector.sol, 0
 
@@ -618,7 +618,7 @@ PUSHINT 204468749
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 123
+.loc ../contracts/additional/Selector.sol, 124
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -656,7 +656,7 @@ THROW 0
 CALL $calculateDestroyableInterfaceID_internal_macro$
 
 .macro calculateDestroyableInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 126
+.loc ../contracts/additional/Selector.sol, 127
 PUSHINT 251812010
 .loc ../contracts/additional/Selector.sol, 0
 
@@ -664,7 +664,7 @@ PUSHINT 251812010
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 129
+.loc ../contracts/additional/Selector.sol, 130
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -702,17 +702,63 @@ THROW 0
 CALL $calculateDisableableMintTokenRootInterfaceID_internal_macro$
 
 .macro calculateDisableableMintTokenRootInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 132
+.loc ../contracts/additional/Selector.sol, 133
 PUSHINT 2094753589
 PUSHINT 2085541327
 XOR
+.loc ../contracts/additional/Selector.sol, 0
+
+.macro calculateTransferableOwnershipInterfaceID
+DROP
+GETGLOB 6
+THROWIFNOT 76
+.loc ../contracts/additional/Selector.sol, 139
+ENDS
+.loc ../contracts/additional/Selector.sol, 0
+CALLREF {
+	CALL $calculateTransferableOwnershipInterfaceID_internal_macro$
+}
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x000000000000000000000000271c4ad5a_
+	STSLICER
+	STU 32
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	DROP
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	calculateTransferableOwnershipInterfaceID_internal
+.type	calculateTransferableOwnershipInterfaceID_internal, @function
+CALL $calculateTransferableOwnershipInterfaceID_internal_macro$
+
+.macro calculateTransferableOwnershipInterfaceID_internal_macro
+.loc ../contracts/additional/Selector.sol, 142
+PUSHINT 502498758
 .loc ../contracts/additional/Selector.sol, 0
 
 .macro calculateBurnPausableTokenRootInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 138
+.loc ../contracts/additional/Selector.sol, 147
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -750,7 +796,7 @@ THROW 0
 CALL $calculateBurnPausableTokenRootInterfaceID_internal_macro$
 
 .macro calculateBurnPausableTokenRootInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 141
+.loc ../contracts/additional/Selector.sol, 150
 PUSHINT 2146356303
 PUSHINT 975694363
 XOR
@@ -760,7 +806,7 @@ XOR
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 147
+.loc ../contracts/additional/Selector.sol, 156
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -798,7 +844,7 @@ THROW 0
 CALL $calculateTokenWalletUpgradeableInterfaceID_internal_macro$
 
 .macro calculateTokenWalletUpgradeableInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 150
+.loc ../contracts/additional/Selector.sol, 159
 PUSHINT 8748794
 PUSHINT 2104488532
 XOR
@@ -810,7 +856,7 @@ XOR
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.sol, 157
+.loc ../contracts/additional/Selector.sol, 166
 ENDS
 .loc ../contracts/additional/Selector.sol, 0
 CALLREF {
@@ -848,7 +894,7 @@ THROW 0
 CALL $calculateTokenRootUpgradeableInterfaceID_internal_macro$
 
 .macro calculateTokenRootUpgradeableInterfaceID_internal_macro
-.loc ../contracts/additional/Selector.sol, 160
+.loc ../contracts/additional/Selector.sol, 169
 PUSHINT 1172038416
 PUSHINT 8748794
 XOR
@@ -1002,11 +1048,11 @@ THROW 60
 
 .macro public_function_selector
 DUP
-PUSHINT 1756716863
+PUSHINT 1675000662
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 520508104
+	PUSHINT 482379448
 	LEQ
 	IFJMPREF {
 		DUP
@@ -1022,22 +1068,28 @@ IFJMPREF {
 			CALL $calculateBurnableByRootTokenRootInterfaceID$
 		}
 		DUP
+		PUSHINT 477178710
+		EQUAL
+		IFJMPREF {
+			CALL $calculateTransferableOwnershipInterfaceID$
+		}
+		DUP
 		PUSHINT 482379448
 		EQUAL
 		IFJMPREF {
 			CALL $calculateTokenRootUpgradeableInterfaceID$
 		}
+	}
+	DUP
+	PUSHINT 736416887
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 520508104
 		EQUAL
 		IFJMPREF {
 			CALL $calculateAcceptBurnSelector$
 		}
-	}
-	DUP
-	PUSHINT 844169456
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 656630431
 		EQUAL
@@ -1056,17 +1108,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $calculateTokenWalletInterfaceID$
 		}
+	}
+	DUP
+	PUSHINT 1258335142
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 844169456
 		EQUAL
 		IFJMPREF {
 			CALL $calculateBurnableByRootTokenWalletInterfaceID$
 		}
-	}
-	DUP
-	PUSHINT 1538368818
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1048748463
 		EQUAL
@@ -1085,17 +1137,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $calculateVersionedInterfaceID$
 		}
+	}
+	DUP
+	PUSHINT 1675000662
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1538368818
 		EQUAL
 		IFJMPREF {
 			CALL $calculateTIP3TokenWalletInterfaceID$
 		}
-	}
-	DUP
-	PUSHINT 1756716863
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1625325912
 		EQUAL
@@ -1114,18 +1166,18 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $calculateDisableableMintTokenRootInterfaceID$
 		}
-		DUP
-		PUSHINT 1756716863
-		EQUAL
-		IFJMPREF {
-			CALL $constructor$
-		}
 	}
 }
 DUP
 PUSHINT 2089405281
 LEQ
 IFJMPREF {
+	DUP
+	PUSHINT 1756716863
+	EQUAL
+	IFJMPREF {
+		CALL $constructor$
+	}
 	DUP
 	PUSHINT 1902223749
 	EQUAL

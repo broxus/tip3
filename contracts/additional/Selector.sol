@@ -4,6 +4,7 @@ import "../interfaces/SID.sol";
 import "../interfaces/TIP3TokenWallet.sol";
 import "../interfaces/TIP3TokenRoot.sol";
 import "../interfaces/ITokenRoot.sol";
+import "../interfaces/ITransferableOwnership.sol";
 import "../interfaces/ITokenWallet.sol";
 import "../interfaces/IBurnableTokenWallet.sol";
 import "../interfaces/IBurnableByRootTokenRoot.sol";
@@ -132,6 +133,14 @@ contract Selector {
         return bytes4(
             tvm.functionId(i.disableMint) ^
             tvm.functionId(i.mintDisabled)
+        );
+    }
+
+    function calculateTransferableOwnershipInterfaceID() public pure returns (bytes4) {
+        ITransferableOwnership i;
+
+        return bytes4(
+            tvm.functionId(i.transferOwnership)
         );
     }
 
