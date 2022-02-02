@@ -158,13 +158,12 @@ contract TokenWalletUpgradeable is
         view
         returns (address)
     {
-       address tokenWallet = new TokenWalletPlatform {
+        address wallet = new TokenWalletPlatform {
             stateInit: initData,
             value: deployWalletValue,
             wid: address(this).wid,
             flag: TokenMsgFlag.SENDER_PAYS_FEES
-       }(walletCode_, walletVersion_, address(0), remainingGasTo);
-
-       return tokenWallet;
+        }(tvm.code(), version_, owner_, remainingGasTo);
+        return wallet;
     }
 }

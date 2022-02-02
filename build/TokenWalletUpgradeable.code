@@ -716,7 +716,7 @@ ENDC
 CALL $_deployWallet_internal_macro$
 
 .macro _deployWallet_internal_macro
-.loc ../contracts/TokenWalletUpgradeable.sol, 165
+.loc ../contracts/TokenWalletUpgradeable.sol, 161
 GETGLOB 11
 GETGLOB 13
 GETGLOB 1
