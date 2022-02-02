@@ -5,6 +5,7 @@
 	"functions": [
 		{
 			"name": "constructor",
+			"id": "0x15A038FB",
 			"inputs": [
 				{"name":"walletCode","type":"cell"},
 				{"name":"walletVersion","type":"uint32"},

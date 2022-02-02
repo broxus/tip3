@@ -178,19 +178,6 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
         }
 
     }
-    /*
-        @notice Withdraw all surplus balance in EVERs
-        @dev Can by called only by owner address
-        @param to Withdraw receiver
-    */
-    function sendSurplusGas(address to) external view onlyRootOwner {
-        tvm.rawReserve(_reserve(), 0);
-        to.transfer({
-            value: 0,
-            flag: TokenMsgFlag.ALL_NOT_RESERVED + TokenMsgFlag.IGNORE_ERRORS,
-            bounce: false
-        });
-    }
 
     // =============== Support functions ==================
 
@@ -224,50 +211,6 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
         );
     }
 
-    function _transferOwnership(
-        address newOwner,
-        address remainingGasTo,
-        mapping(address => CallbackParams) callbacks
-    ) internal {
-
-        tvm.rawReserve(_reserve(), 0);
-
-        address oldOwner = rootOwner_;
-        rootOwner_ = newOwner;
-
-        optional(TvmCell) callbackToGasOwner;
-        for ((address dest, CallbackParams p) : callbacks) {
-            if (dest.value != 0) {
-                if (remainingGasTo != dest) {
-                    ITransferTokenRootOwnershipCallback(dest).onTransferTokenRootOwnership{
-                        value: p.value,
-                        flag: TokenMsgFlag.SENDER_PAYS_FEES,
-                        bounce: false
-                    }(oldOwner, rootOwner_, remainingGasTo, p.payload);
-                } else {
-                    callbackToGasOwner.set(p.payload);
-                }
-            }
-        }
-
-        if (remainingGasTo.value != 0) {
-            if (callbackToGasOwner.hasValue()) {
-                ITransferTokenRootOwnershipCallback(remainingGasTo).onTransferTokenRootOwnership{
-                    value: 0,
-                    flag: TokenMsgFlag.ALL_NOT_RESERVED,
-                    bounce: false
-                }(oldOwner, rootOwner_, remainingGasTo, callbackToGasOwner.get());
-            } else {
-                remainingGasTo.transfer({
-                    value: 0,
-                    flag: TokenMsgFlag.ALL_NOT_RESERVED + TokenMsgFlag.IGNORE_ERRORS,
-                    bounce: false
-                });
-            }
-        }
-
-    }
-
     /*
         @notice Derive wallet address from owner
         @param wallet_public_key_ Token wallet owner public key
@@ -287,9 +230,27 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
         }
     }
 
+    /*
+        @notice Withdraw all surplus balance in EVERs
+        @dev Can by called only by owner address
+        @param to Withdraw receiver
+    */
+    function sendSurplusGas(address to) external view onlyRootOwner {
+        tvm.rawReserve(_targetBalance(), 0);
+        to.transfer({
+            value: 0,
+            flag: TokenMsgFlag.ALL_NOT_RESERVED + TokenMsgFlag.IGNORE_ERRORS,
+            bounce: false
+        });
+    }
+
+    function _reserve() internal pure returns (uint128) {
+        return math.max(address(this).balance - msg.value, _targetBalance());
+    }
+
+    function _targetBalance() virtual internal pure returns (uint128);
     function _mintEnabled() virtual internal view returns (bool);
     function _burnEnabled() virtual internal view returns (bool);
-    function _reserve() virtual internal pure returns (uint128);
     function _buildWalletInitData(address walletOwner) virtual internal view returns (TvmCell);
     function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) virtual internal view returns (address);
 

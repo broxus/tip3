@@ -136,21 +136,13 @@ OR
 OR
 .loc ../contracts/TokenWallet.sol, 0
 
-.globl	_reserve_internal
-.type	_reserve_internal, @function
-CALL $_reserve_internal_macro$
+.globl	_targetBalance_internal
+.type	_targetBalance_internal, @function
+CALL $_targetBalance_internal_macro$
 
-.macro _reserve_internal_macro
+.macro _targetBalance_internal_macro
 .loc ../contracts/TokenWallet.sol, 46
-GETPARAM 7
-FIRST
-DEPTH
-ADDCONST -2
-PICK
-SUB
-UFITS 128
 PUSHINT 100000000
-MAX
 .loc ../contracts/TokenWallet.sol, 0
 
 .globl	_buildWalletInitData_internal
@@ -1422,6 +1414,78 @@ PUSHINT 128
 SENDRAWMSG
 .loc ../contracts/abstract/TokenWalletBase.sol, 0
 
+.macro sendSurplusGas
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/abstract/TokenWalletBase.sol, 265
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDMSGADDR
+ENDS
+.loc ../contracts/abstract/TokenWalletBase.sol, 0
+CALLREF {
+	CALL $sendSurplusGas_internal_macro$
+}
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.macro sendSurplusGas_internal_macro
+.loc ../contracts/abstract/TokenWalletBase.sol, 29
+GETGLOB 11
+GETGLOB 9
+SDEQ
+THROWIFNOT 1000
+.loc ../contracts/abstract/TokenWalletBase.sol, 266
+CALLREF {
+	CALL $_targetBalance_internal_macro$
+}
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/abstract/TokenWalletBase.sol, 267
+NEWC
+STSLICECONST x42_
+STSLICE
+PUSHINT 111
+STZEROES
+ENDC
+PUSHINT 128
+ADDCONST 2
+UFITS 8
+SENDRAWMSG
+.loc ../contracts/abstract/TokenWalletBase.sol, 0
+
+.globl	_reserve_internal
+.type	_reserve_internal, @function
+CALL $_reserve_internal_macro$
+
+.macro _reserve_internal_macro
+.loc ../contracts/abstract/TokenWalletBase.sol, 275
+GETPARAM 7
+FIRST
+DEPTH
+ADDCONST -2
+PICK
+SUB
+UFITS 128
+CALLREF {
+	CALL $_targetBalance_internal_macro$
+}
+MAX
+.loc ../contracts/abstract/TokenWalletBase.sol, 0
+
 .macro c4_to_c7
 PUSHROOT
 CTOS
@@ -1633,7 +1697,7 @@ THROW 60
 
 .macro public_function_selector
 DUP
-PUSHINT 839183401
+PUSHINT 552322925
 LEQ
 IFJMPREF {
 	DUP
@@ -1655,16 +1719,22 @@ IFJMPREF {
 		CALL $owner$
 	}
 	DUP
+	PUSHINT 552322925
+	EQUAL
+	IFJMPREF {
+		CALL $sendSurplusGas$
+	}
+}
+DUP
+PUSHINT 1185535980
+LEQ
+IFJMPREF {
+	DUP
 	PUSHINT 839183401
 	EQUAL
 	IFJMPREF {
 		CALL $supportsInterface$
 	}
-}
-DUP
-PUSHINT 1231640703
-LEQ
-IFJMPREF {
 	DUP
 	PUSHINT 1132786328
 	EQUAL
@@ -1683,17 +1753,17 @@ IFJMPREF {
 	IFJMPREF {
 		CALL $transferToWallet$
 	}
+}
+DUP
+PUSHINT 1738586463
+LEQ
+IFJMPREF {
 	DUP
 	PUSHINT 1231640703
 	EQUAL
 	IFJMPREF {
 		CALL $balance$
 	}
-}
-DUP
-PUSHINT 1756716863
-LEQ
-IFJMPREF {
 	DUP
 	PUSHINT 1445284013
 	EQUAL
@@ -1712,17 +1782,22 @@ IFJMPREF {
 	IFJMPREF {
 		CALL $acceptTransfer$
 	}
+}
+DUP
+PUSHINT 1944199491
+LEQ
+IFJMPREF {
 	DUP
 	PUSHINT 1756716863
 	EQUAL
 	IFJMPREF {
 		CALL $constructor$
 	}
-}
-DUP
-PUSHINT 1944199491
-EQUAL
-IFJMPREF {
-	CALL $transfer$
+	DUP
+	PUSHINT 1944199491
+	EQUAL
+	IFJMPREF {
+		CALL $transfer$
+	}
 }
 

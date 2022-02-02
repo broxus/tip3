@@ -42,8 +42,8 @@ contract TokenWallet is
         );
     }
 
-    function _reserve() override internal pure returns (uint128) {
-        return math.max(address(this).balance - msg.value, TokenGas.TARGET_WALLET_BALANCE);
+    function _targetBalance() override internal pure returns (uint128) {
+        return TokenGas.TARGET_WALLET_BALANCE;
     }
 
     function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {

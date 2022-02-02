@@ -1,4 +1,5 @@
 pragma ton-solidity >= 0.56.0;
+
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
@@ -17,7 +18,7 @@ import "./TokenWalletPlatform.sol";
 
 
 /*
-    @title Fungible token  root contract
+    @title Fungible token root contract upgradable
 */
 contract TokenRootUpgradeable is
     TokenRootTransferableOwnershipBase,
@@ -57,7 +58,7 @@ contract TokenRootUpgradeable is
         burnByRootDisabled_ = burnByRootDisabled;
         burnPaused_ = burnPaused;
 
-        tvm.rawReserve(TokenGas.TARGET_ROOT_BALANCE, 0);
+        tvm.rawReserve(_targetBalance(), 0);
 
         if (initialSupplyTo.value != 0 && initialSupply != 0) {
             TvmCell empty;
@@ -80,7 +81,7 @@ contract TokenRootUpgradeable is
             interfaceID == bytes4(0x0095b2fa) ||    // IDisableableMintTokenRoot
             interfaceID == bytes4(0x45c92654) ||    // IBurnPausableTokenRoot
             interfaceID == bytes4(0x376ddffc) ||    // IBurnPausableTokenRoot
-            interfaceID == bytes4(0x1df385c6)
+            interfaceID == bytes4(0x1df385c6)       // ITransferableOwnership
         );
     }
 
@@ -99,7 +100,6 @@ contract TokenRootUpgradeable is
     )
         override
         external
-        onlyRootOwner
     {
         require(msg.sender == _getExpectedWalletAddress(walletOwner), TokenErrors.SENDER_IS_NOT_VALID_WALLET);
 
@@ -108,7 +108,11 @@ contract TokenRootUpgradeable is
         if (currentVersion == walletVersion_) {
             remainingGasTo.transfer({ value: 0, flag: TokenMsgFlag.ALL_NOT_RESERVED });
         } else {
-            ITokenWalletUpgradeable(msg.sender).acceptUpgrade{ value: 0, flag: TokenMsgFlag.ALL_NOT_RESERVED, bounce: false }(
+            ITokenWalletUpgradeable(msg.sender).acceptUpgrade{
+                value: 0,
+                flag: TokenMsgFlag.ALL_NOT_RESERVED,
+                bounce: false
+            }(
                 walletCode_,
                 walletVersion_,
                 remainingGasTo
@@ -117,6 +121,7 @@ contract TokenRootUpgradeable is
     }
 
     function setWalletCode(TvmCell code) override external onlyRootOwner {
+        tvm.rawReserve(_targetBalance(), 0);
         walletCode_ = code;
         walletVersion_++;
     }
@@ -169,8 +174,8 @@ contract TokenRootUpgradeable is
     */
     function onCodeUpgrade(TvmCell data) private { }
 
-    function _reserve() override internal pure returns (uint128) {
-        return math.max(address(this).balance - msg.value, TokenGas.TARGET_ROOT_BALANCE);
+    function _targetBalance() override internal pure returns (uint128) {
+        return TokenGas.TARGET_ROOT_BALANCE;
     }
 
     function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {

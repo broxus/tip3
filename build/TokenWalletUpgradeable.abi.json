@@ -82,7 +82,7 @@
 		{
 			"name": "destroy",
 			"inputs": [
-				{"name":"sendGasTo","type":"address"}
+				{"name":"remainingGasTo","type":"address"}
 			],
 			"outputs": [
 			]
@@ -180,6 +180,14 @@
 				{"name":"remainingGasTo","type":"address"},
 				{"name":"notify","type":"bool"},
 				{"name":"payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "sendSurplusGas",
+			"inputs": [
+				{"name":"to","type":"address"}
 			],
 			"outputs": [
 			]

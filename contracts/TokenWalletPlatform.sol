@@ -6,7 +6,10 @@ contract TokenWalletPlatform {
     address static root;
     address static owner;
 
-    constructor(TvmCell walletCode, uint32 walletVersion, address sender, address remainingGasTo) public {
+    constructor(TvmCell walletCode, uint32 walletVersion, address sender, address remainingGasTo)
+        public
+        functionID(0x15A038FB)
+    {
         if (msg.sender == root || (sender.value != 0 && _getExpectedAddress(sender) == msg.sender)) {
            initialize(walletCode, walletVersion, remainingGasTo);
         } else {

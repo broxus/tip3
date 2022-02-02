@@ -83,8 +83,8 @@ contract TokenWalletUpgradeable is
     }
 
     function acceptUpgrade(TvmCell newCode, uint32 newVersion, address remainingGasTo) override external onlyRoot {
-        tvm.rawReserve(_reserve(), 0);
         if (version_ == newVersion) {
+            tvm.rawReserve(_reserve(), 0);
             remainingGasTo.transfer({
                 value: 0,
                 flag: TokenMsgFlag.ALL_NOT_RESERVED + TokenMsgFlag.IGNORE_ERRORS,
@@ -109,6 +109,7 @@ contract TokenWalletUpgradeable is
     }
 
     function onCodeUpgrade(TvmCell data) private {
+        tvm.rawReserve(_reserve(), 2);
         tvm.resetStorage();
 
         uint32 oldVersion;
@@ -135,8 +136,8 @@ contract TokenWalletUpgradeable is
         }
     }
 
-    function _reserve() override internal pure returns (uint128) {
-        return math.max(address(this).balance - msg.value, TokenGas.TARGET_WALLET_BALANCE);
+    function _targetBalance() override internal pure returns (uint128) {
+        return TokenGas.TARGET_WALLET_BALANCE;
     }
 
     function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {
@@ -151,22 +152,19 @@ contract TokenWalletUpgradeable is
         });
     }
 
-    function _deployWallet(
-        TvmCell initData,
-        uint128 deployWalletValue,
-        address remainingGasTo
-    )
+    function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo)
         override
         internal
         view
         returns (address)
     {
-        address wallet = new TokenWalletPlatform {
+       address tokenWallet = new TokenWalletPlatform {
             stateInit: initData,
             value: deployWalletValue,
             wid: address(this).wid,
             flag: TokenMsgFlag.SENDER_PAYS_FEES
-        }(tvm.code(), version_, owner_, remainingGasTo);
-        return wallet;
+       }(walletCode_, walletVersion_, address(0), remainingGasTo);
+
+       return tokenWallet;
     }
 }

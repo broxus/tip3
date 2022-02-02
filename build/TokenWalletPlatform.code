@@ -30,7 +30,7 @@ ENDS
 CTOS
 LDMSGADDR
 ENDS
-.loc ../contracts/TokenWalletPlatform.sol, 10
+.loc ../contracts/TokenWalletPlatform.sol, 13
 GETGLOB 9
 GETGLOB 10
 SDEQ
@@ -56,7 +56,7 @@ PUSHCONT {
 }
 IFNOT
 PUSHCONT {
-	.loc ../contracts/TokenWalletPlatform.sol, 11
+	.loc ../contracts/TokenWalletPlatform.sol, 14
 	OVER2
 	PUSH S2
 	CALLREF {
@@ -64,7 +64,7 @@ PUSHCONT {
 	}
 }
 PUSHCONT {
-	.loc ../contracts/TokenWalletPlatform.sol, 13
+	.loc ../contracts/TokenWalletPlatform.sol, 16
 	DUP
 	NEWC
 	STSLICECONST x42_
@@ -90,7 +90,7 @@ THROW 0
 CALL $_getExpectedAddress_internal_macro$
 
 .macro _getExpectedAddress_internal_macro
-.loc ../contracts/TokenWalletPlatform.sol, 22
+.loc ../contracts/TokenWalletPlatform.sol, 25
 PUSHINT 0
 NEWC
 STU 256
@@ -129,7 +129,7 @@ STOPTREF
 STOPTREF
 STZERO
 ENDC
-.loc ../contracts/TokenWalletPlatform.sol, 32
+.loc ../contracts/TokenWalletPlatform.sol, 35
 HASHCU
 NEWC
 STSLICECONST x801_
@@ -143,28 +143,28 @@ CTOS
 CALL $initialize_internal_macro$
 
 .macro initialize_internal_macro
-.loc ../contracts/TokenWalletPlatform.sol, 38
+.loc ../contracts/TokenWalletPlatform.sol, 41
 GETGLOB 10
 NEWC
 STSLICE
-.loc ../contracts/TokenWalletPlatform.sol, 39
+.loc ../contracts/TokenWalletPlatform.sol, 42
 GETGLOB 11
 SWAP
 STSLICE
-.loc ../contracts/TokenWalletPlatform.sol, 40
+.loc ../contracts/TokenWalletPlatform.sol, 43
 PUSHINT 0
 SWAP
 STU 128
-.loc ../contracts/TokenWalletPlatform.sol, 41
+.loc ../contracts/TokenWalletPlatform.sol, 44
 PUSHINT 0
 SWAP
 STU 32
-.loc ../contracts/TokenWalletPlatform.sol, 42
+.loc ../contracts/TokenWalletPlatform.sol, 45
 XCHG S1, S2
 STU 32
-.loc ../contracts/TokenWalletPlatform.sol, 43
+.loc ../contracts/TokenWalletPlatform.sol, 46
 STSLICE
-.loc ../contracts/TokenWalletPlatform.sol, 45
+.loc ../contracts/TokenWalletPlatform.sol, 48
 GETGLOB 1
 PUSHREF {
 	DUP
@@ -179,10 +179,10 @@ STSLICE
 ENDC
 SWAP
 STREF
-.loc ../contracts/TokenWalletPlatform.sol, 47
+.loc ../contracts/TokenWalletPlatform.sol, 50
 OVER
 SETCODE
-.loc ../contracts/TokenWalletPlatform.sol, 48
+.loc ../contracts/TokenWalletPlatform.sol, 51
 SWAP
 CTOS
 DUP
@@ -197,7 +197,7 @@ PLDREF
 CTOS
 BLESS
 POP C3
-.loc ../contracts/TokenWalletPlatform.sol, 50
+.loc ../contracts/TokenWalletPlatform.sol, 53
 ENDC
 CALLREF {
 	CALL $:onCodeUpgrade$

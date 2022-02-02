@@ -158,7 +158,7 @@ async function main() {
         constructorParams: {
             initialSupplyTo: initialSupplyTo,
             initialSupply: new BigNumber(initialSupply).shiftedBy(decimals).toFixed(),
-            deployWalletValue: locklift.utils.convertCrystal('0.2', 'nano'),
+            deployWalletValue: locklift.utils.convertCrystal('0.1', 'nano'),
             mintDisabled: disableMint,
             burnByRootDisabled: disableBurnByRoot,
             burnPaused: pauseBurn,

@@ -1,4 +1,5 @@
 pragma ton-solidity >= 0.56.0;
+
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
@@ -13,7 +14,7 @@ import "./libraries/TokenMsgFlag.sol";
 
 
 /*
-    @title Fungible token  root contract
+    @title Fungible token root contract
 */
 contract TokenRoot is
     TokenRootTransferableOwnershipBase,
@@ -49,7 +50,7 @@ contract TokenRoot is
         burnByRootDisabled_ = burnByRootDisabled;
         burnPaused_ = burnPaused;
 
-        tvm.rawReserve(TokenGas.TARGET_ROOT_BALANCE, 0);
+        tvm.rawReserve(_targetBalance(), 0);
 
         if (initialSupplyTo.value != 0 && initialSupply != 0) {
             TvmCell empty;
@@ -71,12 +72,12 @@ contract TokenRoot is
             interfaceID == bytes4(0x18f7cce4) ||    // IBurnableByRootTokenRoot
             interfaceID == bytes4(0x0095b2fa) ||    // IDisableableMintTokenRoot
             interfaceID == bytes4(0x45c92654) ||    // IBurnPausableTokenRoot
-            interfaceID == bytes4(0x1df385c6)
+            interfaceID == bytes4(0x1df385c6)       // ITransferableOwnership
         );
     }
 
-    function _reserve() override internal pure returns (uint128) {
-        return math.max(address(this).balance - msg.value, TokenGas.TARGET_ROOT_BALANCE);
+    function _targetBalance() override internal pure returns (uint128) {
+        return TokenGas.TARGET_ROOT_BALANCE;
     }
 
     function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {

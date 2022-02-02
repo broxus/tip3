@@ -257,7 +257,25 @@ abstract contract TokenWalletBase is ITokenWallet {
         );
     }
 
-    function _reserve() virtual internal pure returns (uint128);
+    /*
+        @notice Withdraw all surplus balance in EVERs
+        @dev Can by called only by owner address
+        @param to Withdraw receiver
+    */
+    function sendSurplusGas(address to) external view onlyOwner {
+        tvm.rawReserve(_targetBalance(), 0);
+        to.transfer({
+            value: 0,
+            flag: TokenMsgFlag.ALL_NOT_RESERVED + TokenMsgFlag.IGNORE_ERRORS,
+            bounce: false
+        });
+    }
+
+    function _reserve() internal pure returns (uint128) {
+        return math.max(address(this).balance - msg.value, _targetBalance());
+    }
+
+    function _targetBalance() virtual internal pure returns (uint128);
     function _buildWalletInitData(address walletOwner) virtual internal view returns (TvmCell);
     function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) virtual internal view returns (address);
 }

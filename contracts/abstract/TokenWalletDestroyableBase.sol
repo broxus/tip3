@@ -12,9 +12,9 @@ import "../libraries/TokenMsgFlag.sol";
 
 abstract contract TokenWalletDestroyableBase is TokenWalletBase, IDestroyable {
 
-    function destroy(address sendGasTo) override external onlyOwner {
+    function destroy(address remainingGasTo) override external onlyOwner {
         require(balance_ == 0, TokenErrors.NON_EMPTY_BALANCE);
-        sendGasTo.transfer({
+        remainingGasTo.transfer({
             value: 0,
             flag: TokenMsgFlag.ALL_NOT_RESERVED + TokenMsgFlag.DESTROY_IF_ZERO,
             bounce: false
