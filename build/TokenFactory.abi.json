@@ -1,0 +1,150 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["time"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"owner","type":"address"},
+				{"name":"deployValue","type":"uint128"},
+				{"name":"rootCode","type":"cell"},
+				{"name":"walletCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "deployRoot",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"name","type":"string"},
+				{"name":"symbol","type":"string"},
+				{"name":"decimals","type":"uint8"},
+				{"name":"owner","type":"address"},
+				{"name":"initialSupplyTo","type":"address"},
+				{"name":"initialSupply","type":"uint128"},
+				{"name":"deployWalletValue","type":"uint128"},
+				{"name":"mintDisabled","type":"bool"},
+				{"name":"burnByRootDisabled","type":"bool"},
+				{"name":"burnPaused","type":"bool"},
+				{"name":"remainingGasTo","type":"address"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "upgrade",
+			"inputs": [
+				{"name":"code","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changeDeployValue",
+			"inputs": [
+				{"name":"deployValue","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changeRootCode",
+			"inputs": [
+				{"name":"rootCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changeWalletCode",
+			"inputs": [
+				{"name":"walletCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "transferOwner",
+			"inputs": [
+				{"name":"owner","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "acceptOwner",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "_owner",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_owner","type":"address"}
+			]
+		},
+		{
+			"name": "_pendingOwner",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_pendingOwner","type":"address"}
+			]
+		},
+		{
+			"name": "_tokenNonce",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_tokenNonce","type":"uint256"}
+			]
+		},
+		{
+			"name": "_deployValue",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_deployValue","type":"uint128"}
+			]
+		},
+		{
+			"name": "_rootCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_rootCode","type":"cell"}
+			]
+		},
+		{
+			"name": "_walletCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_walletCode","type":"cell"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"_nonce","type":"uint256"}
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"_nonce","type":"uint256"},
+		{"name":"_owner","type":"address"},
+		{"name":"_pendingOwner","type":"address"},
+		{"name":"_tokenNonce","type":"uint256"},
+		{"name":"_deployValue","type":"uint128"},
+		{"name":"_rootCode","type":"cell"},
+		{"name":"_walletCode","type":"cell"}
+	]
+}
