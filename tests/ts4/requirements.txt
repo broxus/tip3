@@ -1,0 +1,2 @@
+tonos-ts4==0.4.1
+ton-client-py==1.27.0.1
