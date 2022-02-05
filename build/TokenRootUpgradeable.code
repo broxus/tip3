@@ -1,4 +1,4 @@
-.version sol 0.56.0
+.version sol 0.57.1
 
 .macro constructor
 DROP

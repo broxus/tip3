@@ -1,4 +1,4 @@
-.version sol 0.56.0
+.version sol 0.57.1
 
 .pragma selector-save-my-code
 

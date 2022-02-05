@@ -20,6 +20,7 @@
     "ton-client-js": "^0.28.1"
   },
   "devDependencies": {
+    "@broxus/contracts": "^1.0.4",
     "chai": "^4.3.0",
     "chai-bignumber": "^3.0.0",
     "locklift": "^1.4.5"

@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.56.0;
+pragma ton-solidity >= 0.57.0;
 
 interface SID {
     /// @notice Query if a contract implements an interface
