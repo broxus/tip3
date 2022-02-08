@@ -57,6 +57,7 @@ contract TokenRootUpgradeable is
         mintDisabled_ = mintDisabled;
         burnByRootDisabled_ = burnByRootDisabled;
         burnPaused_ = burnPaused;
+        walletVersion_ = 1;
 
         tvm.rawReserve(_targetBalance(), 0);
 
