@@ -1,0 +1,169 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["time"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "calculateAcceptTransferSelector",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateAcceptMintSelector",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateAcceptBurnSelector",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateTIP3TokenRootInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateTIP3TokenWalletInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateSIDInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateVersionedInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateTokenRootInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateTokenWalletInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateBurnableTokenWalletInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateBurnableByRootTokenRootInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateBurnableByRootTokenWalletInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateDestroyableInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateDisableableMintTokenRootInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateTransferableOwnershipInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateBurnPausableTokenRootInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateTokenWalletUpgradeableInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		},
+		{
+			"name": "calculateTokenRootUpgradeableInterfaceID",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint32"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"_randomNonce","type":"uint256"}
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"_randomNonce","type":"uint256"}
+	]
+}

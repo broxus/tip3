@@ -1,0 +1,406 @@
+.version sol 0.57.1
+
+.macro constructor
+DROP
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+GETGLOB 6
+THROWIF 51
+ENDS
+.loc ../node_modules/@broxus/contracts/contracts/utils/CheckPubKey.sol, 9
+GETGLOB 5
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	PUSHINT 0
+}
+IF
+GETGLOB 2
+EQUAL
+THROWIFNOT 1103
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 18
+ACCEPT
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 20
+GETGLOB 5
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	PUSHINT 0
+}
+IF
+CALLREF {
+	CALL $setOwnership_internal_macro$
+}
+.loc ../node_modules/@broxus/contracts/contracts/utils/CheckPubKey.sol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.macro sendTransaction
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 31
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDMSGADDR
+LDU 128
+LDI 1
+LDU 8
+LDREF
+ENDS
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 0
+CALLREF {
+	CALL $sendTransaction_internal_macro$
+}
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.globl	sendTransaction_internal
+.type	sendTransaction_internal, @function
+CALL $sendTransaction_internal_macro$
+
+.macro sendTransaction_internal_macro
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 14
+GETGLOB 5
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	PUSHINT 0
+}
+IF
+GETGLOB 10
+EQUAL
+THROWIFNOT 1101
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 42
+ACCEPT
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 44
+ROLL 3
+BLKSWAP 2, 3
+NEWC
+STSLICECONST x6_
+STI 1
+PUSHINT 3
+STZEROES
+STSLICE
+SWAP
+STGRAMS
+PUSHINT 1
+STUR 107
+STREF
+ENDC
+SWAP
+SENDRAWMSG
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 0
+
+.globl	setOwnership_internal
+.type	setOwnership_internal, @function
+CALL $setOwnership_internal_macro$
+
+.macro setOwnership_internal_macro
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 23
+GETGLOB 10
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 25
+OVER
+SETGLOB 10
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 27
+PUSHSLICE xc0000000000000000000000000536cd3f2
+NEWC
+STSLICE
+STU 256
+STU 256
+ENDC
+PUSHINT 0
+SENDRAWMSG
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 0
+
+.macro transferOwnership
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 33
+LDU 256
+ENDS
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 0
+CALLREF {
+	CALL $transferOwnership_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.macro transferOwnership_internal_macro
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 14
+GETGLOB 5
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	PUSHINT 0
+}
+IF
+GETGLOB 10
+EQUAL
+THROWIFNOT 1101
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 36
+DUP
+THROWIFNOT 1102
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 37
+ACCEPT
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 39
+CALLREF {
+	CALL $setOwnership_internal_macro$
+}
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 0
+
+.macro c4_to_c7
+PUSHROOT
+CTOS
+LDU 256 ; pubkey c4
+LDU 64 ; pubkey timestamp c4
+LDU 1 ; ctor flag
+NIP
+LDU 256
+LDU 256
+ENDS
+SETGLOB 11
+SETGLOB 10
+SETGLOB 3
+SETGLOB 2
+
+.macro c4_to_c7_with_init_storage
+PUSHROOT
+CTOS
+SBITS
+GTINT 1
+PUSHCONT {
+	PUSHINT 0
+	PUSHROOT
+	CTOS
+	PLDDICT ; D
+	PUSHINT 0
+	PUSHINT 1
+	PUSH S2
+	PUSHINT 64
+	DICTUGET
+	PUSHCONT {
+		PLDU 256
+	}
+	PUSHCONT {
+		PUSHINT 0
+	}
+	IFELSE
+	SETGLOB 11
+	SETGLOB 10
+	PUSHINT 64
+	DICTUGET
+	THROWIFNOT 61
+	PLDU 256
+	SETGLOB 2
+	PUSHINT 0 ; timestamp
+	SETGLOB 3
+}
+IFREFELSE {
+	CALL $c4_to_c7$
+}
+
+.macro c7_to_c4
+GETGLOB 11
+GETGLOB 10
+GETGLOB 3
+GETGLOB 2
+NEWC
+STU 256
+STU 64
+STONE
+STU 256
+STU 256
+ENDC
+POPROOT
+
+.macro upd_only_time_in_c4
+PUSHROOT
+CTOS
+LDU 256
+LDU 64
+NIP
+GETGLOB 3
+ROT
+NEWC
+STU 256
+STU 64
+STSLICE
+ENDC
+POPROOT
+
+.internal-alias :main_internal, 0
+.internal :main_internal
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+PUSH S2
+CTOS
+PLDU 4
+MODPOW2 1
+IFRET
+OVER
+SEMPTY ; isEmpty
+IFJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+OVER
+LDUQ 32  ; [funcId] body' ok
+THROWIFNOT 60
+OVER
+IFNOTJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+SWAP
+CALLREF {
+	CALL $public_function_selector$
+}
+THROW 60
+
+.internal-alias :main_external, -1
+.internal :main_external
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+OVER
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+LDU 1 ; haveSign msgSlice
+SWAP
+PUSHCONT {
+	PUSHINT 512
+	LDSLICEX ; signatureSlice msgSlice
+	DUP
+	HASHSU ; signatureSlice msgSlice hashMsgSlice
+	ROT
+	GETGLOB 2
+	DUP
+	SETGLOB 5
+	CHKSIGNU ; msgSlice isSigned
+	THROWIFNOT 40
+}
+IF
+LDU 64 ; timestamp msgSlice
+SWAP
+CALL $replay_protection_macro$
+LDU 32 ; funcId body
+SWAP
+CALLREF {
+	CALL $public_function_selector$
+}
+THROW 60
+
+.macro owner
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 10
+OVER
+PUSHCONT {
+	PUSHSLICE xc00000000000000000000000009178e9bd
+	NEWC
+	STSLICE
+	STU 256
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro _randomNonce
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 11
+OVER
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000000bb53331f
+	NEWC
+	STSLICE
+	STU 256
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro public_function_selector
+DUP
+PUSHINT 1482330212
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 293136829
+	EQUAL
+	IFJMPREF {
+		CALL $owner$
+	}
+	DUP
+	PUSHINT 995308319
+	EQUAL
+	IFJMPREF {
+		CALL $_randomNonce$
+	}
+	DUP
+	PUSHINT 1290691692
+	EQUAL
+	IFJMPREF {
+		CALL $sendTransaction$
+	}
+	DUP
+	PUSHINT 1482330212
+	EQUAL
+	IFJMPREF {
+		CALL $transferOwnership$
+	}
+}
+DUP
+PUSHINT 1756716863
+EQUAL
+IFJMPREF {
+	CALL $constructor$
+}
+

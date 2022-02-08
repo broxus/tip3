@@ -4,28 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "migrate-ton": "cd free-ton && node migration && cd ..",
-    "compile-ton": "cd free-ton && node compile && cd ..",
-    "test-ton": "cd free-ton && mocha test/$npm_config_test --exit && cd .."
+    "compile": "locklift build --config locklift.config.js"
   },
   "author": "aleksandr-hramcov <aleksandr.hramcov@gmail.com>",
-  "license": "Apache-2.0",
+  "license": "AGPLv3",
   "dependencies": {
     "bignumber.js": "^9.0.1",
-    "chai": "^4.2.0",
-    "directory-tree": "^2.2.5",
-    "dotenv": "^8.2.0",
-    "minimist": "^1.2.5",
+    "chai-as-promised": "^7.1.1",
+    "folder-hash": "^4.0.1",
+    "commander": "^8.0.0",
+    "ora": "^3.4.0",
+    "prompts": "^2.4.2",
     "mocha": "^8.2.1",
     "mocha-logger": "^1.0.7",
-    "simple-node-logger": "^18.12.24",
-    "solidity-docgen": "^0.5.7",
-    "ton-client-js": "^0.28.1",
-    "ton-client-node-js": "^0.28.0",
-    "ton-testing-suite": "^1.2.4",
-    "underscore": "^1.12.0"
+    "ton-client-js": "^0.28.1"
   },
   "devDependencies": {
-    "@digix/doxity": "^0.5.2"
+    "@broxus/contracts": "^1.0.4",
+    "chai": "^4.3.0",
+    "chai-bignumber": "^3.0.0",
+    "locklift": "^1.4.5"
   }
 }
