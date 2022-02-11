@@ -49,6 +49,7 @@ class TestRootMethods(unittest.TestCase):
         self.root = self.deployer.create_token_root(self.root_owner)
         self.root_owner.call_method('setRoot', {'root': self.root.address})
         callback_account = self.deployer.create_account(contract_name='TestRootTransferCallback')
+        callback_account.call_method('setRoot', {'root': self.root.address})
         new_root_owner = self.deployer.create_account()
 
         callback_account_value = int(0.5 * ts4.GRAM)

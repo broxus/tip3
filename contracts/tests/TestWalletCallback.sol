@@ -1,7 +1,7 @@
 pragma ton-solidity >= 0.57.0;
 
-import "../TokenRoot.sol";
 import "../additional/Wallet.sol";
+import "../TokenRoot.sol";
 
 
 struct TransferData {

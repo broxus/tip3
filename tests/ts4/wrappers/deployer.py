@@ -9,30 +9,21 @@ from wrappers.token_wallet import TokenWallet
 
 class Deployer:
 
-    def __init__(self, upgradeable: bool = False):
+    def __init__(self):
         ts4.init(BUILD_ARTIFACTS_PATH, verbose=VERBOSE)
-        self.token_factory = self.create_token_factory(upgradeable)
+        self.token_factory = self.create_token_factory()
 
     @staticmethod
-    def create_token_factory(upgradeable: bool) -> ts4.BaseContract:
-        params = {
+    def create_token_factory() -> ts4.BaseContract:
+        return ts4.BaseContract('TestTokenFactory', {
             'owner': random_address(),
             'deployValue': 2 * ts4.GRAM,
-        }
-        if upgradeable:
-            params.update({
-                'rootCode': ts4.load_code_cell('TokenRootUpgradeable'),
-                'walletCode': ts4.load_code_cell('TokenWalletUpgradeable'),
-                'platformCode': ts4.load_code_cell('TokenWalletPlatform'),
-            })
-            contract_name = 'TestTokenFactoryUpgradeable'
-        else:
-            params.update({
-                'rootCode': ts4.load_code_cell('TokenRoot'),
-                'walletCode': ts4.load_code_cell('TokenWallet'),
-            })
-            contract_name = 'TestTokenFactory'
-        return ts4.BaseContract(contract_name, params, nickname='Factory', override_address=random_address())
+            'rootCode': ts4.load_code_cell('TokenRoot'),
+            'walletCode': ts4.load_code_cell('TokenWallet'),
+            'rootUpgradeableCode': ts4.load_code_cell('TokenRootUpgradeable'),
+            'walletUpgradeableCode': ts4.load_code_cell('TokenWalletUpgradeable'),
+            'platformCode': ts4.load_code_cell('TokenWalletPlatform'),
+        }, nickname='Factory', override_address=random_address())
 
     @staticmethod
     def create_account(contract_name: str = None, **kwargs) -> Account:
@@ -53,6 +44,7 @@ class Deployer:
             burn_by_root_disabled: bool = True,
             burn_paused: bool = False,
             remaining_gas_to: ts4.Address = ZERO_ADDRESS,
+            upgradeable: bool = False,
     ) -> TokenRoot:
         root_address = self.token_factory.call_method('deployRootTest', {
             'name': name,
@@ -66,6 +58,7 @@ class Deployer:
             'burnByRootDisabled': burn_by_root_disabled,
             'burnPaused': burn_paused,
             'remainingGasTo': remaining_gas_to,
+            'upgradeable': upgradeable,
             'answerId': 0,
         })
         ts4.dispatch_messages()
