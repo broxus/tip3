@@ -16,17 +16,17 @@ contract TestTokenFactory is TokenFactory {
     ) public TokenFactory(owner, deployValue, rootCode, walletCode, rootUpgradeableCode, walletUpgradeableCode, platformCode) {}
 
     function deployRootTest(
-        string name,                    // static
-        string symbol,                  // static
-        uint8 decimals,                 // static
-        address owner,                  // static
-        address initialSupplyTo,        // constructor
-        uint128 initialSupply,          // constructor
-        uint128 deployWalletValue,      // constructor
-        bool mintDisabled,              // constructor
-        bool burnByRootDisabled,        // constructor
-        bool burnPaused,                // constructor
-        address remainingGasTo,         // constructor
+        string name,
+        string symbol,
+        uint8 decimals,
+        address owner,
+        address initialSupplyTo,
+        uint128 initialSupply,
+        uint128 deployWalletValue,
+        bool mintDisabled,
+        bool burnByRootDisabled,
+        bool burnPaused,
+        address remainingGasTo,
         bool upgradeable
     ) external responsible returns (address) {
         tvm.accept();
