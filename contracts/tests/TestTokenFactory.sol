@@ -9,29 +9,35 @@ contract TestTokenFactory is TokenFactory {
         address owner,
         uint128 deployValue,
         TvmCell rootCode,
-        TvmCell walletCode
-    ) public TokenFactory(owner, deployValue, rootCode, walletCode) {}
+        TvmCell walletCode,
+        TvmCell rootUpgradeableCode,
+        TvmCell walletUpgradeableCode,
+        TvmCell platformCode
+    ) public TokenFactory(owner, deployValue, rootCode, walletCode, rootUpgradeableCode, walletUpgradeableCode, platformCode) {}
 
     function deployRootTest(
-        string name,        // static
-        string symbol,      // static
-        uint8 decimals,     // static
-        address owner,      // static
+        string name,
+        string symbol,
+        uint8 decimals,
+        address owner,
         address initialSupplyTo,
         uint128 initialSupply,
         uint128 deployWalletValue,
         bool mintDisabled,
         bool burnByRootDisabled,
         bool burnPaused,
-        address remainingGasTo
-    ) public responsible returns (address) {
+        address remainingGasTo,
+        bool upgradeable
+    ) external responsible returns (address) {
         tvm.accept();
-        TvmCell stateInit = _buildStateInit(_tokenNonce++, name, symbol, decimals, owner);
-        return new TokenRoot {
-            stateInit: stateInit,
+        function (uint256, string, string, uint8, address) returns (TvmCell) buildStateInit =
+            upgradeable ? _buildUpgradeableStateInit : _buildCommonStateInit;
+        TvmCell stateInit = buildStateInit(_tokenNonce++, name, symbol, decimals, owner);
+        address root = new TokenRoot {
             value: _deployValue,
-            flag: 0,
-            bounce: false
+            flag: TokenMsgFlag.SENDER_PAYS_FEES,
+            bounce: false,
+            stateInit: stateInit
         }(
             initialSupplyTo,
             initialSupply,
@@ -41,6 +47,7 @@ contract TestTokenFactory is TokenFactory {
             burnPaused,
             remainingGasTo
         );
+        return {value: 0, flag: TokenMsgFlag.SENDER_PAYS_FEES, bounce: false} root;
     }
 
 }

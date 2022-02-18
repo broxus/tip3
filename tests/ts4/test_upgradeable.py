@@ -12,9 +12,9 @@ from wrappers.token_wallet import TokenWallet
 class TestUpgradeable(unittest.TestCase):
 
     def setUp(self):
-        self.deployer = Deployer(upgradeable=True)
+        self.deployer = Deployer()
         root_owner = self.deployer.create_account()
-        self.root = self.deployer.create_token_root(root_owner, mint_disabled=False)
+        self.root = self.deployer.create_token_root(root_owner, mint_disabled=False, upgradeable=True)
         self._sync_ts4_abi(self.root, 'TokenRootUpgradeable')
 
     def test_root_upgrade(self):
@@ -23,28 +23,28 @@ class TestUpgradeable(unittest.TestCase):
 
     def test_wallet_upgrade(self):
         token_wallet = self._create_wallet()
-        self.assertEqual(self.root.call_responsible('walletVersion'), 0, 'Wrong version')
-        self.assertEqual(token_wallet.call_responsible('version'), 0, 'Wrong version')
-        self._set_wallet_code('TestTokenWalletUpgradeableV2')
         self.assertEqual(self.root.call_responsible('walletVersion'), 1, 'Wrong version')
-        self._update_wallet(token_wallet, 'TestTokenWalletUpgradeableV2')
         self.assertEqual(token_wallet.call_responsible('version'), 1, 'Wrong version')
+        self._set_wallet_code('TestTokenWalletUpgradeableV2')
+        self.assertEqual(self.root.call_responsible('walletVersion'), 2, 'Wrong version')
+        self._update_wallet(token_wallet, 'TestTokenWalletUpgradeableV2')
+        self.assertEqual(token_wallet.call_responsible('version'), 2, 'Wrong version')
         self.assertEqual(token_wallet.call_responsible('onlyInV2'), 'Some method in wallet v2', 'Wrong updating')
 
     def test_wallet_no_upgrade(self):
         token_wallet = self._create_wallet()
-        self.assertEqual(self.root.call_responsible('walletVersion'), 0, 'Wrong version')
-        self.assertEqual(token_wallet.call_responsible('version'), 0, 'Wrong version')
+        self.assertEqual(self.root.call_responsible('walletVersion'), 1, 'Wrong version')
+        self.assertEqual(token_wallet.call_responsible('version'), 1, 'Wrong version')
         self._update_wallet(token_wallet)
-        self.assertEqual(self.root.call_responsible('walletVersion'), 0, 'Wrong version')
-        self.assertEqual(token_wallet.call_responsible('version'), 0, 'Wrong version')
+        self.assertEqual(self.root.call_responsible('walletVersion'), 1, 'Wrong version')
+        self.assertEqual(token_wallet.call_responsible('version'), 1, 'Wrong version')
 
+    @unittest.skip('Bug with `onDeployRetry` in ts4 | Tested in mainnet')
     def test_deploy_retry(self):
         token_wallet_1 = self._create_wallet()
         token_wallet_2 = self._create_wallet()
         self.root.mint(100, token_wallet_1.owner.address)
         token_wallet_1.transfer(10, token_wallet_2.owner.address, deploy_wallet_value=DEPLOY_WALLET_VALUE)
-        # todo `onDeployRetry` is not called (it could be a bug in ts4)
         token_wallet_2.check_state(90)
         token_wallet_2.check_state(10)
 

@@ -1,7 +1,7 @@
 {
 	"ABI version": 2,
 	"version": "2.2",
-	"header": ["time"],
+	"header": ["pubkey", "time", "expire"],
 	"functions": [
 		{
 			"name": "constructor",
@@ -9,7 +9,10 @@
 				{"name":"owner","type":"address"},
 				{"name":"deployValue","type":"uint128"},
 				{"name":"rootCode","type":"cell"},
-				{"name":"walletCode","type":"cell"}
+				{"name":"walletCode","type":"cell"},
+				{"name":"rootUpgradeableCode","type":"cell"},
+				{"name":"walletUpgradeableCode","type":"cell"},
+				{"name":"platformCode","type":"cell"}
 			],
 			"outputs": [
 			]
@@ -28,18 +31,11 @@
 				{"name":"mintDisabled","type":"bool"},
 				{"name":"burnByRootDisabled","type":"bool"},
 				{"name":"burnPaused","type":"bool"},
-				{"name":"remainingGasTo","type":"address"}
+				{"name":"remainingGasTo","type":"address"},
+				{"name":"upgradeable","type":"bool"}
 			],
 			"outputs": [
 				{"name":"value0","type":"address"}
-			]
-		},
-		{
-			"name": "upgrade",
-			"inputs": [
-				{"name":"code","type":"cell"}
-			],
-			"outputs": [
 			]
 		},
 		{
@@ -67,6 +63,30 @@
 			]
 		},
 		{
+			"name": "changeRootUpgradeableCode",
+			"inputs": [
+				{"name":"rootUpgradeableCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changeWalletUpgradeableCode",
+			"inputs": [
+				{"name":"walletUpgradeableCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changePlatformCode",
+			"inputs": [
+				{"name":"platformCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "transferOwner",
 			"inputs": [
 				{"name":"owner","type":"address"}
@@ -77,6 +97,14 @@
 		{
 			"name": "acceptOwner",
 			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "upgrade",
+			"inputs": [
+				{"name":"code","type":"cell"}
 			],
 			"outputs": [
 			]
@@ -128,10 +156,34 @@
 			"outputs": [
 				{"name":"_walletCode","type":"cell"}
 			]
+		},
+		{
+			"name": "_rootUpgradeableCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_rootUpgradeableCode","type":"cell"}
+			]
+		},
+		{
+			"name": "_walletUpgradeableCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_walletUpgradeableCode","type":"cell"}
+			]
+		},
+		{
+			"name": "_platformCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_platformCode","type":"cell"}
+			]
 		}
 	],
 	"data": [
-		{"key":1,"name":"_nonce","type":"uint256"}
+		{"key":1,"name":"_randomNonce","type":"uint256"}
 	],
 	"events": [
 	],
@@ -139,12 +191,15 @@
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"name":"_nonce","type":"uint256"},
+		{"name":"_randomNonce","type":"uint256"},
 		{"name":"_owner","type":"address"},
 		{"name":"_pendingOwner","type":"address"},
 		{"name":"_tokenNonce","type":"uint256"},
 		{"name":"_deployValue","type":"uint128"},
 		{"name":"_rootCode","type":"cell"},
-		{"name":"_walletCode","type":"cell"}
+		{"name":"_walletCode","type":"cell"},
+		{"name":"_rootUpgradeableCode","type":"cell"},
+		{"name":"_walletUpgradeableCode","type":"cell"},
+		{"name":"_platformCode","type":"cell"}
 	]
 }

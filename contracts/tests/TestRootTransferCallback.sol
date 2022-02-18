@@ -1,7 +1,7 @@
-pragma ton -solidity >= 0.56.0;
+pragma ton-solidity >= 0.57.0;
 
-import "../TokenRoot.sol";
 import "../additional/Wallet.sol";
+import "../TokenRoot.sol";
 
 
 struct CallbackData {
@@ -13,7 +13,6 @@ struct CallbackData {
 
 
 contract TestRootTransferCallback is Wallet, ITransferTokenRootOwnershipCallback {
-    uint16 IS_NOT_ROOT = 10001;
 
     address public _root;
     CallbackData public _callback;
@@ -33,7 +32,7 @@ contract TestRootTransferCallback is Wallet, ITransferTokenRootOwnershipCallback
         address remainingGasTo,
         TvmCell payload
     ) public override {
-//        require(msg.sender == _root, IS_NOT_ROOT);
+        require(msg.sender == _root, TokenErrors.NOT_ROOT);
         _callback = CallbackData(oldOwner, newOwner, remainingGasTo, payload);
     }
 
