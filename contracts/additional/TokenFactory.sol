@@ -92,7 +92,7 @@ contract TokenFactory is ITokenFactory {
             burnPaused,
             remainingGasTo
         );
-        return {value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false} root;
+        return {value: 0, flag: TokenMsgFlag.ALL_NOT_RESERVED, bounce: false} root;
     }
 
     function _buildCommonStateInit(

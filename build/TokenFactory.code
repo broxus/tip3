@@ -1,4 +1,4 @@
-.version sol 0.57.1
+.version sol 0.57.3
 
 .macro constructor
 DROP
@@ -263,7 +263,7 @@ SENDRAWMSG
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
-PUSHINT 64
+PUSHINT 128
 SETINDEXQ 4
 FALSE
 SETINDEXQ 1
