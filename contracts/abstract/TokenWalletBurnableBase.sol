@@ -9,19 +9,24 @@ import "../interfaces/IBurnableTokenWallet.sol";
 import "../libraries/TokenErrors.sol";
 import "../libraries/TokenMsgFlag.sol";
 
-
+/**
+ * @dev Implementation of the {IBurnableTokenWallet} interface.
+ *
+ * This abstraction extends the functionality of {TokenWalletBase} and adding
+ * burning self-tokens functional.
+ */
 abstract contract TokenWalletBurnableBase is TokenWalletBase, IBurnableTokenWallet {
 
-    /*
-        @notice Burn tokens
-        @dev Can be called only by token wallet owner
-        @param tokens How much tokens to burn
-        @param grams How much EVERs attach to tokensBurned in case called with owner public key
-        @param remainingGasTo Receiver of the remaining EVERs balance, used in tokensBurned callback
-        @param callbackTo Address of contract, which implement IAcceptTokensBurnCallback.onAcceptTokensBurn
-               if it equals to 0:0 then no callbacks
-        @param payload Custom data will be delivered into IAcceptTokensBurnCallback.onAcceptTokensBurn
-    */
+    /**
+     * @dev See {IBurnableTokenWallet-burn}.
+     *
+     * Burn tokens from the wallet.
+     *
+     * Precondition:
+     *  - `sender` must be the wallet owner.
+     *
+     * For implementation details, see {TokenWalletBase-_burn}.
+     */
     function burn(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)
         override
         external

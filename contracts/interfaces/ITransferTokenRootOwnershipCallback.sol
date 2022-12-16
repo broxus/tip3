@@ -1,8 +1,20 @@
 pragma ton-solidity >= 0.57.0;
 
-
+/**
+ * @dev Interface describing the callback function that is called by the
+ * token root contract after the ownership transfer.
+ */
 interface ITransferTokenRootOwnershipCallback {
 
+    /**
+        @notice This function is called by the token root contract after the ownership transfer.
+        @param oldOwner The address of the old owner.
+        @param newOwner The address of the new owner.
+        @param remainingGasTo The address of the contract that will receive the remaining gas.
+        @param payload Payload data.
+
+        @dev not having this function in the interface will cause the compiler to generate a default implementation of this function.
+     */
     function onTransferTokenRootOwnership(
         address oldOwner,
         address newOwner,

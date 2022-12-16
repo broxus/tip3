@@ -17,9 +17,12 @@ import "./libraries/TokenGas.sol";
 import "./TokenWalletPlatform.sol";
 
 
-/*
-    @title Fungible token root contract upgradable
-*/
+/**
+ * @title Fungible token root upgradeable contract.
+ *
+ * @dev This is an implementation of upgradable token root that implements
+ * all the required methods of the TIP-3 standard.
+ */
 contract TokenRootUpgradeable is
     TokenRootTransferableOwnershipBase,
     TokenRootBurnPausableBase,
@@ -34,6 +37,39 @@ contract TokenRootUpgradeable is
     TvmCell static platformCode_;
     uint32 walletVersion_;
 
+
+    /**
+     * @dev Sets the values for `mintDisabled_`, `burnByRootDisabled_`,`burnPaused_`,
+     * and increases the `totalSupply_` if `initialSupply` is not zero.
+     *
+     * Parameters such as `symbol`, `decimals`, `name`, `rootOwner_` `randomNonce_`
+     * `deployer_`, and `platformCode_` are set during contract deployment,
+     * and passed as `StateInit` params.
+     *
+     * Also, the listed parameters, with the exception of `totalSupply_` and
+     * `burnPaused_`, are immutable:
+     * they can only be set once during construction.
+     *
+     * @param initialSupplyTo The address for which the initial suplay will be minted.
+     * @param initialSupply The Initial amount to be minted.
+     * @param deployWalletValue The initial value in EVER of the deploy wallet.
+     * @param mintDisabled True If need to disable minting tokens.
+     * @param burnByRootDisabled True If need to disabled burning by TokenRoot.
+     * @param burnPaused True If need to paused burn.
+     * @param remainingGasTo The address of the recipient of the remaining gas
+     *        after deploy contract.
+     *
+     * Preconditions:
+     * - The owner of {TokenRoot} can be an external or internal:
+     *
+     * - If the owner of {TokenRoot} is external, then the message being expanded
+     *   must be signed with the same key passed to `StateInit`.
+     *
+     * - If the owner of {TokenRoot} is internal, then the sender of the message
+     *   must be a `deployer_` and the `deployer_` must be an existed address.
+     *   Or the `deployer_` can be 0, but in this case the `msg.sender`
+     *   must be a equal `rootOwner_` passed to `StateInit`.
+    */
     constructor(
         address initialSupplyTo,
         uint128 initialSupply,
@@ -73,6 +109,9 @@ contract TokenRootUpgradeable is
         }
     }
 
+    /**
+     * @dev Implementation of the {SID} interface.
+     */
     function supportsInterface(bytes4 interfaceID) override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } (
             interfaceID == bytes4(0x3204ec29) ||    // SID
@@ -86,14 +125,32 @@ contract TokenRootUpgradeable is
         );
     }
 
+    /**
+     * @dev See {ITokenRootUpgradeable.walletVersion}.
+     */
     function walletVersion() override external view responsible returns (uint32) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } walletVersion_;
     }
 
+    /**
+     * @dev See {ITokenRootUpgradeable.platformCode}.
+     */
     function platformCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } platformCode_;
     }
 
+    /**
+     * @dev See {ITokenRootUpgradeable.requestUpgradeWallet}.
+     *
+     * Preconditions:
+     *  - Sender is a valid wallet.
+     *  - `currentVersion` must be not equal to `walletVersion_`.
+     *
+     * Postcondition:
+     *   - If `currentVersion` is not equal to `walletVersion_`, then
+     *    the wallet will be upgraded to the new version. Otherwise,
+     *    the remaining gas will be transferred to `remainingGasTo`.
+     */
     function requestUpgradeWallet(
         uint32 currentVersion,
         address walletOwner,
@@ -121,13 +178,28 @@ contract TokenRootUpgradeable is
         }
     }
 
+    /**
+     * @dev See {ITokenRootUpgradeable.setWalletCode}.
+     *
+     * Preconditions:
+     *  - Sender must be the owner of the TokenRoot.
+     *
+     * Postcondition:
+     *  - `walletCode_` is set to `code`.
+     *  - `walletVersion_` is incremented.
+     */
     function setWalletCode(TvmCell code) override external onlyRootOwner {
         tvm.rawReserve(_targetBalance(), 0);
         walletCode_ = code;
         walletVersion_++;
     }
 
-
+    /**
+     * @dev See {ITokenRootUpgradeable.upgrade}.
+     *
+     * Precondition:
+     *  - Sender must be the owner of the TokenRoot.
+     */
     function upgrade(TvmCell code) override external onlyRootOwner {
         TvmBuilder builder;
 
@@ -158,27 +230,37 @@ contract TokenRootUpgradeable is
         onCodeUpgrade(builder.toCell());
     }
 
-    /*
-        data:
-
-        [ address rootOwner_, uint128 totalSupply_, uint8 decimals_,
-            ref_1: [ uint32 walletVersion_,
-                ref_1_1: platformCode_,
-                ref_1_2: walletCode_
-            ],
-            ref_2: [
-                ref_2_1: name_,
-                ref_2_2: symbol_
-            ],
-            ref_3: [ bool mintDisabled_, bool burnByRootDisabled_, bool burnPaused_]
-        ]
-    */
+    /**
+     * @dev See {ITokenRootUpgradeable.onCodeUpgrade}.
+     *
+     *   data:
+     *
+     *   [ address rootOwner_, uint128 totalSupply_, uint8 decimals_,
+     *       ref_1: [ uint32 walletVersion_,
+     *           ref_1_1: platformCode_,
+     *           ref_1_2: walletCode_
+     *       ],
+     *       ref_2: [
+     *           ref_2_1: name_,
+     *           ref_2_2: symbol_
+     *       ],
+     *       ref_3: [ bool mintDisabled_, bool burnByRootDisabled_, bool burnPaused_]
+     *   ]
+     */
     function onCodeUpgrade(TvmCell data) private { }
 
+    /**
+     * @dev Returns the target balance.
+     */
     function _targetBalance() override internal pure returns (uint128) {
         return TokenGas.TARGET_ROOT_BALANCE;
     }
 
+    /**
+        @dev Returns the wallet init data for deploy new wallet.
+        @param walletOwner - wallet owner.
+        @return wallet init data cell.
+     */
     function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {
         return tvm.buildStateInit({
             contr: TokenWalletPlatform,
@@ -191,6 +273,16 @@ contract TokenRootUpgradeable is
         });
     }
 
+    /**
+     * @dev implemetation logic `deployWallet` function.
+     * @param initData - wallet init data.
+     * @param deployWalletValue - value for deploy wallet.
+     * @param remainingGasTo - recipient of remaining gas.
+     * @return deployed wallet address.
+     *
+     * Postcondition:
+     *  - Deploy new token wallet.
+     */
     function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo)
         override
         internal

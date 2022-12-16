@@ -6,17 +6,24 @@ pragma AbiHeader pubkey;
 import "./TokenWalletBase.sol";
 import "../interfaces/IBurnableByRootTokenWallet.sol";
 
-
+/**
+ * @dev Implementation of the {IBurnableByRootTokenWallet} interface.
+ *
+ * This abstraction extends the functionality of {TokenWalletBase} and adding
+ * burning tokens by TokenRoot.
+ */
 abstract contract TokenWalletBurnableByRootBase is TokenWalletBase, IBurnableByRootTokenWallet {
 
-    /*
-        @notice Allows for rootOwner burn tokens from TokenWallet
-        @dev Can be called only by TokenRoot
-        @param amount Amount tokens to burn
-        @param remainingGasTo Receiver of the remaining EVERs
-        @param callbackTo address of contract, which implement IAcceptTokensBurnCallback.onAcceptTokensBurn
-               if it equals to 0:0 then no callbacks
-        @param payload Custom data will be delivered into IAcceptTokensBurnCallback.onAcceptTokensBurn
+    /**
+     * @dev See {IBurnableByRootTokenWallet.burnByRoot}.
+     *
+     * Precondition:
+     *  - the caller must be TokenRoot.
+     *
+     * Postcondition:
+     *  - The `balance_` of wallet must decrease by the `amount` that is burned.
+     *
+     * For implementation details, see {TokenWalletBase._burn}.
     */
     function burnByRoot(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)
         override

@@ -2,10 +2,35 @@ pragma ton-solidity >= 0.57.0;
 
 import "./libraries/TokenMsgFlag.sol";
 
+/**
+ * @dev Theis contract provides an immutable foundation for a wallet
+ * token contract that can be updated.
+ * It ensures that all wallet addresses are considered to be derived
+ * from the same code, regardless of the version of the wallet.
+ *
+ * We uses the {tvm.buildStateInit} function to create a `StateInit` data cell
+ * containing the {TokenWalletPlatform} code and static data. Then
+ * use the {tvm.hash} function to compute the hash of the `StateInit` data and
+ * convert it to an address.
+ */
 contract TokenWalletPlatform {
     address static root;
     address static owner;
 
+    /**
+     * @dev Contstructor for TokenWalletPlatform.
+     * @param walletCode Code of the upgradable token wallet.
+     * @param walletVersion Version of the upgradable token wallet.
+     * @param sender Address of the sender.
+     * @param remainingGasTo Address to send remaining gas to.
+     *
+     * Precondition:
+     *   - Caller must be root or sender must be a wallet.
+     *
+     * Postcondition:
+     *  - Deployed upgradable token wallet or remaining gas is sent
+     *    to remainingGasTo.
+     */
     constructor(TvmCell walletCode, uint32 walletVersion, address sender, address remainingGasTo)
         public
         functionID(0x15A038FB)
@@ -21,6 +46,22 @@ contract TokenWalletPlatform {
         }
     }
 
+    /**
+     * @notice Derive wallet address from owner.
+     *
+     * @dev The function uses the {tvm.hash}, that computes the representation
+     * hash of of the wallet `StateInit` data and returns it as a 256-bit unsigned
+     * integer, then converted to an address.
+     *
+     * For string and bytes it computes hash of the tree of cells that contains
+     * data but not data itself.
+     *
+     * This allows the contract to determine the expected address of a wallet
+     * based on its owner's address.  See sha256 to count hash of data.
+     *
+     * @param walletOwner Token wallet owner address
+     * @return Token wallet address
+     */
     function _getExpectedAddress(address owner_) private view returns (address) {
         TvmCell stateInit = tvm.buildStateInit({
             contr: TokenWalletPlatform,
@@ -35,6 +76,24 @@ contract TokenWalletPlatform {
         return address(tvm.hash(stateInit));
     }
 
+    /**
+     * @dev Initialize the upgradable token wallet.
+     *
+     * The initialize function uses the `TvmBuilder` object to building `TvmCell`
+     * to store the `root`, `owner`, and `remainingGasTo` addresses, as well
+     * as the `walletVersion `and the contract's code.
+     * It then sets the contract's code to the provided `walletCode` and calls
+     * the {onCodeUpgrade} function with the TvmCell data.
+     *
+     * The purpose of the initialize function is to set the necessary state and
+     * code for the wallet contract. It also triggers the {onCodeUpgrade} function,
+     * which can be overridden by derived contracts to handle code upgrades.
+     *
+     * @param walletCode Code of the upgradable token wallet.
+     * @param walletVersion Version of the upgradable token wallet.
+     * @param remainingGasTo Address to send remaining gas to.
+     *
+     */
     function initialize(TvmCell walletCode, uint32 walletVersion, address remainingGasTo) private {
         TvmBuilder builder;
 

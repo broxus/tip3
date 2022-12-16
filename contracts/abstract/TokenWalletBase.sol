@@ -12,7 +12,17 @@ import "../interfaces/IBounceTokensBurnCallback.sol";
 import "../libraries/TokenErrors.sol";
 import "../libraries/TokenMsgFlag.sol";
 
-
+/**
+ * @dev Implementation of the {ITokenWallet} interface.
+ *
+ * This abstraction describes the minimal required functionality of
+ * TokenWaellet contract according to the TIP-3 standard.
+ *
+ * Also used as a base class for implementing abstractions such as:
+ * - {TokenWalletBurnableBase}
+ * - {TokenWalletBurnableByRootBase}
+ * - {TokenWalletDestroyableBase}
+ */
 abstract contract TokenWalletBase is ITokenWallet {
 
     address static root_;
@@ -20,32 +30,78 @@ abstract contract TokenWalletBase is ITokenWallet {
 
     uint128 balance_;
 
+    /**
+     * @dev Modifier than throws if called by any account other than the TokenRoot.
+     */
     modifier onlyRoot() {
         require(root_ == msg.sender, TokenErrors.NOT_ROOT);
         _;
     }
 
+    /**
+     * @dev Modifier than throws if called by any account other than the `owner_`.
+     */
     modifier onlyOwner() {
         require(owner_ == msg.sender, TokenErrors.NOT_OWNER);
         _;
     }
 
+    /**
+     * @dev See {TIP3TokenWallet.balance}.
+     */
     function balance() override external view responsible returns (uint128) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } balance_;
     }
 
+    /**
+     * @dev See {TIP3TokenWallet.owner}.
+     */
     function owner() override external view responsible returns (address) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } owner_;
     }
 
+    /**
+     * @dev See {TIP3TokenWallet.root}.
+     */
     function root() override external view responsible returns (address) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } root_;
     }
 
+    /**
+     * @dev See {TIP3TokenWallet.walletCode}.
+     */
     function walletCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } tvm.code();
     }
 
+    /**
+     * @dev See {ITokenWallet.transfer}.
+     *
+     * The function then uses the address of the recipient and `StateInit`
+     *  (derived using a function called {_buildWalletInitData})
+     * to determine the address of the recipient's token wallet. The sender's
+     * wallet then decreases its `balance_` by the `amount` and calls the
+     * {ITokenWallet.acceptTransfer} on the recipient's token wallet.
+     *
+     * If the recipient's wallet is unable to accept the transfer,
+     * the sender's wallet will return an error message and increase its
+     * `balance_` by the `amount`.
+     *
+     * Note that the recipient may not have a token wallet yet. In this case,
+     * if a sufficient amount of `deployWalletValue` is passed to the function,
+     * a token wallet will be deployed for the recipient. If a transfer is
+     * attempted to a non-existent token wallet and the required value is not
+     * provided, the transaction will fail with an error.
+     *
+     * Preconditions:
+     *  - `amount` must be greater than zero.
+     *  - `amount` must be less than or equal to `balance_`.
+     *  - `recipient` must be a non-zero address and should not be equal to the
+     *     address of the owner of the sender's wallet.
+     *
+     * Postcondition:
+     *  - `balance_` will be decreased by `amount`.
+     */
     function transfer(
         uint128 amount,
         address recipient,
@@ -73,7 +129,7 @@ abstract contract TokenWalletBase is ITokenWallet {
         } else {
             recipientWallet = address(tvm.hash(stateInit));
         }
-            
+
         balance_ -= amount;
 
         ITokenWallet(recipientWallet).acceptTransfer{ value: 0, flag: TokenMsgFlag.ALL_NOT_RESERVED, bounce: true }(
@@ -85,14 +141,21 @@ abstract contract TokenWalletBase is ITokenWallet {
         );
     }
 
-    /*
-        @notice Transfer tokens using another TokenWallet address, that wallet must be deployed previously
-        @dev Can be called only by token wallet owner
-        @param amount How much tokens to transfer
-        @param recipientWallet Recipient TokenWallet address
-        @param remainingGasTo Remaining gas receiver
-        @param notify Notify receiver on incoming transfer
-        @param payload Notification payload
+    /**
+     * @dev See {ITokenWallet.transferToWallet}.
+     *
+     * Almost the same as the {TokenWalletBase.transfer}, only it takes the
+     * address of the deployed TokenWallet.
+     * If the `recipientTokenWallet` is not deployed, the transaction will fail.
+     *
+     * Preconditions:
+     *  - `amount` must be greater than zero.
+     *  - `amount` must be less than or equal to `balance_`.
+     *  - `recipientTokenWallet` must be a non-zero address and should
+     *     not be equal to the address of the sender's TokenWallet.
+     *
+     * Postcondition:
+     *  - `balance_` will be decreased by `amount`.
     */
     function transferToWallet(
         uint128 amount,
@@ -122,15 +185,23 @@ abstract contract TokenWalletBase is ITokenWallet {
         );
     }
 
-    /*
-        @notice Callback for transfer operation
-        @dev Can be called only by another valid TokenWallet contract with same root
-        @param amount How much tokens to receive
-        @param sender Sender address
-        @param remainingGasTo Remaining gas receiver
-        @param notify Notify receiver on incoming transfer
-        @param payload Notification payload
-    */
+    /**
+     * @dev See {ITokenWallet.acceptTransfer}.
+     *
+     * Accepts incoming transfer for amount amount of tokens from TokenWallet,
+     * owned sender.
+     *
+     * If `notify` is `false`, than the remaining gas MUST be sent to the
+     * `remainingGasTo`.
+     * Otherwise, the {IAcceptTokensTransferCallback-onAcceptTokensTransfer}
+     * sends to the TokenWallet owner with the same `remainingGasTo` and `payload`.
+     *
+     * Preconditions:
+     *  - The transfer must come from the same wallet.
+     *
+     * Postcondition:
+     *  - `balance_` will be increased by `amount`.
+     */
     function acceptTransfer(
         uint128 amount,
         address sender,
@@ -166,11 +237,20 @@ abstract contract TokenWalletBase is ITokenWallet {
         }
     }
 
-    /*
-        @notice Accept minted tokens from root
-        @dev Can be called only by root token
-        @param amount How much tokens to accept
-        @param data Additional data
+    /**
+     * @dev See {ITokenWallet.acceptMint}.
+     *
+     * Accepts incoming mint foramount of tokens from TokenRoot.
+     * If `notify` is `false`, than the remaining gas MUST be sent to the
+     * `remainingGasTo`.
+     * Otherwise, the {IAcceptTokensMintCallback.onAcceptTokensMint} sends to the
+     * TokenWallet owner with the same `remainingGasTo` and `payload`.
+     *
+     * Preconditions:
+     *  - The mint must come from the TokenRoot.
+     *
+     * Postcondition:
+     *  - `balance_` will be increased by `amount`.
     */
     function acceptMint(uint128 amount, address remainingGasTo, bool notify, TvmCell payload)
         override
@@ -198,11 +278,16 @@ abstract contract TokenWalletBase is ITokenWallet {
         }
     }
 
-    /*
-        @notice On-bounce handler
-        @dev Catch bounce if acceptTransfer or tokensBurned fails
-        @dev If transfer fails - increase back tokens balance and notify owner
-        @dev If tokens burn root token callback fails - increase back tokens balance and notify owner
+    /**
+     * @notice On-bounce handler
+     * @dev Catch bounce if {acceptTransfer} or {acceptBurn} fails
+     * @param body - body of the bounced message.
+     *
+     * If {ITokenWallet.acceptTransfer} fails - increase back tokens
+     * `balance_` by `amount` and notify owner.
+     *
+     * If tokens burn {ITokenRoot.acceptBurn} fails - increase back `balance_`
+     * by the `amount`, and notify the owner.
     */
     onBounce(TvmSlice body) external {
         tvm.rawReserve(_reserve(), 2);
@@ -235,6 +320,21 @@ abstract contract TokenWalletBase is ITokenWallet {
         }
     }
 
+    /**
+     * @dev Burns `amount` tokens from TokenWallet, decreasing the
+     * `balance_`.
+     *
+     * Uses in {TokenWalletBurnableBase.burn} and {TokenWalletBurnableByRootBase.burn}.
+     *
+     * Preconditions:
+     *  - `amount` must be greater than 0.
+     *  - `amount` must be less than or equal to `balance_`.
+     *
+     * Postconditions:
+     *  - `balance_` will be decreased by `amount`.
+     *    If {ITokenRoot-acceptBurn} fails - message will be bounced
+     *    to {TokenWalletBase-onBounce}, and `balance_` will be increased back.
+    */
     function _burn(
         uint128 amount,
         address remainingGasTo,
@@ -257,11 +357,19 @@ abstract contract TokenWalletBase is ITokenWallet {
         );
     }
 
-    /*
-        @notice Withdraw all surplus balance in EVERs
-        @dev Can by called only by owner address
-        @param to Withdraw receiver
-    */
+    /**
+     * @notice Withdraw all surplus balance in EVERs.
+     * @dev Can by called only by owner address.
+     *
+     * @param to Recipient address of the surplus balance.
+     *
+     * Note: We pass flag {TokenMsgFlag.ALL_NOT_RESERVED}, so that message carries
+     * all the remaining balance of the current smart contract. Parameter value is ignored.
+     * The contract's balance will be equal to zero after the message processing.
+     *
+     * See {https://github.com/tonlabs/TON-Solidity-Compiler/blob/master/API.md#addresstransfer}
+     * for more details about flags.
+     */
     function sendSurplusGas(address to) external view onlyOwner {
         tvm.rawReserve(_targetBalance(), 0);
         to.transfer({
@@ -271,11 +379,43 @@ abstract contract TokenWalletBase is ITokenWallet {
         });
     }
 
+    /**
+     * @dev Calculates the reserve by taking the maximum of the contract's
+     * current balance minus the value of the message
+     * (i.e. the amount of EVERs spent on the current transaction) and the
+     * target balance of the contract (as determined by the _targetBalance function).
+     * This ensures that the reserve is set to the lower of the contract's
+     * current balance or its target balance, ensuring that the contract
+     * does not spend more EVERs than it has available.
+     */
     function _reserve() internal pure returns (uint128) {
         return math.max(address(this).balance - msg.value, _targetBalance());
     }
 
+    /**
+     * @dev Returns the target balance of the contract.
+     *
+     * Target balance is used for {tvm.rawReserve}, which creates an output
+     * action that reserves EVER.
+     * It is roughly equivalent to creating an outgoing message that carries
+     * reserve nanoevers to itself, so that subsequent spend actions cannot
+     * spend more money than the reserve.
+     */
     function _targetBalance() virtual internal pure returns (uint128);
+
+    /**
+     * @dev Builds the wallet `StateInit` data.
+     * @param walletOwner The owner of the wallet for which the `WalletInitData` is being building.
+     * @return The Wallet `StateInit` data.
+     */
     function _buildWalletInitData(address walletOwner) virtual internal view returns (TvmCell);
+
+    /**
+     * @dev Deploys new token wallet.
+     * @param initData - wallet `StateInit` data.
+     * @param deployWalletValue - value for deploy wallet.
+     * @param remainingGasTo - address for remaining gas.
+     * @return deployed wallet address.
+     */
     function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) virtual internal view returns (address);
 }

@@ -22,6 +22,10 @@ interface TIP3 {
     function acceptMint(uint128 _value) external;
 }
 
+/**
+ * @title Selector - TIP-6.1 standard methods to publish and detect what
+ * interfaces a smart contract implements.
+ */
 contract Selector {
     uint static _randomNonce;
 
@@ -29,21 +33,40 @@ contract Selector {
         tvm.accept();
     }
 
+    /**
+     * @notice Calculate an interface identifier for `acceptTransfer` method.
+     * @return Interface identifier for `acceptTransfer` method.
+     */
     function calculateAcceptTransferSelector() public pure returns (bytes4) {
         TIP3 i;
         return bytes4(tvm.functionId(i.acceptTransfer) - 1);
     }
 
+    /**
+     * @notice Calculate an interface identifier for `acceptMint` method.
+     * @return Interface identifier for `acceptMint` method.
+     */
     function calculateAcceptMintSelector() public pure returns (bytes4) {
         TIP3 i;
         return bytes4(tvm.functionId(i.acceptMint) - 1);
     }
 
+    /**
+     * @notice Calculate an interface identifier for `acceptBurn` method.
+     * @return Interface identifier for `acceptBurn` method.
+     */
     function calculateAcceptBurnSelector() public pure returns (bytes4) {
         TIP3 i;
         return bytes4(tvm.functionId(i.acceptBurn) - 1);
     }
 
+    /**
+     * @notice Calculate an interface identifiers for `name`, `symbol`,
+     * `decimals`, `totalSupply`, `walletCode`, and `acceptBurn` methods.
+     *
+     * @return Interface identifiers for `name`, `symbol`, `decimals`,
+     * `totalSupply`, `walletCode`, `acceptBurn` methods.
+     */
     function calculateTIP3TokenRootInterfaceID() public pure returns (bytes4) {
         TIP3TokenRoot i;
 
@@ -56,6 +79,13 @@ contract Selector {
         );
     }
 
+    /**
+     * @notice Calculate an interface identifiers for `root`, `balance`,
+     * `walletCode`, `acceptTransfer`, and `acceptMint`methods.
+     *
+     * @return Interface identifiers for `root`, `balance`, `walletCode`,
+     * `acceptTransfer`, and `acceptMint` methods.
+     */
     function calculateTIP3TokenWalletInterfaceID() public pure returns(bytes4) {
         TIP3TokenWallet i;
 
@@ -66,18 +96,32 @@ contract Selector {
         );
     }
 
+    /**
+     * @notice Calculate an interface identifier for `supportsInterface` method.
+     * @return Interface identifier for `supportsInterface` method.
+     */
     function calculateSIDInterfaceID() public pure returns(bytes4) {
         SID i;
 
         return bytes4(tvm.functionId(i.supportsInterface));
     }
 
+    /**
+     * @notice Calculate an interface identifier for `version` method.
+     * @return Interface identifier for `version` method.
+     */
     function calculateVersionedInterfaceID() public pure returns(bytes4) {
         IVersioned i;
 
         return bytes4(tvm.functionId(i.version));
     }
 
+    /**
+     * @notice Calculate an interface identifiers for `rootOwner`, `walletOf`,
+     * `mint`, `deployWallet` methods.
+     * @return Interface identifiers for `rootOwner`, `walletOf`, `mint`,
+     * `deployWallet` methods.
+    */
     function calculateTokenRootInterfaceID() public pure returns (bytes4) {
         ITokenRoot i;
 
@@ -89,6 +133,11 @@ contract Selector {
         );
     }
 
+    /**
+     * @notice Calculate an interface identifiers for `owner`, `transfer`,
+     * and `transferToWallet` methods.
+     * @return Interface identifiers for `TokenWallet` methods.
+     */
     function calculateTokenWalletInterfaceID() public pure returns (bytes4) {
         ITokenWallet i;
 
@@ -99,12 +148,22 @@ contract Selector {
         );
     }
 
+    /**
+     * @notice Calculate an interface identifier for `burn` method.
+     * @return Interface identifier for `burn` method.
+     */
     function calculateBurnableTokenWalletInterfaceID() public pure returns (bytes4) {
         IBurnableTokenWallet i;
 
         return bytes4(tvm.functionId(i.burn));
     }
 
+    /**
+     * @notice Calculate an interface identifiers for `burnTokens`,
+     * `disableBurnByRoot`, and `burnByRootDisabled` methods.
+     *
+     * @return Interface identifiers for `burn` method.
+     */
     function calculateBurnableByRootTokenRootInterfaceID() public pure returns (bytes4) {
         IBurnableByRootTokenRoot i;
 
@@ -115,18 +174,31 @@ contract Selector {
         );
     }
 
+    /**
+     * @notice Calculate an interface identifier for `burnByRoot` method.
+     * @return Interface identifier for `burnByRoot` method.
+     */
     function calculateBurnableByRootTokenWalletInterfaceID() public pure returns (bytes4) {
         IBurnableByRootTokenWallet i;
 
         return bytes4(tvm.functionId(i.burnByRoot));
     }
 
+    /**
+     * @notice Calculate an interface identifier for `destroy` method.
+     * @return Interface identifier for `destroy` method.
+     */
     function calculateDestroyableInterfaceID() public pure returns (bytes4) {
         IDestroyable i;
 
         return bytes4(tvm.functionId(i.destroy));
     }
 
+    /**
+     * @notice Calculate an interface identifiers for `disableMint`
+     * and `mintDisabled` methods.
+     * @return Interface identifiers for `disableMint` and `mintDisabled` method.
+     */
     function calculateDisableableMintTokenRootInterfaceID() public pure returns (bytes4) {
         IDisableableMintTokenRoot i;
 
@@ -136,6 +208,10 @@ contract Selector {
         );
     }
 
+    /**
+     * @notice Calculate an interface identifier for `transferOwnership` method.
+     * @return Interface identifier for `transferOwnership` method.
+     */
     function calculateTransferableOwnershipInterfaceID() public pure returns (bytes4) {
         ITransferableOwnership i;
 
@@ -144,6 +220,10 @@ contract Selector {
         );
     }
 
+    /**
+     * @notice Calculate an interface identifiers for `setBurnPaused` and `burnPaused` methods.
+     * @return Interface identifiers for `setBurnPaused` and `burnPaused` method.
+     */
     function calculateBurnPausableTokenRootInterfaceID() public pure returns (bytes4) {
         IBurnPausableTokenRoot i;
 
@@ -153,6 +233,13 @@ contract Selector {
         );
     }
 
+    /**
+     * platformCode upgrade acceptUpgrade
+     * @notice Calculate an interface identifiers for `upgrade`, `acceptUpgrade`
+     * and `platformCode` methods.
+     * @return Interface identifiers for `upgrade`, `acceptUpgrade` and
+     * `platformCode` methods.
+     */
     function calculateTokenWalletUpgradeableInterfaceID() public pure returns (bytes4) {
         ITokenWalletUpgradeable i;
 
@@ -163,6 +250,13 @@ contract Selector {
         );
     }
 
+    /**
+     * @notice Calculate an interface identifiers for `walletVersion`,
+     * `platformCode`, `requestUpgradeWallet`, `setWalletCode` and `upgrade` methods.
+     *
+     * @return Interface identifiers for `walletVersion`, `platformCode`,
+     * `requestUpgradeWallet`, `setWalletCode` and `upgrade` methods.
+     */
     function calculateTokenRootUpgradeableInterfaceID() public pure returns (bytes4) {
         ITokenRootUpgradeable i;
 

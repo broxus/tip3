@@ -1,23 +1,34 @@
 pragma ton-solidity >= 0.57.0;
 
-/*
-
-walletOwner -> IBurnableTokenWallet(wallet).burn(...) ->
-               IBurnPausableTokenRoot(root).tokensBurned(...) ->
-               IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
-*/
-
-
+/**
+ * @dev An interface that defines additional functionality for burning tokens
+ * owned by the TokenWallet, according to the TIP-3.2 standard.
+ *
+ * (See https://docs.everscale.network/standard/TIP-3.2#burn-tokens-by-token-wallet-owner)
+ *
+ * Сhain of calls:
+ *
+ * walletOwner -> IBurnableTokenWallet(wallet).burn(...) ->
+ *                ITokenRoot(root).acceptBurn(...) ->
+ *                IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
+ */
 interface IBurnableTokenWallet {
 
-    /*
-        @notice Allows for walletOwner burn tokens
-        @dev Can be called only by TokenWallet owner
-        @param amount Amount tokens to burn
-        @param remainingGasTo Receiver of the remaining EVERs
-        @param callbackTo Address of contract, which implement IAcceptTokensBurnCallback.onAcceptTokensBurn
-               if it equals to 0:0 then no callbacks
-        @param payload Custom data will be delivered into IAcceptTokensBurnCallback.onAcceptTokensBurn
+    /**
+     * @notice Allows for walletOwner burn tokens.
+     *
+     * @param amount Amount tokens to burn
+     * @param remainingGasTo Address of contract, which will receive remaining
+     *        gas after execution burn.
+     * @param callbackTo Address of contract, which implement {IAcceptTokensBurnCallback.onAcceptTokensBurn}
+     *        if it equals to 0:0 then no callbacks.
+     * @param payload Custom data will be delivered into {IAcceptTokensBurnCallback.onAcceptTokensBurn}.
+     *
+     * Precondition:
+     *  - sender must be TokenWallet owner.
+     *
+     * Postcondition:
+     *  - The `balance_` must increase by the `amount` that is burned.
     */
     function burn(
         uint128 amount,

@@ -7,20 +7,39 @@ import "./TokenRootBase.sol";
 import "../interfaces/IBurnPausableTokenRoot.sol";
 import "../libraries/TokenMsgFlag.sol";
 
-
+/**
+ * @dev Implementation of the {IBurnPausableTokenRoot} interface.
+ *
+ * This abstraction extends the functionality of {TokenRootBase} and increases
+ * the capabilities of TokenRoot, the ability to start and stop burning tokens.
+ * And a view method that returns the state of `burnPaused_`.
+ */
 abstract contract TokenRootBurnPausableBase is TokenRootBase, IBurnPausableTokenRoot {
 
     bool burnPaused_;
 
+    /**
+     * @notice Returns the current state of the ability to burn tokens.
+     * @return burning is paused (true) or not (false).
+     */
     function burnPaused() override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } burnPaused_;
     }
 
+    /**
+     * @dev See {IBurnPausableTokenRoot.setBurnPaused}.
+     *
+     * Post condition:
+     * - `burnPaused_` is set to the value of the `paused` parameter.
+    */
     function setBurnPaused(bool paused) override external responsible onlyRootOwner returns (bool) {
         burnPaused_ = paused;
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } burnPaused_;
     }
 
+     /**
+      * @dev See {TokenRootBase._burnEnabled}.
+      */
     function _burnEnabled() override internal view returns (bool) {
         return !burnPaused_;
     }

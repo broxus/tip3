@@ -2,13 +2,23 @@ pragma ton-solidity >= 0.57.0;
 
 import "../structures/ICallbackParamsStructure.sol";
 
+/**
+ * @dev Interface defines a contract that has functions to one-step transfer
+ * ownership to new owner
+ */
 interface ITransferableOwnership is ICallbackParamsStructure {
-    /*
-        @notice Transfer ownership to new owner
-        @dev Can be called only by current owner
-        @param newOwner New owner
-        @param remainingGasTo  Remaining gas receiver
-        @param callbacks for receiving callback
+    /**
+     * @notice Transfer ownership to new owner.
+     * @dev Can be called only by current owner.
+     * @param newOwner New owner.
+     * @param remainingGasTo Address to send remaining gas after transfer ownership.
+     * @param callbacks Callbacks to be called after transfer ownership.
+     *
+     * Precondition:
+     *  - Caller must be owner.
+     *
+     * Postconditions:
+     *  - Ownership is transferred to new owner.
     */
     function transferOwnership(
         address newOwner,

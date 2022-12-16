@@ -5,13 +5,13 @@ import "./SID.sol";
 
 interface ITokenWallet is TIP3TokenWallet, SID {
 
-    /*
-        @notice Get TokenWallet owner address
-        @returns owner TokenWallet owner address
-    */
+    /**
+     * @notice Returns the current owner of the wallet.
+     * @return The current owner of the wallet.
+     */
     function owner() external view responsible returns (address);
 
-    /*
+    /**
         @notice Transfer tokens and optionally deploy TokenWallet for recipient
         @dev Can be called only by TokenWallet owner
         @dev If deployWalletValue !=0 deploy token wallet for recipient using that gas value
@@ -31,11 +31,11 @@ interface ITokenWallet is TIP3TokenWallet, SID {
         TvmCell payload
     ) external;
 
-    /*
+    /**
         @notice Transfer tokens using another TokenWallet address, that wallet must be deployed previously
         @dev Can be called only by token wallet owner
         @param amount How much tokens to transfer
-        @param recipientWallet Recipient TokenWallet address
+        @param recipientTokenWallet Recipient TokenWallet address
         @param remainingGasTo Remaining gas receiver
         @param notify Notify receiver on incoming transfer
         @param payload Notification payload
@@ -48,7 +48,7 @@ interface ITokenWallet is TIP3TokenWallet, SID {
         TvmCell payload
     ) external;
 
-    /*
+    /**
         @notice Callback for transfer operation
         @dev Can be called only by another valid TokenWallet contract with same root
         @param amount How much tokens to receive
@@ -65,7 +65,7 @@ interface ITokenWallet is TIP3TokenWallet, SID {
         TvmCell payload
     ) external functionID(0x67A0B95F);
 
-    /*
+    /**
         @notice Accept minted tokens from root
         @dev Can be called only by TokenRoot
         @param amount How much tokens to accept

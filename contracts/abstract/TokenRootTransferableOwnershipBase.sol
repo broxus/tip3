@@ -6,9 +6,22 @@ pragma AbiHeader pubkey;
 import "./TokenRootBase.sol";
 import "../interfaces/ITransferableOwnership.sol";
 
-
+/**
+ * @dev Implementation of the {ITransferableOwnership} interface.
+ *
+ * @dev This abstraction extends the functionality of {TokenRootBase},
+ * adding a 1-step ownership transfer mechanism.
+ */
 abstract contract TokenRootTransferableOwnershipBase is TokenRootBase, ITransferableOwnership {
-
+    /**
+     * @dev See {ITransferableOwnership.transferOwnership}.
+     *
+     * Precondition:
+     *  - Caller must be owner.
+     *
+     * Postconditions:
+     *  - Ownership is transferred to new owner.
+     */
     function transferOwnership(
         address newOwner,
         address remainingGasTo,
