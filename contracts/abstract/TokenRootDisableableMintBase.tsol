@@ -9,19 +9,38 @@ import "../libraries/TokenErrors.tsol";
 import "../libraries/TokenMsgFlag.tsol";
 
 
+/**
+ * @dev Implementation of the {IBurnPausableTokenRoot} interface.
+ *
+ * This abstraction extends the functionality of {TokenRootBase} and increases
+ * the capabilities of TokenRoot, adding the ability to permanently disable token minting.
+ * And a view method that returns the state of `mintDisabled_`.
+ */
 abstract contract TokenRootDisableableMintBase is TokenRootBase, IDisableableMintTokenRoot {
 
     bool mintDisabled_;
 
+    /**
+     * @dev See {IDisableableMintTokenRoot.disableMint}.
+     *
+     * Post condition:
+     *  - `mintDisabled_` is set to `true`.
+     */
     function disableMint() override external responsible onlyRootOwner returns (bool) {
         mintDisabled_ = true;
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } mintDisabled_;
     }
 
+    /**
+     * @dev See {IDisableableMintTokenRoot-mintDisabled}.
+     */
     function mintDisabled() override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } mintDisabled_;
     }
 
+    /**
+     * @dev See {TokenRootBase-_mintEnabled}.
+     */
     function _mintEnabled() override internal view returns (bool) {
         return !mintDisabled_;
     }

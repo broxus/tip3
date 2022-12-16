@@ -9,9 +9,20 @@ import "../interfaces/IDestroyable.tsol";
 import "../libraries/TokenErrors.tsol";
 import "../libraries/TokenMsgFlag.tsol";
 
-
+/**
+ * @dev Implementation of the {IDestroyable} interface.
+ *
+ * This abstraction extends the functionality of {TokenWalletBase} and adding
+ * the ability to destroy the wallet.
+ */
 abstract contract TokenWalletDestroyableBase is TokenWalletBase, IDestroyable {
 
+    /**
+     * @dev See {IDestroyable.destroy}.
+     *
+     * Requirements:
+     *  - the wallet balance must be empty.
+     */
     function destroy(address remainingGasTo) override external onlyOwner {
         require(balance_ == 0, TokenErrors.NON_EMPTY_BALANCE);
         remainingGasTo.transfer({

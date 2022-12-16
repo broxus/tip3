@@ -12,9 +12,21 @@ import "./TokenWallet.tsol";
 import "./libraries/TokenErrors.tsol";
 import "./libraries/TokenMsgFlag.tsol";
 
-
-/*
-    @title Fungible token root contract
+/**
+ * @title Fungible token root contract
+ * @dev This is an implementation of TokenRoot that implements all the required
+ * methods of the TIP-3 standard.
+ *
+ * You can read more about the standard TIP-3 in the documentation:
+ * https://docs.everscale.network/standard/TIP-3/
+ *
+ * The token root contract stores general information about the token, such
+ * as `name`, `symbol`, `decimals`, `walletCode_`, see {ITokenRoot}.
+ *
+ * Each token holder has its own instance of the token wallet contract,
+ * which stores information about the balance of the tokens, see {ITokenWallet}.
+ * The transfer of tokens is carried out in P2P mode between the wallets of
+ * the sender's and recipient's tokens.
 */
 contract TokenRoot is
     TokenRootTransferableOwnershipBase,
@@ -26,6 +38,39 @@ contract TokenRoot is
     uint256 static randomNonce_;
     address static deployer_;
 
+    /**
+     * @dev Sets the values for `mintDisabled_`, `burnByRootDisabled_`,
+     * `burnPaused_`, and increases the `totalSupply_`
+     * if `initialSupply` is not zero.
+     *
+     * Parameters such as `symbol`, `decimals`, `name`, `rootOwner_`,
+     * `randomNonce_` and {walletCode_} are set during contract deployment,
+     * and passed as `StateInit` params`.
+     *
+     * Also, the listed parameters, with the exception of {totalSupply_} and
+     * {burnPaused_}, are immutable:
+     * they can only be set once during construction.
+     *
+     * @param initialSupplyTo The address for which the initial suplay will be minted.
+     * @param initialSupply The Initial amount to be minted.
+     * @param deployWalletValue The initial value in EVER of the deploy wallet.
+     * @param mintDisabled True If need to disable minting tokens.
+     * @param burnByRootDisabled True If need to disabled burning by TokenRoot.
+     * @param burnPaused True If need to paused burn.
+     * @param remainingGasTo The address of the recipient of the remaining gas
+     *        after deploy contract.
+     *
+     * Preconditions:
+     * - The owner of {TokenRoot} can be an external or internal:
+     *
+     * - If the owner of {TokenRoot} is external, then the message being expanded
+     *   must be signed with the same key passed to `StateInit`.
+     *
+     * - If the owner of {TokenRoot} is internal, then the sender of the message
+     *   must be a `deployer_` and the `deployer_` must be an existed address.
+     *   Or the `deployer_` can be 0, but in this case the `msg.sender`
+     *   must be a equal `rootOwner_` passed to `StateInit`.
+    */
     constructor(
         address initialSupplyTo,
         uint128 initialSupply,
@@ -37,6 +82,7 @@ contract TokenRoot is
     )
         public
     {
+
         if (msg.pubkey() != 0) {
             require(msg.pubkey() == tvm.pubkey() && deployer_.value == 0, TokenErrors.WRONG_ROOT_OWNER);
             tvm.accept();
@@ -63,7 +109,9 @@ contract TokenRoot is
             });
         }
     }
-
+    /**
+     * @dev Implementation of the {SID} interface.
+     */
     function supportsInterface(bytes4 interfaceID) override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } (
             interfaceID == bytes4(0x3204ec29) ||    // SID
@@ -76,10 +124,35 @@ contract TokenRoot is
         );
     }
 
+    /**
+     * @dev Implementation of the {TokenRootBase._targetBalance} virtual function.
+     *
+     * @return the `TokenGas.TARGET_ROOT_BALANCE` EVER.
+     */
     function _targetBalance() override internal pure returns (uint128) {
         return TokenGas.TARGET_ROOT_BALANCE;
     }
 
+    /**
+     * @dev See {TokenRootBase._buildWalletInitData}.
+     *
+     * The `InitData` consists of:
+     *  - `contr` (contract) - defines the contract whose `StateInit` will be created.
+     *      Mandatory to be set if the `varInit` option is specified.
+     *
+     *  - `varInit` (initialization list) - used to set static variables of the
+     *      contract, see {TokenWalletBase}.
+     *      Conflicts with data and must be set contr.
+     *
+     *      `root_` - the address of the {TokenRoot} contract.
+     *      `owner_` - the address of the owner of the wallet.
+     *
+     *  - pubkey` - the public key of the contract.
+     *      The value 0 means that the wallet can be owned only by another contract.
+     *      contract, the most common example is {Wallet}.
+     *
+     *  - `code` - the code of the {TokenWallet}.
+     */
     function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {
         return tvm.buildStateInit({
             contr: TokenWallet,
@@ -92,6 +165,11 @@ contract TokenRoot is
         });
     }
 
+    /**
+     * @dev Implementation of the virtual function {TokenRootBase._deployWallet}.
+     *
+     * Deploys a new {TokenWallet} contract according to the TIP-3 standard.
+     */
     function _deployWallet(TvmCell initData, uint128 deployWalletValue, address)
         override
         internal

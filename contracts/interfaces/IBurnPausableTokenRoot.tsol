@@ -1,20 +1,30 @@
 pragma ton-solidity >= 0.57.0;
 pragma AbiHeader expire;
 
+/**
+ * @dev The interface that defines additional functionality enabling and
+ * disabling the mechanism for burning tokens on a contract
+ */
 interface IBurnPausableTokenRoot {
 
-    /*
-        @notice Pause/Unpause token burns
-        @dev Can be called only by rootOwner
-        @dev if paused, then all burned tokens will be bounced to TokenWallet
-        @param paused
-        @returns paused
+    /**
+     * @notice Pause/Unpause token burns.
+     *
+     * @dev if paused, then all burned tokens will be bounced to TokenWallet.
+     *
+     * @param paused - true to pause, false to unpause.
+     * @return `paused` value.
+     *
+     * Preconditions:
+     *  - `sender` MUST be rootOwner.
+     *
+     * Postconditions:
+     * - Sets `burnPaused` to `paused` value.
     */
     function setBurnPaused(bool paused) external responsible returns (bool);
 
-    /*
-        @notice Get burn paused status
-        @returns paused
+    /**
+     * @notice Returns true if token burns are paused, and false otherwise.
     */
     function burnPaused() external view responsible returns (bool);
 }

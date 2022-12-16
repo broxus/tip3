@@ -1,5 +1,16 @@
 pragma ton-solidity >= 0.57.0;
 
+/**
+    @dev flag that used to send the internal outbound message. Defaults to 0.
+    @dev flag 1 Means that the sender wants to pay transfer fees separately from contract's balance.
+    @dev flag 2 means that any errors arising while processing this message during the action phase should be ignored.
+            But if the message has wrong format, then the transaction fails and + 2 has no effect.
+    @dev flag 32 means that the current account must be destroyed if its resulting balance is zero.
+            for example flag: 128 + 32 is used to send all balance and destroy the contract.
+    @dev flag 64 carries funds equal to the value parameter plus all the remaining value of the inbound message (that initiated the contract execution).
+    @dev flag 128 message carries all the remaining balance of the current smart contract. Parameter value is ignored.
+            The contract's balance will be equal to zero after the message processing.
+ */
 library TokenMsgFlag {
     uint8 constant SENDER_PAYS_FEES     = 1;
     uint8 constant IGNORE_ERRORS        = 2;

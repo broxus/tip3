@@ -1,17 +1,30 @@
 pragma ton-solidity >= 0.57.0;
 
-
+/**
+ * @dev Interface defines a callback function that can be used by a token wallet
+ * contract to notify its owner when a burn operation is reverted.
+ *
+ * Chain of calls:
+ *
+ * walletOwner -> IBurnableTokenWallet(walletOwner).burn(...) ->
+ *                ITokenRoot(root).acceptBurn(...)  ->
+ *                TokenWalletBase.onBounce(...) ->
+ *                IBounceTokensBurnCallback(callbackTo).onBounceTokensBurn(...) ->
+ *
+ */
 interface IBounceTokensBurnCallback {
 
-    /*
-        @notice Callback from TokenWallet on tokens burn reverted
-        @param tokenRoot TokenRoot of received tokens
-        @param amount Reverted tokens amount
+    /**
+     * @notice Invoked by the token wallet when a burn operation is reverted.
+     * @param tokenRoot Address of the TokenRoot contract.
+     * @param amount Reverted tokens amount.
+     *
+     * Note: This callback function has no implementation in the main contracts.
+     * However, you can see an example of its implementation in the test contract.
+     * See {TestWalletCallback.onBounceTokensBurn}.
     */
     function onBounceTokensBurn(
         address tokenRoot,
         uint128 amount
     ) external;
-
-
 }

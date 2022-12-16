@@ -1,27 +1,38 @@
 pragma ton-solidity >= 0.57.0;
 
-/*
-
-1)
-walletOwner -> IBurnableTokenWallet(wallet).burn(...) ->
-               IBurnPausableTokenRoot(root).tokensBurned(...) ->
-               IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
-2)
-rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
-             IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
-             IBurnPausableTokenRoot(root).tokensBurned(...) ->
-             IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
-*/
-
-
+/**
+ * @dev Interface defines a callback function that can be used by a TokenRoot
+ * to notify the owner of a TokenWallet when their tokens have been burned.
+ *
+ * Chain of calls:
+ *  1)
+ *  walletOwner -> IBurnableTokenWallet(wallet).burn(...) ->
+ *                 IBurnPausableTokenRoot(root).tokensBurned(...) ->
+ *                 IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
+ *  2)
+ *  rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
+ *               IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
+ *               IBurnPausableTokenRoot(root).tokensBurned(...) ->
+ *               IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
+ */
 interface IAcceptTokensBurnCallback {
 
-    /*
-        @notice Callback from TokenRoot on tokens burned
-        @param amount How much tokens was burned
-        @param walletOwner Burner TokenWallet owner address
-        @param remainingGasTo Receiver of the remaining EVERs
-        @param payload - Custom data specified in IBurnableTokenWallet.burn or IBurnableByRootTokenRoot.burnTokens
+    /**
+     * @notice Callback used by the Token Root contract when it receives a request
+     * to burn tokens on {ITokenRoot.acceptBurn} from a token wallet and
+     * successfully completes the burning process.
+     * This allows the wallet owner to take appropriate action,
+     * such as triggering a business logic.
+     *
+     * @param amount The amount of tokens that were burned.
+     * @param walletOwner The owner of the token wallet whose tokens were burned.
+     * @param wallet The token wallet whose tokens were burned.
+     * @param remainingGasTo The address to which any remaining gas from the token burn should be sent.
+     * @param payload - Additional data that was attached to the token burn.
+     *
+     * Note: This callback function has no implementation in the main contracts.
+     * However, you can see an example of its implementation in the test contract.
+     * See {TestWalletCallback.onAcceptTokensBurn}.
     */
     function onAcceptTokensBurn(
         uint128 amount,

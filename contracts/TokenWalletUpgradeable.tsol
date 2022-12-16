@@ -15,9 +15,18 @@ import "./libraries/TokenGas.tsol";
 import "./libraries/TokenMsgFlag.tsol";
 import "./TokenWalletPlatform.tsol";
 
-
-/*
-    @title Fungible token wallet contract
+/**
+ * @title Fungible token wallet upgradeable contract.
+ *
+ * @dev This is an implementation of TokenWallet upgradeable that implements all the
+ * required methods of the TIP-3 standard.
+ * As well as optional ones: burn and collections.
+ *
+ * Each token holder has its own instance of token wallet contract.
+ * Transfer happens in a decentralized fashion - sender token wallet SHOULD
+ * send the specific message to the receiver token wallet. Since token wallets
+ * have the same code, it's easy for receiver token wallet to check the correctness
+ * of sender token wallet.
 */
 contract TokenWalletUpgradeable is
     TokenWalletBurnableBase,
@@ -29,10 +38,18 @@ contract TokenWalletUpgradeable is
     uint32 version_;
     TvmCell platformCode_;
 
+    /**
+     * @dev The constructor has been reverted because it was called in
+     * the {TokenWalletPlatform}. The `revert()` function is used to prevent
+     * the contract from executing any further.
+     */
     constructor() public {
         revert();
     }
 
+    /**
+     * @dev See {SID.supportsInterface}.
+     */
     function supportsInterface(bytes4 interfaceID) override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } (
             interfaceID == bytes4(0x3204ec29) ||    // SID
@@ -41,17 +58,17 @@ contract TokenWalletUpgradeable is
             interfaceID == bytes4(0x562548ad) ||    // IBurnableTokenWallet
             interfaceID == bytes4(0x0c2ff20d) ||    // IBurnableByRootTokenWallet
             interfaceID == bytes4(0x7edc1d37) ||    // ITokenWalletUpgradeable
-            interfaceID == bytes4(0x0f0258aa)        // IDestroyable
+            interfaceID == bytes4(0x0f0258aa)       // IDestroyable
         );
     }
 
+    /**
+     * @dev See {ITokenWalletUpgradeable.platformCode}.
+     */
     function platformCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } platformCode_;
     }
 
-    /*
-        0x15A038FB is TokenWalletPlatform constructor functionID
-    */
     function onDeployRetry(TvmCell, uint32, address sender, address remainingGasTo)
         external
         view
@@ -69,11 +86,19 @@ contract TokenWalletUpgradeable is
             });
         }
     }
-
+    /**
+     * @notice Returns the version of the Wallet.
+     */
     function version() override external view responsible returns (uint32) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } version_;
     }
 
+    /**
+     * @dev See {ITokenWalletUpgradeable.upgrade}.
+     *
+     * Sends a request to the TokenRoot to upgrade the Wallet code to
+     * the latest version.
+     */
     function upgrade(address remainingGasTo) override external onlyOwner {
         ITokenRootUpgradeable(root_).requestUpgradeWallet{ value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false }(
             version_,
@@ -82,6 +107,9 @@ contract TokenWalletUpgradeable is
         );
     }
 
+    /**
+     * @dev See {ITokenWalletUpgradeable.acceptUpgrade}.
+     */
     function acceptUpgrade(TvmCell newCode, uint32 newVersion, address remainingGasTo) override external onlyRoot {
         if (version_ == newVersion) {
             tvm.rawReserve(_reserve(), 0);
@@ -107,7 +135,17 @@ contract TokenWalletUpgradeable is
             onCodeUpgrade(builder.toCell());
         }
     }
-
+    /**
+     * @dev This function rewrites the wallet storage after the code upgrade.
+     * @param data - TvmBuilder with the following fields:
+     *     - root_ - address
+     *     - owner_ - address
+     *     - balance_ - uint128
+     *     - version_ - uint32
+     *     - newVersion - uint32
+     *     - remainingGasTo - address
+     *     - platformCode_ - TvmCell
+     */
     function onCodeUpgrade(TvmCell data) private {
         tvm.rawReserve(_reserve(), 2);
         tvm.resetStorage();
@@ -135,11 +173,22 @@ contract TokenWalletUpgradeable is
             });
         }
     }
-
+    /**
+     * @dev Returns the `TokenGas.TARGET_WALLET_BALANCE` EVER of gas reserved for the current operation.
+     */
     function _targetBalance() override internal pure returns (uint128) {
         return TokenGas.TARGET_WALLET_BALANCE;
     }
 
+    /**
+     * @dev Implementation of the {TokenRootBase._buildWalletInitData}.
+     *
+     * This function builds the init data for the upgradeable wallet.
+     * @dev Used in transfer and mint function, for deploy new wallet, when the recipient is not a deployed wallet.
+     * @dev It is also used in AcceptTransfer to ensure that the transfer is from a valid wallet.
+     * @param walletOwner - owner of the wallet.
+     * @return init data cell for the wallet.
+     */
     function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {
         return tvm.buildStateInit({
             contr: TokenWalletPlatform,
@@ -152,6 +201,9 @@ contract TokenWalletUpgradeable is
         });
     }
 
+    /**
+     * @dev Deploy new upgradeable TokenWallet.
+     */
     function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo)
         override
         internal
