@@ -1,6 +1,6 @@
 pragma ton-solidity >= 0.57.0;
 
-import "./IBurnPausableTokenRoot.sol";
+import "./IBurnPausableTokenRoot.tsol";
 
 /*
 rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->

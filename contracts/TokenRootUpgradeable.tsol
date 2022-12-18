@@ -3,18 +3,18 @@ pragma ton-solidity >= 0.57.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "./abstract/TokenRootTransferableOwnershipBase.sol";
-import "./abstract/TokenRootBurnPausableBase.sol";
-import "./abstract/TokenRootBurnableByRootBase.sol";
-import "./abstract/TokenRootDisableableMintBase.sol";
+import "./abstract/TokenRootTransferableOwnershipBase.tsol";
+import "./abstract/TokenRootBurnPausableBase.tsol";
+import "./abstract/TokenRootBurnableByRootBase.tsol";
+import "./abstract/TokenRootDisableableMintBase.tsol";
 
-import "./interfaces/ITokenRootUpgradeable.sol";
-import "./interfaces/ITokenWalletUpgradeable.sol";
-import "./interfaces/IVersioned.sol";
-import "./libraries/TokenErrors.sol";
-import "./libraries/TokenMsgFlag.sol";
-import "./libraries/TokenGas.sol";
-import "./TokenWalletPlatform.sol";
+import "./interfaces/ITokenRootUpgradeable.tsol";
+import "./interfaces/ITokenWalletUpgradeable.tsol";
+import "./interfaces/IVersioned.tsol";
+import "./libraries/TokenErrors.tsol";
+import "./libraries/TokenMsgFlag.tsol";
+import "./libraries/TokenGas.tsol";
+import "./TokenWalletPlatform.tsol";
 
 
 /*

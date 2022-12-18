@@ -1,20 +1,20 @@
 pragma ton-solidity >= 0.57.0;
 
-import "../interfaces/SID.sol";
-import "../interfaces/TIP3TokenWallet.sol";
-import "../interfaces/TIP3TokenRoot.sol";
-import "../interfaces/ITokenRoot.sol";
-import "../interfaces/ITransferableOwnership.sol";
-import "../interfaces/ITokenWallet.sol";
-import "../interfaces/IBurnableTokenWallet.sol";
-import "../interfaces/IBurnableByRootTokenRoot.sol";
-import "../interfaces/IBurnableByRootTokenWallet.sol";
-import "../interfaces/IDestroyable.sol";
-import "../interfaces/IVersioned.sol";
-import "../interfaces/IDisableableMintTokenRoot.sol";
-import "../interfaces/ITokenWalletUpgradeable.sol";
-import "../interfaces/ITokenRootUpgradeable.sol";
-import "../interfaces/IBurnPausableTokenRoot.sol";
+import "../interfaces/SID.tsol";
+import "../interfaces/TIP3TokenWallet.tsol";
+import "../interfaces/TIP3TokenRoot.tsol";
+import "../interfaces/ITokenRoot.tsol";
+import "../interfaces/ITransferableOwnership.tsol";
+import "../interfaces/ITokenWallet.tsol";
+import "../interfaces/IBurnableTokenWallet.tsol";
+import "../interfaces/IBurnableByRootTokenRoot.tsol";
+import "../interfaces/IBurnableByRootTokenWallet.tsol";
+import "../interfaces/IDestroyable.tsol";
+import "../interfaces/IVersioned.tsol";
+import "../interfaces/IDisableableMintTokenRoot.tsol";
+import "../interfaces/ITokenWalletUpgradeable.tsol";
+import "../interfaces/ITokenRootUpgradeable.tsol";
+import "../interfaces/IBurnPausableTokenRoot.tsol";
 
 interface TIP3 {
     function acceptBurn(uint128 _value) external;
