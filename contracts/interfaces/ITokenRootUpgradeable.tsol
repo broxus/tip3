@@ -1,6 +1,6 @@
 pragma ton-solidity >= 0.57.0;
 
-import "./ITokenRoot.sol";
+import "./ITokenRoot.tsol";
 
 
 interface ITokenRootUpgradeable is ITokenRoot {

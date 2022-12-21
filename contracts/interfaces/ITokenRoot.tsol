@@ -1,7 +1,7 @@
 pragma ton-solidity >= 0.57.0;
 
-import "./TIP3TokenRoot.sol";
-import "./SID.sol";
+import "./TIP3TokenRoot.tsol";
+import "./SID.tsol";
 
 interface ITokenRoot is TIP3TokenRoot, SID {
 

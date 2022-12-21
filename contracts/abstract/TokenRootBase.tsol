@@ -3,13 +3,13 @@ pragma ton-solidity >= 0.57.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "../interfaces/ITransferTokenRootOwnershipCallback.sol";
-import "../interfaces/IAcceptTokensBurnCallback.sol";
-import "../interfaces/ITokenRoot.sol";
-import "../interfaces/ITokenWallet.sol";
-import "../structures/ICallbackParamsStructure.sol";
-import "../libraries/TokenErrors.sol";
-import "../libraries/TokenMsgFlag.sol";
+import "../interfaces/ITransferTokenRootOwnershipCallback.tsol";
+import "../interfaces/IAcceptTokensBurnCallback.tsol";
+import "../interfaces/ITokenRoot.tsol";
+import "../interfaces/ITokenWallet.tsol";
+import "../structures/ICallbackParamsStructure.tsol";
+import "../libraries/TokenErrors.tsol";
+import "../libraries/TokenMsgFlag.tsol";
 
 
 /*

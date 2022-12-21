@@ -1,6 +1,6 @@
 pragma ton-solidity >= 0.57.0;
 
-import "../TokenWalletUpgradeable.sol";
+import "../TokenWalletUpgradeable.tsol";
 
 
 contract TestTokenWalletUpgradeableV2 is TokenWalletUpgradeable {

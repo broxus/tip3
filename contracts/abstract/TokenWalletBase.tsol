@@ -3,14 +3,14 @@ pragma ton-solidity >= 0.57.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "../interfaces/ITokenWallet.sol";
-import "../interfaces/ITokenRoot.sol";
-import "../interfaces/IAcceptTokensTransferCallback.sol";
-import "../interfaces/IAcceptTokensMintCallback.sol";
-import "../interfaces/IBounceTokensTransferCallback.sol";
-import "../interfaces/IBounceTokensBurnCallback.sol";
-import "../libraries/TokenErrors.sol";
-import "../libraries/TokenMsgFlag.sol";
+import "../interfaces/ITokenWallet.tsol";
+import "../interfaces/ITokenRoot.tsol";
+import "../interfaces/IAcceptTokensTransferCallback.tsol";
+import "../interfaces/IAcceptTokensMintCallback.tsol";
+import "../interfaces/IBounceTokensTransferCallback.tsol";
+import "../interfaces/IBounceTokensBurnCallback.tsol";
+import "../libraries/TokenErrors.tsol";
+import "../libraries/TokenMsgFlag.tsol";
 
 
 abstract contract TokenWalletBase is ITokenWallet {

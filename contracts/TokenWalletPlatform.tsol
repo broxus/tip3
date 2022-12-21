@@ -1,6 +1,6 @@
 pragma ton-solidity >= 0.57.0;
 
-import "./libraries/TokenMsgFlag.sol";
+import "./libraries/TokenMsgFlag.tsol";
 
 contract TokenWalletPlatform {
     address static root;

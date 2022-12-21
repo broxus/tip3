@@ -1,7 +1,7 @@
 pragma ton-solidity >= 0.57.0;
 
-import "./ITokenWallet.sol";
-import "./IVersioned.sol";
+import "./ITokenWallet.tsol";
+import "./IVersioned.tsol";
 
 
 interface ITokenWalletUpgradeable is ITokenWallet, IVersioned {
