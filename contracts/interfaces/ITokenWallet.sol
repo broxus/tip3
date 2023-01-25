@@ -3,6 +3,15 @@ pragma ton-solidity >= 0.57.0;
 import "./TIP3TokenWallet.sol";
 import "./SID.sol";
 
+/**
+ * @title TokenWallet interface.
+ * @dev The ITokenWallet interface defines the minimal required functionality
+ * for a TIP-3 compliant token wallet contract. It inherits the {TIP3TokenWallet}
+ * interface, which provides basic information about the token wallet such as its
+ * root contract and current balance. Additionally, the ITokenWallet interface also
+ * includes the {SID} interface, which allows other contracts to query if a contract
+ * implements a specific interface.
+ */
 interface ITokenWallet is TIP3TokenWallet, SID {
 
     /**
