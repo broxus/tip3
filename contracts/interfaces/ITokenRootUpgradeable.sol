@@ -11,18 +11,18 @@ import "./ITokenRoot.sol";
  */
 interface ITokenRootUpgradeable is ITokenRoot {
     /**
-     * @notice Get the current version of the wallet code.
+     * @dev Get the current version of the wallet code.
      * @return The current version of the wallet code.
      */
     function walletVersion() external view responsible returns (uint32);
 
     /**
-     * @notice Returns the {TokenWalletPlatform} code cell.
+     * @dev Returns the {TokenWalletPlatform} code cell.
      */
     function platformCode() external view responsible returns (TvmCell);
 
     /**
-     * @notice Upgrades the wallet code on request TokenWallet.
+     * @dev Upgrades the wallet code on request {TokenWallet}.
      *
      * @param currentVersion current version of the wallet.
      * @param walletOwner owner of the wallet.
@@ -35,13 +35,12 @@ interface ITokenRootUpgradeable is ITokenRoot {
     function requestUpgradeWallet(uint32 currentVersion, address walletOwner, address remainingGasTo) external;
 
     /**
-     * @notice Changes the wallet code for future deploy new wallets.
-     * @notice This function can be called only by the owner of the TokenRoot.
+     * @dev Changes the wallet code for future deploy new wallets.
      *
      * @param code Code of the wallet.
      *
      * Precondition:
-     *  - Sender must be the owner of the TokenRoot.
+     *  - Sender must be the owner of the {TokenRoot}.
      *
      * Postconditions:
      *  - `walletCode_` must be changed to `code`.
@@ -50,7 +49,7 @@ interface ITokenRootUpgradeable is ITokenRoot {
     function setWalletCode(TvmCell code) external;
 
     /**
-     * @notice Upgrades the TokenRoot code.
+     * @dev Upgrades the {TokenRoot} code.
      *
      * @param code - new TokenRoot code.
      *

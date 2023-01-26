@@ -18,10 +18,11 @@ import "../libraries/TokenMsgFlag.sol";
  * Token Root contract according to the TIP-3 standard.
  *
  * Also used as a base class for implementing abstractions such as:
- * - {TokenRootBurnableByRootBase}
- * - {TokenRootBurnPausableBase}
- * - {TokenRootDisableableMintBase}
- * - {TokenRootTransferableOwnershipBase}
+ *
+ *  - {TokenRootBurnableByRootBase}
+ *  - {TokenRootBurnPausableBase}
+ *  - {TokenRootDisableableMintBase}
+ *  - {TokenRootTransferableOwnershipBase}
  */
 abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
 
@@ -71,7 +72,7 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
     }
 
     /**
-     * @dev See {TIPTokenRoot-totalSupply}.
+     * @dev See {TIP3TokenRoot-totalSupply}.
      */
     function totalSupply() override external view responsible returns (uint128) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } totalSupply_;
@@ -85,7 +86,7 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
     }
 
     /**
-     * @dev See {TIP3TokenRoot-rootOwner}.
+     * @dev See {ITokenRoot-rootOwner}.
      */
     function rootOwner() override external view responsible returns (address) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } rootOwner_;
@@ -95,6 +96,7 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
      * @dev See {ITokenRoot-walletOf}.
      *
      * Precondition:
+     *
      *  - `walletOwner` cannot be the zero address.
      */
     function walletOf(address walletOwner)
@@ -113,10 +115,12 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
      * @dev See {ITokenRoot-deployWallet}.
      *
      * Precondtion:
+     *
      *  - `walletOwner` cannot be the zero address.
      *  - `deployWalletValue` must be enough to deploy a new wallet.
      *
      * Postcondition:
+     *
      *  - Returns the address of the deployed wallet.
     */
     function deployWallet(address walletOwner, uint128 deployWalletValue)
@@ -137,6 +141,7 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
      * @dev See {ITokenRoot-mint}.
      *
      * Preconditions:
+     *
      *  - `sender` MUST be rootOwner.
      *  - Minting should be allowed on the TokenRoot contract.
      *  - Either recipients TokenWallet it must already be deployed,
@@ -146,6 +151,7 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
      *  - `recipient` cannot be the zero address.
      *
      * Postconditions:
+     *
      *  - The `totalSupply_` must increase by the `amount` that is minted.
      *  - If `deployWalletValue` is greater than 0, then a new
      *    TokenWallet MUST be deployed.
@@ -171,13 +177,15 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
     }
 
     /**
-     * @dev See {ITokenRoot-burn}.
+     * @dev See {ITokenRoot-acceptBurn}.
      *
      * Preconditions:
+     *
      *  - Burning should be allowed on the {TokenRoot} contract.
      *  - Sender should be a valid token wallet deployed by this contract.
      *
      * Postconditions:
+     *
      *  - The `totalSupply_` must decrease by the `amount` that is burned.
      *  - If `callbackTo` is not set, `remainingGasTo` will receive the
      *    remaining gas, otherwise {IAcceptTokensBurnCallback-onAcceptTokensBurn}
@@ -229,13 +237,14 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
      * @dev Realization of {TokenRootBase-mint} function.
      *
      * Postcondition:
+     *
      *  - totalSupply_ is increased by `amount`.
      *  - If `deployWalletValue` is zero
      *    then {TokenWallet.balance} of `recipient` is increased by `amount`.
      *  - Else, new {TokenWallet} is deployed with initial balance equal to `deployWalletValue`.
      *  - {TokenWallet.acceptMint} is called on the deployed wallet.
      *
-     * Note: We pass `bounce` flag true in {TokenWallet.acceptMint}, so that
+     * NOTE: We pass `bounce` flag true in {TokenWallet.acceptMint}, so that
      * in the {TokenWallet} cannot accept the mint, then {TokenWallet} will bounce
      * to the current {TokenRoot.onBounce}, and the `totalSupply` will be decreased by `amount`.
      */
@@ -272,7 +281,7 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
     /**
      * @dev Derive wallet address from owner.
      *
-     * The function uses the {tvm.hash}, that computes the representation
+     * The function uses the `tvm.hash`, that computes the representation
      * hash of of the wallet `StateInit` data and returns it as a 256-bit unsigned
      * integer, then converted to an address.
      *
@@ -290,17 +299,17 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
     }
 
     /**
-     * @notice On-bounce handler.
+     * @dev On-bounce handler.
      *
-     * @dev Used in case {TokenWallet.mintAccept} fails so the `totalSupply_`
+     * Used in case {ITokenWallet-acceptMint} fails so the `totalSupply_`
      * can be decreased back.
-     * @dev slice is used to get the amount of tokens to decrease `totalSupply_`.
      *
      * @param slice body of the bounced message.
      *
-     * Postconditions:
+     * Postcondition:
+     *
      *  - `totalSupply_` is decreased by the amount of tokens that was passed
-     *    to {TokenWallet-acceptMint}.
+     *    to `acceptMint`.
     */
     onBounce(TvmSlice slice) external {
         if (slice.decode(uint32) == tvm.functionId(ITokenWallet.acceptMint)) {
@@ -309,12 +318,12 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
     }
 
     /**
-     * @notice Withdraw all surplus balance in EVERs.
+     * @dev Withdraw all surplus balance in EVERs.
      * @dev Can by called only by owner address.
      *
      * @param to Recipient address of the surplus balance.
      *
-     * Note: We pass flag {TokenMsgFlag.ALL_NOT_RESERVED}, so that message carries
+     * NOTE: We pass flag {TokenMsgFlag-ALL_NOT_RESERVED}, so that message carries
      * all the remaining balance of the current smart contract. Parameter value is ignored.
      * The contract's balance will be equal to zero after the message processing.
      *
@@ -343,7 +352,7 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
     /**
      * @dev Returns the target balance of the contract.
      *
-     * Target balance is used for {tvm.rawReserve}, which creates an output
+     * Target balance is used for `tvm.rawReserve`, which creates an output
      * action that reserves EVER.
      * It is roughly equivalent to creating an outgoing message that carries
      * reserve nanoevers to itself, so that subsequent spend actions cannot
@@ -374,9 +383,9 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
 
     /**
      * @dev Deploys new token wallet.
-     * @param initData - wallet `StateInit` data.
-     * @param deployWalletValue - value for deploy wallet.
-     * @param remainingGasTo - address for remaining gas.
+     * @param initData wallet `StateInit` data.
+     * @param deployWalletValue value for deploy wallet.
+     * @param remainingGasTo address for remaining gas.
      * @return deployed wallet address.
      */
     function _deployWallet(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) virtual internal view returns (address);

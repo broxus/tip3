@@ -22,17 +22,18 @@ abstract contract TokenRootBurnableByRootBase is TokenRootBase, IBurnableByRootT
     bool burnByRootDisabled_;
 
     /**
-     * @dev See {IBurnableByRootTokenRoot}.
+     * @dev See {IBurnableByRootTokenRoot-burnTokens}.
      *
      * Preconditions:
+     *
      * - `burnByRootDisabled_` must be `false`.
      * - `amount` must be greater than zero.
      * - `walletOwner` must be a non-zero address.
      *
-     * For burning calls the {IBurnableByRootTokenWallet.burnByRoot} method of the wallet,
+     * For burning calls the {IBurnableByRootTokenWallet-burnByRoot} method of the wallet,
      * so the TokenWallet must implement this method.
      *
-     * Note: We pass the bounce true flag to the wallet, but this Bounce
+     * NOTE: We pass the bounce `true` flag to the wallet, but this Bounce
      * is not covered by the TokenRoot.
      */
     function burnTokens(
@@ -63,7 +64,7 @@ abstract contract TokenRootBurnableByRootBase is TokenRootBase, IBurnableByRootT
     }
 
     /**
-     * @dev See {IBurnableByRootTokenRoot.disableBurnByRoot}.
+     * @dev See {IBurnableByRootTokenRoot-disableBurnByRoot}.
      */
     function disableBurnByRoot() override external responsible onlyRootOwner returns (bool) {
         burnByRootDisabled_ = true;
@@ -71,7 +72,7 @@ abstract contract TokenRootBurnableByRootBase is TokenRootBase, IBurnableByRootT
     }
 
     /**
-     * @dev See {IBurnableByRootTokenRoot.disableBurnByRoot}.
+     * @dev See {IBurnableByRootTokenRoot-disableBurnByRoot}.
      */
     function burnByRootDisabled() override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } burnByRootDisabled_;

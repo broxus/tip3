@@ -7,8 +7,8 @@ pragma ton-solidity >= 0.57.0;
 interface ITokenFactory {
 
     /**
-     * @notice Creates a new token root contract
-
+     * @dev Creates a new token root contract
+     *
      * @param name - name of the token
      * @param symbol - symbol of the token
      * @param decimals - number of decimals of the token

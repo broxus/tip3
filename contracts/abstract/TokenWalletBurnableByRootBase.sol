@@ -15,15 +15,17 @@ import "../interfaces/IBurnableByRootTokenWallet.sol";
 abstract contract TokenWalletBurnableByRootBase is TokenWalletBase, IBurnableByRootTokenWallet {
 
     /**
-     * @dev See {IBurnableByRootTokenWallet.burnByRoot}.
+     * @dev See {IBurnableByRootTokenWallet-burnByRoot}.
      *
      * Precondition:
+     *
      *  - the caller must be TokenRoot.
      *
      * Postcondition:
+     *
      *  - The `balance_` of wallet must decrease by the `amount` that is burned.
      *
-     * For implementation details, see {TokenWalletBase._burn}.
+     * For implementation details, see {TokenWalletBase-_burn}.
     */
     function burnByRoot(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)
         override

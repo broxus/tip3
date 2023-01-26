@@ -18,10 +18,11 @@ import "../libraries/TokenMsgFlag.sol";
 abstract contract TokenWalletDestroyableBase is TokenWalletBase, IDestroyable {
 
     /**
-     * @dev See {IDestroyable.destroy}.
+     * @dev See {IDestroyable-destroy}.
      *
-     * Requirements:
-     *  - the wallet balance must be empty.
+     * Precondition:
+     *
+     *  - The wallet balance must be empty.
      */
     function destroy(address remainingGasTo) override external onlyOwner {
         require(balance_ == 0, TokenErrors.NON_EMPTY_BALANCE);

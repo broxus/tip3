@@ -1,6 +1,6 @@
 pragma ton-solidity >= 0.57.0;
 
-import "../interfaces/SID.sol";
+import "./../additional/SID.sol";
 import "../interfaces/TIP3TokenWallet.sol";
 import "../interfaces/TIP3TokenRoot.sol";
 import "../interfaces/ITokenRoot.sol";
@@ -34,7 +34,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifier for `acceptTransfer` method.
+     * @dev Calculate an interface identifier for `acceptTransfer` method.
      * @return Interface identifier for `acceptTransfer` method.
      */
     function calculateAcceptTransferSelector() public pure returns (bytes4) {
@@ -43,7 +43,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifier for `acceptMint` method.
+     * @dev Calculate an interface identifier for `acceptMint` method.
      * @return Interface identifier for `acceptMint` method.
      */
     function calculateAcceptMintSelector() public pure returns (bytes4) {
@@ -52,7 +52,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifier for `acceptBurn` method.
+     * @dev Calculate an interface identifier for `acceptBurn` method.
      * @return Interface identifier for `acceptBurn` method.
      */
     function calculateAcceptBurnSelector() public pure returns (bytes4) {
@@ -61,7 +61,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifiers for `name`, `symbol`,
+     * @dev Calculate an interface identifiers for `name`, `symbol`,
      * `decimals`, `totalSupply`, `walletCode`, and `acceptBurn` methods.
      *
      * @return Interface identifiers for `name`, `symbol`, `decimals`,
@@ -80,7 +80,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifiers for `root`, `balance`,
+     * @dev Calculate an interface identifiers for `root`, `balance`,
      * `walletCode`, `acceptTransfer`, and `acceptMint`methods.
      *
      * @return Interface identifiers for `root`, `balance`, `walletCode`,
@@ -97,7 +97,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifier for `supportsInterface` method.
+     * @dev Calculate an interface identifier for `supportsInterface` method.
      * @return Interface identifier for `supportsInterface` method.
      */
     function calculateSIDInterfaceID() public pure returns(bytes4) {
@@ -107,7 +107,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifier for `version` method.
+     * @dev Calculate an interface identifier for `version` method.
      * @return Interface identifier for `version` method.
      */
     function calculateVersionedInterfaceID() public pure returns(bytes4) {
@@ -117,7 +117,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifiers for `rootOwner`, `walletOf`,
+     * @dev Calculate an interface identifiers for `rootOwner`, `walletOf`,
      * `mint`, `deployWallet` methods.
      * @return Interface identifiers for `rootOwner`, `walletOf`, `mint`,
      * `deployWallet` methods.
@@ -134,7 +134,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifiers for `owner`, `transfer`,
+     * @dev Calculate an interface identifiers for `owner`, `transfer`,
      * and `transferToWallet` methods.
      * @return Interface identifiers for `TokenWallet` methods.
      */
@@ -149,7 +149,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifier for `burn` method.
+     * @dev Calculate an interface identifier for `burn` method.
      * @return Interface identifier for `burn` method.
      */
     function calculateBurnableTokenWalletInterfaceID() public pure returns (bytes4) {
@@ -159,7 +159,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifiers for `burnTokens`,
+     * @dev Calculate an interface identifiers for `burnTokens`,
      * `disableBurnByRoot`, and `burnByRootDisabled` methods.
      *
      * @return Interface identifiers for `burn` method.
@@ -175,7 +175,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifier for `burnByRoot` method.
+     * @dev Calculate an interface identifier for `burnByRoot` method.
      * @return Interface identifier for `burnByRoot` method.
      */
     function calculateBurnableByRootTokenWalletInterfaceID() public pure returns (bytes4) {
@@ -185,7 +185,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifier for `destroy` method.
+     * @dev Calculate an interface identifier for `destroy` method.
      * @return Interface identifier for `destroy` method.
      */
     function calculateDestroyableInterfaceID() public pure returns (bytes4) {
@@ -195,7 +195,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifiers for `disableMint`
+     * @dev Calculate an interface identifiers for `disableMint`
      * and `mintDisabled` methods.
      * @return Interface identifiers for `disableMint` and `mintDisabled` method.
      */
@@ -209,7 +209,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifier for `transferOwnership` method.
+     * @dev Calculate an interface identifier for `transferOwnership` method.
      * @return Interface identifier for `transferOwnership` method.
      */
     function calculateTransferableOwnershipInterfaceID() public pure returns (bytes4) {
@@ -221,7 +221,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifiers for `setBurnPaused` and `burnPaused` methods.
+     * @dev Calculate an interface identifiers for `setBurnPaused` and `burnPaused` methods.
      * @return Interface identifiers for `setBurnPaused` and `burnPaused` method.
      */
     function calculateBurnPausableTokenRootInterfaceID() public pure returns (bytes4) {
@@ -235,7 +235,7 @@ contract Selector {
 
     /**
      * platformCode upgrade acceptUpgrade
-     * @notice Calculate an interface identifiers for `upgrade`, `acceptUpgrade`
+     * @dev Calculate an interface identifiers for `upgrade`, `acceptUpgrade`
      * and `platformCode` methods.
      * @return Interface identifiers for `upgrade`, `acceptUpgrade` and
      * `platformCode` methods.
@@ -251,7 +251,7 @@ contract Selector {
     }
 
     /**
-     * @notice Calculate an interface identifiers for `walletVersion`,
+     * @dev Calculate an interface identifiers for `walletVersion`,
      * `platformCode`, `requestUpgradeWallet`, `setWalletCode` and `upgrade` methods.
      *
      * @return Interface identifiers for `walletVersion`, `platformCode`,

@@ -5,17 +5,17 @@ pragma ton-solidity >= 0.57.0;
  */
 interface TIP3TokenRoot {
     /**
-     * @notice Returns the name of the token.
+     * @dev Returns the name of the token.
      */
     function name() external view responsible returns (string);
 
     /**
-     * @notice Returns the symbol of the token, usually a shorter version of the name.
+     * @dev Returns the symbol of the token, usually a shorter version of the name.
      */
     function symbol() external view responsible returns (string);
 
     /**
-     * @notice Returns the number of decimals used to get its user representation.
+     * @dev Returns the number of decimals used to get its user representation.
      * For example, if `decimals` equals `6`, a balance of `42_500_000` tokens should
      * be displayed to a user as `42.5` (`42_500_000 / 10 ** 6`).
      *
@@ -25,12 +25,12 @@ interface TIP3TokenRoot {
     function decimals() external view responsible returns (uint8);
 
     /**
-     * @notice Returns the amount of tokens in existence.
+     * @dev Returns the amount of tokens in existence.
      */
     function totalSupply() external view responsible returns (uint128);
 
     /**
-     * @notice Returns the `walletCode` of the TokenWallet contract.
+     * @dev Returns the `walletCode` of the TokenWallet contract.
      */
     function walletCode() external view responsible returns (TvmCell);
 }

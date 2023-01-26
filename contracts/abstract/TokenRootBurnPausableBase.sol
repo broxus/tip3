@@ -19,17 +19,18 @@ abstract contract TokenRootBurnPausableBase is TokenRootBase, IBurnPausableToken
     bool burnPaused_;
 
     /**
-     * @notice Returns the current state of the ability to burn tokens.
-     * @return burning is paused (true) or not (false).
+     * @dev Returns the current state of the ability to burn tokens.
+     * @return burning is paused `true` or not `false`.
      */
     function burnPaused() override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } burnPaused_;
     }
 
     /**
-     * @dev See {IBurnPausableTokenRoot.setBurnPaused}.
+     * @dev See {IBurnPausableTokenRoot-setBurnPaused}.
      *
      * Post condition:
+     *
      * - `burnPaused_` is set to the value of the `paused` parameter.
     */
     function setBurnPaused(bool paused) override external responsible onlyRootOwner returns (bool) {
@@ -38,7 +39,7 @@ abstract contract TokenRootBurnPausableBase is TokenRootBase, IBurnPausableToken
     }
 
      /**
-      * @dev See {TokenRootBase._burnEnabled}.
+      * @dev See {TokenRootBase-_burnEnabled}.
       */
     function _burnEnabled() override internal view returns (bool) {
         return !burnPaused_;

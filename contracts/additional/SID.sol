@@ -9,14 +9,18 @@ pragma ton-solidity >= 0.57.0;
  * (See https://docs.everscale.network/standard/TIP-6.1 )
  *
  * Implementers can declare support of contract interfaces, which can then be
- * queried by others ({Selector}).
+ * queried by others {Selector}.
  *
- * For an implementation, see {TokenRoot}, {TokenWallet}, {TokenRootUpgradable},
- * {TokenWalletUpgradable}.
+ * For an implementation, see:
+ *
+ * - {TokenRoot}
+ * - {TokenWallet}
+ * - {TokenRootUpgradeable}
+ * - {TokenWalletUpgradeable}
  */
 interface SID {
     /**
-     * @notice Returns a bool value that indicates whether the contract implements
+     * @dev Returns a bool value that indicates whether the contract implements
      * the specified `interfaceID`.
      *
      * See the corresponding

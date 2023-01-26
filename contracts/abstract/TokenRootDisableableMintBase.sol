@@ -21,9 +21,10 @@ abstract contract TokenRootDisableableMintBase is TokenRootBase, IDisableableMin
     bool mintDisabled_;
 
     /**
-     * @dev See {IDisableableMintTokenRoot.disableMint}.
+     * @dev See {IDisableableMintTokenRoot-disableMint}.
      *
      * Post condition:
+     *
      *  - `mintDisabled_` is set to `true`.
      */
     function disableMint() override external responsible onlyRootOwner returns (bool) {

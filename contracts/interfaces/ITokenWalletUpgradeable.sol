@@ -9,7 +9,7 @@ import "./IVersioned.sol";
  */
 interface ITokenWalletUpgradeable is ITokenWallet, IVersioned {
     /**
-     * @notice Returns the code of functions implemented in TokenWalletPlatform.sol.
+     * @dev Returns the code of functions implemented in {TokenWalletPlatform}.
      */
     function platformCode() external view responsible returns (TvmCell);
 
@@ -17,9 +17,9 @@ interface ITokenWalletUpgradeable is ITokenWallet, IVersioned {
      * @dev Sends a request to the TokenRoot to upgrade the Wallet code to
      * the latest version.
      *
-     * @dev The wallet calls a method {requestUpgradeWallet}
-     * the TokenRoot and then the root token calls `acceptUpdgeade`
-     * of Token Wallet passing in the new wallet code.
+     * @dev The wallet calls a method {ITokenRootUpgradeable-requestUpgradeWallet}
+     * and then the TokenRoot calls {acceptUpgrade} of Token Wallet
+     * passing in the new wallet code.
      *
      * @param remainingGasTo The receipient of the remaining gas.
      *
@@ -31,12 +31,12 @@ interface ITokenWalletUpgradeable is ITokenWallet, IVersioned {
     function upgrade(address remainingGasTo) external;
 
     /**
-     * @dev The function is a callback that can be called by the TokenRoot
-     * contract to upgrade the code of an upgradable token wallet to the
+     * @dev The function is a callback that can be called by the {TokenRootUpgradeable}
+     * contract to upgrade the code of an {TokenWalletUpgradeable} to the
      * latest version.
      *
-     * @notice Callback upgrades Wallet code to the latest version of the TokenRoot.walletCode_.
-     * @notice Only TokenRoot can call this method.
+     * @dev Callback upgrades Wallet code to the latest version of the `walletCode_`.
+     * @dev Only TokenRoot can call this method.
 
      * @param code New Wallet code.
      * @param newVersion New Wallet version.

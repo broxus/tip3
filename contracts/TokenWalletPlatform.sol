@@ -8,9 +8,9 @@ import "./libraries/TokenMsgFlag.sol";
  * It ensures that all wallet addresses are considered to be derived
  * from the same code, regardless of the version of the wallet.
  *
- * We uses the {tvm.buildStateInit} function to create a `StateInit` data cell
+ * We uses the `tvm.buildStateInit` function to create a `StateInit` data cell
  * containing the {TokenWalletPlatform} code and static data. Then
- * use the {tvm.hash} function to compute the hash of the `StateInit` data and
+ * use the `tvm.hash` function to compute the hash of the `StateInit` data and
  * convert it to an address.
  */
 contract TokenWalletPlatform {
@@ -47,9 +47,9 @@ contract TokenWalletPlatform {
     }
 
     /**
-     * @notice Derive wallet address from owner.
+     * @dev Derive wallet address from owner.
      *
-     * @dev The function uses the {tvm.hash}, that computes the representation
+     * The function uses the `tvm.hash`, that computes the representation
      * hash of of the wallet `StateInit` data and returns it as a 256-bit unsigned
      * integer, then converted to an address.
      *
@@ -59,7 +59,7 @@ contract TokenWalletPlatform {
      * This allows the contract to determine the expected address of a wallet
      * based on its owner's address.  See sha256 to count hash of data.
      *
-     * @param walletOwner Token wallet owner address
+     * @param owner_ Token wallet owner address
      * @return Token wallet address
      */
     function _getExpectedAddress(address owner_) private view returns (address) {

@@ -14,12 +14,14 @@ import "../interfaces/ITransferableOwnership.sol";
  */
 abstract contract TokenRootTransferableOwnershipBase is TokenRootBase, ITransferableOwnership {
     /**
-     * @dev See {ITransferableOwnership.transferOwnership}.
+     * @dev See {ITransferableOwnership-transferOwnership}.
      *
      * Precondition:
+     *
      *  - Caller must be owner.
      *
      * Postconditions:
+     *
      *  - Ownership is transferred to new owner.
      */
     function transferOwnership(
