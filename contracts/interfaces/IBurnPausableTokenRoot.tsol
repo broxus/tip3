@@ -8,7 +8,7 @@ pragma AbiHeader expire;
 interface IBurnPausableTokenRoot {
 
     /**
-     * @notice Pause/Unpause token burns.
+     * @dev Pause/Unpause token burns.
      *
      * @dev if paused, then all burned tokens will be bounced to TokenWallet.
      *
@@ -16,15 +16,17 @@ interface IBurnPausableTokenRoot {
      * @return `paused` value.
      *
      * Preconditions:
+     *
      *  - `sender` MUST be rootOwner.
      *
-     * Postconditions:
+     * Postcondition:
+     *
      * - Sets `burnPaused` to `paused` value.
     */
     function setBurnPaused(bool paused) external responsible returns (bool);
 
     /**
-     * @notice Returns true if token burns are paused, and false otherwise.
+     * @dev Returns `true` if token burns are paused, and `false` otherwise.
     */
     function burnPaused() external view responsible returns (bool);
 }

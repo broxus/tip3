@@ -18,8 +18,8 @@ pragma ton-solidity >= 0.57.0;
 interface IAcceptTokensBurnCallback {
 
     /**
-     * @notice Callback used by the Token Root contract when it receives a request
-     * to burn tokens on {ITokenRoot.acceptBurn} from a token wallet and
+     * @dev Callback used by the Token Root contract when it receives a request
+     * to burn tokens on {ITokenRoot-acceptBurn} from a token wallet and
      * successfully completes the burning process.
      * This allows the wallet owner to take appropriate action,
      * such as triggering a business logic.
@@ -30,9 +30,9 @@ interface IAcceptTokensBurnCallback {
      * @param remainingGasTo The address to which any remaining gas from the token burn should be sent.
      * @param payload - Additional data that was attached to the token burn.
      *
-     * Note: This callback function has no implementation in the main contracts.
+     * NOTE: This callback function has no implementation in the main contracts.
      * However, you can see an example of its implementation in the test contract.
-     * See {TestWalletCallback.onAcceptTokensBurn}.
+     * See {TestWalletCallback-onAcceptTokensBurn}.
     */
     function onAcceptTokensBurn(
         uint128 amount,

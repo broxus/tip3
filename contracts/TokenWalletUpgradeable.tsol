@@ -40,7 +40,7 @@ contract TokenWalletUpgradeable is
 
     /**
      * @dev The constructor has been reverted because it was called in
-     * the {TokenWalletPlatform}. The `revert()` function is used to prevent
+     * the TokenWalletPlatform. The `revert()` function is used to prevent
      * the contract from executing any further.
      */
     constructor() public {
@@ -48,7 +48,7 @@ contract TokenWalletUpgradeable is
     }
 
     /**
-     * @dev See {SID.supportsInterface}.
+     * @dev See {SID-supportsInterface}.
      */
     function supportsInterface(bytes4 interfaceID) override external view responsible returns (bool) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } (
@@ -63,7 +63,7 @@ contract TokenWalletUpgradeable is
     }
 
     /**
-     * @dev See {ITokenWalletUpgradeable.platformCode}.
+     * @dev See {ITokenWalletUpgradeable-platformCode}.
      */
     function platformCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } platformCode_;
@@ -87,14 +87,14 @@ contract TokenWalletUpgradeable is
         }
     }
     /**
-     * @notice Returns the version of the Wallet.
+     * @dev Returns the version of the Wallet.
      */
     function version() override external view responsible returns (uint32) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } version_;
     }
 
     /**
-     * @dev See {ITokenWalletUpgradeable.upgrade}.
+     * @dev See {ITokenWalletUpgradeable-upgrade}.
      *
      * Sends a request to the TokenRoot to upgrade the Wallet code to
      * the latest version.
@@ -108,7 +108,7 @@ contract TokenWalletUpgradeable is
     }
 
     /**
-     * @dev See {ITokenWalletUpgradeable.acceptUpgrade}.
+     * @dev See {ITokenWalletUpgradeable-acceptUpgrade}.
      */
     function acceptUpgrade(TvmCell newCode, uint32 newVersion, address remainingGasTo) override external onlyRoot {
         if (version_ == newVersion) {
@@ -137,14 +137,7 @@ contract TokenWalletUpgradeable is
     }
     /**
      * @dev This function rewrites the wallet storage after the code upgrade.
-     * @param data - TvmBuilder with the following fields:
-     *     - root_ - address
-     *     - owner_ - address
-     *     - balance_ - uint128
-     *     - version_ - uint32
-     *     - newVersion - uint32
-     *     - remainingGasTo - address
-     *     - platformCode_ - TvmCell
+     * @param data - TvmСell with the new wallet storage.
      */
     function onCodeUpgrade(TvmCell data) private {
         tvm.rawReserve(_reserve(), 2);
@@ -181,7 +174,7 @@ contract TokenWalletUpgradeable is
     }
 
     /**
-     * @dev Implementation of the {TokenRootBase._buildWalletInitData}.
+     * @dev Implementation of the {TokenRootBase-_buildWalletInitData}.
      *
      * This function builds the init data for the upgradeable wallet.
      * @dev Used in transfer and mint function, for deploy new wallet, when the recipient is not a deployed wallet.

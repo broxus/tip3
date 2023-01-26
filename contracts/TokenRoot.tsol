@@ -44,11 +44,11 @@ contract TokenRoot is
      * if `initialSupply` is not zero.
      *
      * Parameters such as `symbol`, `decimals`, `name`, `rootOwner_`,
-     * `randomNonce_` and {walletCode_} are set during contract deployment,
+     * `randomNonce_` and `walletCode_` are set during contract deployment,
      * and passed as `StateInit` params`.
      *
      * Also, the listed parameters, with the exception of {totalSupply_} and
-     * {burnPaused_}, are immutable:
+     * `burnPaused_`, are immutable:
      * they can only be set once during construction.
      *
      * @param initialSupplyTo The address for which the initial suplay will be minted.
@@ -61,12 +61,13 @@ contract TokenRoot is
      *        after deploy contract.
      *
      * Preconditions:
-     * - The owner of {TokenRoot} can be an external or internal:
      *
-     * - If the owner of {TokenRoot} is external, then the message being expanded
+     * - The owner of TokenRoot can be an external or internal:
+     *
+     * - If the owner of TokenRoot is external, then the message being expanded
      *   must be signed with the same key passed to `StateInit`.
      *
-     * - If the owner of {TokenRoot} is internal, then the sender of the message
+     * - If the owner of TokenRoot is internal, then the sender of the message
      *   must be a `deployer_` and the `deployer_` must be an existed address.
      *   Or the `deployer_` can be 0, but in this case the `msg.sender`
      *   must be a equal `rootOwner_` passed to `StateInit`.
@@ -125,7 +126,7 @@ contract TokenRoot is
     }
 
     /**
-     * @dev Implementation of the {TokenRootBase._targetBalance} virtual function.
+     * @dev Implementation of the {TokenRootBase-_targetBalance} virtual function.
      *
      * @return the `TokenGas.TARGET_ROOT_BALANCE` EVER.
      */
@@ -134,7 +135,7 @@ contract TokenRoot is
     }
 
     /**
-     * @dev See {TokenRootBase._buildWalletInitData}.
+     * @dev See {TokenRootBase-_buildWalletInitData}.
      *
      * The `InitData` consists of:
      *  - `contr` (contract) - defines the contract whose `StateInit` will be created.
@@ -166,7 +167,7 @@ contract TokenRoot is
     }
 
     /**
-     * @dev Implementation of the virtual function {TokenRootBase._deployWallet}.
+     * @dev Implementation of the virtual function {TokenRootBase-_deployWallet}.
      *
      * Deploys a new {TokenWallet} contract according to the TIP-3 standard.
      */

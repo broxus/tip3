@@ -8,20 +8,20 @@ pragma ton-solidity >= 0.57.0;
 interface IAcceptTokensMintCallback {
 
     /**
-     * @notice Callback used by the wallet contract when it receives a mint
+     * @dev Callback used by the wallet contract when it receives a mint
      * of tokens. This allows the owner of the wallet to take appropriate action,
      * triggering a business logic.
      *
-     from TokenWallet on {ITokenWallet.acceptMint}.
+     from TokenWallet on {ITokenWallet-acceptMint}.
      * @param tokenRoot The address of the token contract that.
      *        was used to mint the received tokens.
      * @param amount The amount of minted tokens that were received
      * @param remainingGasTo Address to send remaining gas.
      * @param payload Additional data that was attached to the minted tokens.
      *
-     * Note: This callback function has no implementation in the main contracts.
+     * NOTE: This callback function has no implementation in the main contracts.
      * However, you can see an example of its implementation in the test contract.
-     * See {TestWalletCallback.onAcceptTokensMint}.
+     * See {TestWalletCallback-onAcceptTokensMint}.
      */
     function onAcceptTokensMint(
         address tokenRoot,

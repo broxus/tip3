@@ -15,13 +15,13 @@ pragma ton-solidity >= 0.57.0;
 interface IBounceTokensBurnCallback {
 
     /**
-     * @notice Invoked by the token wallet when a burn operation is reverted.
+     * @dev Invoked by the token wallet when a burn operation is reverted.
      * @param tokenRoot Address of the TokenRoot contract.
      * @param amount Reverted tokens amount.
      *
-     * Note: This callback function has no implementation in the main contracts.
+     * NOTE: This callback function has no implementation in the main contracts.
      * However, you can see an example of its implementation in the test contract.
-     * See {TestWalletCallback.onBounceTokensBurn}.
+     * See {TestWalletCallback-onBounceTokensBurn}.
     */
     function onBounceTokensBurn(
         address tokenRoot,

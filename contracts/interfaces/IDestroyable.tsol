@@ -5,8 +5,7 @@ pragma ton-solidity >= 0.57.0;
  */
 interface IDestroyable {
     /**
-     * @notice Destroys the contract.
-     * @notice This function is virtual and can be overridden.
+     * @dev Destroys the contract.
      * @param remainingGasTo The address to which the remaining gas will be sent.
      */
     function destroy(address remainingGasTo) external;

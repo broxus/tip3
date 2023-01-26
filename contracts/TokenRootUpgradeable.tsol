@@ -60,6 +60,7 @@ contract TokenRootUpgradeable is
      *        after deploy contract.
      *
      * Preconditions:
+     *
      * - The owner of {TokenRoot} can be an external or internal:
      *
      * - If the owner of {TokenRoot} is external, then the message being expanded
@@ -126,21 +127,21 @@ contract TokenRootUpgradeable is
     }
 
     /**
-     * @dev See {ITokenRootUpgradeable.walletVersion}.
+     * @dev See {ITokenRootUpgradeable-walletVersion}.
      */
     function walletVersion() override external view responsible returns (uint32) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } walletVersion_;
     }
 
     /**
-     * @dev See {ITokenRootUpgradeable.platformCode}.
+     * @dev See {ITokenRootUpgradeable-platformCode}.
      */
     function platformCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } platformCode_;
     }
 
     /**
-     * @dev See {ITokenRootUpgradeable.requestUpgradeWallet}.
+     * @dev See {ITokenRootUpgradeable-requestUpgradeWallet}.
      *
      * Preconditions:
      *  - Sender is a valid wallet.
@@ -179,7 +180,7 @@ contract TokenRootUpgradeable is
     }
 
     /**
-     * @dev See {ITokenRootUpgradeable.setWalletCode}.
+     * @dev See {ITokenRootUpgradeable-setWalletCode}.
      *
      * Preconditions:
      *  - Sender must be the owner of the TokenRoot.
@@ -195,7 +196,7 @@ contract TokenRootUpgradeable is
     }
 
     /**
-     * @dev See {ITokenRootUpgradeable.upgrade}.
+     * @dev See {ITokenRootUpgradeable-upgrade}.
      *
      * Precondition:
      *  - Sender must be the owner of the TokenRoot.
@@ -231,21 +232,7 @@ contract TokenRootUpgradeable is
     }
 
     /**
-     * @dev See {ITokenRootUpgradeable.onCodeUpgrade}.
-     *
-     *   data:
-     *
-     *   [ address rootOwner_, uint128 totalSupply_, uint8 decimals_,
-     *       ref_1: [ uint32 walletVersion_,
-     *           ref_1_1: platformCode_,
-     *           ref_1_2: walletCode_
-     *       ],
-     *       ref_2: [
-     *           ref_2_1: name_,
-     *           ref_2_2: symbol_
-     *       ],
-     *       ref_3: [ bool mintDisabled_, bool burnByRootDisabled_, bool burnPaused_]
-     *   ]
+     * @dev See {ITokenRootUpgradeable-onCodeUpgrade}.
      */
     function onCodeUpgrade(TvmCell data) private { }
 
@@ -257,9 +244,9 @@ contract TokenRootUpgradeable is
     }
 
     /**
-        @dev Returns the wallet init data for deploy new wallet.
-        @param walletOwner - wallet owner.
-        @return wallet init data cell.
+     * @dev Returns the wallet init data for deploy new wallet.
+     * @param walletOwner - wallet owner.
+     * @return wallet init data cell.
      */
     function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {
         return tvm.buildStateInit({

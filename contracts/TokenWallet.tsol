@@ -33,7 +33,7 @@ contract TokenWallet is
 {
 
     /**
-     * @notice Creates new token wallet
+     * @dev Creates new token wallet
      *
      * @dev Nothing is passed to the constructor, but during the deployment
      * of the contract, the following parameters are passed to `StateInit`:
@@ -43,7 +43,7 @@ contract TokenWallet is
      *
      * Requirements:
      * - `msg.pubkey()` MUST be equal to zero. This means that the owner of
-     *   the {TokenWallet} can only smart contract.
+     *   the TokenWallet can only smart contract.
      * - `owner_` MUST be a non-zero address.
     */
     constructor() public {
@@ -66,14 +66,14 @@ contract TokenWallet is
     }
 
     /**
-     * @dev See {TokenWalletBase._targetBalance}.
+     * @dev See {TokenWalletBase-_targetBalance}.
      */
     function _targetBalance() override internal pure returns (uint128) {
         return TokenGas.TARGET_WALLET_BALANCE;
     }
 
     /**
-     * @dev See {TokenRootBase._buildWalletInitData}.
+     * @dev See {TokenRootBase-_buildWalletInitData}.
      *
      * We need this to deploy new wallets, as well as to
      * check incoming messages from other wallets.
@@ -93,7 +93,7 @@ contract TokenWallet is
      *      The value 0 means that the wallet can be owned only by another contract.
      *      contract, the most common example is {Wallet}.
      *
-     *  - `code` - the code of the {TokenWallet}, see {TokenRootBase}.
+     *  - `code` - the code of the TokenWallet, see {TokenRootBase}.
      */
     function _buildWalletInitData(address walletOwner) override internal view returns (TvmCell) {
         return tvm.buildStateInit({
@@ -108,7 +108,7 @@ contract TokenWallet is
     }
 
     /**
-     * @dev Implementation of the virtual function {TokenWalletBase._deployWallet}.
+     * @dev Implementation of the virtual function {TokenWalletBase-_deployWallet}.
      */
     function _deployWallet(TvmCell initData, uint128 deployWalletValue, address)
         override

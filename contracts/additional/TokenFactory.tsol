@@ -3,7 +3,7 @@ pragma ton-solidity >= 0.57.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "../interfaces/ITokenFactory.tsol";
+import "./ITokenFactory.tsol";
 import "../libraries/TokenErrors.tsol";
 import "../libraries/TokenMsgFlag.tsol";
 import "../TokenRoot.tsol";
@@ -11,7 +11,7 @@ import "../TokenRootUpgradeable.tsol";
 
 /**
  * @title TokenFactory
- * @notice This contract is used to create new token roots.
+ * @dev This contract is used to create new {TokenRoot} and {TokenRootUpgradeable}.
  */
 contract TokenFactory is ITokenFactory {
 
@@ -58,12 +58,12 @@ contract TokenFactory is ITokenFactory {
      * @param walletCode The code of the {TokenWallet} contract, which can be
      *        used to create wallet contracts.
      * @param rootUpgradeableCode The code of the {TokenRootUpgradeable} contract,
-     *        which is an upgradeable version of the {TokenRoot{} contract.
+     *        which is an upgradeable version of the {TokenRoot} contract.
      *        This contract can be updated without redeploying it.
      * @param walletUpgradeableCode The code of the {TokenWalletUpgradeable}
      *        contract, which is an upgradeable version of the {TokenWallet} contract.
      *        This contract can be updated without redeploying it.
-     * @param platformCode Code of the TokenWalletPlatform.sol contract.
+     * @param platformCode Code of the {TokenWalletPlatform} contract.
     */
     constructor(
         address owner,
@@ -85,7 +85,7 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @dev See {ITokenFactory.deployRoot}.
+     * @dev See {ITokenFactory-deployRoot}.
      */
     function deployRoot(
         string name,
@@ -125,7 +125,7 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @dev Builds a `StateInit` for the common TokenRoot contract.
+     * @dev Builds a `StateInit` for the common {TokenRoot} contract.
      *
      * @param nonce - nonce of the token
      * @param name - name of the token
@@ -158,7 +158,7 @@ contract TokenFactory is ITokenFactory {
         });
     }
     /**
-     * @dev Builds a `StateInit` for the TokenRoot upgradeable contract.
+     * @dev Builds a `StateInit` for the {TokenRootUpgradeable} contract.
      *
      * @param nonce - nonce of the token
      * @param name - name of the token
@@ -166,7 +166,7 @@ contract TokenFactory is ITokenFactory {
      * @param decimals - number of decimals of the token
      * @param owner - owner of the token
      *
-     * @return `StateInit` for the TokenRoot upgradeable contract.
+     * @return `StateInit`.
      */
     function _buildUpgradeableStateInit(
         uint256 nonce,
@@ -192,12 +192,12 @@ contract TokenFactory is ITokenFactory {
         });
     }
     /**
-     * @notice Changes the value to be sent to the root contract when deploying
+     * @dev Changes the value to be sent to the root contract when deploying
      * a new token root.
-     * @notice Can be called only by the owner.
      * @param deployValue New value to be sent to the root contract.
      *
      * Precondition:
+     *
      *  - Should be called only by the owner.
      *
      * Postcondition:
@@ -208,14 +208,15 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @notice Changes the rootCode.
-     * @notice Can be called only by the owner.
+     * @dev Changes the rootCode.
      * @param rootCode - new rootCode
      *
      * Precondition:
+     *
      *  - Should be called only by the owner.
      *
      * Postcondition:
+     *
      *  - `_rootCode` is changed to `rootCode`.
      */
     function changeRootCode(TvmCell rootCode) public onlyOwner cashBack {
@@ -223,14 +224,16 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @notice Changes the code of the TokenWallet contract, which is used
+     * @dev Changes the code of the TokenWallet contract, which is used
      * to deploy new wallets.
      * @param walletCode New code of the TokenWallet contract.
      *
      * Precondition:
+     *
      *  - Should be called only by the owner.
      *
      * Postcondition:
+     *
      *  - `_walletCode` is changed to `walletCode`.
 
      */
@@ -239,14 +242,16 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @notice Changes the code of the TokenRootUpgradeable contract, which
+     * @dev Changes the code of the {TokenRootUpgradeable} contract, which
      * is used to deploy new token roots.
      * @param rootUpgradeableCode New code of the TokenRootUpgradeable contract.
      *
      * Precondition:
+     *
      *  - Should be called only by the owner.
      *
      * Postcondition:
+     *
      *  - `_rootUpgradeableCode` is changed to `rootUpgradeableCode`.
      */
     function changeRootUpgradeableCode(TvmCell rootUpgradeableCode) public onlyOwner cashBack {
@@ -254,14 +259,16 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @notice Changes the code of the TokenWalletUpgradeable contract,
+     * @dev Changes the code of the {TokenWalletUpgradeable} contract,
      * which is used to deploy new token roots.
      * @param walletUpgradeableCode New code of the TokenWalletUpgradeable contract.
      *
      * Precondition:
+     *
      *  - Should be called only by the owner.
      *
      * Postcondition:
+     *
      *  - `_walletUpgradeableCode` is changed to `walletUpgradeableCode`.
      */
     function changeWalletUpgradeableCode(TvmCell walletUpgradeableCode) public onlyOwner cashBack {
@@ -269,15 +276,17 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @notice Changes the code of the TokenWalletPlatform contract, which
+     * @dev Changes the code of the {TokenWalletPlatform} contract, which
      * is used to deploy new token roots.
      *
-     * @param platformCode New code of the TokenWalletPlatform.sol contract.
+     * @param platformCode New code of the TokenWalletPlatform contract.
      *
      * Precondition:
+     *
      *  - Should be called only by the owner.
      *
      * Postcondition:
+     *
      *  - `_platformCode` is changed to `platformCode`.
      */
     function changePlatformCode(TvmCell platformCode) public onlyOwner cashBack {
@@ -285,7 +294,7 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @notice Changes the owner of the factory.
+     * @dev Changes the owner of the factory.
      *
      * It's two-step process: first, the new pending owner is set,
      * then the pending owner can accept the ownership.
@@ -293,9 +302,11 @@ contract TokenFactory is ITokenFactory {
      * @param owner New owner of the factory.
      *
      * Precondition:
+     *
      *  - Should be called only by the owner.
      *
      * Postcondition:
+     *
      *  - `_pendingOwner` is changed to `owner`.
      */
     function transferOwner(address owner) public onlyOwner cashBack {
@@ -303,16 +314,18 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @notice Accepts the ownership of the factory.
+     * @dev Accepts the ownership of the factory.
      *
      * It's two-step process: first, the new pending owner is set,
      * then the pending owner can accept the ownership.
      *
      * Precondition:
+     *
      *  - Sender should be the pending owner.
      *  - Pending owner should not be zero.
      *
      * Postcondition:
+     *
      *  - `_owner` is changed to `_pendingOwner`.
      *  - `_pendingOwner` is changed to zero.
      */
@@ -323,14 +336,16 @@ contract TokenFactory is ITokenFactory {
     }
 
     /**
-     * @notice Upgrades the factory code to a new version.
+     * @dev Upgrades the factory code to a new version.
      *
      * @param code New code of the factory.
      *
      * Precondition:
+     *
      * - Should be called only by the owner.
      *
      * Postcondition:
+     *
      * - Factory code is changed to `code`.
      */
     function upgrade(TvmCell code) public onlyOwner {
@@ -361,6 +376,7 @@ contract TokenFactory is ITokenFactory {
      * @param data Data of the factory.
      *
      * Postcondition:
+     *
      *  - Factory storage is rewritten.
      */
     function onCodeUpgrade(TvmCell data) private {

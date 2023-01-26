@@ -8,7 +8,7 @@ import "../structures/ICallbackParamsStructure.tsol";
  */
 interface ITransferableOwnership is ICallbackParamsStructure {
     /**
-     * @notice Transfer ownership to new owner.
+     * @dev Transfer ownership to new owner.
      * @dev Can be called only by current owner.
      * @param newOwner New owner.
      * @param remainingGasTo Address to send remaining gas after transfer ownership.
@@ -17,7 +17,8 @@ interface ITransferableOwnership is ICallbackParamsStructure {
      * Precondition:
      *  - Caller must be owner.
      *
-     * Postconditions:
+     * Postcondition:
+     *
      *  - Ownership is transferred to new owner.
     */
     function transferOwnership(

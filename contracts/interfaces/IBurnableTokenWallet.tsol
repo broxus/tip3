@@ -15,19 +15,21 @@ pragma ton-solidity >= 0.57.0;
 interface IBurnableTokenWallet {
 
     /**
-     * @notice Allows for walletOwner burn tokens.
+     * @dev Allows for walletOwner burn tokens.
      *
      * @param amount Amount tokens to burn
      * @param remainingGasTo Address of contract, which will receive remaining
      *        gas after execution burn.
-     * @param callbackTo Address of contract, which implement {IAcceptTokensBurnCallback.onAcceptTokensBurn}
+     * @param callbackTo Address of contract, which implement {IAcceptTokensBurnCallback-onAcceptTokensBurn}
      *        if it equals to 0:0 then no callbacks.
-     * @param payload Custom data will be delivered into {IAcceptTokensBurnCallback.onAcceptTokensBurn}.
+     * @param payload Custom data will be delivered into {IAcceptTokensBurnCallback-onAcceptTokensBurn}.
      *
      * Precondition:
+     *
      *  - sender must be TokenWallet owner.
      *
      * Postcondition:
+     *
      *  - The `balance_` must increase by the `amount` that is burned.
     */
     function burn(

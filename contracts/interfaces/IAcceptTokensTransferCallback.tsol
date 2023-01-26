@@ -14,7 +14,7 @@ pragma ton-solidity >= 0.57.0;
 interface IAcceptTokensTransferCallback {
 
     /**
-     * @notice Callback by the wallet contract when it receives a transfer
+     * @dev Callback by the wallet contract when it receives a transfer
      * of tokens. This allows the wallet owner to take appropriate action,
      * such as triggering a business logic.
      *
@@ -25,9 +25,9 @@ interface IAcceptTokensTransferCallback {
      * @param remainingGasTo Address to which remaining gas will be sent.
      * @param payload Additional data attached to transfer by sender.
      *
-     * Note: This callback function has no implementation in the main contracts.
+     * NOTE: This callback function has no implementation in the main contracts.
      * However, you can see an example of its implementation in the test contract.
-     * See {TestWalletCallback.onAcceptTokensTransfer}.
+     * See {TestWalletCallback-onAcceptTokensTransfer}.
     */
     function onAcceptTokensTransfer(
         address tokenRoot,

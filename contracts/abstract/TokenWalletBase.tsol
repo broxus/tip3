@@ -19,6 +19,7 @@ import "../libraries/TokenMsgFlag.tsol";
  * TokenWaellet contract according to the TIP-3 standard.
  *
  * Also used as a base class for implementing abstractions such as:
+ *
  * - {TokenWalletBurnableBase}
  * - {TokenWalletBurnableByRootBase}
  * - {TokenWalletDestroyableBase}
@@ -47,41 +48,41 @@ abstract contract TokenWalletBase is ITokenWallet {
     }
 
     /**
-     * @dev See {TIP3TokenWallet.balance}.
+     * @dev See {TIP3TokenWallet-balance}.
      */
     function balance() override external view responsible returns (uint128) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } balance_;
     }
 
     /**
-     * @dev See {TIP3TokenWallet.owner}.
+     * @dev See {ITokenWallet-owner}.
      */
     function owner() override external view responsible returns (address) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } owner_;
     }
 
     /**
-     * @dev See {TIP3TokenWallet.root}.
+     * @dev See {TIP3TokenWallet-root}.
      */
     function root() override external view responsible returns (address) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } root_;
     }
 
     /**
-     * @dev See {TIP3TokenWallet.walletCode}.
+     * @dev See {TIP3TokenWallet-walletCode}.
      */
     function walletCode() override external view responsible returns (TvmCell) {
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } tvm.code();
     }
 
     /**
-     * @dev See {ITokenWallet.transfer}.
+     * @dev See {ITokenWallet-transfer}.
      *
      * The function then uses the address of the recipient and `StateInit`
-     *  (derived using a function called {_buildWalletInitData})
+     *  (derived using a function called {TokenWalletBase-_buildWalletInitData})
      * to determine the address of the recipient's token wallet. The sender's
      * wallet then decreases its `balance_` by the `amount` and calls the
-     * {ITokenWallet.acceptTransfer} on the recipient's token wallet.
+     * {ITokenWallet-acceptTransfer} on the recipient's token wallet.
      *
      * If the recipient's wallet is unable to accept the transfer,
      * the sender's wallet will return an error message and increase its
@@ -94,12 +95,14 @@ abstract contract TokenWalletBase is ITokenWallet {
      * provided, the transaction will fail with an error.
      *
      * Preconditions:
+     *
      *  - `amount` must be greater than zero.
      *  - `amount` must be less than or equal to `balance_`.
      *  - `recipient` must be a non-zero address and should not be equal to the
      *     address of the owner of the sender's wallet.
      *
      * Postcondition:
+     *
      *  - `balance_` will be decreased by `amount`.
      */
     function transfer(
@@ -142,19 +145,21 @@ abstract contract TokenWalletBase is ITokenWallet {
     }
 
     /**
-     * @dev See {ITokenWallet.transferToWallet}.
+     * @dev See {ITokenWallet-transferToWallet}.
      *
-     * Almost the same as the {TokenWalletBase.transfer}, only it takes the
+     * Almost the same as the {TokenWalletBase-transfer}, only it takes the
      * address of the deployed TokenWallet.
      * If the `recipientTokenWallet` is not deployed, the transaction will fail.
      *
      * Preconditions:
+     *
      *  - `amount` must be greater than zero.
      *  - `amount` must be less than or equal to `balance_`.
      *  - `recipientTokenWallet` must be a non-zero address and should
      *     not be equal to the address of the sender's TokenWallet.
      *
      * Postcondition:
+     *
      *  - `balance_` will be decreased by `amount`.
     */
     function transferToWallet(
@@ -186,7 +191,7 @@ abstract contract TokenWalletBase is ITokenWallet {
     }
 
     /**
-     * @dev See {ITokenWallet.acceptTransfer}.
+     * @dev See {ITokenWallet-acceptTransfer}.
      *
      * Accepts incoming transfer for amount amount of tokens from TokenWallet,
      * owned sender.
@@ -197,9 +202,11 @@ abstract contract TokenWalletBase is ITokenWallet {
      * sends to the TokenWallet owner with the same `remainingGasTo` and `payload`.
      *
      * Preconditions:
+     *
      *  - The transfer must come from the same wallet.
      *
      * Postcondition:
+     *
      *  - `balance_` will be increased by `amount`.
      */
     function acceptTransfer(
@@ -238,18 +245,20 @@ abstract contract TokenWalletBase is ITokenWallet {
     }
 
     /**
-     * @dev See {ITokenWallet.acceptMint}.
+     * @dev See {ITokenWallet-acceptMint}.
      *
      * Accepts incoming mint foramount of tokens from TokenRoot.
      * If `notify` is `false`, than the remaining gas MUST be sent to the
      * `remainingGasTo`.
-     * Otherwise, the {IAcceptTokensMintCallback.onAcceptTokensMint} sends to the
+     * Otherwise, the {IAcceptTokensMintCallback-onAcceptTokensMint} sends to the
      * TokenWallet owner with the same `remainingGasTo` and `payload`.
      *
      * Preconditions:
+     *
      *  - The mint must come from the TokenRoot.
      *
      * Postcondition:
+     *
      *  - `balance_` will be increased by `amount`.
     */
     function acceptMint(uint128 amount, address remainingGasTo, bool notify, TvmCell payload)
@@ -279,14 +288,13 @@ abstract contract TokenWalletBase is ITokenWallet {
     }
 
     /**
-     * @notice On-bounce handler
      * @dev Catch bounce if {acceptTransfer} or {acceptBurn} fails
      * @param body - body of the bounced message.
      *
-     * If {ITokenWallet.acceptTransfer} fails - increase back tokens
+     * If {ITokenWallet-acceptTransfer} fails - increase back tokens
      * `balance_` by `amount` and notify owner.
      *
-     * If tokens burn {ITokenRoot.acceptBurn} fails - increase back `balance_`
+     * If tokens burn `acceptBurn` fails - increase back `balance_`
      * by the `amount`, and notify the owner.
     */
     onBounce(TvmSlice body) external {
@@ -324,16 +332,16 @@ abstract contract TokenWalletBase is ITokenWallet {
      * @dev Burns `amount` tokens from TokenWallet, decreasing the
      * `balance_`.
      *
-     * Uses in {TokenWalletBurnableBase.burn} and {TokenWalletBurnableByRootBase.burn}.
-     *
      * Preconditions:
+     *
      *  - `amount` must be greater than 0.
      *  - `amount` must be less than or equal to `balance_`.
      *
-     * Postconditions:
+     * Postcondition:
+     *
      *  - `balance_` will be decreased by `amount`.
      *    If {ITokenRoot-acceptBurn} fails - message will be bounced
-     *    to {TokenWalletBase-onBounce}, and `balance_` will be increased back.
+     *    to {onBounce}, and `balance_` will be increased back.
     */
     function _burn(
         uint128 amount,
@@ -358,12 +366,11 @@ abstract contract TokenWalletBase is ITokenWallet {
     }
 
     /**
-     * @notice Withdraw all surplus balance in EVERs.
-     * @dev Can by called only by owner address.
+     * @dev Withdraw all surplus balance in EVERs.
      *
      * @param to Recipient address of the surplus balance.
      *
-     * Note: We pass flag {TokenMsgFlag.ALL_NOT_RESERVED}, so that message carries
+     * NOTE: We pass flag {TokenMsgFlag.ALL_NOT_RESERVED}, so that message carries
      * all the remaining balance of the current smart contract. Parameter value is ignored.
      * The contract's balance will be equal to zero after the message processing.
      *
@@ -395,7 +402,7 @@ abstract contract TokenWalletBase is ITokenWallet {
     /**
      * @dev Returns the target balance of the contract.
      *
-     * Target balance is used for {tvm.rawReserve}, which creates an output
+     * Target balance is used for `tvm.rawReserve`, which creates an output
      * action that reserves EVER.
      * It is roughly equivalent to creating an outgoing message that carries
      * reserve nanoevers to itself, so that subsequent spend actions cannot

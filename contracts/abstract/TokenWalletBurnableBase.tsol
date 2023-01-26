@@ -23,6 +23,7 @@ abstract contract TokenWalletBurnableBase is TokenWalletBase, IBurnableTokenWall
      * Burn tokens from the wallet.
      *
      * Precondition:
+     *
      *  - `sender` must be the wallet owner.
      *
      * For implementation details, see {TokenWalletBase-_burn}.
