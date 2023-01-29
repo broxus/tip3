@@ -238,15 +238,15 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
      *
      * Postcondition:
      *
-     *  - totalSupply_ is increased by `amount`.
+     *  - `totalSupply_` is increased by `amount`.
      *  - If `deployWalletValue` is zero
-     *    then {TokenWallet.balance} of `recipient` is increased by `amount`.
+     *    then `balance` of `recipient` is increased by `amount`.
      *  - Else, new {TokenWallet} is deployed with initial balance equal to `deployWalletValue`.
-     *  - {TokenWallet.acceptMint} is called on the deployed wallet.
+     *  - {ITokenWallet-acceptMint} is called on the deployed wallet.
      *
-     * NOTE: We pass `bounce` flag true in {TokenWallet.acceptMint}, so that
-     * in the {TokenWallet} cannot accept the mint, then {TokenWallet} will bounce
-     * to the current {TokenRoot.onBounce}, and the `totalSupply` will be decreased by `amount`.
+     * NOTE: We pass `bounce` flag true in acceptMint, so that
+     * in the TokenWallet cannot accept the mint, then TokenWallet will bounce
+     * to the current {onBounce}, and the `totalSupply` will be decreased by `amount`.
      */
     function _mint(
         uint128 amount,
@@ -323,7 +323,7 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
      *
      * @param to Recipient address of the surplus balance.
      *
-     * NOTE: We pass flag {TokenMsgFlag-ALL_NOT_RESERVED}, so that message carries
+     * NOTE: We pass flag ALL_NOT_RESERVED, so that message carries
      * all the remaining balance of the current smart contract. Parameter value is ignored.
      * The contract's balance will be equal to zero after the message processing.
      *

@@ -41,7 +41,8 @@ contract TokenWallet is
      *   `root_` - address of the root token contract
      *   `owner_` - address of the owner of the wallet
      *
-     * Requirements:
+     * Preconditions:
+     *
      * - `msg.pubkey()` MUST be equal to zero. This means that the owner of
      *   the TokenWallet can only smart contract.
      * - `owner_` MUST be a non-zero address.
@@ -86,7 +87,7 @@ contract TokenWallet is
      *      contract, see {TokenWalletBase}.
      *      Conflicts with data and must be set contr.
      *
-     *      `root_` - the address of the {TokenRoot} contract.
+     *      `root_` - the address of the TokenRoot contract.
      *      `owner_` - the address of the owner of the wallet.
      *
      *  - pubkey` - the public key of the contract.
