@@ -12,7 +12,6 @@ interface IAcceptTokensMintCallback {
      * of tokens. This allows the owner of the wallet to take appropriate action,
      * triggering a business logic.
      *
-     from TokenWallet on {ITokenWallet-acceptMint}.
      * @param tokenRoot The address of the token contract that.
      *        was used to mint the received tokens.
      * @param amount The amount of minted tokens that were received

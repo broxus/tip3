@@ -138,6 +138,7 @@ contract TokenRoot is
      * @dev See {TokenRootBase-_buildWalletInitData}.
      *
      * The `InitData` consists of:
+     *
      *  - `contr` (contract) - defines the contract whose `StateInit` will be created.
      *      Mandatory to be set if the `varInit` option is specified.
      *
@@ -145,12 +146,12 @@ contract TokenRoot is
      *      contract, see {TokenWalletBase}.
      *      Conflicts with data and must be set contr.
      *
-     *      `root_` - the address of the {TokenRoot} contract.
+     *      `root_` - the address of the TokenRoot contract.
      *      `owner_` - the address of the owner of the wallet.
      *
      *  - pubkey` - the public key of the contract.
      *      The value 0 means that the wallet can be owned only by another contract.
-     *      contract, the most common example is {Wallet}.
+     *      contract, the most common example is Account.
      *
      *  - `code` - the code of the {TokenWallet}.
      */

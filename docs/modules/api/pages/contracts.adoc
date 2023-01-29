@@ -21,17 +21,12 @@
 :TokenRootBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenRootBurnableByRootBase[`TokenRootBurnableByRootBase`]]
 :TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
 :TokenRootBurnPausableBase: pass:normal[xref:contracts.adoc#TokenRootBurnPausableBase[`TokenRootBurnPausableBase`]]
-:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
 :TokenRootDisableableMintBase: pass:normal[xref:contracts.adoc#TokenRootDisableableMintBase[`TokenRootDisableableMintBase`]]
-:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
 :TokenRootTransferableOwnershipBase: pass:normal[xref:contracts.adoc#TokenRootTransferableOwnershipBase[`TokenRootTransferableOwnershipBase`]]
-:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
 :TokenWalletBurnableBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableBase[`TokenWalletBurnableBase`]]
 :TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
 :TokenWalletBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableByRootBase[`TokenWalletBurnableByRootBase`]]
-:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
 :TokenWalletDestroyableBase: pass:normal[xref:contracts.adoc#TokenWalletDestroyableBase[`TokenWalletDestroyableBase`]]
-:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
 :SID: pass:normal[xref:additional.adoc#SID[`SID`]]
 :TokenFactory: pass:normal[xref:additional.adoc#TokenFactory[`TokenFactory`]]
 :TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
@@ -39,6 +34,11 @@
 :TokenRootBurnPausableBase: pass:normal[xref:contracts.adoc#TokenRootBurnPausableBase[`TokenRootBurnPausableBase`]]
 :TokenRootDisableableMintBase: pass:normal[xref:contracts.adoc#TokenRootDisableableMintBase[`TokenRootDisableableMintBase`]]
 :TokenRootTransferableOwnershipBase: pass:normal[xref:contracts.adoc#TokenRootTransferableOwnershipBase[`TokenRootTransferableOwnershipBase`]]
+:xref-TIP3TokenRoot-name--: xref:contracts.adoc#TIP3TokenRoot-name--
+:xref-TIP3TokenRoot-symbol--: xref:contracts.adoc#TIP3TokenRoot-symbol--
+:xref-TIP3TokenRoot-decimals--: xref:contracts.adoc#TIP3TokenRoot-decimals--
+:xref-TIP3TokenRoot-totalSupply--: xref:contracts.adoc#TIP3TokenRoot-totalSupply--
+:xref-TIP3TokenRoot-walletCode--: xref:contracts.adoc#TIP3TokenRoot-walletCode--
 :IBurnPausableTokenRoot: pass:normal[xref:contracts.adoc#IBurnPausableTokenRoot[`IBurnPausableTokenRoot`]]
 :TokenRootBase: pass:normal[xref:contracts.adoc#TokenRootBase[`TokenRootBase`]]
 :xref-TokenRootDisableableMintBase-disableMint--: xref:contracts.adoc#TokenRootDisableableMintBase-disableMint--
@@ -96,8 +96,7 @@
 :IAcceptTokensBurnCallback-onAcceptTokensBurn: pass:normal[xref:contracts.adoc#IAcceptTokensBurnCallback-onAcceptTokensBurn-uint128-address-address-address-TvmCell-[`IAcceptTokensBurnCallback.onAcceptTokensBurn`]]
 :TokenRootBase-mint: pass:normal[xref:contracts.adoc#TokenRootBase-mint-uint128-address-uint128-address-bool-TvmCell-[`TokenRootBase.mint`]]
 :TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
-:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
-:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:ITokenWallet-acceptMint: pass:normal[xref:contracts.adoc#ITokenWallet-acceptMint-uint128-address-bool-TvmCell-[`ITokenWallet.acceptMint`]]
 :ITokenWallet-acceptMint: pass:normal[xref:contracts.adoc#ITokenWallet-acceptMint-uint128-address-bool-TvmCell-[`ITokenWallet.acceptMint`]]
 :ITokenRoot: pass:normal[xref:contracts.adoc#ITokenRoot[`ITokenRoot`]]
 :ITokenWallet: pass:normal[xref:contracts.adoc#ITokenWallet[`ITokenWallet`]]
@@ -110,8 +109,6 @@
 :TokenRootBase-_targetBalance: pass:normal[xref:contracts.adoc#TokenRootBase-_targetBalance--[`TokenRootBase._targetBalance`]]
 :TokenRootBase-_buildWalletInitData: pass:normal[xref:contracts.adoc#TokenRootBase-_buildWalletInitData-address-[`TokenRootBase._buildWalletInitData`]]
 :TokenWalletBase: pass:normal[xref:contracts.adoc#TokenWalletBase[`TokenWalletBase`]]
-:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
-:Wallet: pass:normal[xref:additional.adoc#Wallet[`Wallet`]]
 :TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
 :TokenRootBase-_deployWallet: pass:normal[xref:contracts.adoc#TokenRootBase-_deployWallet-TvmCell-uint128-address-[`TokenRootBase._deployWallet`]]
 :TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
@@ -179,6 +176,7 @@
 :ITokenRootUpgradeable-requestUpgradeWallet: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-[`ITokenRootUpgradeable.requestUpgradeWallet`]]
 :ITokenRootUpgradeable-setWalletCode: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable-setWalletCode-TvmCell-[`ITokenRootUpgradeable.setWalletCode`]]
 :ITokenRootUpgradeable-upgrade: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable-upgrade-TvmCell-[`ITokenRootUpgradeable.upgrade`]]
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
 :TokenWalletBurnableBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableBase[`TokenWalletBurnableBase`]]
 :TokenWalletBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableByRootBase[`TokenWalletBurnableByRootBase`]]
 :TokenWalletDestroyableBase: pass:normal[xref:contracts.adoc#TokenWalletDestroyableBase[`TokenWalletDestroyableBase`]]
@@ -220,7 +218,6 @@
 :TIP3TokenWallet-root: pass:normal[xref:contracts.adoc#TIP3TokenWallet-root--[`TIP3TokenWallet.root`]]
 :TIP3TokenWallet-walletCode: pass:normal[xref:contracts.adoc#TIP3TokenWallet-walletCode--[`TIP3TokenWallet.walletCode`]]
 :ITokenWallet-transfer: pass:normal[xref:contracts.adoc#ITokenWallet-transfer-uint128-address-uint128-address-bool-TvmCell-[`ITokenWallet.transfer`]]
-:TokenWalletBase-_buildWalletInitData: pass:normal[xref:contracts.adoc#TokenWalletBase-_buildWalletInitData-address-[`TokenWalletBase._buildWalletInitData`]]
 :ITokenWallet-acceptTransfer: pass:normal[xref:contracts.adoc#ITokenWallet-acceptTransfer-uint128-address-address-bool-TvmCell-[`ITokenWallet.acceptTransfer`]]
 :ITokenWallet-transferToWallet: pass:normal[xref:contracts.adoc#ITokenWallet-transferToWallet-uint128-address-address-bool-TvmCell-[`ITokenWallet.transferToWallet`]]
 :TokenWalletBase-transfer: pass:normal[xref:contracts.adoc#TokenWalletBase-transfer-uint128-address-uint128-address-bool-TvmCell-[`TokenWalletBase.transfer`]]
@@ -242,7 +239,6 @@
 :TokenWalletBase-_targetBalance: pass:normal[xref:contracts.adoc#TokenWalletBase-_targetBalance--[`TokenWalletBase._targetBalance`]]
 :TokenRootBase-_buildWalletInitData: pass:normal[xref:contracts.adoc#TokenRootBase-_buildWalletInitData-address-[`TokenRootBase._buildWalletInitData`]]
 :TokenWalletBase: pass:normal[xref:contracts.adoc#TokenWalletBase[`TokenWalletBase`]]
-:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
 :Wallet: pass:normal[xref:additional.adoc#Wallet[`Wallet`]]
 :TokenRootBase: pass:normal[xref:contracts.adoc#TokenRootBase[`TokenRootBase`]]
 :TokenWalletBase-_deployWallet: pass:normal[xref:contracts.adoc#TokenWalletBase-_deployWallet-TvmCell-uint128-address-[`TokenWalletBase._deployWallet`]]
@@ -261,7 +257,6 @@
 :xref-TokenWalletDestroyableBase-destroy-address-: xref:contracts.adoc#TokenWalletDestroyableBase-destroy-address-
 :IDestroyable-destroy: pass:normal[xref:contracts.adoc#IDestroyable-destroy-address-[`IDestroyable.destroy`]]
 :xref-IAcceptTokensMintCallback-onAcceptTokensMint-address-uint128-address-TvmCell-: xref:contracts.adoc#IAcceptTokensMintCallback-onAcceptTokensMint-address-uint128-address-TvmCell-
-:ITokenWallet-acceptMint: pass:normal[xref:contracts.adoc#ITokenWallet-acceptMint-uint128-address-bool-TvmCell-[`ITokenWallet.acceptMint`]]
 :xref-IAcceptTokensTransferCallback-onAcceptTokensTransfer-address-uint128-address-address-address-TvmCell-: xref:contracts.adoc#IAcceptTokensTransferCallback-onAcceptTokensTransfer-address-uint128-address-address-address-TvmCell-
 :xref-IBounceTokensBurnCallback-onBounceTokensBurn-address-uint128-: xref:contracts.adoc#IBounceTokensBurnCallback-onBounceTokensBurn-address-uint128-
 :xref-IBurnableTokenWallet-burn-uint128-address-address-TvmCell-: xref:contracts.adoc#IBurnableTokenWallet-burn-uint128-address-address-TvmCell-
@@ -289,6 +284,7 @@
 :SID-supportsInterface: pass:normal[xref:additional.adoc#SID-supportsInterface-bytes4-[`SID.supportsInterface`]]
 :ITokenWalletUpgradeable-platformCode: pass:normal[xref:contracts.adoc#ITokenWalletUpgradeable-platformCode--[`ITokenWalletUpgradeable.platformCode`]]
 :ITokenWalletUpgradeable-upgrade: pass:normal[xref:contracts.adoc#ITokenWalletUpgradeable-upgrade-address-[`ITokenWalletUpgradeable.upgrade`]]
+:TokenRootUpgradeable: pass:normal[xref:contracts.adoc#TokenRootUpgradeable[`TokenRootUpgradeable`]]
 :ITokenWalletUpgradeable-acceptUpgrade: pass:normal[xref:contracts.adoc#ITokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-[`ITokenWalletUpgradeable.acceptUpgrade`]]
 :TokenRootBase-_buildWalletInitData: pass:normal[xref:contracts.adoc#TokenRootBase-_buildWalletInitData-address-[`TokenRootBase._buildWalletInitData`]]
 = TIP-3
@@ -296,28 +292,49 @@
 [.readme-notice]
 NOTE: This document is better viewed at https://docs.broxus.com/tip3
 
-The TIP-3 token standard is a distributed token standard designed specifically for the Everscale blockchain. It offers a number of advantages over traditional token standards, such as ERC-20, including a more efficient storage and management of token balances and the ability to avoid the high maintenance costs associated with sharding the registry.
+The TIP-3 token standard is a distributed token standard designed specifically for TVM-like networks. It was developed as part of the work of the Everscale blockchain. It offers a number of advantages over traditional token standards, such as ERC-20, including a more efficient storage and management of token balances and the ability to avoid the high maintenance costs associated with sharding the registry.
 
-The TIP-3 standard is made up of a set of interfaces, contracts, and utilities that work together to facilitate the creation and management of tokens on the Everscale blockchain. The core contracts that implement the behavior specified in the standard are:
+The TIP-3 standard is made up of a set of interfaces, contracts, and utilities that work together to facilitate the creation and management of tokens.
+The core contracts that implement the behavior specified in the standard are:
 
 TIP: For an overview of TIP-3 tokens and a walk through on how to create a token contract read our xref:ROOT:tip3.adoc[TIP-3 guide].
 
 == Core
-{TIP3TokenRoot}: is an interface defines the minimal required functionality for a TIP-3 compliant token root contract. It includes functions for querying the name, symbol, number of decimals, total supply, and wallet code of the token. These functions are used for display purposes and do not affect the contract's arithmetic.
-{ITokenRoot}: the interface for the token root contract that stores general information about the token, such as the name, symbol, decimals, and total supply.
-{TokenRootBase}: is an implementation of the TIP-3 Token Standard for the Everscale blockchain. It provides the minimal required functionality for a token root contract, including storing general information about the token such as name, symbol, decimals, and total supply.
-This contract serves as the foundation for other contracts that build upon it, such as the {TokenRootBurnableByRootBase}, {TokenRootBurnPausableBase}, {TokenRootDisableableMintBase}, and {TokenRootTransferableOwnershipBase}, which add additional functionality to the basic token root contract.
+{TIP3TokenRoot}: is an interface that defines the minimal required functionality for a TIP-3 compliant token root contract. It includes functions for querying the name, symbol, number of decimals, total supply, and wallet code of the token. These functions are used for display purposes and do not affect the contract's arithmetic.
+
+{ITokenRoot}: the interface for the token root contract that stores general information about the token, such as the `name`, `symbol, `decimals`, and `totalSupply`.
+
+{TokenRootBase}: is an implementation of the TIP-3 token standard. It provides the minimal required functionality for a token root contract, including storing general information about the token such as name, symbol, decimals, and total supply.
+This contract serves as the foundation for other contracts that build upon it, such as the:
+
+  - {TokenRootBurnableByRootBase}
+  - {TokenRootBurnPausableBase}
+  - {TokenRootDisableableMintBase}
+  - {TokenRootTransferableOwnershipBase}
+
+which add additional functionality to the basic token root contract.
 
 {TIP3TokenWallet}: is an interface that defines the minimal functionality required for a TIP-3 token wallet contract.
+
 {ITokenWallet}: the interface for the token wallet contract that represents each token holder's balance, and functions for transferring tokens, accepting transfers and mints from root contract, and querying owner and wallet information. It also includes the {SID} interface for interface detection.
-{TokenWalletBase}: is an implementation of the TIP-3 Token Standard for the Everscale blockchain. It provides the minimal required functionality for a token wallet contract, including storing information about the balance of the tokens.
-This contract serves as the foundation for other contracts that build upon it, such as the {TokenWalletBurnableBase}, {TokenWalletBurnableByRootBase}, and {TokenWalletDestroyableBase}, which add additional functionality to the basic token wallet contract.
+
+{TokenWalletBase}: is an implementation of the TIP-3 token standard. It provides the minimal required functionality for a token wallet contract, including storing information about the balance of the tokens.
+This contract serves as the foundation for other contracts that build upon it, such as the:
+
+- {TokenWalletBurnableBase}
+- {TokenWalletBurnableByRootBase}
+- {TokenWalletDestroyableBase}
+
+which add additional functionality to the basic token wallet contract.
 
 == Full Implementation of TIP-3
 
 {TokenRoot}: This contract stores general information about the token, such as name, symbol, decimals, walletCode_.  It also includes functionality for transferring ownership of the token root contract and the ability to burn and pause token burning.
+
 {TokenRootUpgradeable}: an implementation of the {ITokenRootUpgradeable} interface, which allows for the upgrading of the token root contract.
+
 {TokenWallet}: Each token holder has their own instance of this contract, which stores information about the balance of the tokens. Token transfers happen in a decentralized fashion between the wallets of the sender and the recipient.
+
 {TokenWalletUpgradeable}: Similar to TokenWallet, but with the added ability to upgrade the contract.
 
 == Abstract Contracts
@@ -325,20 +342,21 @@ In addition to these core contracts, there are also several abstract contracts t
 
 {TokenRootBurnableByRootBase}: This contract extends the functionality of {TokenRoot} and allows for burning tokens of any wallet, disabling the ability to burn tokens through the TokenRoot, and a view method that returns the state of 'burnByRootDisabled_'.
 
-{TokenRootBurnPausableBase}: This contract extends the functionality of {TokenRoot} and allows for starting and stopping burning tokens, and a view method that returns the state of `burnPaused_`.
+{TokenRootBurnPausableBase}: This contract extends the functionality of TokenRoot and allows for starting and stopping burning tokens, and a view method that returns the state of `burnPaused_`.
 
-{TokenRootDisableableMintBase}: This contract extends the functionality of {TokenRoot} and allows for permanently disabling token minting, and a view method that returns the state of `mintDisabled_`.
+{TokenRootDisableableMintBase}: This contract extends the functionality of TokenRoot and allows for permanently disabling token minting, and a view method that returns the state of `mintDisabled_`.
 
-{TokenRootTransferableOwnershipBase}: This contract extends the functionality of {TokenRoot} and adding a 1-step ownership transfer mechanism.
+{TokenRootTransferableOwnershipBase}: This contract extends the functionality of TokenRoot and adding a 1-step ownership transfer mechanism.
 
 {TokenWalletBurnableBase}: This contract extends the functionality of {TokenWallet} and allows for burning self-tokens.
 
-{TokenWalletBurnableByRootBase}: This contract extends the functionality of {TokenWallet} and allows for burning tokens by TokenRoot.
+{TokenWalletBurnableByRootBase}: This contract extends the functionality of TokenWallet and allows for burning tokens by TokenRoot.
 
-{TokenWalletDestroyableBase}: This contract extends the functionality of {TokenWallet} and allows for destroying the wallet.
+{TokenWalletDestroyableBase}: This contract extends the functionality of TokenWallet and allows for destroying the wallet.
 
 == Additional contracts
-{SID}: The contract in TIP-6.1 standard defines a method for determining the interfaces implemented by a smart contract on the Everscale blockchain. It uses the XOR of all function selectors in the interface as the identifier for the interface. This allows for querying if a contract supports a specific interface and adapting the way it is interacted with.
+{SID}: The contract in TIP-6.1 standard defines a method for determining the interfaces implemented by a smart contract on the TVM-liked networks. It uses the XOR of all function selectors in the interface as the identifier for the interface. This allows for querying if a contract supports a specific interface and adapting the way it is interacted with.
+
 {TokenFactory}: the contract that is used to create new token roots.
 
 == TokenRoot
@@ -346,16 +364,87 @@ In addition to these core contracts, there are also several abstract contracts t
 [.readme-notice]
 NOTE: This document is better viewed at https://docs.tip3.com/token-root
 
-The TokenRoot contract is a fundamental component of the TIP-3 token standard, which is a distributed token standard designed specifically for the Everscale blockchain. The TIP-3 standard is designed to overcome the drawbacks of the ERC20 token standard on the Everscale blockchain, which has high maintenance costs and is incompatible with sharding architecture.
+The TokenRoot contract is an implementation of the all required and optional functionality TIP-3 Token Standard.
 
-The TokenRoot contract stores general information about the token, such as its name, symbol, decimals, and total supply. It serves as the foundation for creating and managing TIP-3 compliant tokens on the Everscale blockchain. Each token holder has its own instance of the {TokenWallet} contract, which stores information about the balance of the tokens. Token transfers happen in a peer-to-peer fashion, between the sender's and recipient's token wallets.
+Each token holder has its own instance of the {TokenWallet} contract, which stores information about the balance of the tokens. Token transfers happen in a peer-to-peer fashion, between the sender's and recipient's token wallets.
 
-The TokenRoot contract is an implementation of the TIP-3 Token Standard for the Everscale blockchain. It provides the minimal required functionality for a token root contract, including storing general information about the token such as name, symbol, decimals, and total supply.
-It also includes functionality for transferring ownership of the token root contract and for burning and pausing token burning.
+Including storing general information about the token such as `name, `symbol`, `decimals`, and `totalSupply`.
+It also includes functionality for transferring ownership of the token root contract and for burning and pausing token burning, minting.
 
-In addition to these core contracts, there are also several abstract contracts that provide additional functionality. These include {TokenRootBurnableByRootBase}, {TokenRootBurnPausableBase}, {TokenRootDisableableMintBase}, {TokenRootTransferableOwnershipBase}, that add additional functionality to the basic token root contract. These contracts are designed to extend the functionality of TokenRoot contract and allows for burning tokens of any wallet, disabling the ability to burn tokens through the TokenRoot, starting and stopping burning tokens, permanently disabling token minting, transferring ownership of the token root contract and so on.
+TokenRoot is based on abstractions such as:
+
+  - {TokenRootBurnableByRootBase}
+  - {TokenRootBurnPausableBase}
+  - {TokenRootDisableableMintBase}
+  - {TokenRootTransferableOwnershipBase}
+
+that add additional functionality to the basic token root contract.
+These contracts are designed to extend the functionality of TokenRoot contract and allows for burning tokens of any wallet, disabling the ability to burn tokens through the TokenRoot, starting and stopping burning tokens, permanently disabling token minting, transferring ownership of the token root contract and so on.
 
 === Core
+
+:name: pass:normal[xref:#TIP3TokenRoot-name--[`++name++`]]
+:symbol: pass:normal[xref:#TIP3TokenRoot-symbol--[`++symbol++`]]
+:decimals: pass:normal[xref:#TIP3TokenRoot-decimals--[`++decimals++`]]
+:totalSupply: pass:normal[xref:#TIP3TokenRoot-totalSupply--[`++totalSupply++`]]
+:walletCode: pass:normal[xref:#TIP3TokenRoot-walletCode--[`++walletCode++`]]
+
+[.contract]
+[[TIP3TokenRoot]]
+=== `++TIP3TokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/TIP3TokenRoot.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/TIP3TokenRoot.sol";
+```
+
+Interface of the TIP-3.1 TokenRoot contract.
+
+[.contract-index]
+.Functions
+--
+* {xref-TIP3TokenRoot-name--}[`++name()++`]
+* {xref-TIP3TokenRoot-symbol--}[`++symbol()++`]
+* {xref-TIP3TokenRoot-decimals--}[`++decimals()++`]
+* {xref-TIP3TokenRoot-totalSupply--}[`++totalSupply()++`]
+* {xref-TIP3TokenRoot-walletCode--}[`++walletCode()++`]
+
+--
+
+[.contract-item]
+[[TIP3TokenRoot-name--]]
+==== `[.contract-item-name]#++name++#++() → string++` [.item-kind]#external#
+
+Returns the name of the token.
+
+[.contract-item]
+[[TIP3TokenRoot-symbol--]]
+==== `[.contract-item-name]#++symbol++#++() → string++` [.item-kind]#external#
+
+Returns the symbol of the token, usually a shorter version of the name.
+
+[.contract-item]
+[[TIP3TokenRoot-decimals--]]
+==== `[.contract-item-name]#++decimals++#++() → uint8++` [.item-kind]#external#
+
+Returns the number of decimals used to get its user representation.
+For example, if `decimals` equals `6`, a balance of `42_500_000` tokens should
+be displayed to a user as `42.5` (`42_500_000 / 10 ** 6`).
+
+NOTE: This information is only used for _display_ purposes: it in
+no way affects any of the arithmetic of the contract.
+
+[.contract-item]
+[[TIP3TokenRoot-totalSupply--]]
+==== `[.contract-item-name]#++totalSupply++#++() → uint128++` [.item-kind]#external#
+
+Returns the amount of tokens in existence.
+
+[.contract-item]
+[[TIP3TokenRoot-walletCode--]]
+==== `[.contract-item-name]#++walletCode++#++() → TvmCell++` [.item-kind]#external#
+
+Returns the `walletCode` of the TokenWallet contract.
 
 :mintDisabled_: pass:normal[xref:#TokenRootDisableableMintBase-mintDisabled_-bool[`++mintDisabled_++`]]
 :disableMint: pass:normal[xref:#TokenRootDisableableMintBase-disableMint--[`++disableMint++`]]
@@ -364,7 +453,7 @@ In addition to these core contracts, there are also several abstract contracts t
 
 [.contract]
 [[TokenRootDisableableMintBase]]
-=== `++TokenRootDisableableMintBase++` link:https://github.com/blob/contracts/abstract/TokenRootDisableableMintBase.sol[{github-icon},role=heading-link]
+=== `++TokenRootDisableableMintBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootDisableableMintBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -416,7 +505,7 @@ See {TokenRootBase-_mintEnabled}.
 
 [.contract]
 [[ITokenRoot]]
-=== `++ITokenRoot++` link:https://github.com/blob/contracts/interfaces/ITokenRoot.sol[{github-icon},role=heading-link]
+=== `++ITokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/ITokenRoot.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -509,7 +598,7 @@ Deploy a new {TokenWallet} with initial balance.
 
 [.contract]
 [[TokenRootBase]]
-=== `++TokenRootBase++` link:https://github.com/blob/contracts/abstract/TokenRootBase.sol[{github-icon},role=heading-link]
+=== `++TokenRootBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -682,15 +771,15 @@ Realization of {TokenRootBase-mint} function.
 
 Postcondition:
 
- - totalSupply_ is increased by `amount`.
+ - `totalSupply_` is increased by `amount`.
  - If `deployWalletValue` is zero
-   then {TokenWallet.balance} of `recipient` is increased by `amount`.
+   then `balance` of `recipient` is increased by `amount`.
  - Else, new {TokenWallet} is deployed with initial balance equal to `deployWalletValue`.
- - {TokenWallet.acceptMint} is called on the deployed wallet.
+ - {ITokenWallet-acceptMint} is called on the deployed wallet.
 
-NOTE: We pass `bounce` flag true in {TokenWallet.acceptMint}, so that
-in the {TokenWallet} cannot accept the mint, then {TokenWallet} will bounce
-to the current {TokenRoot.onBounce}, and the `totalSupply` will be decreased by `amount`.
+NOTE: We pass `bounce` flag true in acceptMint, so that
+in the TokenWallet cannot accept the mint, then TokenWallet will bounce
+to the current {onBounce}, and the `totalSupply` will be decreased by `amount`.
 
 [.contract-item]
 [[TokenRootBase-_getExpectedWalletAddress-address-]]
@@ -777,7 +866,7 @@ Deploys new token wallet.
 
 [.contract]
 [[TokenRoot]]
-=== `++TokenRoot++` link:https://github.com/blob/contracts/TokenRoot.sol[{github-icon},role=heading-link]
+=== `++TokenRoot++` link:https://github.com/broxus/tip3/contracts/TokenRoot.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -844,6 +933,7 @@ Implementation of the {TokenRootBase-_targetBalance} virtual function.
 See {TokenRootBase-_buildWalletInitData}.
 
 The `InitData` consists of:
+
  - `contr` (contract) - defines the contract whose `StateInit` will be created.
      Mandatory to be set if the `varInit` option is specified.
 
@@ -851,12 +941,12 @@ The `InitData` consists of:
      contract, see {TokenWalletBase}.
      Conflicts with data and must be set contr.
 
-     `root_` - the address of the {TokenRoot} contract.
+     `root_` - the address of the TokenRoot contract.
      `owner_` - the address of the owner of the wallet.
 
  - pubkey` - the public key of the contract.
      The value 0 means that the wallet can be owned only by another contract.
-     contract, the most common example is {Wallet}.
+     contract, the most common example is Account.
 
  - `code` - the code of the {TokenWallet}.
 
@@ -877,7 +967,7 @@ Deploys a new {TokenWallet} contract according to the TIP-3 standard.
 
 [.contract]
 [[TokenRootBurnableByRootBase]]
-=== `++TokenRootBurnableByRootBase++` link:https://github.com/blob/contracts/abstract/TokenRootBurnableByRootBase.sol[{github-icon},role=heading-link]
+=== `++TokenRootBurnableByRootBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootBurnableByRootBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -937,7 +1027,7 @@ See {IBurnableByRootTokenRoot-disableBurnByRoot}.
 
 [.contract]
 [[TokenRootBurnPausableBase]]
-=== `++TokenRootBurnPausableBase++` link:https://github.com/blob/contracts/abstract/TokenRootBurnPausableBase.sol[{github-icon},role=heading-link]
+=== `++TokenRootBurnPausableBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootBurnPausableBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -988,7 +1078,7 @@ See {TokenRootBase-_burnEnabled}.
 
 [.contract]
 [[TokenRootDisableableMintBase]]
-=== `++TokenRootDisableableMintBase++` link:https://github.com/blob/contracts/abstract/TokenRootDisableableMintBase.sol[{github-icon},role=heading-link]
+=== `++TokenRootDisableableMintBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootDisableableMintBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1036,7 +1126,7 @@ See {TokenRootBase-_mintEnabled}.
 
 [.contract]
 [[TokenRootTransferableOwnershipBase]]
-=== `++TokenRootTransferableOwnershipBase++` link:https://github.com/blob/contracts/abstract/TokenRootTransferableOwnershipBase.sol[{github-icon},role=heading-link]
+=== `++TokenRootTransferableOwnershipBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootTransferableOwnershipBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1075,7 +1165,7 @@ Postconditions:
 
 [.contract]
 [[IAcceptTokensBurnCallback]]
-=== `++IAcceptTokensBurnCallback++` link:https://github.com/blob/contracts/interfaces/IAcceptTokensBurnCallback.sol[{github-icon},role=heading-link]
+=== `++IAcceptTokensBurnCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/IAcceptTokensBurnCallback.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1119,7 +1209,7 @@ such as triggering a business logic.
 
 [.contract]
 [[IBurnableByRootTokenRoot]]
-=== `++IBurnableByRootTokenRoot++` link:https://github.com/blob/contracts/interfaces/IBurnableByRootTokenRoot.sol[{github-icon},role=heading-link]
+=== `++IBurnableByRootTokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/IBurnableByRootTokenRoot.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1177,7 +1267,7 @@ Returns true if `burnTokens` method is disabled.
 
 [.contract]
 [[IBurnPausableTokenRoot]]
-=== `++IBurnPausableTokenRoot++` link:https://github.com/blob/contracts/interfaces/IBurnPausableTokenRoot.sol[{github-icon},role=heading-link]
+=== `++IBurnPausableTokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/IBurnPausableTokenRoot.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1214,7 +1304,7 @@ Returns `true` if token burns are paused, and `false` otherwise.
 
 [.contract]
 [[IDisableableMintTokenRoot]]
-=== `++IDisableableMintTokenRoot++` link:https://github.com/blob/contracts/interfaces/IDisableableMintTokenRoot.sol[{github-icon},role=heading-link]
+=== `++IDisableableMintTokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/IDisableableMintTokenRoot.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1250,7 +1340,7 @@ This is an irreversible action
 
 [.contract]
 [[ITransferTokenRootOwnershipCallback]]
-=== `++ITransferTokenRootOwnershipCallback++` link:https://github.com/blob/contracts/interfaces/ITransferTokenRootOwnershipCallback.sol[{github-icon},role=heading-link]
+=== `++ITransferTokenRootOwnershipCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/ITransferTokenRootOwnershipCallback.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1289,7 +1379,7 @@ This function is called by the token root contract after the ownership transfer.
 
 [.contract]
 [[ITokenRootUpgradeable]]
-=== `++ITokenRootUpgradeable++` link:https://github.com/blob/contracts/interfaces/ITokenRootUpgradeable.sol[{github-icon},role=heading-link]
+=== `++ITokenRootUpgradeable++` link:https://github.com/broxus/tip3/contracts/interfaces/ITokenRootUpgradeable.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1360,7 +1450,7 @@ Upgrades the {TokenRoot} code.
 
 [.contract]
 [[TokenRootUpgradeable]]
-=== `++TokenRootUpgradeable++` link:https://github.com/blob/contracts/TokenRootUpgradeable.sol[{github-icon},role=heading-link]
+=== `++TokenRootUpgradeable++` link:https://github.com/broxus/tip3/contracts/TokenRootUpgradeable.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1479,11 +1569,15 @@ implemetation logic `deployWallet` function.
 [.readme-notice]
 NOTE: This document is better viewed at https://docs.broxus.com/tip3
 
-The TIP-3 Token Wallet contract, represented by the TokenWallet contract, is an implementation of the TIP-3 Token Standard for the Everscale blockchain. It provides all the required methods specified in the standard, as well as additional optional functionality such as the ability to burn and manage collections of tokens.
+The Token Wallet contract, is an implementation of the TIP-3 Token Standard. It provides all the required methods specified in the standard, as well as additional optional functionality such as the ability to minting, burning/burning by {TokenRoot} tokens, and destroying the wallet.
 
 Each token holder has their own instance of the token wallet contract, and transfers occur in a decentralized fashion. The sender's token wallet must send a specific message to the receiver's token wallet, and since all token wallets have the same code, it is easy for the receiver's token wallet to check the correctness of the sender's token wallet.
 
-The TokenWallet contract also serves as a base for other contracts that build upon it, such as the {TokenWalletBurnableBase}, {TokenWalletBurnableByRootBase}, and {TokenWalletDestroyableBase}, which add additional functionality to the basic token wallet contract.
+The TokenWallet is based on abstractions such as:
+
+  - {TokenWalletBurnableBase}
+  - {TokenWalletBurnableByRootBase}
+  - {TokenWalletDestroyableBase}
 
 === Core
 
@@ -1493,7 +1587,7 @@ The TokenWallet contract also serves as a base for other contracts that build up
 
 [.contract]
 [[TIP3TokenWallet]]
-=== `++TIP3TokenWallet++` link:https://github.com/blob/contracts/interfaces/TIP3TokenWallet.sol[{github-icon},role=heading-link]
+=== `++TIP3TokenWallet++` link:https://github.com/broxus/tip3/contracts/interfaces/TIP3TokenWallet.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1537,7 +1631,7 @@ Returns the wallet code.
 
 [.contract]
 [[ITokenWallet]]
-=== `++ITokenWallet++` link:https://github.com/blob/contracts/interfaces/ITokenWallet.sol[{github-icon},role=heading-link]
+=== `++ITokenWallet++` link:https://github.com/broxus/tip3/contracts/interfaces/ITokenWallet.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1617,7 +1711,7 @@ Accept minted tokens from root
 
 [.contract]
 [[TokenWalletBase]]
-=== `++TokenWalletBase++` link:https://github.com/blob/contracts/abstract/TokenWalletBase.sol[{github-icon},role=heading-link]
+=== `++TokenWalletBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1706,7 +1800,8 @@ See {TIP3TokenWallet-walletCode}.
 See {ITokenWallet-transfer}.
 
 The function then uses the address of the recipient and `StateInit`
- (derived using a function called {TokenWalletBase-_buildWalletInitData})
+ (derived using a function called {_buildWalletInitData})
+
 to determine the address of the recipient's token wallet. The sender's
 wallet then decreases its `balance_` by the `amount` and calls the
 {ITokenWallet-acceptTransfer} on the recipient's token wallet.
@@ -1865,7 +1960,7 @@ Deploys new token wallet.
 
 [.contract]
 [[TokenWalletDestroyableBase]]
-=== `++TokenWalletDestroyableBase++` link:https://github.com/blob/contracts/abstract/TokenWalletDestroyableBase.sol[{github-icon},role=heading-link]
+=== `++TokenWalletDestroyableBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletDestroyableBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1902,7 +1997,7 @@ Precondition:
 
 [.contract]
 [[TokenWallet]]
-=== `++TokenWallet++` link:https://github.com/blob/contracts/TokenWallet.sol[{github-icon},role=heading-link]
+=== `++TokenWallet++` link:https://github.com/broxus/tip3/contracts/TokenWallet.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -1942,7 +2037,8 @@ of the contract, the following parameters are passed to `StateInit`:
   `root_` - address of the root token contract
   `owner_` - address of the owner of the wallet
 
-Requirements:
+Preconditions:
+
 - `msg.pubkey()` MUST be equal to zero. This means that the owner of
   the TokenWallet can only smart contract.
 - `owner_` MUST be a non-zero address.
@@ -1976,7 +2072,7 @@ The `InitData` consists of:
      contract, see {TokenWalletBase}.
      Conflicts with data and must be set contr.
 
-     `root_` - the address of the {TokenRoot} contract.
+     `root_` - the address of the TokenRoot contract.
      `owner_` - the address of the owner of the wallet.
 
  - pubkey` - the public key of the contract.
@@ -1997,7 +2093,7 @@ Implementation of the virtual function {TokenWalletBase-_deployWallet}.
 
 [.contract]
 [[TokenWalletBurnableBase]]
-=== `++TokenWalletBurnableBase++` link:https://github.com/blob/contracts/abstract/TokenWalletBurnableBase.sol[{github-icon},role=heading-link]
+=== `++TokenWalletBurnableBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletBurnableBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2034,7 +2130,7 @@ For implementation details, see {TokenWalletBase-_burn}.
 
 [.contract]
 [[TokenWalletBurnableByRootBase]]
-=== `++TokenWalletBurnableByRootBase++` link:https://github.com/blob/contracts/abstract/TokenWalletBurnableByRootBase.sol[{github-icon},role=heading-link]
+=== `++TokenWalletBurnableByRootBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletBurnableByRootBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2073,7 +2169,7 @@ For implementation details, see {TokenWalletBase-_burn}.
 
 [.contract]
 [[TokenWalletDestroyableBase]]
-=== `++TokenWalletDestroyableBase++` link:https://github.com/blob/contracts/abstract/TokenWalletDestroyableBase.sol[{github-icon},role=heading-link]
+=== `++TokenWalletDestroyableBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletDestroyableBase.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2108,7 +2204,7 @@ Precondition:
 
 [.contract]
 [[IAcceptTokensMintCallback]]
-=== `++IAcceptTokensMintCallback++` link:https://github.com/blob/contracts/interfaces/IAcceptTokensMintCallback.sol[{github-icon},role=heading-link]
+=== `++IAcceptTokensMintCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/IAcceptTokensMintCallback.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2134,13 +2230,11 @@ Callback used by the wallet contract when it receives a mint
 of tokens. This allows the owner of the wallet to take appropriate action,
 triggering a business logic.
 
-     from TokenWallet on {ITokenWallet-acceptMint}.
-
 :onAcceptTokensTransfer: pass:normal[xref:#IAcceptTokensTransferCallback-onAcceptTokensTransfer-address-uint128-address-address-address-TvmCell-[`++onAcceptTokensTransfer++`]]
 
 [.contract]
 [[IAcceptTokensTransferCallback]]
-=== `++IAcceptTokensTransferCallback++` link:https://github.com/blob/contracts/interfaces/IAcceptTokensTransferCallback.sol[{github-icon},role=heading-link]
+=== `++IAcceptTokensTransferCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/IAcceptTokensTransferCallback.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2176,7 +2270,7 @@ such as triggering a business logic.
 
 [.contract]
 [[IBounceTokensBurnCallback]]
-=== `++IBounceTokensBurnCallback++` link:https://github.com/blob/contracts/interfaces/IBounceTokensBurnCallback.sol[{github-icon},role=heading-link]
+=== `++IBounceTokensBurnCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/IBounceTokensBurnCallback.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2210,7 +2304,7 @@ Invoked by the token wallet when a burn operation is reverted.
 
 [.contract]
 [[IBurnableTokenWallet]]
-=== `++IBurnableTokenWallet++` link:https://github.com/blob/contracts/interfaces/IBurnableTokenWallet.sol[{github-icon},role=heading-link]
+=== `++IBurnableTokenWallet++` link:https://github.com/broxus/tip3/contracts/interfaces/IBurnableTokenWallet.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2245,7 +2339,7 @@ Allows for walletOwner burn tokens.
 
 [.contract]
 [[IDestroyable]]
-=== `++IDestroyable++` link:https://github.com/blob/contracts/interfaces/IDestroyable.sol[{github-icon},role=heading-link]
+=== `++IDestroyable++` link:https://github.com/broxus/tip3/contracts/interfaces/IDestroyable.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2275,7 +2369,7 @@ Destroys the contract.
 
 [.contract]
 [[ITokenWalletUpgradeable]]
-=== `++ITokenWalletUpgradeable++` link:https://github.com/blob/contracts/interfaces/ITokenWalletUpgradeable.sol[{github-icon},role=heading-link]
+=== `++ITokenWalletUpgradeable++` link:https://github.com/broxus/tip3/contracts/interfaces/ITokenWalletUpgradeable.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2328,7 +2422,7 @@ Only TokenRoot can call this method.
 
 [.contract]
 [[TokenWalletPlatform]]
-=== `++TokenWalletPlatform++` link:https://github.com/blob/contracts/TokenWalletPlatform.sol[{github-icon},role=heading-link]
+=== `++TokenWalletPlatform++` link:https://github.com/broxus/tip3/contracts/TokenWalletPlatform.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2373,7 +2467,7 @@ Contstructor for TokenWalletPlatform.
 
 [.contract]
 [[TokenWalletUpgradeable]]
-=== `++TokenWalletUpgradeable++` link:https://github.com/blob/contracts/TokenWalletUpgradeable.sol[{github-icon},role=heading-link]
+=== `++TokenWalletUpgradeable++` link:https://github.com/broxus/tip3/contracts/TokenWalletUpgradeable.sol[{github-icon},role=heading-link]
 
 [.hljs-theme-light.nopadding]
 ```solidity
@@ -2430,6 +2524,8 @@ See {ITokenWalletUpgradeable-platformCode}.
 [[TokenWalletUpgradeable-onDeployRetry-TvmCell-uint32-address-address-]]
 ==== `[.contract-item-name]#++onDeployRetry++#++(TvmCell, uint32, address sender, address remainingGasTo)++` [.item-kind]#external#
 
+This function is used if the deployment transaction fails, then the unused Evers will be returned to the `remainingGasTo`.
+
 [.contract-item]
 [[TokenWalletUpgradeable-version--]]
 ==== `[.contract-item-name]#++version++#++() → uint32++` [.item-kind]#external#
@@ -2442,7 +2538,7 @@ Returns the version of the Wallet.
 
 See {ITokenWalletUpgradeable-upgrade}.
 
-Sends a request to the TokenRoot to upgrade the Wallet code to
+Sends a request to the {TokenRootUpgradeable} to upgrade the Wallet code to
 the latest version.
 
 [.contract-item]

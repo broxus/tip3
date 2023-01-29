@@ -69,6 +69,9 @@ contract TokenWalletUpgradeable is
         return { value: 0, flag: TokenMsgFlag.REMAINING_GAS, bounce: false } platformCode_;
     }
 
+    /**
+     * @dev This function is used if the deployment transaction fails, then the unused Evers will be returned to the `remainingGasTo`.
+     */
     function onDeployRetry(TvmCell, uint32, address sender, address remainingGasTo)
         external
         view
@@ -96,7 +99,7 @@ contract TokenWalletUpgradeable is
     /**
      * @dev See {ITokenWalletUpgradeable-upgrade}.
      *
-     * Sends a request to the TokenRoot to upgrade the Wallet code to
+     * Sends a request to the {TokenRootUpgradeable} to upgrade the Wallet code to
      * the latest version.
      */
     function upgrade(address remainingGasTo) override external onlyOwner {

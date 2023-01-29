@@ -79,7 +79,8 @@ abstract contract TokenWalletBase is ITokenWallet {
      * @dev See {ITokenWallet-transfer}.
      *
      * The function then uses the address of the recipient and `StateInit`
-     *  (derived using a function called {TokenWalletBase-_buildWalletInitData})
+     *  (derived using a function called {_buildWalletInitData})
+     *
      * to determine the address of the recipient's token wallet. The sender's
      * wallet then decreases its `balance_` by the `amount` and calls the
      * {ITokenWallet-acceptTransfer} on the recipient's token wallet.
