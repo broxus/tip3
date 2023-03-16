@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "locklift build --config locklift.config.js"
+    "compile": "locklift build --config locklift.config.js",
+    "prepare-docs": "scripts/prepare-docs.sh"
   },
   "author": "aleksandr-hramcov <aleksandr.hramcov@gmail.com>",
   "license": "AGPLv3",
@@ -23,6 +24,8 @@
     "@broxus/contracts": "^1.0.4",
     "chai": "^4.3.0",
     "chai-bignumber": "^3.0.0",
-    "locklift": "^1.4.5"
+    "locklift": "^1.4.5",
+    "solidity-ast": "^0.4.40",
+    "lodash.startcase": "^4.4.0"
   }
 }

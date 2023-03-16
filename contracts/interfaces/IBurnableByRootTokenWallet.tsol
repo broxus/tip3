@@ -1,22 +1,35 @@
 pragma ton-solidity >= 0.57.0;
 
-/*
-rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
-             IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
-             IBurnPausableTokenRoot(root).tokensBurned(...) ->
-             IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
+/**
+ * @dev An interface that defines additional functions for burning tokens
+ * by TokenRoot, owned by TokenWallet in accordance with the TIP-3.2 standard.
+ *
+ * (See https://docs.everscale.network/standard/TIP-3.2#burn-token-by-token-root)
+ *
+ * Chain of calls:
+ *
+ * rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
+ *              IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
+ *              IBurnPausableTokenRoot(root).tokensBurned(...) ->
+ *              IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
 */
-
 interface IBurnableByRootTokenWallet {
 
-    /*
-        @notice Allows for rootOwner burn tokens from TokenWallet
-        @dev Can be called only by TokenRoot
-        @param amount Amount tokens to burn
-        @param remainingGasTo Receiver of the remaining EVERs
-        @param callbackTo address of contract, which implement IAcceptTokensBurnCallback.onAcceptTokensBurn
-               if it equals to 0:0 then no callbacks
-        @param payload Custom data will be delivered into IAcceptTokensBurnCallback.onAcceptTokensBurn
+    /**
+     * @dev Allows for rootOwner burn tokens from {TokenWallet}
+     * @param amount Amount tokens to burn
+     * @param remainingGasTo Receiver of the remaining EVERs
+     * @param callbackTo address of contract, which implement {IAcceptTokensBurnCallback-onAcceptTokensBurn}
+     *        if it equals to 0:0 then no callbacks
+     * @param payload Custom data will be delivered into {IAcceptTokensBurnCallback-onAcceptTokensBurn}
+     *
+     * Precondition:
+     *
+     *   - Sender must be {TokenRoot} of TokenWallet.
+     *
+     * Postcondition:
+     *
+     *   - The `balance_` of wallet must decrease by the `amount` that is burned.
     */
     function burnByRoot(
         uint128 amount,

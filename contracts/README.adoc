@@ -1,0 +1,192 @@
+= TIP-3
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.broxus.com/tip3
+
+The TIP-3 token standard is a distributed token standard designed specifically for TVM-like networks. It was developed as part of the work of the Everscale blockchain. It offers a number of advantages over traditional token standards, such as ERC-20, including a more efficient storage and management of token balances and the ability to avoid the high maintenance costs associated with sharding the registry.
+
+The TIP-3 standard is made up of a set of interfaces, contracts, and utilities that work together to facilitate the creation and management of tokens.
+The core contracts that implement the behavior specified in the standard are:
+
+
+TIP: For an overview of TIP-3 tokens and a walk through on how to create a token contract read our xref:ROOT:tip3.adoc[TIP-3 guide].
+
+
+== Core
+{TIP3TokenRoot}: is an interface that defines the minimal required functionality for a TIP-3 compliant token root contract. It includes functions for querying the name, symbol, number of decimals, total supply, and wallet code of the token. These functions are used for display purposes and do not affect the contract's arithmetic.
+
+{ITokenRoot}: the interface for the token root contract that stores general information about the token, such as the `name`, `symbol, `decimals`, and `totalSupply`.
+
+{TokenRootBase}: is an implementation of the TIP-3 token standard. It provides the minimal required functionality for a token root contract, including storing general information about the token such as name, symbol, decimals, and total supply.
+This contract serves as the foundation for other contracts that build upon it, such as the:
+
+  - {TokenRootBurnableByRootBase}
+  - {TokenRootBurnPausableBase}
+  - {TokenRootDisableableMintBase}
+  - {TokenRootTransferableOwnershipBase}
+
+which add additional functionality to the basic token root contract.
+
+{TIP3TokenWallet}: is an interface that defines the minimal functionality required for a TIP-3 token wallet contract.
+
+{ITokenWallet}: the interface for the token wallet contract that represents each token holder's balance, and functions for transferring tokens, accepting transfers and mints from root contract, and querying owner and wallet information. It also includes the {SID} interface for interface detection.
+
+{TokenWalletBase}: is an implementation of the TIP-3 token standard. It provides the minimal required functionality for a token wallet contract, including storing information about the balance of the tokens.
+This contract serves as the foundation for other contracts that build upon it, such as the:
+
+- {TokenWalletBurnableBase}
+- {TokenWalletBurnableByRootBase}
+- {TokenWalletDestroyableBase}
+
+which add additional functionality to the basic token wallet contract.
+
+
+== Full Implementation of TIP-3
+
+{TokenRoot}: This contract stores general information about the token, such as name, symbol, decimals, walletCode_.  It also includes functionality for transferring ownership of the token root contract and the ability to burn and pause token burning.
+
+{TokenRootUpgradeable}: an implementation of the {ITokenRootUpgradeable} interface, which allows for the upgrading of the token root contract.
+
+{TokenWallet}: Each token holder has their own instance of this contract, which stores information about the balance of the tokens. Token transfers happen in a decentralized fashion between the wallets of the sender and the recipient.
+
+{TokenWalletUpgradeable}: Similar to TokenWallet, but with the added ability to upgrade the contract.
+
+== Abstract Contracts
+In addition to these core contracts, there are also several abstract contracts that provide additional functionality. These include:
+
+{TokenRootBurnableByRootBase}: This contract extends the functionality of {TokenRoot} and allows for burning tokens of any wallet, disabling the ability to burn tokens through the TokenRoot, and a view method that returns the state of 'burnByRootDisabled_'.
+
+{TokenRootBurnPausableBase}: This contract extends the functionality of TokenRoot and allows for starting and stopping burning tokens, and a view method that returns the state of `burnPaused_`.
+
+{TokenRootDisableableMintBase}: This contract extends the functionality of TokenRoot and allows for permanently disabling token minting, and a view method that returns the state of `mintDisabled_`.
+
+{TokenRootTransferableOwnershipBase}: This contract extends the functionality of TokenRoot and adding a 1-step ownership transfer mechanism.
+
+{TokenWalletBurnableBase}: This contract extends the functionality of {TokenWallet} and allows for burning self-tokens.
+
+{TokenWalletBurnableByRootBase}: This contract extends the functionality of TokenWallet and allows for burning tokens by TokenRoot.
+
+{TokenWalletDestroyableBase}: This contract extends the functionality of TokenWallet and allows for destroying the wallet.
+
+== Additional contracts
+{SID}: The contract in TIP-6.1 standard defines a method for determining the interfaces implemented by a smart contract on the TVM-liked networks. It uses the XOR of all function selectors in the interface as the identifier for the interface. This allows for querying if a contract supports a specific interface and adapting the way it is interacted with.
+
+{TokenFactory}: the contract that is used to create new token roots.
+
+
+== TokenRoot
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.tip3.com/token-root
+
+The TokenRoot contract is an implementation of the all required and optional functionality TIP-3 Token Standard.
+
+Each token holder has its own instance of the {TokenWallet} contract, which stores information about the balance of the tokens. Token transfers happen in a peer-to-peer fashion, between the sender's and recipient's token wallets.
+
+Including storing general information about the token such as `name, `symbol`, `decimals`, and `totalSupply`.
+It also includes functionality for transferring ownership of the token root contract and for burning and pausing token burning, minting.
+
+TokenRoot is based on abstractions such as:
+
+  - {TokenRootBurnableByRootBase}
+  - {TokenRootBurnPausableBase}
+  - {TokenRootDisableableMintBase}
+  - {TokenRootTransferableOwnershipBase}
+
+that add additional functionality to the basic token root contract.
+These contracts are designed to extend the functionality of TokenRoot contract and allows for burning tokens of any wallet, disabling the ability to burn tokens through the TokenRoot, starting and stopping burning tokens, permanently disabling token minting, transferring ownership of the token root contract and so on.
+
+=== Core
+
+{{TIP3TokenRoot}}
+
+{{TokenRootDisableableMintBase}}
+
+{{ITokenRoot}}
+
+{{TokenRootBase}}
+
+{{TokenRoot}}
+
+=== Abstractions
+
+{{TokenRootBurnableByRootBase}}
+
+{{TokenRootBurnPausableBase}}
+
+{{TokenRootDisableableMintBase}}
+
+{{TokenRootTransferableOwnershipBase}}
+
+=== Interfaces
+
+{{IAcceptTokensBurnCallback}}
+
+{{IBurnableByRootTokenRoot}}
+
+{{IBurnPausableTokenRoot}}
+
+{{IDisableableMintTokenRoot}}
+
+{{ITransferTokenRootOwnershipCallback}}
+
+=== Upgradeability
+
+{{ITokenRootUpgradeable}}
+
+{{TokenRootUpgradeable}}
+
+== TokenWallet
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.broxus.com/tip3
+
+The Token Wallet contract, is an implementation of the TIP-3 Token Standard. It provides all the required methods specified in the standard, as well as additional optional functionality such as the ability to minting, burning/burning by {TokenRoot} tokens, and destroying the wallet.
+
+Each token holder has their own instance of the token wallet contract, and transfers occur in a decentralized fashion. The sender's token wallet must send a specific message to the receiver's token wallet, and since all token wallets have the same code, it is easy for the receiver's token wallet to check the correctness of the sender's token wallet.
+
+The TokenWallet is based on abstractions such as:
+
+  - {TokenWalletBurnableBase}
+  - {TokenWalletBurnableByRootBase}
+  - {TokenWalletDestroyableBase}
+
+=== Core
+
+{{TIP3TokenWallet}}
+
+{{ITokenWallet}}
+
+{{TokenWalletBase}}
+
+{{TokenWalletDestroyableBase}}
+
+{{TokenWallet}}
+
+=== Abstractions
+
+{{TokenWalletBurnableBase}}
+
+{{TokenWalletBurnableByRootBase}}
+
+{{TokenWalletDestroyableBase}}
+
+=== Interfaces
+
+{{IAcceptTokensMintCallback}}
+
+{{IAcceptTokensTransferCallback}}
+
+{{IBounceTokensBurnCallback}}
+
+{{IBurnableTokenWallet}}
+
+{{IDestroyable}}
+
+=== Upgradeability
+
+{{ITokenWalletUpgradeable}}
+
+{{TokenWalletPlatform}}
+
+{{TokenWalletUpgradeable}}

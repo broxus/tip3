@@ -1,35 +1,51 @@
 pragma ton-solidity >= 0.57.0;
 
 import "./TIP3TokenRoot.tsol";
-import "./SID.tsol";
+import "./../additional/SID.tsol";
 
+/**
+ * @dev Interface of the minimal required functionality of TIP-3 standard.
+ * The interface also inherits the supportInterface interface,
+ * which is used to identify whether the contract supports the interface.
+ * This is described in the TIP-6.1 standard.
+ * (see https://docs.everscale.network/standard/TIP-6.1)
+ */
 interface ITokenRoot is TIP3TokenRoot, SID {
 
-    /*
-        @notice Get root owner
-        @returns rootOwner
+    /**
+     * @dev Returns current owner address of {TokenRoot}.
+     * @return rootOwner address.
     */
     function rootOwner() external view responsible returns (address);
 
-    /*
-        @notice Derive TokenWallet address from owner address
-        @param _owner TokenWallet owner address
-        @returns Token wallet address
+    /**
+     * @dev Derive {TokenWallet} address from owner address.
+     * @param walletOwner TokenWallet owner address
+     * @return Returns token wallet address, owned by owner. MUST NOT deploy token wallet.
     */
-    function walletOf(address owner) external view responsible returns (address);
+    function walletOf(address walletOwner) external view responsible returns (address);
 
-    /*
-        @notice Called by TokenWallet, when
-        @dev Decrease total supply
-        @dev Can be called only by correct token wallet contract
-        @dev Fails if root token burn paused
-        @param amount How much tokens was burned
-        @param walletOwner Burner TokenWallet owner address
-        @param remainingGasTo Receiver of the remaining EVERs
-        @param callbackTo address of contract, which implement IBurnTokensCallback.burnCallback
-               if it equals to 0:0 then no callbacks
-        @param payload Custom data will be delivered into IBurnTokensCallback.burnCallback
-    */
+    /**
+     * @dev Accepts burning `amount` of tokens from the TokenWallet,
+     * owned by `walletOwner`.
+     * Called by TokenWallet, when it receives burn request from the owner.
+     *
+     * @param amount How much tokens was burned
+     * @param walletOwner Burner TokenWallet owner address
+     * @param remainingGasTo Receiver of the remaining EVERs
+     * @param callbackTo address of contract, which implement
+        {IBurnTokensCallback-burnCallback}, if it equals to 0:0 then no callbacks.
+     * @param payload Custom data will be delivered into {IBurnTokensCallback-burnCallback}
+     *
+     * Preconditions:
+     *
+     *  - `sender` must be TokenWallet contract, owned by `walletOwner`.
+     *  - Burning must be allowed on the TokenRoot contract.
+     *
+     * Postconditions:
+     *
+     *  - The `totalSupply_` must decrease by the `amount` that is burned.
+     */
     function acceptBurn(
         uint128 amount,
         address walletOwner,
@@ -38,17 +54,39 @@ interface ITokenRoot is TIP3TokenRoot, SID {
         TvmCell payload
     ) external functionID(0x192B51B1);
 
-    /*
-        @notice Mint tokens to recipient with deploy wallet optional
-        @dev Can be called only by rootOwner
-        @param amount How much tokens to mint
-        @param recipient Minted tokens owner address
-        @param deployWalletValue How much EVERs send to wallet on deployment, when == 0 then not deploy wallet before mint
-        @param remainingGasTo Receiver the remaining balance after deployment. root owner by default
-        @param notify - when TRUE and recipient specified 'callback' on his own TokenWallet,
-                        then send IAcceptTokensTransferCallback.onAcceptTokensMint to specified callback address,
-                        else this param will be ignored
-        @param payload - custom payload for IAcceptTokensTransferCallback.onAcceptTokensMint
+    /**
+     * @dev Mint tokens to a specified recipient, optionally deploying
+     * a new token wallet for the recipient if necessary.
+     *
+     * If deployWalletValue is greater than 0, token root MUST deploy token
+     * wallet for recipient.
+     * Otherwise, it mints tokens without deploying token wallet, which
+     * may lead to failed minting.
+     *
+     * @param amount How much tokens to mint
+     * @param recipient Minted tokens owner address
+     * @param deployWalletValue How much EVERs send to wallet on deployment,
+                                when == 0 then not deploy wallet before mint
+     * @param remainingGasTo Receiver the remaining balance after deployment.
+                             root owner by default
+     * @param notify when TRUE and recipient specified 'callback' on his own
+                     TokenWallet, then send {IAcceptTokensTransferCallback-onAcceptTokensMint}
+     *               to specified callback address, else this param will be ignored.
+     * @param payload custom payload for IAcceptTokensTransferCallback.onAcceptTokensMint.
+     *
+     * Preconditions:
+     *
+     *  - `sender` MUST be the rootOwner.
+     *  - Token minting must be allowed on the TokenRoot contract.
+     *  - If a new wallet is being deployed for the recipient,
+     *    there must be enough deployWalletValue available to do so.
+     *    Otherwise, the recipient's token wallet must already be deployed.
+     *
+     * Postconditions:
+     *
+     *  - The `totalSupply_` must increase by the `amount` that is minted.
+     *  - If `deployWalletValue` is greater than 0, then a new
+     *    TokenWallet MUST be deployed for recipient.
     */
     function mint(
         uint128 amount,
@@ -59,11 +97,21 @@ interface ITokenRoot is TIP3TokenRoot, SID {
         TvmCell payload
     ) external;
 
-    /*
-        @notice Deploy new TokenWallet
-        @dev Can be called by anyone
-        @param owner Token wallet owner address
-        @param deployWalletValue Gas value to
+    /**
+     * @dev Deploy a new {TokenWallet} with initial balance.
+     *
+     * @param owner Owner of the new token wallet.
+     * @param deployWalletValue Deploy wallet value in nanoevers.
+     * @return Returns address of the new token wallet.
+     *
+     * Precondtions:
+     *
+     *  - `owner` must not be the zero address.
+     *  - `deployWalletValue` must be sufficient to deploy a new wallet.
+     *
+     * Postcondition:
+     *
+     *  - A new token wallet will be deployed.
     */
     function deployWallet(
         address owner,

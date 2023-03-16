@@ -1,21 +1,33 @@
 pragma ton-solidity >= 0.57.0;
 
-/*
-    Callbacks from TokenWallet.
-*/
-
-
+/**
+ * @dev Interface defines a callback function that can be used by a
+ * Token Wallet contract to notify the owner of the wallet when their wallet
+ * receives a transfer of tokens.
+ *
+ * Chain of calls:
+ *
+ *  senderWallet -> ITokenWallet(sender).transfer(...) ->
+ *                  ITokenWallet(receiver).acceptTransfer(...) ->
+ *                  IAcceptTokensTransferCallback(callbackTo).onAcceptTokensTransfer(...) -> ...
+ */
 interface IAcceptTokensTransferCallback {
 
-    /*
-        @notice Callback from TokenWallet on receive tokens transfer
-        @param tokenWallet TokenWallet for which tokens were received
-        @param tokenRoot TokenRoot of received tokens
-        @param amount Received tokens amount
-        @param sender Sender TokenWallet owner address
-        @param senderWallet Sender TokenWallet address
-        @param remainingGasTo Address specified for receive remaining gas
-        @param payload Additional data attached to transfer by sender
+    /**
+     * @dev Callback by the wallet contract when it receives a transfer
+     * of tokens. This allows the wallet owner to take appropriate action,
+     * such as triggering a business logic.
+     *
+     * @param tokenRoot TokenRoot of received tokens
+     * @param amount Received tokens amount.
+     * @param sender Sender TokenWallet owner address.
+     * @param senderWallet Sender TokenWallet address.
+     * @param remainingGasTo Address to which remaining gas will be sent.
+     * @param payload Additional data attached to transfer by sender.
+     *
+     * NOTE: This callback function has no implementation in the main contracts.
+     * However, you can see an example of its implementation in the test contract.
+     * See {TestWalletCallback-onAcceptTokensTransfer}.
     */
     function onAcceptTokensTransfer(
         address tokenRoot,

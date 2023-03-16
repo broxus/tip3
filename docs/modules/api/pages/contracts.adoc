@@ -1,0 +1,2571 @@
+:github-icon: pass:[<svg class="icon"><use href="#github-icon"/></svg>]
+:TIP3TokenRoot: pass:normal[xref:contracts.adoc#TIP3TokenRoot[`TIP3TokenRoot`]]
+:ITokenRoot: pass:normal[xref:contracts.adoc#ITokenRoot[`ITokenRoot`]]
+:TokenRootBase: pass:normal[xref:contracts.adoc#TokenRootBase[`TokenRootBase`]]
+:TokenRootBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenRootBurnableByRootBase[`TokenRootBurnableByRootBase`]]
+:TokenRootBurnPausableBase: pass:normal[xref:contracts.adoc#TokenRootBurnPausableBase[`TokenRootBurnPausableBase`]]
+:TokenRootDisableableMintBase: pass:normal[xref:contracts.adoc#TokenRootDisableableMintBase[`TokenRootDisableableMintBase`]]
+:TokenRootTransferableOwnershipBase: pass:normal[xref:contracts.adoc#TokenRootTransferableOwnershipBase[`TokenRootTransferableOwnershipBase`]]
+:TIP3TokenWallet: pass:normal[xref:contracts.adoc#TIP3TokenWallet[`TIP3TokenWallet`]]
+:ITokenWallet: pass:normal[xref:contracts.adoc#ITokenWallet[`ITokenWallet`]]
+:SID: pass:normal[xref:additional.adoc#SID[`SID`]]
+:TokenWalletBase: pass:normal[xref:contracts.adoc#TokenWalletBase[`TokenWalletBase`]]
+:TokenWalletBurnableBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableBase[`TokenWalletBurnableBase`]]
+:TokenWalletBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableByRootBase[`TokenWalletBurnableByRootBase`]]
+:TokenWalletDestroyableBase: pass:normal[xref:contracts.adoc#TokenWalletDestroyableBase[`TokenWalletDestroyableBase`]]
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:TokenRootUpgradeable: pass:normal[xref:contracts.adoc#TokenRootUpgradeable[`TokenRootUpgradeable`]]
+:ITokenRootUpgradeable: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable[`ITokenRootUpgradeable`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:TokenWalletUpgradeable: pass:normal[xref:contracts.adoc#TokenWalletUpgradeable[`TokenWalletUpgradeable`]]
+:TokenRootBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenRootBurnableByRootBase[`TokenRootBurnableByRootBase`]]
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:TokenRootBurnPausableBase: pass:normal[xref:contracts.adoc#TokenRootBurnPausableBase[`TokenRootBurnPausableBase`]]
+:TokenRootDisableableMintBase: pass:normal[xref:contracts.adoc#TokenRootDisableableMintBase[`TokenRootDisableableMintBase`]]
+:TokenRootTransferableOwnershipBase: pass:normal[xref:contracts.adoc#TokenRootTransferableOwnershipBase[`TokenRootTransferableOwnershipBase`]]
+:TokenWalletBurnableBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableBase[`TokenWalletBurnableBase`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:TokenWalletBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableByRootBase[`TokenWalletBurnableByRootBase`]]
+:TokenWalletDestroyableBase: pass:normal[xref:contracts.adoc#TokenWalletDestroyableBase[`TokenWalletDestroyableBase`]]
+:SID: pass:normal[xref:additional.adoc#SID[`SID`]]
+:TokenFactory: pass:normal[xref:additional.adoc#TokenFactory[`TokenFactory`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:TokenRootBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenRootBurnableByRootBase[`TokenRootBurnableByRootBase`]]
+:TokenRootBurnPausableBase: pass:normal[xref:contracts.adoc#TokenRootBurnPausableBase[`TokenRootBurnPausableBase`]]
+:TokenRootDisableableMintBase: pass:normal[xref:contracts.adoc#TokenRootDisableableMintBase[`TokenRootDisableableMintBase`]]
+:TokenRootTransferableOwnershipBase: pass:normal[xref:contracts.adoc#TokenRootTransferableOwnershipBase[`TokenRootTransferableOwnershipBase`]]
+:xref-TIP3TokenRoot-name--: xref:contracts.adoc#TIP3TokenRoot-name--
+:xref-TIP3TokenRoot-symbol--: xref:contracts.adoc#TIP3TokenRoot-symbol--
+:xref-TIP3TokenRoot-decimals--: xref:contracts.adoc#TIP3TokenRoot-decimals--
+:xref-TIP3TokenRoot-totalSupply--: xref:contracts.adoc#TIP3TokenRoot-totalSupply--
+:xref-TIP3TokenRoot-walletCode--: xref:contracts.adoc#TIP3TokenRoot-walletCode--
+:IBurnPausableTokenRoot: pass:normal[xref:contracts.adoc#IBurnPausableTokenRoot[`IBurnPausableTokenRoot`]]
+:TokenRootBase: pass:normal[xref:contracts.adoc#TokenRootBase[`TokenRootBase`]]
+:xref-TokenRootDisableableMintBase-disableMint--: xref:contracts.adoc#TokenRootDisableableMintBase-disableMint--
+:xref-TokenRootDisableableMintBase-mintDisabled--: xref:contracts.adoc#TokenRootDisableableMintBase-mintDisabled--
+:xref-TokenRootDisableableMintBase-_mintEnabled--: xref:contracts.adoc#TokenRootDisableableMintBase-_mintEnabled--
+:IDisableableMintTokenRoot-disableMint: pass:normal[xref:contracts.adoc#IDisableableMintTokenRoot-disableMint--[`IDisableableMintTokenRoot.disableMint`]]
+:IDisableableMintTokenRoot-mintDisabled: pass:normal[xref:contracts.adoc#IDisableableMintTokenRoot-mintDisabled--[`IDisableableMintTokenRoot.mintDisabled`]]
+:TokenRootBase-_mintEnabled: pass:normal[xref:contracts.adoc#TokenRootBase-_mintEnabled--[`TokenRootBase._mintEnabled`]]
+:xref-ITokenRoot-rootOwner--: xref:contracts.adoc#ITokenRoot-rootOwner--
+:xref-ITokenRoot-walletOf-address-: xref:contracts.adoc#ITokenRoot-walletOf-address-
+:xref-ITokenRoot-acceptBurn-uint128-address-address-address-TvmCell-: xref:contracts.adoc#ITokenRoot-acceptBurn-uint128-address-address-address-TvmCell-
+:xref-ITokenRoot-mint-uint128-address-uint128-address-bool-TvmCell-: xref:contracts.adoc#ITokenRoot-mint-uint128-address-uint128-address-bool-TvmCell-
+:xref-ITokenRoot-deployWallet-address-uint128-: xref:contracts.adoc#ITokenRoot-deployWallet-address-uint128-
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:ITokenRoot: pass:normal[xref:contracts.adoc#ITokenRoot[`ITokenRoot`]]
+:TokenRootBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenRootBurnableByRootBase[`TokenRootBurnableByRootBase`]]
+:TokenRootBurnPausableBase: pass:normal[xref:contracts.adoc#TokenRootBurnPausableBase[`TokenRootBurnPausableBase`]]
+:TokenRootDisableableMintBase: pass:normal[xref:contracts.adoc#TokenRootDisableableMintBase[`TokenRootDisableableMintBase`]]
+:TokenRootTransferableOwnershipBase: pass:normal[xref:contracts.adoc#TokenRootTransferableOwnershipBase[`TokenRootTransferableOwnershipBase`]]
+:xref-TokenRootBase-onlyRootOwner--: xref:contracts.adoc#TokenRootBase-onlyRootOwner--
+:xref-TokenRootBase-fallback--: xref:contracts.adoc#TokenRootBase-fallback--
+:xref-TokenRootBase-name--: xref:contracts.adoc#TokenRootBase-name--
+:xref-TokenRootBase-symbol--: xref:contracts.adoc#TokenRootBase-symbol--
+:xref-TokenRootBase-decimals--: xref:contracts.adoc#TokenRootBase-decimals--
+:xref-TokenRootBase-totalSupply--: xref:contracts.adoc#TokenRootBase-totalSupply--
+:xref-TokenRootBase-walletCode--: xref:contracts.adoc#TokenRootBase-walletCode--
+:xref-TokenRootBase-rootOwner--: xref:contracts.adoc#TokenRootBase-rootOwner--
+:xref-TokenRootBase-walletOf-address-: xref:contracts.adoc#TokenRootBase-walletOf-address-
+:xref-TokenRootBase-deployWallet-address-uint128-: xref:contracts.adoc#TokenRootBase-deployWallet-address-uint128-
+:xref-TokenRootBase-mint-uint128-address-uint128-address-bool-TvmCell-: xref:contracts.adoc#TokenRootBase-mint-uint128-address-uint128-address-bool-TvmCell-
+:xref-TokenRootBase-acceptBurn-uint128-address-address-address-TvmCell-: xref:contracts.adoc#TokenRootBase-acceptBurn-uint128-address-address-address-TvmCell-
+:xref-TokenRootBase-_mint-uint128-address-uint128-address-bool-TvmCell-: xref:contracts.adoc#TokenRootBase-_mint-uint128-address-uint128-address-bool-TvmCell-
+:xref-TokenRootBase-_getExpectedWalletAddress-address-: xref:contracts.adoc#TokenRootBase-_getExpectedWalletAddress-address-
+:xref-TokenRootBase-onBounce-TvmSlice-: xref:contracts.adoc#TokenRootBase-onBounce-TvmSlice-
+:xref-TokenRootBase-sendSurplusGas-address-: xref:contracts.adoc#TokenRootBase-sendSurplusGas-address-
+:xref-TokenRootBase-_reserve--: xref:contracts.adoc#TokenRootBase-_reserve--
+:xref-TokenRootBase-_targetBalance--: xref:contracts.adoc#TokenRootBase-_targetBalance--
+:xref-TokenRootBase-_mintEnabled--: xref:contracts.adoc#TokenRootBase-_mintEnabled--
+:xref-TokenRootBase-_burnEnabled--: xref:contracts.adoc#TokenRootBase-_burnEnabled--
+:xref-TokenRootBase-_buildWalletInitData-address-: xref:contracts.adoc#TokenRootBase-_buildWalletInitData-address-
+:xref-TokenRootBase-_deployWallet-TvmCell-uint128-address-: xref:contracts.adoc#TokenRootBase-_deployWallet-TvmCell-uint128-address-
+:TIP3TokenRoot-name: pass:normal[xref:contracts.adoc#TIP3TokenRoot-name--[`TIP3TokenRoot.name`]]
+:TIP3TokenRoot-symbol: pass:normal[xref:contracts.adoc#TIP3TokenRoot-symbol--[`TIP3TokenRoot.symbol`]]
+:TIP3TokenRoot-decimals: pass:normal[xref:contracts.adoc#TIP3TokenRoot-decimals--[`TIP3TokenRoot.decimals`]]
+:TIP3TokenRoot-totalSupply: pass:normal[xref:contracts.adoc#TIP3TokenRoot-totalSupply--[`TIP3TokenRoot.totalSupply`]]
+:TIP3TokenRoot-walletCode: pass:normal[xref:contracts.adoc#TIP3TokenRoot-walletCode--[`TIP3TokenRoot.walletCode`]]
+:ITokenRoot-rootOwner: pass:normal[xref:contracts.adoc#ITokenRoot-rootOwner--[`ITokenRoot.rootOwner`]]
+:ITokenRoot-walletOf: pass:normal[xref:contracts.adoc#ITokenRoot-walletOf-address-[`ITokenRoot.walletOf`]]
+:ITokenRoot-deployWallet: pass:normal[xref:contracts.adoc#ITokenRoot-deployWallet-address-uint128-[`ITokenRoot.deployWallet`]]
+:ITokenRoot-mint: pass:normal[xref:contracts.adoc#ITokenRoot-mint-uint128-address-uint128-address-bool-TvmCell-[`ITokenRoot.mint`]]
+:ITokenRoot-acceptBurn: pass:normal[xref:contracts.adoc#ITokenRoot-acceptBurn-uint128-address-address-address-TvmCell-[`ITokenRoot.acceptBurn`]]
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:IAcceptTokensBurnCallback-onAcceptTokensBurn: pass:normal[xref:contracts.adoc#IAcceptTokensBurnCallback-onAcceptTokensBurn-uint128-address-address-address-TvmCell-[`IAcceptTokensBurnCallback.onAcceptTokensBurn`]]
+:TokenRootBase-mint: pass:normal[xref:contracts.adoc#TokenRootBase-mint-uint128-address-uint128-address-bool-TvmCell-[`TokenRootBase.mint`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:ITokenWallet-acceptMint: pass:normal[xref:contracts.adoc#ITokenWallet-acceptMint-uint128-address-bool-TvmCell-[`ITokenWallet.acceptMint`]]
+:ITokenWallet-acceptMint: pass:normal[xref:contracts.adoc#ITokenWallet-acceptMint-uint128-address-bool-TvmCell-[`ITokenWallet.acceptMint`]]
+:ITokenRoot: pass:normal[xref:contracts.adoc#ITokenRoot[`ITokenRoot`]]
+:ITokenWallet: pass:normal[xref:contracts.adoc#ITokenWallet[`ITokenWallet`]]
+:xref-TokenRoot-constructor-address-uint128-uint128-bool-bool-bool-address-: xref:contracts.adoc#TokenRoot-constructor-address-uint128-uint128-bool-bool-bool-address-
+:xref-TokenRoot-supportsInterface-bytes4-: xref:contracts.adoc#TokenRoot-supportsInterface-bytes4-
+:xref-TokenRoot-_targetBalance--: xref:contracts.adoc#TokenRoot-_targetBalance--
+:xref-TokenRoot-_buildWalletInitData-address-: xref:contracts.adoc#TokenRoot-_buildWalletInitData-address-
+:xref-TokenRoot-_deployWallet-TvmCell-uint128-address-: xref:contracts.adoc#TokenRoot-_deployWallet-TvmCell-uint128-address-
+:SID: pass:normal[xref:additional.adoc#SID[`SID`]]
+:TokenRootBase-_targetBalance: pass:normal[xref:contracts.adoc#TokenRootBase-_targetBalance--[`TokenRootBase._targetBalance`]]
+:TokenRootBase-_buildWalletInitData: pass:normal[xref:contracts.adoc#TokenRootBase-_buildWalletInitData-address-[`TokenRootBase._buildWalletInitData`]]
+:TokenWalletBase: pass:normal[xref:contracts.adoc#TokenWalletBase[`TokenWalletBase`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:TokenRootBase-_deployWallet: pass:normal[xref:contracts.adoc#TokenRootBase-_deployWallet-TvmCell-uint128-address-[`TokenRootBase._deployWallet`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:IBurnableByRootTokenRoot: pass:normal[xref:contracts.adoc#IBurnableByRootTokenRoot[`IBurnableByRootTokenRoot`]]
+:TokenRootBase: pass:normal[xref:contracts.adoc#TokenRootBase[`TokenRootBase`]]
+:xref-TokenRootBurnableByRootBase-burnTokens-uint128-address-address-address-TvmCell-: xref:contracts.adoc#TokenRootBurnableByRootBase-burnTokens-uint128-address-address-address-TvmCell-
+:xref-TokenRootBurnableByRootBase-disableBurnByRoot--: xref:contracts.adoc#TokenRootBurnableByRootBase-disableBurnByRoot--
+:xref-TokenRootBurnableByRootBase-burnByRootDisabled--: xref:contracts.adoc#TokenRootBurnableByRootBase-burnByRootDisabled--
+:IBurnableByRootTokenRoot-burnTokens: pass:normal[xref:contracts.adoc#IBurnableByRootTokenRoot-burnTokens-uint128-address-address-address-TvmCell-[`IBurnableByRootTokenRoot.burnTokens`]]
+:IBurnableByRootTokenWallet-burnByRoot: pass:normal[xref:contracts.adoc#IBurnableByRootTokenWallet-burnByRoot-uint128-address-address-TvmCell-[`IBurnableByRootTokenWallet.burnByRoot`]]
+:IBurnableByRootTokenRoot-disableBurnByRoot: pass:normal[xref:contracts.adoc#IBurnableByRootTokenRoot-disableBurnByRoot--[`IBurnableByRootTokenRoot.disableBurnByRoot`]]
+:IBurnableByRootTokenRoot-disableBurnByRoot: pass:normal[xref:contracts.adoc#IBurnableByRootTokenRoot-disableBurnByRoot--[`IBurnableByRootTokenRoot.disableBurnByRoot`]]
+:IBurnPausableTokenRoot: pass:normal[xref:contracts.adoc#IBurnPausableTokenRoot[`IBurnPausableTokenRoot`]]
+:TokenRootBase: pass:normal[xref:contracts.adoc#TokenRootBase[`TokenRootBase`]]
+:xref-TokenRootBurnPausableBase-burnPaused--: xref:contracts.adoc#TokenRootBurnPausableBase-burnPaused--
+:xref-TokenRootBurnPausableBase-setBurnPaused-bool-: xref:contracts.adoc#TokenRootBurnPausableBase-setBurnPaused-bool-
+:xref-TokenRootBurnPausableBase-_burnEnabled--: xref:contracts.adoc#TokenRootBurnPausableBase-_burnEnabled--
+:IBurnPausableTokenRoot-setBurnPaused: pass:normal[xref:contracts.adoc#IBurnPausableTokenRoot-setBurnPaused-bool-[`IBurnPausableTokenRoot.setBurnPaused`]]
+:TokenRootBase-_burnEnabled: pass:normal[xref:contracts.adoc#TokenRootBase-_burnEnabled--[`TokenRootBase._burnEnabled`]]
+:IBurnPausableTokenRoot: pass:normal[xref:contracts.adoc#IBurnPausableTokenRoot[`IBurnPausableTokenRoot`]]
+:TokenRootBase: pass:normal[xref:contracts.adoc#TokenRootBase[`TokenRootBase`]]
+:xref-TokenRootDisableableMintBase-disableMint--: xref:contracts.adoc#TokenRootDisableableMintBase-disableMint--
+:xref-TokenRootDisableableMintBase-mintDisabled--: xref:contracts.adoc#TokenRootDisableableMintBase-mintDisabled--
+:xref-TokenRootDisableableMintBase-_mintEnabled--: xref:contracts.adoc#TokenRootDisableableMintBase-_mintEnabled--
+:IDisableableMintTokenRoot-disableMint: pass:normal[xref:contracts.adoc#IDisableableMintTokenRoot-disableMint--[`IDisableableMintTokenRoot.disableMint`]]
+:IDisableableMintTokenRoot-mintDisabled: pass:normal[xref:contracts.adoc#IDisableableMintTokenRoot-mintDisabled--[`IDisableableMintTokenRoot.mintDisabled`]]
+:TokenRootBase-_mintEnabled: pass:normal[xref:contracts.adoc#TokenRootBase-_mintEnabled--[`TokenRootBase._mintEnabled`]]
+:ITransferableOwnership: pass:normal[xref:contracts.adoc#ITransferableOwnership[`ITransferableOwnership`]]
+:TokenRootBase: pass:normal[xref:contracts.adoc#TokenRootBase[`TokenRootBase`]]
+:xref-TokenRootTransferableOwnershipBase-transferOwnership-address-address-mapping-address----struct-ICallbackParamsStructure-CallbackParams--: xref:contracts.adoc#TokenRootTransferableOwnershipBase-transferOwnership-address-address-mapping-address----struct-ICallbackParamsStructure-CallbackParams--
+:ITransferableOwnership-transferOwnership: pass:normal[xref:contracts.adoc#ITransferableOwnership-transferOwnership-address-address-mapping-address----struct-ICallbackParamsStructure-CallbackParams--[`ITransferableOwnership.transferOwnership`]]
+:xref-IAcceptTokensBurnCallback-onAcceptTokensBurn-uint128-address-address-address-TvmCell-: xref:contracts.adoc#IAcceptTokensBurnCallback-onAcceptTokensBurn-uint128-address-address-address-TvmCell-
+:ITokenRoot-acceptBurn: pass:normal[xref:contracts.adoc#ITokenRoot-acceptBurn-uint128-address-address-address-TvmCell-[`ITokenRoot.acceptBurn`]]
+:xref-IBurnableByRootTokenRoot-burnTokens-uint128-address-address-address-TvmCell-: xref:contracts.adoc#IBurnableByRootTokenRoot-burnTokens-uint128-address-address-address-TvmCell-
+:xref-IBurnableByRootTokenRoot-disableBurnByRoot--: xref:contracts.adoc#IBurnableByRootTokenRoot-disableBurnByRoot--
+:xref-IBurnableByRootTokenRoot-burnByRootDisabled--: xref:contracts.adoc#IBurnableByRootTokenRoot-burnByRootDisabled--
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:xref-IBurnPausableTokenRoot-setBurnPaused-bool-: xref:contracts.adoc#IBurnPausableTokenRoot-setBurnPaused-bool-
+:xref-IBurnPausableTokenRoot-burnPaused--: xref:contracts.adoc#IBurnPausableTokenRoot-burnPaused--
+:xref-IDisableableMintTokenRoot-disableMint--: xref:contracts.adoc#IDisableableMintTokenRoot-disableMint--
+:xref-IDisableableMintTokenRoot-mintDisabled--: xref:contracts.adoc#IDisableableMintTokenRoot-mintDisabled--
+:xref-ITransferTokenRootOwnershipCallback-onTransferTokenRootOwnership-address-address-address-TvmCell-: xref:contracts.adoc#ITransferTokenRootOwnershipCallback-onTransferTokenRootOwnership-address-address-address-TvmCell-
+:ITokenRoot: pass:normal[xref:contracts.adoc#ITokenRoot[`ITokenRoot`]]
+:xref-ITokenRootUpgradeable-walletVersion--: xref:contracts.adoc#ITokenRootUpgradeable-walletVersion--
+:xref-ITokenRootUpgradeable-platformCode--: xref:contracts.adoc#ITokenRootUpgradeable-platformCode--
+:xref-ITokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-: xref:contracts.adoc#ITokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-
+:xref-ITokenRootUpgradeable-setWalletCode-TvmCell-: xref:contracts.adoc#ITokenRootUpgradeable-setWalletCode-TvmCell-
+:xref-ITokenRootUpgradeable-upgrade-TvmCell-: xref:contracts.adoc#ITokenRootUpgradeable-upgrade-TvmCell-
+:TokenWalletPlatform: pass:normal[xref:contracts.adoc#TokenWalletPlatform[`TokenWalletPlatform`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:xref-TokenRootUpgradeable-constructor-address-uint128-uint128-bool-bool-bool-address-: xref:contracts.adoc#TokenRootUpgradeable-constructor-address-uint128-uint128-bool-bool-bool-address-
+:xref-TokenRootUpgradeable-supportsInterface-bytes4-: xref:contracts.adoc#TokenRootUpgradeable-supportsInterface-bytes4-
+:xref-TokenRootUpgradeable-walletVersion--: xref:contracts.adoc#TokenRootUpgradeable-walletVersion--
+:xref-TokenRootUpgradeable-platformCode--: xref:contracts.adoc#TokenRootUpgradeable-platformCode--
+:xref-TokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-: xref:contracts.adoc#TokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-
+:xref-TokenRootUpgradeable-setWalletCode-TvmCell-: xref:contracts.adoc#TokenRootUpgradeable-setWalletCode-TvmCell-
+:xref-TokenRootUpgradeable-upgrade-TvmCell-: xref:contracts.adoc#TokenRootUpgradeable-upgrade-TvmCell-
+:xref-TokenRootUpgradeable-_targetBalance--: xref:contracts.adoc#TokenRootUpgradeable-_targetBalance--
+:xref-TokenRootUpgradeable-_buildWalletInitData-address-: xref:contracts.adoc#TokenRootUpgradeable-_buildWalletInitData-address-
+:xref-TokenRootUpgradeable-_deployWallet-TvmCell-uint128-address-: xref:contracts.adoc#TokenRootUpgradeable-_deployWallet-TvmCell-uint128-address-
+:SID: pass:normal[xref:additional.adoc#SID[`SID`]]
+:ITokenRootUpgradeable-walletVersion: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable-walletVersion--[`ITokenRootUpgradeable.walletVersion`]]
+:ITokenRootUpgradeable-platformCode: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable-platformCode--[`ITokenRootUpgradeable.platformCode`]]
+:ITokenRootUpgradeable-requestUpgradeWallet: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-[`ITokenRootUpgradeable.requestUpgradeWallet`]]
+:ITokenRootUpgradeable-setWalletCode: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable-setWalletCode-TvmCell-[`ITokenRootUpgradeable.setWalletCode`]]
+:ITokenRootUpgradeable-upgrade: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable-upgrade-TvmCell-[`ITokenRootUpgradeable.upgrade`]]
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:TokenWalletBurnableBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableBase[`TokenWalletBurnableBase`]]
+:TokenWalletBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableByRootBase[`TokenWalletBurnableByRootBase`]]
+:TokenWalletDestroyableBase: pass:normal[xref:contracts.adoc#TokenWalletDestroyableBase[`TokenWalletDestroyableBase`]]
+:xref-TIP3TokenWallet-root--: xref:contracts.adoc#TIP3TokenWallet-root--
+:xref-TIP3TokenWallet-balance--: xref:contracts.adoc#TIP3TokenWallet-balance--
+:xref-TIP3TokenWallet-walletCode--: xref:contracts.adoc#TIP3TokenWallet-walletCode--
+:TIP3TokenWallet: pass:normal[xref:contracts.adoc#TIP3TokenWallet[`TIP3TokenWallet`]]
+:SID: pass:normal[xref:additional.adoc#SID[`SID`]]
+:xref-ITokenWallet-owner--: xref:contracts.adoc#ITokenWallet-owner--
+:xref-ITokenWallet-transfer-uint128-address-uint128-address-bool-TvmCell-: xref:contracts.adoc#ITokenWallet-transfer-uint128-address-uint128-address-bool-TvmCell-
+:xref-ITokenWallet-transferToWallet-uint128-address-address-bool-TvmCell-: xref:contracts.adoc#ITokenWallet-transferToWallet-uint128-address-address-bool-TvmCell-
+:xref-ITokenWallet-acceptTransfer-uint128-address-address-bool-TvmCell-: xref:contracts.adoc#ITokenWallet-acceptTransfer-uint128-address-address-bool-TvmCell-
+:xref-ITokenWallet-acceptMint-uint128-address-bool-TvmCell-: xref:contracts.adoc#ITokenWallet-acceptMint-uint128-address-bool-TvmCell-
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:ITokenWallet: pass:normal[xref:contracts.adoc#ITokenWallet[`ITokenWallet`]]
+:TokenWalletBurnableBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableBase[`TokenWalletBurnableBase`]]
+:TokenWalletBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenWalletBurnableByRootBase[`TokenWalletBurnableByRootBase`]]
+:TokenWalletDestroyableBase: pass:normal[xref:contracts.adoc#TokenWalletDestroyableBase[`TokenWalletDestroyableBase`]]
+:xref-TokenWalletBase-onlyRoot--: xref:contracts.adoc#TokenWalletBase-onlyRoot--
+:xref-TokenWalletBase-onlyOwner--: xref:contracts.adoc#TokenWalletBase-onlyOwner--
+:xref-TokenWalletBase-balance--: xref:contracts.adoc#TokenWalletBase-balance--
+:xref-TokenWalletBase-owner--: xref:contracts.adoc#TokenWalletBase-owner--
+:xref-TokenWalletBase-root--: xref:contracts.adoc#TokenWalletBase-root--
+:xref-TokenWalletBase-walletCode--: xref:contracts.adoc#TokenWalletBase-walletCode--
+:xref-TokenWalletBase-transfer-uint128-address-uint128-address-bool-TvmCell-: xref:contracts.adoc#TokenWalletBase-transfer-uint128-address-uint128-address-bool-TvmCell-
+:xref-TokenWalletBase-transferToWallet-uint128-address-address-bool-TvmCell-: xref:contracts.adoc#TokenWalletBase-transferToWallet-uint128-address-address-bool-TvmCell-
+:xref-TokenWalletBase-acceptTransfer-uint128-address-address-bool-TvmCell-: xref:contracts.adoc#TokenWalletBase-acceptTransfer-uint128-address-address-bool-TvmCell-
+:xref-TokenWalletBase-acceptMint-uint128-address-bool-TvmCell-: xref:contracts.adoc#TokenWalletBase-acceptMint-uint128-address-bool-TvmCell-
+:xref-TokenWalletBase-onBounce-TvmSlice-: xref:contracts.adoc#TokenWalletBase-onBounce-TvmSlice-
+:xref-TokenWalletBase-_burn-uint128-address-address-TvmCell-: xref:contracts.adoc#TokenWalletBase-_burn-uint128-address-address-TvmCell-
+:xref-TokenWalletBase-sendSurplusGas-address-: xref:contracts.adoc#TokenWalletBase-sendSurplusGas-address-
+:xref-TokenWalletBase-_reserve--: xref:contracts.adoc#TokenWalletBase-_reserve--
+:xref-TokenWalletBase-_targetBalance--: xref:contracts.adoc#TokenWalletBase-_targetBalance--
+:xref-TokenWalletBase-_buildWalletInitData-address-: xref:contracts.adoc#TokenWalletBase-_buildWalletInitData-address-
+:xref-TokenWalletBase-_deployWallet-TvmCell-uint128-address-: xref:contracts.adoc#TokenWalletBase-_deployWallet-TvmCell-uint128-address-
+:TIP3TokenWallet-balance: pass:normal[xref:contracts.adoc#TIP3TokenWallet-balance--[`TIP3TokenWallet.balance`]]
+:ITokenWallet-owner: pass:normal[xref:contracts.adoc#ITokenWallet-owner--[`ITokenWallet.owner`]]
+:TIP3TokenWallet-root: pass:normal[xref:contracts.adoc#TIP3TokenWallet-root--[`TIP3TokenWallet.root`]]
+:TIP3TokenWallet-walletCode: pass:normal[xref:contracts.adoc#TIP3TokenWallet-walletCode--[`TIP3TokenWallet.walletCode`]]
+:ITokenWallet-transfer: pass:normal[xref:contracts.adoc#ITokenWallet-transfer-uint128-address-uint128-address-bool-TvmCell-[`ITokenWallet.transfer`]]
+:ITokenWallet-acceptTransfer: pass:normal[xref:contracts.adoc#ITokenWallet-acceptTransfer-uint128-address-address-bool-TvmCell-[`ITokenWallet.acceptTransfer`]]
+:ITokenWallet-transferToWallet: pass:normal[xref:contracts.adoc#ITokenWallet-transferToWallet-uint128-address-address-bool-TvmCell-[`ITokenWallet.transferToWallet`]]
+:TokenWalletBase-transfer: pass:normal[xref:contracts.adoc#TokenWalletBase-transfer-uint128-address-uint128-address-bool-TvmCell-[`TokenWalletBase.transfer`]]
+:ITokenWallet-acceptTransfer: pass:normal[xref:contracts.adoc#ITokenWallet-acceptTransfer-uint128-address-address-bool-TvmCell-[`ITokenWallet.acceptTransfer`]]
+:IAcceptTokensTransferCallback-onAcceptTokensTransfer: pass:normal[xref:contracts.adoc#IAcceptTokensTransferCallback-onAcceptTokensTransfer-address-uint128-address-address-address-TvmCell-[`IAcceptTokensTransferCallback.onAcceptTokensTransfer`]]
+:ITokenWallet-acceptMint: pass:normal[xref:contracts.adoc#ITokenWallet-acceptMint-uint128-address-bool-TvmCell-[`ITokenWallet.acceptMint`]]
+:IAcceptTokensMintCallback-onAcceptTokensMint: pass:normal[xref:contracts.adoc#IAcceptTokensMintCallback-onAcceptTokensMint-address-uint128-address-TvmCell-[`IAcceptTokensMintCallback.onAcceptTokensMint`]]
+:ITokenRoot-acceptBurn: pass:normal[xref:contracts.adoc#ITokenRoot-acceptBurn-uint128-address-address-address-TvmCell-[`ITokenRoot.acceptBurn`]]
+:IDestroyable: pass:normal[xref:contracts.adoc#IDestroyable[`IDestroyable`]]
+:TokenWalletBase: pass:normal[xref:contracts.adoc#TokenWalletBase[`TokenWalletBase`]]
+:xref-TokenWalletDestroyableBase-destroy-address-: xref:contracts.adoc#TokenWalletDestroyableBase-destroy-address-
+:IDestroyable-destroy: pass:normal[xref:contracts.adoc#IDestroyable-destroy-address-[`IDestroyable.destroy`]]
+:xref-TokenWallet-constructor--: xref:contracts.adoc#TokenWallet-constructor--
+:xref-TokenWallet-supportsInterface-bytes4-: xref:contracts.adoc#TokenWallet-supportsInterface-bytes4-
+:xref-TokenWallet-_targetBalance--: xref:contracts.adoc#TokenWallet-_targetBalance--
+:xref-TokenWallet-_buildWalletInitData-address-: xref:contracts.adoc#TokenWallet-_buildWalletInitData-address-
+:xref-TokenWallet-_deployWallet-TvmCell-uint128-address-: xref:contracts.adoc#TokenWallet-_deployWallet-TvmCell-uint128-address-
+:SID: pass:normal[xref:additional.adoc#SID[`SID`]]
+:TokenWalletBase-_targetBalance: pass:normal[xref:contracts.adoc#TokenWalletBase-_targetBalance--[`TokenWalletBase._targetBalance`]]
+:TokenRootBase-_buildWalletInitData: pass:normal[xref:contracts.adoc#TokenRootBase-_buildWalletInitData-address-[`TokenRootBase._buildWalletInitData`]]
+:TokenWalletBase: pass:normal[xref:contracts.adoc#TokenWalletBase[`TokenWalletBase`]]
+:Wallet: pass:normal[xref:additional.adoc#Wallet[`Wallet`]]
+:TokenRootBase: pass:normal[xref:contracts.adoc#TokenRootBase[`TokenRootBase`]]
+:TokenWalletBase-_deployWallet: pass:normal[xref:contracts.adoc#TokenWalletBase-_deployWallet-TvmCell-uint128-address-[`TokenWalletBase._deployWallet`]]
+:IBurnableTokenWallet: pass:normal[xref:contracts.adoc#IBurnableTokenWallet[`IBurnableTokenWallet`]]
+:TokenWalletBase: pass:normal[xref:contracts.adoc#TokenWalletBase[`TokenWalletBase`]]
+:xref-TokenWalletBurnableBase-burn-uint128-address-address-TvmCell-: xref:contracts.adoc#TokenWalletBurnableBase-burn-uint128-address-address-TvmCell-
+:IBurnableTokenWallet-burn: pass:normal[xref:contracts.adoc#IBurnableTokenWallet-burn-uint128-address-address-TvmCell-[`IBurnableTokenWallet.burn`]]
+:TokenWalletBase-_burn: pass:normal[xref:contracts.adoc#TokenWalletBase-_burn-uint128-address-address-TvmCell-[`TokenWalletBase._burn`]]
+:IBurnableByRootTokenWallet: pass:normal[xref:contracts.adoc#IBurnableByRootTokenWallet[`IBurnableByRootTokenWallet`]]
+:TokenWalletBase: pass:normal[xref:contracts.adoc#TokenWalletBase[`TokenWalletBase`]]
+:xref-TokenWalletBurnableByRootBase-burnByRoot-uint128-address-address-TvmCell-: xref:contracts.adoc#TokenWalletBurnableByRootBase-burnByRoot-uint128-address-address-TvmCell-
+:IBurnableByRootTokenWallet-burnByRoot: pass:normal[xref:contracts.adoc#IBurnableByRootTokenWallet-burnByRoot-uint128-address-address-TvmCell-[`IBurnableByRootTokenWallet.burnByRoot`]]
+:TokenWalletBase-_burn: pass:normal[xref:contracts.adoc#TokenWalletBase-_burn-uint128-address-address-TvmCell-[`TokenWalletBase._burn`]]
+:IDestroyable: pass:normal[xref:contracts.adoc#IDestroyable[`IDestroyable`]]
+:TokenWalletBase: pass:normal[xref:contracts.adoc#TokenWalletBase[`TokenWalletBase`]]
+:xref-TokenWalletDestroyableBase-destroy-address-: xref:contracts.adoc#TokenWalletDestroyableBase-destroy-address-
+:IDestroyable-destroy: pass:normal[xref:contracts.adoc#IDestroyable-destroy-address-[`IDestroyable.destroy`]]
+:xref-IAcceptTokensMintCallback-onAcceptTokensMint-address-uint128-address-TvmCell-: xref:contracts.adoc#IAcceptTokensMintCallback-onAcceptTokensMint-address-uint128-address-TvmCell-
+:xref-IAcceptTokensTransferCallback-onAcceptTokensTransfer-address-uint128-address-address-address-TvmCell-: xref:contracts.adoc#IAcceptTokensTransferCallback-onAcceptTokensTransfer-address-uint128-address-address-address-TvmCell-
+:xref-IBounceTokensBurnCallback-onBounceTokensBurn-address-uint128-: xref:contracts.adoc#IBounceTokensBurnCallback-onBounceTokensBurn-address-uint128-
+:xref-IBurnableTokenWallet-burn-uint128-address-address-TvmCell-: xref:contracts.adoc#IBurnableTokenWallet-burn-uint128-address-address-TvmCell-
+:xref-IDestroyable-destroy-address-: xref:contracts.adoc#IDestroyable-destroy-address-
+:ITokenWallet: pass:normal[xref:contracts.adoc#ITokenWallet[`ITokenWallet`]]
+:xref-ITokenWalletUpgradeable-platformCode--: xref:contracts.adoc#ITokenWalletUpgradeable-platformCode--
+:xref-ITokenWalletUpgradeable-upgrade-address-: xref:contracts.adoc#ITokenWalletUpgradeable-upgrade-address-
+:xref-ITokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-: xref:contracts.adoc#ITokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-
+:TokenWalletPlatform: pass:normal[xref:contracts.adoc#TokenWalletPlatform[`TokenWalletPlatform`]]
+:ITokenRootUpgradeable-requestUpgradeWallet: pass:normal[xref:contracts.adoc#ITokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-[`ITokenRootUpgradeable.requestUpgradeWallet`]]
+:TokenRootUpgradeable: pass:normal[xref:contracts.adoc#TokenRootUpgradeable[`TokenRootUpgradeable`]]
+:TokenWalletUpgradeable: pass:normal[xref:contracts.adoc#TokenWalletUpgradeable[`TokenWalletUpgradeable`]]
+:TokenWalletPlatform: pass:normal[xref:contracts.adoc#TokenWalletPlatform[`TokenWalletPlatform`]]
+:xref-TokenWalletPlatform-constructor-TvmCell-uint32-address-address-: xref:contracts.adoc#TokenWalletPlatform-constructor-TvmCell-uint32-address-address-
+:xref-TokenWalletUpgradeable-constructor--: xref:contracts.adoc#TokenWalletUpgradeable-constructor--
+:xref-TokenWalletUpgradeable-supportsInterface-bytes4-: xref:contracts.adoc#TokenWalletUpgradeable-supportsInterface-bytes4-
+:xref-TokenWalletUpgradeable-platformCode--: xref:contracts.adoc#TokenWalletUpgradeable-platformCode--
+:xref-TokenWalletUpgradeable-onDeployRetry-TvmCell-uint32-address-address-: xref:contracts.adoc#TokenWalletUpgradeable-onDeployRetry-TvmCell-uint32-address-address-
+:xref-TokenWalletUpgradeable-version--: xref:contracts.adoc#TokenWalletUpgradeable-version--
+:xref-TokenWalletUpgradeable-upgrade-address-: xref:contracts.adoc#TokenWalletUpgradeable-upgrade-address-
+:xref-TokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-: xref:contracts.adoc#TokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-
+:xref-TokenWalletUpgradeable-_targetBalance--: xref:contracts.adoc#TokenWalletUpgradeable-_targetBalance--
+:xref-TokenWalletUpgradeable-_buildWalletInitData-address-: xref:contracts.adoc#TokenWalletUpgradeable-_buildWalletInitData-address-
+:xref-TokenWalletUpgradeable-_deployWallet-TvmCell-uint128-address-: xref:contracts.adoc#TokenWalletUpgradeable-_deployWallet-TvmCell-uint128-address-
+:SID-supportsInterface: pass:normal[xref:additional.adoc#SID-supportsInterface-bytes4-[`SID.supportsInterface`]]
+:ITokenWalletUpgradeable-platformCode: pass:normal[xref:contracts.adoc#ITokenWalletUpgradeable-platformCode--[`ITokenWalletUpgradeable.platformCode`]]
+:ITokenWalletUpgradeable-upgrade: pass:normal[xref:contracts.adoc#ITokenWalletUpgradeable-upgrade-address-[`ITokenWalletUpgradeable.upgrade`]]
+:TokenRootUpgradeable: pass:normal[xref:contracts.adoc#TokenRootUpgradeable[`TokenRootUpgradeable`]]
+:ITokenWalletUpgradeable-acceptUpgrade: pass:normal[xref:contracts.adoc#ITokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-[`ITokenWalletUpgradeable.acceptUpgrade`]]
+:TokenRootBase-_buildWalletInitData: pass:normal[xref:contracts.adoc#TokenRootBase-_buildWalletInitData-address-[`TokenRootBase._buildWalletInitData`]]
+= TIP-3
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.broxus.com/tip3
+
+The TIP-3 token standard is a distributed token standard designed specifically for TVM-like networks. It was developed as part of the work of the Everscale blockchain. It offers a number of advantages over traditional token standards, such as ERC-20, including a more efficient storage and management of token balances and the ability to avoid the high maintenance costs associated with sharding the registry.
+
+The TIP-3 standard is made up of a set of interfaces, contracts, and utilities that work together to facilitate the creation and management of tokens.
+The core contracts that implement the behavior specified in the standard are:
+
+TIP: For an overview of TIP-3 tokens and a walk through on how to create a token contract read our xref:ROOT:tip3.adoc[TIP-3 guide].
+
+== Core
+{TIP3TokenRoot}: is an interface that defines the minimal required functionality for a TIP-3 compliant token root contract. It includes functions for querying the name, symbol, number of decimals, total supply, and wallet code of the token. These functions are used for display purposes and do not affect the contract's arithmetic.
+
+{ITokenRoot}: the interface for the token root contract that stores general information about the token, such as the `name`, `symbol, `decimals`, and `totalSupply`.
+
+{TokenRootBase}: is an implementation of the TIP-3 token standard. It provides the minimal required functionality for a token root contract, including storing general information about the token such as name, symbol, decimals, and total supply.
+This contract serves as the foundation for other contracts that build upon it, such as the:
+
+  - {TokenRootBurnableByRootBase}
+  - {TokenRootBurnPausableBase}
+  - {TokenRootDisableableMintBase}
+  - {TokenRootTransferableOwnershipBase}
+
+which add additional functionality to the basic token root contract.
+
+{TIP3TokenWallet}: is an interface that defines the minimal functionality required for a TIP-3 token wallet contract.
+
+{ITokenWallet}: the interface for the token wallet contract that represents each token holder's balance, and functions for transferring tokens, accepting transfers and mints from root contract, and querying owner and wallet information. It also includes the {SID} interface for interface detection.
+
+{TokenWalletBase}: is an implementation of the TIP-3 token standard. It provides the minimal required functionality for a token wallet contract, including storing information about the balance of the tokens.
+This contract serves as the foundation for other contracts that build upon it, such as the:
+
+- {TokenWalletBurnableBase}
+- {TokenWalletBurnableByRootBase}
+- {TokenWalletDestroyableBase}
+
+which add additional functionality to the basic token wallet contract.
+
+== Full Implementation of TIP-3
+
+{TokenRoot}: This contract stores general information about the token, such as name, symbol, decimals, walletCode_.  It also includes functionality for transferring ownership of the token root contract and the ability to burn and pause token burning.
+
+{TokenRootUpgradeable}: an implementation of the {ITokenRootUpgradeable} interface, which allows for the upgrading of the token root contract.
+
+{TokenWallet}: Each token holder has their own instance of this contract, which stores information about the balance of the tokens. Token transfers happen in a decentralized fashion between the wallets of the sender and the recipient.
+
+{TokenWalletUpgradeable}: Similar to TokenWallet, but with the added ability to upgrade the contract.
+
+== Abstract Contracts
+In addition to these core contracts, there are also several abstract contracts that provide additional functionality. These include:
+
+{TokenRootBurnableByRootBase}: This contract extends the functionality of {TokenRoot} and allows for burning tokens of any wallet, disabling the ability to burn tokens through the TokenRoot, and a view method that returns the state of 'burnByRootDisabled_'.
+
+{TokenRootBurnPausableBase}: This contract extends the functionality of TokenRoot and allows for starting and stopping burning tokens, and a view method that returns the state of `burnPaused_`.
+
+{TokenRootDisableableMintBase}: This contract extends the functionality of TokenRoot and allows for permanently disabling token minting, and a view method that returns the state of `mintDisabled_`.
+
+{TokenRootTransferableOwnershipBase}: This contract extends the functionality of TokenRoot and adding a 1-step ownership transfer mechanism.
+
+{TokenWalletBurnableBase}: This contract extends the functionality of {TokenWallet} and allows for burning self-tokens.
+
+{TokenWalletBurnableByRootBase}: This contract extends the functionality of TokenWallet and allows for burning tokens by TokenRoot.
+
+{TokenWalletDestroyableBase}: This contract extends the functionality of TokenWallet and allows for destroying the wallet.
+
+== Additional contracts
+{SID}: The contract in TIP-6.1 standard defines a method for determining the interfaces implemented by a smart contract on the TVM-liked networks. It uses the XOR of all function selectors in the interface as the identifier for the interface. This allows for querying if a contract supports a specific interface and adapting the way it is interacted with.
+
+{TokenFactory}: the contract that is used to create new token roots.
+
+== TokenRoot
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.tip3.com/token-root
+
+The TokenRoot contract is an implementation of the all required and optional functionality TIP-3 Token Standard.
+
+Each token holder has its own instance of the {TokenWallet} contract, which stores information about the balance of the tokens. Token transfers happen in a peer-to-peer fashion, between the sender's and recipient's token wallets.
+
+Including storing general information about the token such as `name, `symbol`, `decimals`, and `totalSupply`.
+It also includes functionality for transferring ownership of the token root contract and for burning and pausing token burning, minting.
+
+TokenRoot is based on abstractions such as:
+
+  - {TokenRootBurnableByRootBase}
+  - {TokenRootBurnPausableBase}
+  - {TokenRootDisableableMintBase}
+  - {TokenRootTransferableOwnershipBase}
+
+that add additional functionality to the basic token root contract.
+These contracts are designed to extend the functionality of TokenRoot contract and allows for burning tokens of any wallet, disabling the ability to burn tokens through the TokenRoot, starting and stopping burning tokens, permanently disabling token minting, transferring ownership of the token root contract and so on.
+
+=== Core
+
+:name: pass:normal[xref:#TIP3TokenRoot-name--[`++name++`]]
+:symbol: pass:normal[xref:#TIP3TokenRoot-symbol--[`++symbol++`]]
+:decimals: pass:normal[xref:#TIP3TokenRoot-decimals--[`++decimals++`]]
+:totalSupply: pass:normal[xref:#TIP3TokenRoot-totalSupply--[`++totalSupply++`]]
+:walletCode: pass:normal[xref:#TIP3TokenRoot-walletCode--[`++walletCode++`]]
+
+[.contract]
+[[TIP3TokenRoot]]
+=== `++TIP3TokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/TIP3TokenRoot.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/TIP3TokenRoot.sol";
+```
+
+Interface of the TIP-3.1 TokenRoot contract.
+
+[.contract-index]
+.Functions
+--
+* {xref-TIP3TokenRoot-name--}[`++name()++`]
+* {xref-TIP3TokenRoot-symbol--}[`++symbol()++`]
+* {xref-TIP3TokenRoot-decimals--}[`++decimals()++`]
+* {xref-TIP3TokenRoot-totalSupply--}[`++totalSupply()++`]
+* {xref-TIP3TokenRoot-walletCode--}[`++walletCode()++`]
+
+--
+
+[.contract-item]
+[[TIP3TokenRoot-name--]]
+==== `[.contract-item-name]#++name++#++() → string++` [.item-kind]#external#
+
+Returns the name of the token.
+
+[.contract-item]
+[[TIP3TokenRoot-symbol--]]
+==== `[.contract-item-name]#++symbol++#++() → string++` [.item-kind]#external#
+
+Returns the symbol of the token, usually a shorter version of the name.
+
+[.contract-item]
+[[TIP3TokenRoot-decimals--]]
+==== `[.contract-item-name]#++decimals++#++() → uint8++` [.item-kind]#external#
+
+Returns the number of decimals used to get its user representation.
+For example, if `decimals` equals `6`, a balance of `42_500_000` tokens should
+be displayed to a user as `42.5` (`42_500_000 / 10 ** 6`).
+
+NOTE: This information is only used for _display_ purposes: it in
+no way affects any of the arithmetic of the contract.
+
+[.contract-item]
+[[TIP3TokenRoot-totalSupply--]]
+==== `[.contract-item-name]#++totalSupply++#++() → uint128++` [.item-kind]#external#
+
+Returns the amount of tokens in existence.
+
+[.contract-item]
+[[TIP3TokenRoot-walletCode--]]
+==== `[.contract-item-name]#++walletCode++#++() → TvmCell++` [.item-kind]#external#
+
+Returns the `walletCode` of the TokenWallet contract.
+
+:mintDisabled_: pass:normal[xref:#TokenRootDisableableMintBase-mintDisabled_-bool[`++mintDisabled_++`]]
+:disableMint: pass:normal[xref:#TokenRootDisableableMintBase-disableMint--[`++disableMint++`]]
+:mintDisabled: pass:normal[xref:#TokenRootDisableableMintBase-mintDisabled--[`++mintDisabled++`]]
+:_mintEnabled: pass:normal[xref:#TokenRootDisableableMintBase-_mintEnabled--[`++_mintEnabled++`]]
+
+[.contract]
+[[TokenRootDisableableMintBase]]
+=== `++TokenRootDisableableMintBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootDisableableMintBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenRootDisableableMintBase.sol";
+```
+
+Implementation of the {IBurnPausableTokenRoot} interface.
+
+This abstraction extends the functionality of {TokenRootBase} and increases
+the capabilities of TokenRoot, adding the ability to permanently disable token minting.
+And a view method that returns the state of `mintDisabled_`.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenRootDisableableMintBase-disableMint--}[`++disableMint()++`]
+* {xref-TokenRootDisableableMintBase-mintDisabled--}[`++mintDisabled()++`]
+* {xref-TokenRootDisableableMintBase-_mintEnabled--}[`++_mintEnabled()++`]
+
+--
+
+[.contract-item]
+[[TokenRootDisableableMintBase-disableMint--]]
+==== `[.contract-item-name]#++disableMint++#++() → bool++` [.item-kind]#external#
+
+See {IDisableableMintTokenRoot-disableMint}.
+
+Post condition:
+
+ - `mintDisabled_` is set to `true`.
+
+[.contract-item]
+[[TokenRootDisableableMintBase-mintDisabled--]]
+==== `[.contract-item-name]#++mintDisabled++#++() → bool++` [.item-kind]#external#
+
+See {IDisableableMintTokenRoot-mintDisabled}.
+
+[.contract-item]
+[[TokenRootDisableableMintBase-_mintEnabled--]]
+==== `[.contract-item-name]#++_mintEnabled++#++() → bool++` [.item-kind]#internal#
+
+See {TokenRootBase-_mintEnabled}.
+
+:rootOwner: pass:normal[xref:#ITokenRoot-rootOwner--[`++rootOwner++`]]
+:walletOf: pass:normal[xref:#ITokenRoot-walletOf-address-[`++walletOf++`]]
+:acceptBurn: pass:normal[xref:#ITokenRoot-acceptBurn-uint128-address-address-address-TvmCell-[`++acceptBurn++`]]
+:mint: pass:normal[xref:#ITokenRoot-mint-uint128-address-uint128-address-bool-TvmCell-[`++mint++`]]
+:deployWallet: pass:normal[xref:#ITokenRoot-deployWallet-address-uint128-[`++deployWallet++`]]
+
+[.contract]
+[[ITokenRoot]]
+=== `++ITokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/ITokenRoot.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/ITokenRoot.sol";
+```
+
+Interface of the minimal required functionality of TIP-3 standard.
+The interface also inherits the supportInterface interface,
+which is used to identify whether the contract supports the interface.
+This is described in the TIP-6.1 standard.
+(see https://docs.everscale.network/standard/TIP-6.1)
+
+[.contract-index]
+.Functions
+--
+* {xref-ITokenRoot-rootOwner--}[`++rootOwner()++`]
+* {xref-ITokenRoot-walletOf-address-}[`++walletOf(owner)++`]
+* {xref-ITokenRoot-acceptBurn-uint128-address-address-address-TvmCell-}[`++acceptBurn(amount, walletOwner, remainingGasTo, callbackTo, payload)++`]
+* {xref-ITokenRoot-mint-uint128-address-uint128-address-bool-TvmCell-}[`++mint(amount, recipient, deployWalletValue, remainingGasTo, notify, payload)++`]
+* {xref-ITokenRoot-deployWallet-address-uint128-}[`++deployWallet(owner, deployWalletValue)++`]
+
+--
+
+[.contract-item]
+[[ITokenRoot-rootOwner--]]
+==== `[.contract-item-name]#++rootOwner++#++() → address++` [.item-kind]#external#
+
+Returns current owner address of {TokenRoot}.
+
+[.contract-item]
+[[ITokenRoot-walletOf-address-]]
+==== `[.contract-item-name]#++walletOf++#++(address owner) → address++` [.item-kind]#external#
+
+Derive {TokenWallet} address from owner address.
+
+[.contract-item]
+[[ITokenRoot-acceptBurn-uint128-address-address-address-TvmCell-]]
+==== `[.contract-item-name]#++acceptBurn++#++(uint128 amount, address walletOwner, address remainingGasTo, address callbackTo, TvmCell payload)++` [.item-kind]#external#
+
+Accepts burning `amount` of tokens from the TokenWallet,
+owned by `walletOwner`.
+Called by TokenWallet, when it receives burn request from the owner.
+
+[.contract-item]
+[[ITokenRoot-mint-uint128-address-uint128-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++mint++#++(uint128 amount, address recipient, uint128 deployWalletValue, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+Mint tokens to a specified recipient, optionally deploying
+a new token wallet for the recipient if necessary.
+
+If deployWalletValue is greater than 0, token root MUST deploy token
+wallet for recipient.
+Otherwise, it mints tokens without deploying token wallet, which
+may lead to failed minting.
+
+[.contract-item]
+[[ITokenRoot-deployWallet-address-uint128-]]
+==== `[.contract-item-name]#++deployWallet++#++(address owner, uint128 deployWalletValue) → address++` [.item-kind]#external#
+
+Deploy a new {TokenWallet} with initial balance.
+
+:name_: pass:normal[xref:#TokenRootBase-name_-string[`++name_++`]]
+:symbol_: pass:normal[xref:#TokenRootBase-symbol_-string[`++symbol_++`]]
+:decimals_: pass:normal[xref:#TokenRootBase-decimals_-uint8[`++decimals_++`]]
+:rootOwner_: pass:normal[xref:#TokenRootBase-rootOwner_-address[`++rootOwner_++`]]
+:walletCode_: pass:normal[xref:#TokenRootBase-walletCode_-TvmCell[`++walletCode_++`]]
+:totalSupply_: pass:normal[xref:#TokenRootBase-totalSupply_-uint128[`++totalSupply_++`]]
+:fallback: pass:normal[xref:#TokenRootBase-fallback--[`++fallback++`]]
+:onlyRootOwner: pass:normal[xref:#TokenRootBase-onlyRootOwner--[`++onlyRootOwner++`]]
+:name: pass:normal[xref:#TokenRootBase-name--[`++name++`]]
+:symbol: pass:normal[xref:#TokenRootBase-symbol--[`++symbol++`]]
+:decimals: pass:normal[xref:#TokenRootBase-decimals--[`++decimals++`]]
+:totalSupply: pass:normal[xref:#TokenRootBase-totalSupply--[`++totalSupply++`]]
+:walletCode: pass:normal[xref:#TokenRootBase-walletCode--[`++walletCode++`]]
+:rootOwner: pass:normal[xref:#TokenRootBase-rootOwner--[`++rootOwner++`]]
+:walletOf: pass:normal[xref:#TokenRootBase-walletOf-address-[`++walletOf++`]]
+:deployWallet: pass:normal[xref:#TokenRootBase-deployWallet-address-uint128-[`++deployWallet++`]]
+:mint: pass:normal[xref:#TokenRootBase-mint-uint128-address-uint128-address-bool-TvmCell-[`++mint++`]]
+:acceptBurn: pass:normal[xref:#TokenRootBase-acceptBurn-uint128-address-address-address-TvmCell-[`++acceptBurn++`]]
+:_mint: pass:normal[xref:#TokenRootBase-_mint-uint128-address-uint128-address-bool-TvmCell-[`++_mint++`]]
+:_getExpectedWalletAddress: pass:normal[xref:#TokenRootBase-_getExpectedWalletAddress-address-[`++_getExpectedWalletAddress++`]]
+:onBounce: pass:normal[xref:#TokenRootBase-onBounce-TvmSlice-[`++onBounce++`]]
+:sendSurplusGas: pass:normal[xref:#TokenRootBase-sendSurplusGas-address-[`++sendSurplusGas++`]]
+:_reserve: pass:normal[xref:#TokenRootBase-_reserve--[`++_reserve++`]]
+:_targetBalance: pass:normal[xref:#TokenRootBase-_targetBalance--[`++_targetBalance++`]]
+:_mintEnabled: pass:normal[xref:#TokenRootBase-_mintEnabled--[`++_mintEnabled++`]]
+:_burnEnabled: pass:normal[xref:#TokenRootBase-_burnEnabled--[`++_burnEnabled++`]]
+:_buildWalletInitData: pass:normal[xref:#TokenRootBase-_buildWalletInitData-address-[`++_buildWalletInitData++`]]
+:_deployWallet: pass:normal[xref:#TokenRootBase-_deployWallet-TvmCell-uint128-address-[`++_deployWallet++`]]
+
+[.contract]
+[[TokenRootBase]]
+=== `++TokenRootBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenRootBase.sol";
+```
+
+Implementation of the {ITokenRoot} interface.
+
+This abstraction describes the minimal required functionality of
+Token Root contract according to the TIP-3 standard.
+
+Also used as a base class for implementing abstractions such as:
+
+ - {TokenRootBurnableByRootBase}
+ - {TokenRootBurnPausableBase}
+ - {TokenRootDisableableMintBase}
+ - {TokenRootTransferableOwnershipBase}
+
+[.contract-index]
+.Modifiers
+--
+* {xref-TokenRootBase-onlyRootOwner--}[`++onlyRootOwner()++`]
+--
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenRootBase-fallback--}[`++fallback()++`]
+* {xref-TokenRootBase-name--}[`++name()++`]
+* {xref-TokenRootBase-symbol--}[`++symbol()++`]
+* {xref-TokenRootBase-decimals--}[`++decimals()++`]
+* {xref-TokenRootBase-totalSupply--}[`++totalSupply()++`]
+* {xref-TokenRootBase-walletCode--}[`++walletCode()++`]
+* {xref-TokenRootBase-rootOwner--}[`++rootOwner()++`]
+* {xref-TokenRootBase-walletOf-address-}[`++walletOf(walletOwner)++`]
+* {xref-TokenRootBase-deployWallet-address-uint128-}[`++deployWallet(walletOwner, deployWalletValue)++`]
+* {xref-TokenRootBase-mint-uint128-address-uint128-address-bool-TvmCell-}[`++mint(amount, recipient, deployWalletValue, remainingGasTo, notify, payload)++`]
+* {xref-TokenRootBase-acceptBurn-uint128-address-address-address-TvmCell-}[`++acceptBurn(amount, walletOwner, remainingGasTo, callbackTo, payload)++`]
+* {xref-TokenRootBase-_mint-uint128-address-uint128-address-bool-TvmCell-}[`++_mint(amount, recipient, deployWalletValue, remainingGasTo, notify, payload)++`]
+* {xref-TokenRootBase-_getExpectedWalletAddress-address-}[`++_getExpectedWalletAddress(walletOwner)++`]
+* {xref-TokenRootBase-onBounce-TvmSlice-}[`++onBounce(slice)++`]
+* {xref-TokenRootBase-sendSurplusGas-address-}[`++sendSurplusGas(to)++`]
+* {xref-TokenRootBase-_reserve--}[`++_reserve()++`]
+* {xref-TokenRootBase-_targetBalance--}[`++_targetBalance()++`]
+* {xref-TokenRootBase-_mintEnabled--}[`++_mintEnabled()++`]
+* {xref-TokenRootBase-_burnEnabled--}[`++_burnEnabled()++`]
+* {xref-TokenRootBase-_buildWalletInitData-address-}[`++_buildWalletInitData(walletOwner)++`]
+* {xref-TokenRootBase-_deployWallet-TvmCell-uint128-address-}[`++_deployWallet(initData, deployWalletValue, remainingGasTo)++`]
+
+--
+
+[.contract-item]
+[[TokenRootBase-onlyRootOwner--]]
+==== `[.contract-item-name]#++onlyRootOwner++#++()++` [.item-kind]#modifier#
+
+Modifier than throws if called by any account other than the `rootOwner_`.
+
+[.contract-item]
+[[TokenRootBase-fallback--]]
+==== `[.contract-item-name]#++fallback++#++()++` [.item-kind]#external#
+
+Default entrypoint if no other entry point fits.
+
+[.contract-item]
+[[TokenRootBase-name--]]
+==== `[.contract-item-name]#++name++#++() → string++` [.item-kind]#external#
+
+See {TIP3TokenRoot-name}.
+
+[.contract-item]
+[[TokenRootBase-symbol--]]
+==== `[.contract-item-name]#++symbol++#++() → string++` [.item-kind]#external#
+
+See {TIP3TokenRoot-symbol}.
+
+[.contract-item]
+[[TokenRootBase-decimals--]]
+==== `[.contract-item-name]#++decimals++#++() → uint8++` [.item-kind]#external#
+
+See {TIP3TokenRoot-decimals}.
+
+[.contract-item]
+[[TokenRootBase-totalSupply--]]
+==== `[.contract-item-name]#++totalSupply++#++() → uint128++` [.item-kind]#external#
+
+See {TIP3TokenRoot-totalSupply}.
+
+[.contract-item]
+[[TokenRootBase-walletCode--]]
+==== `[.contract-item-name]#++walletCode++#++() → TvmCell++` [.item-kind]#external#
+
+See {TIP3TokenRoot-walletCode}.
+
+[.contract-item]
+[[TokenRootBase-rootOwner--]]
+==== `[.contract-item-name]#++rootOwner++#++() → address++` [.item-kind]#external#
+
+See {ITokenRoot-rootOwner}.
+
+[.contract-item]
+[[TokenRootBase-walletOf-address-]]
+==== `[.contract-item-name]#++walletOf++#++(address walletOwner) → address++` [.item-kind]#public#
+
+See {ITokenRoot-walletOf}.
+
+Precondition:
+
+ - `walletOwner` cannot be the zero address.
+
+[.contract-item]
+[[TokenRootBase-deployWallet-address-uint128-]]
+==== `[.contract-item-name]#++deployWallet++#++(address walletOwner, uint128 deployWalletValue) → address tokenWallet++` [.item-kind]#public#
+
+See {ITokenRoot-deployWallet}.
+
+Precondtion:
+
+ - `walletOwner` cannot be the zero address.
+ - `deployWalletValue` must be enough to deploy a new wallet.
+
+Postcondition:
+
+ - Returns the address of the deployed wallet.
+
+[.contract-item]
+[[TokenRootBase-mint-uint128-address-uint128-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++mint++#++(uint128 amount, address recipient, uint128 deployWalletValue, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+See {ITokenRoot-mint}.
+
+Preconditions:
+
+ - `sender` MUST be rootOwner.
+ - Minting should be allowed on the TokenRoot contract.
+ - Either recipients TokenWallet it must already be deployed,
+   or there must be enough `deployWalletValue` available
+   to deploy a new wallet.
+ - `amount` cannot be zero.
+ - `recipient` cannot be the zero address.
+
+Postconditions:
+
+ - The `totalSupply_` must increase by the `amount` that is minted.
+ - If `deployWalletValue` is greater than 0, then a new
+   TokenWallet MUST be deployed.
+
+[.contract-item]
+[[TokenRootBase-acceptBurn-uint128-address-address-address-TvmCell-]]
+==== `[.contract-item-name]#++acceptBurn++#++(uint128 amount, address walletOwner, address remainingGasTo, address callbackTo, TvmCell payload)++` [.item-kind]#external#
+
+See {ITokenRoot-acceptBurn}.
+
+Preconditions:
+
+ - Burning should be allowed on the {TokenRoot} contract.
+ - Sender should be a valid token wallet deployed by this contract.
+
+Postconditions:
+
+ - The `totalSupply_` must decrease by the `amount` that is burned.
+ - If `callbackTo` is not set, `remainingGasTo` will receive the
+   remaining gas, otherwise {IAcceptTokensBurnCallback-onAcceptTokensBurn}
+   will be called on the `callbackTo` contract.
+
+[.contract-item]
+[[TokenRootBase-_mint-uint128-address-uint128-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++_mint++#++(uint128 amount, address recipient, uint128 deployWalletValue, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#internal#
+
+Realization of {TokenRootBase-mint} function.
+
+Postcondition:
+
+ - `totalSupply_` is increased by `amount`.
+ - If `deployWalletValue` is zero
+   then `balance` of `recipient` is increased by `amount`.
+ - Else, new {TokenWallet} is deployed with initial balance equal to `deployWalletValue`.
+ - {ITokenWallet-acceptMint} is called on the deployed wallet.
+
+NOTE: We pass `bounce` flag true in acceptMint, so that
+in the TokenWallet cannot accept the mint, then TokenWallet will bounce
+to the current {onBounce}, and the `totalSupply` will be decreased by `amount`.
+
+[.contract-item]
+[[TokenRootBase-_getExpectedWalletAddress-address-]]
+==== `[.contract-item-name]#++_getExpectedWalletAddress++#++(address walletOwner) → address++` [.item-kind]#internal#
+
+Derive wallet address from owner.
+
+The function uses the `tvm.hash`, that computes the representation
+hash of of the wallet `StateInit` data and returns it as a 256-bit unsigned
+integer, then converted to an address.
+
+For string and bytes it computes hash of the tree of cells that contains
+data but not data itself.
+
+This allows the contract to determine the expected address of a wallet
+based on its owner's address. See sha256 to count hash of data.
+
+[.contract-item]
+[[TokenRootBase-onBounce-TvmSlice-]]
+==== `[.contract-item-name]#++onBounce++#++(TvmSlice slice)++` [.item-kind]#external#
+
+On-bounce handler.
+
+Used in case {ITokenWallet-acceptMint} fails so the `totalSupply_`
+can be decreased back.
+
+[.contract-item]
+[[TokenRootBase-sendSurplusGas-address-]]
+==== `[.contract-item-name]#++sendSurplusGas++#++(address to)++` [.item-kind]#external#
+
+Withdraw all surplus balance in EVERs.
+Can by called only by owner address.
+
+[.contract-item]
+[[TokenRootBase-_reserve--]]
+==== `[.contract-item-name]#++_reserve++#++() → uint128++` [.item-kind]#internal#
+
+Calculates reserve EVERs for the remainder of the contract that
+subsequent output actions cannot spend more money than the remainder.
+
+[.contract-item]
+[[TokenRootBase-_targetBalance--]]
+==== `[.contract-item-name]#++_targetBalance++#++() → uint128++` [.item-kind]#internal#
+
+Returns the target balance of the contract.
+
+Target balance is used for `tvm.rawReserve`, which creates an output
+action that reserves EVER.
+It is roughly equivalent to creating an outgoing message that carries
+reserve nanoevers to itself, so that subsequent spend actions cannot
+spend more money than the reserve.
+
+[.contract-item]
+[[TokenRootBase-_mintEnabled--]]
+==== `[.contract-item-name]#++_mintEnabled++#++() → bool++` [.item-kind]#internal#
+
+Checks if minting is enabled.
+
+[.contract-item]
+[[TokenRootBase-_burnEnabled--]]
+==== `[.contract-item-name]#++_burnEnabled++#++() → bool++` [.item-kind]#internal#
+
+Checks if burning is enabled.
+
+[.contract-item]
+[[TokenRootBase-_buildWalletInitData-address-]]
+==== `[.contract-item-name]#++_buildWalletInitData++#++(address walletOwner) → TvmCell++` [.item-kind]#internal#
+
+Builds the wallet `StateInit` data.
+
+[.contract-item]
+[[TokenRootBase-_deployWallet-TvmCell-uint128-address-]]
+==== `[.contract-item-name]#++_deployWallet++#++(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) → address++` [.item-kind]#internal#
+
+Deploys new token wallet.
+
+:randomNonce_: pass:normal[xref:#TokenRoot-randomNonce_-uint256[`++randomNonce_++`]]
+:deployer_: pass:normal[xref:#TokenRoot-deployer_-address[`++deployer_++`]]
+:constructor: pass:normal[xref:#TokenRoot-constructor-address-uint128-uint128-bool-bool-bool-address-[`++constructor++`]]
+:supportsInterface: pass:normal[xref:#TokenRoot-supportsInterface-bytes4-[`++supportsInterface++`]]
+:_targetBalance: pass:normal[xref:#TokenRoot-_targetBalance--[`++_targetBalance++`]]
+:_buildWalletInitData: pass:normal[xref:#TokenRoot-_buildWalletInitData-address-[`++_buildWalletInitData++`]]
+:_deployWallet: pass:normal[xref:#TokenRoot-_deployWallet-TvmCell-uint128-address-[`++_deployWallet++`]]
+
+[.contract]
+[[TokenRoot]]
+=== `++TokenRoot++` link:https://github.com/broxus/tip3/contracts/TokenRoot.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/TokenRoot.sol";
+```
+
+This is an implementation of TokenRoot that implements all the required
+methods of the TIP-3 standard.
+
+You can read more about the standard TIP-3 in the documentation:
+https://docs.everscale.network/standard/TIP-3/
+
+The token root contract stores general information about the token, such
+as `name`, `symbol`, `decimals`, `walletCode_`, see {ITokenRoot}.
+
+Each token holder has its own instance of the token wallet contract,
+which stores information about the balance of the tokens, see {ITokenWallet}.
+The transfer of tokens is carried out in P2P mode between the wallets of
+the sender's and recipient's tokens.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenRoot-constructor-address-uint128-uint128-bool-bool-bool-address-}[`++constructor(initialSupplyTo, initialSupply, deployWalletValue, mintDisabled, burnByRootDisabled, burnPaused, remainingGasTo)++`]
+* {xref-TokenRoot-supportsInterface-bytes4-}[`++supportsInterface(interfaceID)++`]
+* {xref-TokenRoot-_targetBalance--}[`++_targetBalance()++`]
+* {xref-TokenRoot-_buildWalletInitData-address-}[`++_buildWalletInitData(walletOwner)++`]
+* {xref-TokenRoot-_deployWallet-TvmCell-uint128-address-}[`++_deployWallet(initData, deployWalletValue, )++`]
+
+--
+
+[.contract-item]
+[[TokenRoot-constructor-address-uint128-uint128-bool-bool-bool-address-]]
+==== `[.contract-item-name]#++constructor++#++(address initialSupplyTo, uint128 initialSupply, uint128 deployWalletValue, bool mintDisabled, bool burnByRootDisabled, bool burnPaused, address remainingGasTo)++` [.item-kind]#public#
+
+Sets the values for `mintDisabled_`, `burnByRootDisabled_`,
+`burnPaused_`, and increases the `totalSupply_`
+if `initialSupply` is not zero.
+
+Parameters such as `symbol`, `decimals`, `name`, `rootOwner_`,
+`randomNonce_` and `walletCode_` are set during contract deployment,
+and passed as `StateInit` params`.
+
+Also, the listed parameters, with the exception of {totalSupply_} and
+`burnPaused_`, are immutable:
+they can only be set once during construction.
+
+[.contract-item]
+[[TokenRoot-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceID) → bool++` [.item-kind]#external#
+
+Implementation of the {SID} interface.
+
+[.contract-item]
+[[TokenRoot-_targetBalance--]]
+==== `[.contract-item-name]#++_targetBalance++#++() → uint128++` [.item-kind]#internal#
+
+Implementation of the {TokenRootBase-_targetBalance} virtual function.
+
+[.contract-item]
+[[TokenRoot-_buildWalletInitData-address-]]
+==== `[.contract-item-name]#++_buildWalletInitData++#++(address walletOwner) → TvmCell++` [.item-kind]#internal#
+
+See {TokenRootBase-_buildWalletInitData}.
+
+The `InitData` consists of:
+
+ - `contr` (contract) - defines the contract whose `StateInit` will be created.
+     Mandatory to be set if the `varInit` option is specified.
+
+ - `varInit` (initialization list) - used to set static variables of the
+     contract, see {TokenWalletBase}.
+     Conflicts with data and must be set contr.
+
+     `root_` - the address of the TokenRoot contract.
+     `owner_` - the address of the owner of the wallet.
+
+ - pubkey` - the public key of the contract.
+     The value 0 means that the wallet can be owned only by another contract.
+     contract, the most common example is Account.
+
+ - `code` - the code of the {TokenWallet}.
+
+[.contract-item]
+[[TokenRoot-_deployWallet-TvmCell-uint128-address-]]
+==== `[.contract-item-name]#++_deployWallet++#++(TvmCell initData, uint128 deployWalletValue, address) → address++` [.item-kind]#internal#
+
+Implementation of the virtual function {TokenRootBase-_deployWallet}.
+
+Deploys a new {TokenWallet} contract according to the TIP-3 standard.
+
+=== Abstractions
+
+:burnByRootDisabled_: pass:normal[xref:#TokenRootBurnableByRootBase-burnByRootDisabled_-bool[`++burnByRootDisabled_++`]]
+:burnTokens: pass:normal[xref:#TokenRootBurnableByRootBase-burnTokens-uint128-address-address-address-TvmCell-[`++burnTokens++`]]
+:disableBurnByRoot: pass:normal[xref:#TokenRootBurnableByRootBase-disableBurnByRoot--[`++disableBurnByRoot++`]]
+:burnByRootDisabled: pass:normal[xref:#TokenRootBurnableByRootBase-burnByRootDisabled--[`++burnByRootDisabled++`]]
+
+[.contract]
+[[TokenRootBurnableByRootBase]]
+=== `++TokenRootBurnableByRootBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootBurnableByRootBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenRootBurnableByRootBase.sol";
+```
+
+Implementation of the {IBurnableByRootTokenRoot} interface.
+
+This abstraction extends the functionality of {TokenRootBase} and increases
+the capabilities of TokenRoot, namely burning tokens of any wallet, disabling
+the ability to burn tokens through the TokenRoot.
+And a view method that returns the state of 'burnByRootDisabled_'.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenRootBurnableByRootBase-burnTokens-uint128-address-address-address-TvmCell-}[`++burnTokens(amount, walletOwner, remainingGasTo, callbackTo, payload)++`]
+* {xref-TokenRootBurnableByRootBase-disableBurnByRoot--}[`++disableBurnByRoot()++`]
+* {xref-TokenRootBurnableByRootBase-burnByRootDisabled--}[`++burnByRootDisabled()++`]
+
+--
+
+[.contract-item]
+[[TokenRootBurnableByRootBase-burnTokens-uint128-address-address-address-TvmCell-]]
+==== `[.contract-item-name]#++burnTokens++#++(uint128 amount, address walletOwner, address remainingGasTo, address callbackTo, TvmCell payload)++` [.item-kind]#external#
+
+See {IBurnableByRootTokenRoot-burnTokens}.
+
+Preconditions:
+
+- `burnByRootDisabled_` must be `false`.
+- `amount` must be greater than zero.
+- `walletOwner` must be a non-zero address.
+
+For burning calls the {IBurnableByRootTokenWallet-burnByRoot} method of the wallet,
+so the TokenWallet must implement this method.
+
+NOTE: We pass the bounce `true` flag to the wallet, but this Bounce
+is not covered by the TokenRoot.
+
+[.contract-item]
+[[TokenRootBurnableByRootBase-disableBurnByRoot--]]
+==== `[.contract-item-name]#++disableBurnByRoot++#++() → bool++` [.item-kind]#external#
+
+See {IBurnableByRootTokenRoot-disableBurnByRoot}.
+
+[.contract-item]
+[[TokenRootBurnableByRootBase-burnByRootDisabled--]]
+==== `[.contract-item-name]#++burnByRootDisabled++#++() → bool++` [.item-kind]#external#
+
+See {IBurnableByRootTokenRoot-disableBurnByRoot}.
+
+:burnPaused_: pass:normal[xref:#TokenRootBurnPausableBase-burnPaused_-bool[`++burnPaused_++`]]
+:burnPaused: pass:normal[xref:#TokenRootBurnPausableBase-burnPaused--[`++burnPaused++`]]
+:setBurnPaused: pass:normal[xref:#TokenRootBurnPausableBase-setBurnPaused-bool-[`++setBurnPaused++`]]
+:_burnEnabled: pass:normal[xref:#TokenRootBurnPausableBase-_burnEnabled--[`++_burnEnabled++`]]
+
+[.contract]
+[[TokenRootBurnPausableBase]]
+=== `++TokenRootBurnPausableBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootBurnPausableBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenRootBurnPausableBase.sol";
+```
+
+Implementation of the {IBurnPausableTokenRoot} interface.
+
+This abstraction extends the functionality of {TokenRootBase} and increases
+the capabilities of TokenRoot, the ability to start and stop burning tokens.
+And a view method that returns the state of `burnPaused_`.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenRootBurnPausableBase-burnPaused--}[`++burnPaused()++`]
+* {xref-TokenRootBurnPausableBase-setBurnPaused-bool-}[`++setBurnPaused(paused)++`]
+* {xref-TokenRootBurnPausableBase-_burnEnabled--}[`++_burnEnabled()++`]
+
+--
+
+[.contract-item]
+[[TokenRootBurnPausableBase-burnPaused--]]
+==== `[.contract-item-name]#++burnPaused++#++() → bool++` [.item-kind]#external#
+
+Returns the current state of the ability to burn tokens.
+
+[.contract-item]
+[[TokenRootBurnPausableBase-setBurnPaused-bool-]]
+==== `[.contract-item-name]#++setBurnPaused++#++(bool paused) → bool++` [.item-kind]#external#
+
+See {IBurnPausableTokenRoot-setBurnPaused}.
+
+Post condition:
+
+- `burnPaused_` is set to the value of the `paused` parameter.
+
+[.contract-item]
+[[TokenRootBurnPausableBase-_burnEnabled--]]
+==== `[.contract-item-name]#++_burnEnabled++#++() → bool++` [.item-kind]#internal#
+
+See {TokenRootBase-_burnEnabled}.
+
+:mintDisabled_: pass:normal[xref:#TokenRootDisableableMintBase-mintDisabled_-bool[`++mintDisabled_++`]]
+:disableMint: pass:normal[xref:#TokenRootDisableableMintBase-disableMint--[`++disableMint++`]]
+:mintDisabled: pass:normal[xref:#TokenRootDisableableMintBase-mintDisabled--[`++mintDisabled++`]]
+:_mintEnabled: pass:normal[xref:#TokenRootDisableableMintBase-_mintEnabled--[`++_mintEnabled++`]]
+
+[.contract]
+[[TokenRootDisableableMintBase]]
+=== `++TokenRootDisableableMintBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootDisableableMintBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenRootDisableableMintBase.sol";
+```
+
+Implementation of the {IBurnPausableTokenRoot} interface.
+
+This abstraction extends the functionality of {TokenRootBase} and increases
+the capabilities of TokenRoot, adding the ability to permanently disable token minting.
+And a view method that returns the state of `mintDisabled_`.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenRootDisableableMintBase-disableMint--}[`++disableMint()++`]
+* {xref-TokenRootDisableableMintBase-mintDisabled--}[`++mintDisabled()++`]
+* {xref-TokenRootDisableableMintBase-_mintEnabled--}[`++_mintEnabled()++`]
+
+--
+
+[.contract-item]
+[[TokenRootDisableableMintBase-disableMint--]]
+==== `[.contract-item-name]#++disableMint++#++() → bool++` [.item-kind]#external#
+
+See {IDisableableMintTokenRoot-disableMint}.
+
+Post condition:
+
+ - `mintDisabled_` is set to `true`.
+
+[.contract-item]
+[[TokenRootDisableableMintBase-mintDisabled--]]
+==== `[.contract-item-name]#++mintDisabled++#++() → bool++` [.item-kind]#external#
+
+See {IDisableableMintTokenRoot-mintDisabled}.
+
+[.contract-item]
+[[TokenRootDisableableMintBase-_mintEnabled--]]
+==== `[.contract-item-name]#++_mintEnabled++#++() → bool++` [.item-kind]#internal#
+
+See {TokenRootBase-_mintEnabled}.
+
+:transferOwnership: pass:normal[xref:#TokenRootTransferableOwnershipBase-transferOwnership-address-address-mapping-address----struct-ICallbackParamsStructure-CallbackParams--[`++transferOwnership++`]]
+
+[.contract]
+[[TokenRootTransferableOwnershipBase]]
+=== `++TokenRootTransferableOwnershipBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenRootTransferableOwnershipBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenRootTransferableOwnershipBase.sol";
+```
+
+Implementation of the {ITransferableOwnership} interface.
+
+This abstraction extends the functionality of {TokenRootBase},
+adding a 1-step ownership transfer mechanism.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenRootTransferableOwnershipBase-transferOwnership-address-address-mapping-address----struct-ICallbackParamsStructure-CallbackParams--}[`++transferOwnership(newOwner, remainingGasTo, callbacks)++`]
+
+--
+
+[.contract-item]
+[[TokenRootTransferableOwnershipBase-transferOwnership-address-address-mapping-address----struct-ICallbackParamsStructure-CallbackParams--]]
+==== `[.contract-item-name]#++transferOwnership++#++(address newOwner, address remainingGasTo, mapping(address &#x3D;&gt; struct ICallbackParamsStructure.CallbackParams) callbacks)++` [.item-kind]#external#
+
+See {ITransferableOwnership-transferOwnership}.
+
+Precondition:
+
+ - Caller must be owner.
+
+Postconditions:
+
+ - Ownership is transferred to new owner.
+
+=== Interfaces
+
+:onAcceptTokensBurn: pass:normal[xref:#IAcceptTokensBurnCallback-onAcceptTokensBurn-uint128-address-address-address-TvmCell-[`++onAcceptTokensBurn++`]]
+
+[.contract]
+[[IAcceptTokensBurnCallback]]
+=== `++IAcceptTokensBurnCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/IAcceptTokensBurnCallback.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/IAcceptTokensBurnCallback.sol";
+```
+
+Interface defines a callback function that can be used by a TokenRoot
+to notify the owner of a TokenWallet when their tokens have been burned.
+
+Chain of calls:
+ 1)
+ walletOwner -> IBurnableTokenWallet(wallet).burn(...) ->
+                IBurnPausableTokenRoot(root).tokensBurned(...) ->
+                IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
+ 2)
+ rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
+              IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
+              IBurnPausableTokenRoot(root).tokensBurned(...) ->
+              IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
+
+[.contract-index]
+.Functions
+--
+* {xref-IAcceptTokensBurnCallback-onAcceptTokensBurn-uint128-address-address-address-TvmCell-}[`++onAcceptTokensBurn(amount, walletOwner, wallet, remainingGasTo, payload)++`]
+
+--
+
+[.contract-item]
+[[IAcceptTokensBurnCallback-onAcceptTokensBurn-uint128-address-address-address-TvmCell-]]
+==== `[.contract-item-name]#++onAcceptTokensBurn++#++(uint128 amount, address walletOwner, address wallet, address remainingGasTo, TvmCell payload)++` [.item-kind]#external#
+
+Callback used by the Token Root contract when it receives a request
+to burn tokens on {ITokenRoot-acceptBurn} from a token wallet and
+successfully completes the burning process.
+This allows the wallet owner to take appropriate action,
+such as triggering a business logic.
+
+:burnTokens: pass:normal[xref:#IBurnableByRootTokenRoot-burnTokens-uint128-address-address-address-TvmCell-[`++burnTokens++`]]
+:disableBurnByRoot: pass:normal[xref:#IBurnableByRootTokenRoot-disableBurnByRoot--[`++disableBurnByRoot++`]]
+:burnByRootDisabled: pass:normal[xref:#IBurnableByRootTokenRoot-burnByRootDisabled--[`++burnByRootDisabled++`]]
+
+[.contract]
+[[IBurnableByRootTokenRoot]]
+=== `++IBurnableByRootTokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/IBurnableByRootTokenRoot.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/IBurnableByRootTokenRoot.sol";
+```
+
+Interface for disabling the ability of the TokenRoot contract to burn
+tokens on behalf of any TokenWallet contract.
+
+Chain of calls:
+
+rootOwner -> IBurnableByRootTokenRoot(root).burnTokens(...) ->
+             IBurnableByRootTokenWallet(wallet).burnByRoot(...) ->
+             ITokenRoot(root).acceptBurn(...) ->
+             IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
+
+[.contract-index]
+.Functions
+--
+* {xref-IBurnableByRootTokenRoot-burnTokens-uint128-address-address-address-TvmCell-}[`++burnTokens(amount, walletOwner, remainingGasTo, callbackTo, payload)++`]
+* {xref-IBurnableByRootTokenRoot-disableBurnByRoot--}[`++disableBurnByRoot()++`]
+* {xref-IBurnableByRootTokenRoot-burnByRootDisabled--}[`++burnByRootDisabled()++`]
+
+--
+
+[.contract-item]
+[[IBurnableByRootTokenRoot-burnTokens-uint128-address-address-address-TvmCell-]]
+==== `[.contract-item-name]#++burnTokens++#++(uint128 amount, address walletOwner, address remainingGasTo, address callbackTo, TvmCell payload)++` [.item-kind]#external#
+
+Allows for `rootOwner` burn tokens from any {TokenWallet}.
+This method can be disabled using `disableBurnByRoot()`
+
+[.contract-item]
+[[IBurnableByRootTokenRoot-disableBurnByRoot--]]
+==== `[.contract-item-name]#++disableBurnByRoot++#++() → bool++` [.item-kind]#external#
+
+Allows to disable `burnTokens` method forever
+
+Precondition:
+
+ - sender must be rootOwner.
+
+Postcondition:
+
+ - burn by TokenRoot must be disabled forever.
+
+[.contract-item]
+[[IBurnableByRootTokenRoot-burnByRootDisabled--]]
+==== `[.contract-item-name]#++burnByRootDisabled++#++() → bool++` [.item-kind]#external#
+
+Returns true if `burnTokens` method is disabled.
+
+:setBurnPaused: pass:normal[xref:#IBurnPausableTokenRoot-setBurnPaused-bool-[`++setBurnPaused++`]]
+:burnPaused: pass:normal[xref:#IBurnPausableTokenRoot-burnPaused--[`++burnPaused++`]]
+
+[.contract]
+[[IBurnPausableTokenRoot]]
+=== `++IBurnPausableTokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/IBurnPausableTokenRoot.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/IBurnPausableTokenRoot.sol";
+```
+
+The interface that defines additional functionality enabling and
+disabling the mechanism for burning tokens on a contract
+
+[.contract-index]
+.Functions
+--
+* {xref-IBurnPausableTokenRoot-setBurnPaused-bool-}[`++setBurnPaused(paused)++`]
+* {xref-IBurnPausableTokenRoot-burnPaused--}[`++burnPaused()++`]
+
+--
+
+[.contract-item]
+[[IBurnPausableTokenRoot-setBurnPaused-bool-]]
+==== `[.contract-item-name]#++setBurnPaused++#++(bool paused) → bool++` [.item-kind]#external#
+
+Pause/Unpause token burns.
+
+if paused, then all burned tokens will be bounced to TokenWallet.
+
+[.contract-item]
+[[IBurnPausableTokenRoot-burnPaused--]]
+==== `[.contract-item-name]#++burnPaused++#++() → bool++` [.item-kind]#external#
+
+Returns `true` if token burns are paused, and `false` otherwise.
+
+:disableMint: pass:normal[xref:#IDisableableMintTokenRoot-disableMint--[`++disableMint++`]]
+:mintDisabled: pass:normal[xref:#IDisableableMintTokenRoot-mintDisabled--[`++mintDisabled++`]]
+
+[.contract]
+[[IDisableableMintTokenRoot]]
+=== `++IDisableableMintTokenRoot++` link:https://github.com/broxus/tip3/contracts/interfaces/IDisableableMintTokenRoot.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/IDisableableMintTokenRoot.sol";
+```
+
+Interface defines a contract that has functions to permanently disable
+the minting of new tokens and check
+the status of the ability to mint new tokens.
+
+[.contract-index]
+.Functions
+--
+* {xref-IDisableableMintTokenRoot-disableMint--}[`++disableMint()++`]
+* {xref-IDisableableMintTokenRoot-mintDisabled--}[`++mintDisabled()++`]
+
+--
+
+[.contract-item]
+[[IDisableableMintTokenRoot-disableMint--]]
+==== `[.contract-item-name]#++disableMint++#++() → bool++` [.item-kind]#external#
+
+Disable {mint} forever
+This is an irreversible action
+
+[.contract-item]
+[[IDisableableMintTokenRoot-mintDisabled--]]
+==== `[.contract-item-name]#++mintDisabled++#++() → bool++` [.item-kind]#external#
+
+Сheck if the minting of new tokens has already been disabled
+
+:onTransferTokenRootOwnership: pass:normal[xref:#ITransferTokenRootOwnershipCallback-onTransferTokenRootOwnership-address-address-address-TvmCell-[`++onTransferTokenRootOwnership++`]]
+
+[.contract]
+[[ITransferTokenRootOwnershipCallback]]
+=== `++ITransferTokenRootOwnershipCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/ITransferTokenRootOwnershipCallback.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/ITransferTokenRootOwnershipCallback.sol";
+```
+
+Interface describing the callback function that is called by the
+token root contract after the ownership transfer.
+
+[.contract-index]
+.Functions
+--
+* {xref-ITransferTokenRootOwnershipCallback-onTransferTokenRootOwnership-address-address-address-TvmCell-}[`++onTransferTokenRootOwnership(oldOwner, newOwner, remainingGasTo, payload)++`]
+
+--
+
+[.contract-item]
+[[ITransferTokenRootOwnershipCallback-onTransferTokenRootOwnership-address-address-address-TvmCell-]]
+==== `[.contract-item-name]#++onTransferTokenRootOwnership++#++(address oldOwner, address newOwner, address remainingGasTo, TvmCell payload)++` [.item-kind]#external#
+
+This function is called by the token root contract after the ownership transfer.
+        @param oldOwner The address of the old owner.
+        @param newOwner The address of the new owner.
+        @param remainingGasTo The address of the contract that will receive the remaining gas.
+        @param payload Payload data.
+
+        @dev not having this function in the interface will cause the compiler to generate a default implementation of this function.
+
+=== Upgradeability
+
+:walletVersion: pass:normal[xref:#ITokenRootUpgradeable-walletVersion--[`++walletVersion++`]]
+:platformCode: pass:normal[xref:#ITokenRootUpgradeable-platformCode--[`++platformCode++`]]
+:requestUpgradeWallet: pass:normal[xref:#ITokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-[`++requestUpgradeWallet++`]]
+:setWalletCode: pass:normal[xref:#ITokenRootUpgradeable-setWalletCode-TvmCell-[`++setWalletCode++`]]
+:upgrade: pass:normal[xref:#ITokenRootUpgradeable-upgrade-TvmCell-[`++upgrade++`]]
+
+[.contract]
+[[ITokenRootUpgradeable]]
+=== `++ITokenRootUpgradeable++` link:https://github.com/broxus/tip3/contracts/interfaces/ITokenRootUpgradeable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/ITokenRootUpgradeable.sol";
+```
+
+Interface extends the {ITokenRoot} interface and defines functionality
+for upgradable token wallets.
+The interface includes functions for interacting with upgradable token wallets,
+such as requesting upgrades, changing the wallet code, and upgrading
+the TokenRoot contract.
+
+[.contract-index]
+.Functions
+--
+* {xref-ITokenRootUpgradeable-walletVersion--}[`++walletVersion()++`]
+* {xref-ITokenRootUpgradeable-platformCode--}[`++platformCode()++`]
+* {xref-ITokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-}[`++requestUpgradeWallet(currentVersion, walletOwner, remainingGasTo)++`]
+* {xref-ITokenRootUpgradeable-setWalletCode-TvmCell-}[`++setWalletCode(code)++`]
+* {xref-ITokenRootUpgradeable-upgrade-TvmCell-}[`++upgrade(code)++`]
+
+--
+
+[.contract-item]
+[[ITokenRootUpgradeable-walletVersion--]]
+==== `[.contract-item-name]#++walletVersion++#++() → uint32++` [.item-kind]#external#
+
+Get the current version of the wallet code.
+
+[.contract-item]
+[[ITokenRootUpgradeable-platformCode--]]
+==== `[.contract-item-name]#++platformCode++#++() → TvmCell++` [.item-kind]#external#
+
+Returns the {TokenWalletPlatform} code cell.
+
+[.contract-item]
+[[ITokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-]]
+==== `[.contract-item-name]#++requestUpgradeWallet++#++(uint32 currentVersion, address walletOwner, address remainingGasTo)++` [.item-kind]#external#
+
+Upgrades the wallet code on request {TokenWallet}.
+
+[.contract-item]
+[[ITokenRootUpgradeable-setWalletCode-TvmCell-]]
+==== `[.contract-item-name]#++setWalletCode++#++(TvmCell code)++` [.item-kind]#external#
+
+Changes the wallet code for future deploy new wallets.
+
+[.contract-item]
+[[ITokenRootUpgradeable-upgrade-TvmCell-]]
+==== `[.contract-item-name]#++upgrade++#++(TvmCell code)++` [.item-kind]#external#
+
+Upgrades the {TokenRoot} code.
+
+:randomNonce_: pass:normal[xref:#TokenRootUpgradeable-randomNonce_-uint256[`++randomNonce_++`]]
+:deployer_: pass:normal[xref:#TokenRootUpgradeable-deployer_-address[`++deployer_++`]]
+:platformCode_: pass:normal[xref:#TokenRootUpgradeable-platformCode_-TvmCell[`++platformCode_++`]]
+:walletVersion_: pass:normal[xref:#TokenRootUpgradeable-walletVersion_-uint32[`++walletVersion_++`]]
+:constructor: pass:normal[xref:#TokenRootUpgradeable-constructor-address-uint128-uint128-bool-bool-bool-address-[`++constructor++`]]
+:supportsInterface: pass:normal[xref:#TokenRootUpgradeable-supportsInterface-bytes4-[`++supportsInterface++`]]
+:walletVersion: pass:normal[xref:#TokenRootUpgradeable-walletVersion--[`++walletVersion++`]]
+:platformCode: pass:normal[xref:#TokenRootUpgradeable-platformCode--[`++platformCode++`]]
+:requestUpgradeWallet: pass:normal[xref:#TokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-[`++requestUpgradeWallet++`]]
+:setWalletCode: pass:normal[xref:#TokenRootUpgradeable-setWalletCode-TvmCell-[`++setWalletCode++`]]
+:upgrade: pass:normal[xref:#TokenRootUpgradeable-upgrade-TvmCell-[`++upgrade++`]]
+:_targetBalance: pass:normal[xref:#TokenRootUpgradeable-_targetBalance--[`++_targetBalance++`]]
+:_buildWalletInitData: pass:normal[xref:#TokenRootUpgradeable-_buildWalletInitData-address-[`++_buildWalletInitData++`]]
+:_deployWallet: pass:normal[xref:#TokenRootUpgradeable-_deployWallet-TvmCell-uint128-address-[`++_deployWallet++`]]
+
+[.contract]
+[[TokenRootUpgradeable]]
+=== `++TokenRootUpgradeable++` link:https://github.com/broxus/tip3/contracts/TokenRootUpgradeable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/TokenRootUpgradeable.sol";
+```
+
+This is an implementation of upgradable token root that implements
+all the required methods of the TIP-3 standard.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenRootUpgradeable-constructor-address-uint128-uint128-bool-bool-bool-address-}[`++constructor(initialSupplyTo, initialSupply, deployWalletValue, mintDisabled, burnByRootDisabled, burnPaused, remainingGasTo)++`]
+* {xref-TokenRootUpgradeable-supportsInterface-bytes4-}[`++supportsInterface(interfaceID)++`]
+* {xref-TokenRootUpgradeable-walletVersion--}[`++walletVersion()++`]
+* {xref-TokenRootUpgradeable-platformCode--}[`++platformCode()++`]
+* {xref-TokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-}[`++requestUpgradeWallet(currentVersion, walletOwner, remainingGasTo)++`]
+* {xref-TokenRootUpgradeable-setWalletCode-TvmCell-}[`++setWalletCode(code)++`]
+* {xref-TokenRootUpgradeable-upgrade-TvmCell-}[`++upgrade(code)++`]
+* {xref-TokenRootUpgradeable-_targetBalance--}[`++_targetBalance()++`]
+* {xref-TokenRootUpgradeable-_buildWalletInitData-address-}[`++_buildWalletInitData(walletOwner)++`]
+* {xref-TokenRootUpgradeable-_deployWallet-TvmCell-uint128-address-}[`++_deployWallet(initData, deployWalletValue, remainingGasTo)++`]
+
+--
+
+[.contract-item]
+[[TokenRootUpgradeable-constructor-address-uint128-uint128-bool-bool-bool-address-]]
+==== `[.contract-item-name]#++constructor++#++(address initialSupplyTo, uint128 initialSupply, uint128 deployWalletValue, bool mintDisabled, bool burnByRootDisabled, bool burnPaused, address remainingGasTo)++` [.item-kind]#public#
+
+Sets the values for `mintDisabled_`, `burnByRootDisabled_`,`burnPaused_`,
+and increases the `totalSupply_` if `initialSupply` is not zero.
+
+Parameters such as `symbol`, `decimals`, `name`, `rootOwner_` `randomNonce_`
+`deployer_`, and `platformCode_` are set during contract deployment,
+and passed as `StateInit` params.
+
+Also, the listed parameters, with the exception of `totalSupply_` and
+`burnPaused_`, are immutable:
+they can only be set once during construction.
+
+[.contract-item]
+[[TokenRootUpgradeable-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceID) → bool++` [.item-kind]#external#
+
+Implementation of the {SID} interface.
+
+[.contract-item]
+[[TokenRootUpgradeable-walletVersion--]]
+==== `[.contract-item-name]#++walletVersion++#++() → uint32++` [.item-kind]#external#
+
+See {ITokenRootUpgradeable-walletVersion}.
+
+[.contract-item]
+[[TokenRootUpgradeable-platformCode--]]
+==== `[.contract-item-name]#++platformCode++#++() → TvmCell++` [.item-kind]#external#
+
+See {ITokenRootUpgradeable-platformCode}.
+
+[.contract-item]
+[[TokenRootUpgradeable-requestUpgradeWallet-uint32-address-address-]]
+==== `[.contract-item-name]#++requestUpgradeWallet++#++(uint32 currentVersion, address walletOwner, address remainingGasTo)++` [.item-kind]#external#
+
+See {ITokenRootUpgradeable-requestUpgradeWallet}.
+
+Preconditions:
+ - Sender is a valid wallet.
+ - `currentVersion` must be not equal to `walletVersion_`.
+
+Postcondition:
+  - If `currentVersion` is not equal to `walletVersion_`, then
+   the wallet will be upgraded to the new version. Otherwise,
+   the remaining gas will be transferred to `remainingGasTo`.
+
+[.contract-item]
+[[TokenRootUpgradeable-setWalletCode-TvmCell-]]
+==== `[.contract-item-name]#++setWalletCode++#++(TvmCell code)++` [.item-kind]#external#
+
+See {ITokenRootUpgradeable-setWalletCode}.
+
+Preconditions:
+ - Sender must be the owner of the TokenRoot.
+
+Postcondition:
+ - `walletCode_` is set to `code`.
+ - `walletVersion_` is incremented.
+
+[.contract-item]
+[[TokenRootUpgradeable-upgrade-TvmCell-]]
+==== `[.contract-item-name]#++upgrade++#++(TvmCell code)++` [.item-kind]#external#
+
+See {ITokenRootUpgradeable-upgrade}.
+
+Precondition:
+ - Sender must be the owner of the TokenRoot.
+
+[.contract-item]
+[[TokenRootUpgradeable-_targetBalance--]]
+==== `[.contract-item-name]#++_targetBalance++#++() → uint128++` [.item-kind]#internal#
+
+Returns the target balance.
+
+[.contract-item]
+[[TokenRootUpgradeable-_buildWalletInitData-address-]]
+==== `[.contract-item-name]#++_buildWalletInitData++#++(address walletOwner) → TvmCell++` [.item-kind]#internal#
+
+Returns the wallet init data for deploy new wallet.
+
+[.contract-item]
+[[TokenRootUpgradeable-_deployWallet-TvmCell-uint128-address-]]
+==== `[.contract-item-name]#++_deployWallet++#++(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) → address++` [.item-kind]#internal#
+
+implemetation logic `deployWallet` function.
+
+== TokenWallet
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.broxus.com/tip3
+
+The Token Wallet contract, is an implementation of the TIP-3 Token Standard. It provides all the required methods specified in the standard, as well as additional optional functionality such as the ability to minting, burning/burning by {TokenRoot} tokens, and destroying the wallet.
+
+Each token holder has their own instance of the token wallet contract, and transfers occur in a decentralized fashion. The sender's token wallet must send a specific message to the receiver's token wallet, and since all token wallets have the same code, it is easy for the receiver's token wallet to check the correctness of the sender's token wallet.
+
+The TokenWallet is based on abstractions such as:
+
+  - {TokenWalletBurnableBase}
+  - {TokenWalletBurnableByRootBase}
+  - {TokenWalletDestroyableBase}
+
+=== Core
+
+:root: pass:normal[xref:#TIP3TokenWallet-root--[`++root++`]]
+:balance: pass:normal[xref:#TIP3TokenWallet-balance--[`++balance++`]]
+:walletCode: pass:normal[xref:#TIP3TokenWallet-walletCode--[`++walletCode++`]]
+
+[.contract]
+[[TIP3TokenWallet]]
+=== `++TIP3TokenWallet++` link:https://github.com/broxus/tip3/contracts/interfaces/TIP3TokenWallet.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/TIP3TokenWallet.sol";
+```
+
+Interface of the TIP-3.1 TokenWallet contract.
+
+[.contract-index]
+.Functions
+--
+* {xref-TIP3TokenWallet-root--}[`++root()++`]
+* {xref-TIP3TokenWallet-balance--}[`++balance()++`]
+* {xref-TIP3TokenWallet-walletCode--}[`++walletCode()++`]
+
+--
+
+[.contract-item]
+[[TIP3TokenWallet-root--]]
+==== `[.contract-item-name]#++root++#++() → address++` [.item-kind]#external#
+
+Returns the current root contract of the wallet.
+
+[.contract-item]
+[[TIP3TokenWallet-balance--]]
+==== `[.contract-item-name]#++balance++#++() → uint128++` [.item-kind]#external#
+
+Returns the current balance of the wallet.
+
+[.contract-item]
+[[TIP3TokenWallet-walletCode--]]
+==== `[.contract-item-name]#++walletCode++#++() → TvmCell++` [.item-kind]#external#
+
+Returns the wallet code.
+
+:owner: pass:normal[xref:#ITokenWallet-owner--[`++owner++`]]
+:transfer: pass:normal[xref:#ITokenWallet-transfer-uint128-address-uint128-address-bool-TvmCell-[`++transfer++`]]
+:transferToWallet: pass:normal[xref:#ITokenWallet-transferToWallet-uint128-address-address-bool-TvmCell-[`++transferToWallet++`]]
+:acceptTransfer: pass:normal[xref:#ITokenWallet-acceptTransfer-uint128-address-address-bool-TvmCell-[`++acceptTransfer++`]]
+:acceptMint: pass:normal[xref:#ITokenWallet-acceptMint-uint128-address-bool-TvmCell-[`++acceptMint++`]]
+
+[.contract]
+[[ITokenWallet]]
+=== `++ITokenWallet++` link:https://github.com/broxus/tip3/contracts/interfaces/ITokenWallet.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/ITokenWallet.sol";
+```
+
+The ITokenWallet interface defines the minimal required functionality
+for a TIP-3 compliant token wallet contract. It inherits the {TIP3TokenWallet}
+interface, which provides basic information about the token wallet such as its
+root contract and current balance. Additionally, the ITokenWallet interface also
+includes the {SID} interface, which allows other contracts to query if a contract
+implements a specific interface.
+
+[.contract-index]
+.Functions
+--
+* {xref-ITokenWallet-owner--}[`++owner()++`]
+* {xref-ITokenWallet-transfer-uint128-address-uint128-address-bool-TvmCell-}[`++transfer(amount, recipient, deployWalletValue, remainingGasTo, notify, payload)++`]
+* {xref-ITokenWallet-transferToWallet-uint128-address-address-bool-TvmCell-}[`++transferToWallet(amount, recipientTokenWallet, remainingGasTo, notify, payload)++`]
+* {xref-ITokenWallet-acceptTransfer-uint128-address-address-bool-TvmCell-}[`++acceptTransfer(amount, sender, remainingGasTo, notify, payload)++`]
+* {xref-ITokenWallet-acceptMint-uint128-address-bool-TvmCell-}[`++acceptMint(amount, remainingGasTo, notify, payload)++`]
+
+--
+
+[.contract-item]
+[[ITokenWallet-owner--]]
+==== `[.contract-item-name]#++owner++#++() → address++` [.item-kind]#external#
+
+Returns the current owner of the wallet.
+
+[.contract-item]
+[[ITokenWallet-transfer-uint128-address-uint128-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++transfer++#++(uint128 amount, address recipient, uint128 deployWalletValue, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+Transfer tokens and optionally deploy {TokenWallet} for `recipient`.
+
+If deployWalletValue !=0 deploy token wallet for recipient using that gas value
+
+[.contract-item]
+[[ITokenWallet-transferToWallet-uint128-address-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++transferToWallet++#++(uint128 amount, address recipientTokenWallet, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+Transfer tokens using another {TokenWallet} address, that wallet must be deployed previously
+
+[.contract-item]
+[[ITokenWallet-acceptTransfer-uint128-address-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++acceptTransfer++#++(uint128 amount, address sender, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+Callback for transfer operation
+
+[.contract-item]
+[[ITokenWallet-acceptMint-uint128-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++acceptMint++#++(uint128 amount, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+Accept minted tokens from root
+
+:root_: pass:normal[xref:#TokenWalletBase-root_-address[`++root_++`]]
+:owner_: pass:normal[xref:#TokenWalletBase-owner_-address[`++owner_++`]]
+:balance_: pass:normal[xref:#TokenWalletBase-balance_-uint128[`++balance_++`]]
+:onlyRoot: pass:normal[xref:#TokenWalletBase-onlyRoot--[`++onlyRoot++`]]
+:onlyOwner: pass:normal[xref:#TokenWalletBase-onlyOwner--[`++onlyOwner++`]]
+:balance: pass:normal[xref:#TokenWalletBase-balance--[`++balance++`]]
+:owner: pass:normal[xref:#TokenWalletBase-owner--[`++owner++`]]
+:root: pass:normal[xref:#TokenWalletBase-root--[`++root++`]]
+:walletCode: pass:normal[xref:#TokenWalletBase-walletCode--[`++walletCode++`]]
+:transfer: pass:normal[xref:#TokenWalletBase-transfer-uint128-address-uint128-address-bool-TvmCell-[`++transfer++`]]
+:transferToWallet: pass:normal[xref:#TokenWalletBase-transferToWallet-uint128-address-address-bool-TvmCell-[`++transferToWallet++`]]
+:acceptTransfer: pass:normal[xref:#TokenWalletBase-acceptTransfer-uint128-address-address-bool-TvmCell-[`++acceptTransfer++`]]
+:acceptMint: pass:normal[xref:#TokenWalletBase-acceptMint-uint128-address-bool-TvmCell-[`++acceptMint++`]]
+:onBounce: pass:normal[xref:#TokenWalletBase-onBounce-TvmSlice-[`++onBounce++`]]
+:_burn: pass:normal[xref:#TokenWalletBase-_burn-uint128-address-address-TvmCell-[`++_burn++`]]
+:sendSurplusGas: pass:normal[xref:#TokenWalletBase-sendSurplusGas-address-[`++sendSurplusGas++`]]
+:_reserve: pass:normal[xref:#TokenWalletBase-_reserve--[`++_reserve++`]]
+:_targetBalance: pass:normal[xref:#TokenWalletBase-_targetBalance--[`++_targetBalance++`]]
+:_buildWalletInitData: pass:normal[xref:#TokenWalletBase-_buildWalletInitData-address-[`++_buildWalletInitData++`]]
+:_deployWallet: pass:normal[xref:#TokenWalletBase-_deployWallet-TvmCell-uint128-address-[`++_deployWallet++`]]
+
+[.contract]
+[[TokenWalletBase]]
+=== `++TokenWalletBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenWalletBase.sol";
+```
+
+Implementation of the {ITokenWallet} interface.
+
+This abstraction describes the minimal required functionality of
+TokenWaellet contract according to the TIP-3 standard.
+
+Also used as a base class for implementing abstractions such as:
+
+- {TokenWalletBurnableBase}
+- {TokenWalletBurnableByRootBase}
+- {TokenWalletDestroyableBase}
+
+[.contract-index]
+.Modifiers
+--
+* {xref-TokenWalletBase-onlyRoot--}[`++onlyRoot()++`]
+* {xref-TokenWalletBase-onlyOwner--}[`++onlyOwner()++`]
+--
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenWalletBase-balance--}[`++balance()++`]
+* {xref-TokenWalletBase-owner--}[`++owner()++`]
+* {xref-TokenWalletBase-root--}[`++root()++`]
+* {xref-TokenWalletBase-walletCode--}[`++walletCode()++`]
+* {xref-TokenWalletBase-transfer-uint128-address-uint128-address-bool-TvmCell-}[`++transfer(amount, recipient, deployWalletValue, remainingGasTo, notify, payload)++`]
+* {xref-TokenWalletBase-transferToWallet-uint128-address-address-bool-TvmCell-}[`++transferToWallet(amount, recipientTokenWallet, remainingGasTo, notify, payload)++`]
+* {xref-TokenWalletBase-acceptTransfer-uint128-address-address-bool-TvmCell-}[`++acceptTransfer(amount, sender, remainingGasTo, notify, payload)++`]
+* {xref-TokenWalletBase-acceptMint-uint128-address-bool-TvmCell-}[`++acceptMint(amount, remainingGasTo, notify, payload)++`]
+* {xref-TokenWalletBase-onBounce-TvmSlice-}[`++onBounce(body)++`]
+* {xref-TokenWalletBase-_burn-uint128-address-address-TvmCell-}[`++_burn(amount, remainingGasTo, callbackTo, payload)++`]
+* {xref-TokenWalletBase-sendSurplusGas-address-}[`++sendSurplusGas(to)++`]
+* {xref-TokenWalletBase-_reserve--}[`++_reserve()++`]
+* {xref-TokenWalletBase-_targetBalance--}[`++_targetBalance()++`]
+* {xref-TokenWalletBase-_buildWalletInitData-address-}[`++_buildWalletInitData(walletOwner)++`]
+* {xref-TokenWalletBase-_deployWallet-TvmCell-uint128-address-}[`++_deployWallet(initData, deployWalletValue, remainingGasTo)++`]
+
+--
+
+[.contract-item]
+[[TokenWalletBase-onlyRoot--]]
+==== `[.contract-item-name]#++onlyRoot++#++()++` [.item-kind]#modifier#
+
+Modifier than throws if called by any account other than the TokenRoot.
+
+[.contract-item]
+[[TokenWalletBase-onlyOwner--]]
+==== `[.contract-item-name]#++onlyOwner++#++()++` [.item-kind]#modifier#
+
+Modifier than throws if called by any account other than the `owner_`.
+
+[.contract-item]
+[[TokenWalletBase-balance--]]
+==== `[.contract-item-name]#++balance++#++() → uint128++` [.item-kind]#external#
+
+See {TIP3TokenWallet-balance}.
+
+[.contract-item]
+[[TokenWalletBase-owner--]]
+==== `[.contract-item-name]#++owner++#++() → address++` [.item-kind]#external#
+
+See {ITokenWallet-owner}.
+
+[.contract-item]
+[[TokenWalletBase-root--]]
+==== `[.contract-item-name]#++root++#++() → address++` [.item-kind]#external#
+
+See {TIP3TokenWallet-root}.
+
+[.contract-item]
+[[TokenWalletBase-walletCode--]]
+==== `[.contract-item-name]#++walletCode++#++() → TvmCell++` [.item-kind]#external#
+
+See {TIP3TokenWallet-walletCode}.
+
+[.contract-item]
+[[TokenWalletBase-transfer-uint128-address-uint128-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++transfer++#++(uint128 amount, address recipient, uint128 deployWalletValue, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+See {ITokenWallet-transfer}.
+
+The function then uses the address of the recipient and `StateInit`
+ (derived using a function called {_buildWalletInitData})
+
+to determine the address of the recipient's token wallet. The sender's
+wallet then decreases its `balance_` by the `amount` and calls the
+{ITokenWallet-acceptTransfer} on the recipient's token wallet.
+
+If the recipient's wallet is unable to accept the transfer,
+the sender's wallet will return an error message and increase its
+`balance_` by the `amount`.
+
+Note that the recipient may not have a token wallet yet. In this case,
+if a sufficient amount of `deployWalletValue` is passed to the function,
+a token wallet will be deployed for the recipient. If a transfer is
+attempted to a non-existent token wallet and the required value is not
+provided, the transaction will fail with an error.
+
+Preconditions:
+
+ - `amount` must be greater than zero.
+ - `amount` must be less than or equal to `balance_`.
+ - `recipient` must be a non-zero address and should not be equal to the
+    address of the owner of the sender's wallet.
+
+Postcondition:
+
+ - `balance_` will be decreased by `amount`.
+
+[.contract-item]
+[[TokenWalletBase-transferToWallet-uint128-address-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++transferToWallet++#++(uint128 amount, address recipientTokenWallet, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+See {ITokenWallet-transferToWallet}.
+
+Almost the same as the {TokenWalletBase-transfer}, only it takes the
+address of the deployed TokenWallet.
+If the `recipientTokenWallet` is not deployed, the transaction will fail.
+
+Preconditions:
+
+ - `amount` must be greater than zero.
+ - `amount` must be less than or equal to `balance_`.
+ - `recipientTokenWallet` must be a non-zero address and should
+    not be equal to the address of the sender's TokenWallet.
+
+Postcondition:
+
+ - `balance_` will be decreased by `amount`.
+
+[.contract-item]
+[[TokenWalletBase-acceptTransfer-uint128-address-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++acceptTransfer++#++(uint128 amount, address sender, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+See {ITokenWallet-acceptTransfer}.
+
+Accepts incoming transfer for amount amount of tokens from TokenWallet,
+owned sender.
+
+If `notify` is `false`, than the remaining gas MUST be sent to the
+`remainingGasTo`.
+Otherwise, the {IAcceptTokensTransferCallback-onAcceptTokensTransfer}
+sends to the TokenWallet owner with the same `remainingGasTo` and `payload`.
+
+Preconditions:
+
+ - The transfer must come from the same wallet.
+
+Postcondition:
+
+ - `balance_` will be increased by `amount`.
+
+[.contract-item]
+[[TokenWalletBase-acceptMint-uint128-address-bool-TvmCell-]]
+==== `[.contract-item-name]#++acceptMint++#++(uint128 amount, address remainingGasTo, bool notify, TvmCell payload)++` [.item-kind]#external#
+
+See {ITokenWallet-acceptMint}.
+
+Accepts incoming mint foramount of tokens from TokenRoot.
+If `notify` is `false`, than the remaining gas MUST be sent to the
+`remainingGasTo`.
+Otherwise, the {IAcceptTokensMintCallback-onAcceptTokensMint} sends to the
+TokenWallet owner with the same `remainingGasTo` and `payload`.
+
+Preconditions:
+
+ - The mint must come from the TokenRoot.
+
+Postcondition:
+
+ - `balance_` will be increased by `amount`.
+
+[.contract-item]
+[[TokenWalletBase-onBounce-TvmSlice-]]
+==== `[.contract-item-name]#++onBounce++#++(TvmSlice body)++` [.item-kind]#external#
+
+Catch bounce if {acceptTransfer} or {acceptBurn} fails
+
+[.contract-item]
+[[TokenWalletBase-_burn-uint128-address-address-TvmCell-]]
+==== `[.contract-item-name]#++_burn++#++(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)++` [.item-kind]#internal#
+
+Burns `amount` tokens from TokenWallet, decreasing the
+`balance_`.
+
+Preconditions:
+
+ - `amount` must be greater than 0.
+ - `amount` must be less than or equal to `balance_`.
+
+Postcondition:
+
+ - `balance_` will be decreased by `amount`.
+   If {ITokenRoot-acceptBurn} fails - message will be bounced
+   to {onBounce}, and `balance_` will be increased back.
+
+[.contract-item]
+[[TokenWalletBase-sendSurplusGas-address-]]
+==== `[.contract-item-name]#++sendSurplusGas++#++(address to)++` [.item-kind]#external#
+
+Withdraw all surplus balance in EVERs.
+
+[.contract-item]
+[[TokenWalletBase-_reserve--]]
+==== `[.contract-item-name]#++_reserve++#++() → uint128++` [.item-kind]#internal#
+
+Calculates the reserve by taking the maximum of the contract's
+current balance minus the value of the message
+(i.e. the amount of EVERs spent on the current transaction) and the
+target balance of the contract (as determined by the _targetBalance function).
+This ensures that the reserve is set to the lower of the contract's
+current balance or its target balance, ensuring that the contract
+does not spend more EVERs than it has available.
+
+[.contract-item]
+[[TokenWalletBase-_targetBalance--]]
+==== `[.contract-item-name]#++_targetBalance++#++() → uint128++` [.item-kind]#internal#
+
+Returns the target balance of the contract.
+
+Target balance is used for `tvm.rawReserve`, which creates an output
+action that reserves EVER.
+It is roughly equivalent to creating an outgoing message that carries
+reserve nanoevers to itself, so that subsequent spend actions cannot
+spend more money than the reserve.
+
+[.contract-item]
+[[TokenWalletBase-_buildWalletInitData-address-]]
+==== `[.contract-item-name]#++_buildWalletInitData++#++(address walletOwner) → TvmCell++` [.item-kind]#internal#
+
+Builds the wallet `StateInit` data.
+
+[.contract-item]
+[[TokenWalletBase-_deployWallet-TvmCell-uint128-address-]]
+==== `[.contract-item-name]#++_deployWallet++#++(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) → address++` [.item-kind]#internal#
+
+Deploys new token wallet.
+
+:destroy: pass:normal[xref:#TokenWalletDestroyableBase-destroy-address-[`++destroy++`]]
+
+[.contract]
+[[TokenWalletDestroyableBase]]
+=== `++TokenWalletDestroyableBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletDestroyableBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenWalletDestroyableBase.sol";
+```
+
+Implementation of the {IDestroyable} interface.
+
+This abstraction extends the functionality of {TokenWalletBase} and adding
+the ability to destroy the wallet.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenWalletDestroyableBase-destroy-address-}[`++destroy(remainingGasTo)++`]
+
+--
+
+[.contract-item]
+[[TokenWalletDestroyableBase-destroy-address-]]
+==== `[.contract-item-name]#++destroy++#++(address remainingGasTo)++` [.item-kind]#external#
+
+See {IDestroyable-destroy}.
+
+Precondition:
+
+ - The wallet balance must be empty.
+
+:constructor: pass:normal[xref:#TokenWallet-constructor--[`++constructor++`]]
+:supportsInterface: pass:normal[xref:#TokenWallet-supportsInterface-bytes4-[`++supportsInterface++`]]
+:_targetBalance: pass:normal[xref:#TokenWallet-_targetBalance--[`++_targetBalance++`]]
+:_buildWalletInitData: pass:normal[xref:#TokenWallet-_buildWalletInitData-address-[`++_buildWalletInitData++`]]
+:_deployWallet: pass:normal[xref:#TokenWallet-_deployWallet-TvmCell-uint128-address-[`++_deployWallet++`]]
+
+[.contract]
+[[TokenWallet]]
+=== `++TokenWallet++` link:https://github.com/broxus/tip3/contracts/TokenWallet.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/TokenWallet.sol";
+```
+
+This is an implementation of TokenWallet that implements all the
+required methods of the TIP-3 standard.
+As well as optional ones: burn and collections.
+
+Each token holder has its own instance of token wallet contract.
+Transfer happens in a decentralized fashion - sender token wallet SHOULD
+send the specific message to the receiver token wallet. Since token wallets
+have the same code, it's easy for receiver token wallet to check the
+correctness of sender token wallet.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenWallet-constructor--}[`++constructor()++`]
+* {xref-TokenWallet-supportsInterface-bytes4-}[`++supportsInterface(interfaceID)++`]
+* {xref-TokenWallet-_targetBalance--}[`++_targetBalance()++`]
+* {xref-TokenWallet-_buildWalletInitData-address-}[`++_buildWalletInitData(walletOwner)++`]
+* {xref-TokenWallet-_deployWallet-TvmCell-uint128-address-}[`++_deployWallet(initData, deployWalletValue, )++`]
+
+--
+
+[.contract-item]
+[[TokenWallet-constructor--]]
+==== `[.contract-item-name]#++constructor++#++()++` [.item-kind]#public#
+
+Creates new token wallet
+
+Nothing is passed to the constructor, but during the deployment
+of the contract, the following parameters are passed to `StateInit`:
+
+  `root_` - address of the root token contract
+  `owner_` - address of the owner of the wallet
+
+Preconditions:
+
+- `msg.pubkey()` MUST be equal to zero. This means that the owner of
+  the TokenWallet can only smart contract.
+- `owner_` MUST be a non-zero address.
+
+[.contract-item]
+[[TokenWallet-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceID) → bool++` [.item-kind]#external#
+
+Implemetation of {SID} interface.
+
+[.contract-item]
+[[TokenWallet-_targetBalance--]]
+==== `[.contract-item-name]#++_targetBalance++#++() → uint128++` [.item-kind]#internal#
+
+See {TokenWalletBase-_targetBalance}.
+
+[.contract-item]
+[[TokenWallet-_buildWalletInitData-address-]]
+==== `[.contract-item-name]#++_buildWalletInitData++#++(address walletOwner) → TvmCell++` [.item-kind]#internal#
+
+See {TokenRootBase-_buildWalletInitData}.
+
+We need this to deploy new wallets, as well as to
+check incoming messages from other wallets.
+
+The `InitData` consists of:
+ - `contr` (contract) - defines the contract whose `StateInit` will be created.
+     Mandatory to be set if the `varInit` option is specified.
+
+ - `varInit` (initialization list) - used to set static variables of the
+     contract, see {TokenWalletBase}.
+     Conflicts with data and must be set contr.
+
+     `root_` - the address of the TokenRoot contract.
+     `owner_` - the address of the owner of the wallet.
+
+ - pubkey` - the public key of the contract.
+     The value 0 means that the wallet can be owned only by another contract.
+     contract, the most common example is {Wallet}.
+
+ - `code` - the code of the TokenWallet, see {TokenRootBase}.
+
+[.contract-item]
+[[TokenWallet-_deployWallet-TvmCell-uint128-address-]]
+==== `[.contract-item-name]#++_deployWallet++#++(TvmCell initData, uint128 deployWalletValue, address) → address++` [.item-kind]#internal#
+
+Implementation of the virtual function {TokenWalletBase-_deployWallet}.
+
+=== Abstractions
+
+:burn: pass:normal[xref:#TokenWalletBurnableBase-burn-uint128-address-address-TvmCell-[`++burn++`]]
+
+[.contract]
+[[TokenWalletBurnableBase]]
+=== `++TokenWalletBurnableBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletBurnableBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenWalletBurnableBase.sol";
+```
+
+Implementation of the {IBurnableTokenWallet} interface.
+
+This abstraction extends the functionality of {TokenWalletBase} and adding
+burning self-tokens functional.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenWalletBurnableBase-burn-uint128-address-address-TvmCell-}[`++burn(amount, remainingGasTo, callbackTo, payload)++`]
+
+--
+
+[.contract-item]
+[[TokenWalletBurnableBase-burn-uint128-address-address-TvmCell-]]
+==== `[.contract-item-name]#++burn++#++(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)++` [.item-kind]#external#
+
+See {IBurnableTokenWallet-burn}.
+
+Burn tokens from the wallet.
+
+Precondition:
+
+ - `sender` must be the wallet owner.
+
+For implementation details, see {TokenWalletBase-_burn}.
+
+:burnByRoot: pass:normal[xref:#TokenWalletBurnableByRootBase-burnByRoot-uint128-address-address-TvmCell-[`++burnByRoot++`]]
+
+[.contract]
+[[TokenWalletBurnableByRootBase]]
+=== `++TokenWalletBurnableByRootBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletBurnableByRootBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenWalletBurnableByRootBase.sol";
+```
+
+Implementation of the {IBurnableByRootTokenWallet} interface.
+
+This abstraction extends the functionality of {TokenWalletBase} and adding
+burning tokens by TokenRoot.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenWalletBurnableByRootBase-burnByRoot-uint128-address-address-TvmCell-}[`++burnByRoot(amount, remainingGasTo, callbackTo, payload)++`]
+
+--
+
+[.contract-item]
+[[TokenWalletBurnableByRootBase-burnByRoot-uint128-address-address-TvmCell-]]
+==== `[.contract-item-name]#++burnByRoot++#++(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)++` [.item-kind]#external#
+
+See {IBurnableByRootTokenWallet-burnByRoot}.
+
+Precondition:
+
+ - the caller must be TokenRoot.
+
+Postcondition:
+
+ - The `balance_` of wallet must decrease by the `amount` that is burned.
+
+For implementation details, see {TokenWalletBase-_burn}.
+
+:destroy: pass:normal[xref:#TokenWalletDestroyableBase-destroy-address-[`++destroy++`]]
+
+[.contract]
+[[TokenWalletDestroyableBase]]
+=== `++TokenWalletDestroyableBase++` link:https://github.com/broxus/tip3/contracts/abstract/TokenWalletDestroyableBase.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/abstract/TokenWalletDestroyableBase.sol";
+```
+
+Implementation of the {IDestroyable} interface.
+
+This abstraction extends the functionality of {TokenWalletBase} and adding
+the ability to destroy the wallet.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenWalletDestroyableBase-destroy-address-}[`++destroy(remainingGasTo)++`]
+
+--
+
+[.contract-item]
+[[TokenWalletDestroyableBase-destroy-address-]]
+==== `[.contract-item-name]#++destroy++#++(address remainingGasTo)++` [.item-kind]#external#
+
+See {IDestroyable-destroy}.
+
+Precondition:
+
+ - The wallet balance must be empty.
+
+=== Interfaces
+
+:onAcceptTokensMint: pass:normal[xref:#IAcceptTokensMintCallback-onAcceptTokensMint-address-uint128-address-TvmCell-[`++onAcceptTokensMint++`]]
+
+[.contract]
+[[IAcceptTokensMintCallback]]
+=== `++IAcceptTokensMintCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/IAcceptTokensMintCallback.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/IAcceptTokensMintCallback.sol";
+```
+
+Interface defines a callback function that
+can be used by a token wallet contract to notify the owner of the wallet
+when new tokens are minted on their wallet.
+
+[.contract-index]
+.Functions
+--
+* {xref-IAcceptTokensMintCallback-onAcceptTokensMint-address-uint128-address-TvmCell-}[`++onAcceptTokensMint(tokenRoot, amount, remainingGasTo, payload)++`]
+
+--
+
+[.contract-item]
+[[IAcceptTokensMintCallback-onAcceptTokensMint-address-uint128-address-TvmCell-]]
+==== `[.contract-item-name]#++onAcceptTokensMint++#++(address tokenRoot, uint128 amount, address remainingGasTo, TvmCell payload)++` [.item-kind]#external#
+
+Callback used by the wallet contract when it receives a mint
+of tokens. This allows the owner of the wallet to take appropriate action,
+triggering a business logic.
+
+:onAcceptTokensTransfer: pass:normal[xref:#IAcceptTokensTransferCallback-onAcceptTokensTransfer-address-uint128-address-address-address-TvmCell-[`++onAcceptTokensTransfer++`]]
+
+[.contract]
+[[IAcceptTokensTransferCallback]]
+=== `++IAcceptTokensTransferCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/IAcceptTokensTransferCallback.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/IAcceptTokensTransferCallback.sol";
+```
+
+Interface defines a callback function that can be used by a
+Token Wallet contract to notify the owner of the wallet when their wallet
+receives a transfer of tokens.
+
+Chain of calls:
+
+ senderWallet -> ITokenWallet(sender).transfer(...) ->
+                 ITokenWallet(receiver).acceptTransfer(...) ->
+                 IAcceptTokensTransferCallback(callbackTo).onAcceptTokensTransfer(...) -> ...
+
+[.contract-index]
+.Functions
+--
+* {xref-IAcceptTokensTransferCallback-onAcceptTokensTransfer-address-uint128-address-address-address-TvmCell-}[`++onAcceptTokensTransfer(tokenRoot, amount, sender, senderWallet, remainingGasTo, payload)++`]
+
+--
+
+[.contract-item]
+[[IAcceptTokensTransferCallback-onAcceptTokensTransfer-address-uint128-address-address-address-TvmCell-]]
+==== `[.contract-item-name]#++onAcceptTokensTransfer++#++(address tokenRoot, uint128 amount, address sender, address senderWallet, address remainingGasTo, TvmCell payload)++` [.item-kind]#external#
+
+Callback by the wallet contract when it receives a transfer
+of tokens. This allows the wallet owner to take appropriate action,
+such as triggering a business logic.
+
+:onBounceTokensBurn: pass:normal[xref:#IBounceTokensBurnCallback-onBounceTokensBurn-address-uint128-[`++onBounceTokensBurn++`]]
+
+[.contract]
+[[IBounceTokensBurnCallback]]
+=== `++IBounceTokensBurnCallback++` link:https://github.com/broxus/tip3/contracts/interfaces/IBounceTokensBurnCallback.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/IBounceTokensBurnCallback.sol";
+```
+
+Interface defines a callback function that can be used by a token wallet
+contract to notify its owner when a burn operation is reverted.
+
+Chain of calls:
+
+walletOwner -> IBurnableTokenWallet(walletOwner).burn(...) ->
+               ITokenRoot(root).acceptBurn(...)  ->
+               TokenWalletBase.onBounce(...) ->
+               IBounceTokensBurnCallback(callbackTo).onBounceTokensBurn(...) ->
+
+[.contract-index]
+.Functions
+--
+* {xref-IBounceTokensBurnCallback-onBounceTokensBurn-address-uint128-}[`++onBounceTokensBurn(tokenRoot, amount)++`]
+
+--
+
+[.contract-item]
+[[IBounceTokensBurnCallback-onBounceTokensBurn-address-uint128-]]
+==== `[.contract-item-name]#++onBounceTokensBurn++#++(address tokenRoot, uint128 amount)++` [.item-kind]#external#
+
+Invoked by the token wallet when a burn operation is reverted.
+
+:burn: pass:normal[xref:#IBurnableTokenWallet-burn-uint128-address-address-TvmCell-[`++burn++`]]
+
+[.contract]
+[[IBurnableTokenWallet]]
+=== `++IBurnableTokenWallet++` link:https://github.com/broxus/tip3/contracts/interfaces/IBurnableTokenWallet.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/IBurnableTokenWallet.sol";
+```
+
+An interface that defines additional functionality for burning tokens
+owned by the TokenWallet, according to the TIP-3.2 standard.
+
+(See https://docs.everscale.network/standard/TIP-3.2#burn-tokens-by-token-wallet-owner)
+
+Сhain of calls:
+
+walletOwner -> IBurnableTokenWallet(wallet).burn(...) ->
+               ITokenRoot(root).acceptBurn(...) ->
+               IAcceptTokensBurnCallback(callbackTo).onAcceptTokensBurn(...) -> ...
+
+[.contract-index]
+.Functions
+--
+* {xref-IBurnableTokenWallet-burn-uint128-address-address-TvmCell-}[`++burn(amount, remainingGasTo, callbackTo, payload)++`]
+
+--
+
+[.contract-item]
+[[IBurnableTokenWallet-burn-uint128-address-address-TvmCell-]]
+==== `[.contract-item-name]#++burn++#++(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)++` [.item-kind]#external#
+
+Allows for walletOwner burn tokens.
+
+:destroy: pass:normal[xref:#IDestroyable-destroy-address-[`++destroy++`]]
+
+[.contract]
+[[IDestroyable]]
+=== `++IDestroyable++` link:https://github.com/broxus/tip3/contracts/interfaces/IDestroyable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/IDestroyable.sol";
+```
+
+Interface extends contract interface adding destroy function.
+
+[.contract-index]
+.Functions
+--
+* {xref-IDestroyable-destroy-address-}[`++destroy(remainingGasTo)++`]
+
+--
+
+[.contract-item]
+[[IDestroyable-destroy-address-]]
+==== `[.contract-item-name]#++destroy++#++(address remainingGasTo)++` [.item-kind]#external#
+
+Destroys the contract.
+
+=== Upgradeability
+
+:platformCode: pass:normal[xref:#ITokenWalletUpgradeable-platformCode--[`++platformCode++`]]
+:upgrade: pass:normal[xref:#ITokenWalletUpgradeable-upgrade-address-[`++upgrade++`]]
+:acceptUpgrade: pass:normal[xref:#ITokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-[`++acceptUpgrade++`]]
+
+[.contract]
+[[ITokenWalletUpgradeable]]
+=== `++ITokenWalletUpgradeable++` link:https://github.com/broxus/tip3/contracts/interfaces/ITokenWalletUpgradeable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/interfaces/ITokenWalletUpgradeable.sol";
+```
+
+The interface extends the {ITokenWallet} defines a set of functions for
+upgradable token wallets.
+
+[.contract-index]
+.Functions
+--
+* {xref-ITokenWalletUpgradeable-platformCode--}[`++platformCode()++`]
+* {xref-ITokenWalletUpgradeable-upgrade-address-}[`++upgrade(remainingGasTo)++`]
+* {xref-ITokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-}[`++acceptUpgrade(code, newVersion, remainingGasTo)++`]
+
+--
+
+[.contract-item]
+[[ITokenWalletUpgradeable-platformCode--]]
+==== `[.contract-item-name]#++platformCode++#++() → TvmCell++` [.item-kind]#external#
+
+Returns the code of functions implemented in {TokenWalletPlatform}.
+
+[.contract-item]
+[[ITokenWalletUpgradeable-upgrade-address-]]
+==== `[.contract-item-name]#++upgrade++#++(address remainingGasTo)++` [.item-kind]#external#
+
+Sends a request to the TokenRoot to upgrade the Wallet code to
+the latest version.
+
+The wallet calls a method {ITokenRootUpgradeable-requestUpgradeWallet}
+and then the TokenRoot calls {acceptUpgrade} of Token Wallet
+passing in the new wallet code.
+
+[.contract-item]
+[[ITokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-]]
+==== `[.contract-item-name]#++acceptUpgrade++#++(TvmCell code, uint32 newVersion, address remainingGasTo)++` [.item-kind]#external#
+
+The function is a callback that can be called by the {TokenRootUpgradeable}
+contract to upgrade the code of an {TokenWalletUpgradeable} to the
+latest version.
+
+Callback upgrades Wallet code to the latest version of the `walletCode_`.
+Only TokenRoot can call this method.
+
+:root: pass:normal[xref:#TokenWalletPlatform-root-address[`++root++`]]
+:owner: pass:normal[xref:#TokenWalletPlatform-owner-address[`++owner++`]]
+:constructor: pass:normal[xref:#TokenWalletPlatform-constructor-TvmCell-uint32-address-address-[`++constructor++`]]
+
+[.contract]
+[[TokenWalletPlatform]]
+=== `++TokenWalletPlatform++` link:https://github.com/broxus/tip3/contracts/TokenWalletPlatform.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/TokenWalletPlatform.sol";
+```
+
+Theis contract provides an immutable foundation for a wallet
+token contract that can be updated.
+It ensures that all wallet addresses are considered to be derived
+from the same code, regardless of the version of the wallet.
+
+We uses the `tvm.buildStateInit` function to create a `StateInit` data cell
+containing the {TokenWalletPlatform} code and static data. Then
+use the `tvm.hash` function to compute the hash of the `StateInit` data and
+convert it to an address.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenWalletPlatform-constructor-TvmCell-uint32-address-address-}[`++constructor(walletCode, walletVersion, sender, remainingGasTo)++`]
+
+--
+
+[.contract-item]
+[[TokenWalletPlatform-constructor-TvmCell-uint32-address-address-]]
+==== `[.contract-item-name]#++constructor++#++(TvmCell walletCode, uint32 walletVersion, address sender, address remainingGasTo)++` [.item-kind]#public#
+
+Contstructor for TokenWalletPlatform.
+
+:version_: pass:normal[xref:#TokenWalletUpgradeable-version_-uint32[`++version_++`]]
+:platformCode_: pass:normal[xref:#TokenWalletUpgradeable-platformCode_-TvmCell[`++platformCode_++`]]
+:constructor: pass:normal[xref:#TokenWalletUpgradeable-constructor--[`++constructor++`]]
+:supportsInterface: pass:normal[xref:#TokenWalletUpgradeable-supportsInterface-bytes4-[`++supportsInterface++`]]
+:platformCode: pass:normal[xref:#TokenWalletUpgradeable-platformCode--[`++platformCode++`]]
+:onDeployRetry: pass:normal[xref:#TokenWalletUpgradeable-onDeployRetry-TvmCell-uint32-address-address-[`++onDeployRetry++`]]
+:version: pass:normal[xref:#TokenWalletUpgradeable-version--[`++version++`]]
+:upgrade: pass:normal[xref:#TokenWalletUpgradeable-upgrade-address-[`++upgrade++`]]
+:acceptUpgrade: pass:normal[xref:#TokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-[`++acceptUpgrade++`]]
+:_targetBalance: pass:normal[xref:#TokenWalletUpgradeable-_targetBalance--[`++_targetBalance++`]]
+:_buildWalletInitData: pass:normal[xref:#TokenWalletUpgradeable-_buildWalletInitData-address-[`++_buildWalletInitData++`]]
+:_deployWallet: pass:normal[xref:#TokenWalletUpgradeable-_deployWallet-TvmCell-uint128-address-[`++_deployWallet++`]]
+
+[.contract]
+[[TokenWalletUpgradeable]]
+=== `++TokenWalletUpgradeable++` link:https://github.com/broxus/tip3/contracts/TokenWalletUpgradeable.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/TokenWalletUpgradeable.sol";
+```
+
+This is an implementation of TokenWallet upgradeable that implements all the
+required methods of the TIP-3 standard.
+As well as optional ones: burn and collections.
+
+Each token holder has its own instance of token wallet contract.
+Transfer happens in a decentralized fashion - sender token wallet SHOULD
+send the specific message to the receiver token wallet. Since token wallets
+have the same code, it's easy for receiver token wallet to check the correctness
+of sender token wallet.
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenWalletUpgradeable-constructor--}[`++constructor()++`]
+* {xref-TokenWalletUpgradeable-supportsInterface-bytes4-}[`++supportsInterface(interfaceID)++`]
+* {xref-TokenWalletUpgradeable-platformCode--}[`++platformCode()++`]
+* {xref-TokenWalletUpgradeable-onDeployRetry-TvmCell-uint32-address-address-}[`++onDeployRetry(, , sender, remainingGasTo)++`]
+* {xref-TokenWalletUpgradeable-version--}[`++version()++`]
+* {xref-TokenWalletUpgradeable-upgrade-address-}[`++upgrade(remainingGasTo)++`]
+* {xref-TokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-}[`++acceptUpgrade(newCode, newVersion, remainingGasTo)++`]
+* {xref-TokenWalletUpgradeable-_targetBalance--}[`++_targetBalance()++`]
+* {xref-TokenWalletUpgradeable-_buildWalletInitData-address-}[`++_buildWalletInitData(walletOwner)++`]
+* {xref-TokenWalletUpgradeable-_deployWallet-TvmCell-uint128-address-}[`++_deployWallet(initData, deployWalletValue, remainingGasTo)++`]
+
+--
+
+[.contract-item]
+[[TokenWalletUpgradeable-constructor--]]
+==== `[.contract-item-name]#++constructor++#++()++` [.item-kind]#public#
+
+The constructor has been reverted because it was called in
+the TokenWalletPlatform. The `revert()` function is used to prevent
+the contract from executing any further.
+
+[.contract-item]
+[[TokenWalletUpgradeable-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceID) → bool++` [.item-kind]#external#
+
+See {SID-supportsInterface}.
+
+[.contract-item]
+[[TokenWalletUpgradeable-platformCode--]]
+==== `[.contract-item-name]#++platformCode++#++() → TvmCell++` [.item-kind]#external#
+
+See {ITokenWalletUpgradeable-platformCode}.
+
+[.contract-item]
+[[TokenWalletUpgradeable-onDeployRetry-TvmCell-uint32-address-address-]]
+==== `[.contract-item-name]#++onDeployRetry++#++(TvmCell, uint32, address sender, address remainingGasTo)++` [.item-kind]#external#
+
+This function is used if the deployment transaction fails, then the unused Evers will be returned to the `remainingGasTo`.
+
+[.contract-item]
+[[TokenWalletUpgradeable-version--]]
+==== `[.contract-item-name]#++version++#++() → uint32++` [.item-kind]#external#
+
+Returns the version of the Wallet.
+
+[.contract-item]
+[[TokenWalletUpgradeable-upgrade-address-]]
+==== `[.contract-item-name]#++upgrade++#++(address remainingGasTo)++` [.item-kind]#external#
+
+See {ITokenWalletUpgradeable-upgrade}.
+
+Sends a request to the {TokenRootUpgradeable} to upgrade the Wallet code to
+the latest version.
+
+[.contract-item]
+[[TokenWalletUpgradeable-acceptUpgrade-TvmCell-uint32-address-]]
+==== `[.contract-item-name]#++acceptUpgrade++#++(TvmCell newCode, uint32 newVersion, address remainingGasTo)++` [.item-kind]#external#
+
+See {ITokenWalletUpgradeable-acceptUpgrade}.
+
+[.contract-item]
+[[TokenWalletUpgradeable-_targetBalance--]]
+==== `[.contract-item-name]#++_targetBalance++#++() → uint128++` [.item-kind]#internal#
+
+Returns the `TokenGas.TARGET_WALLET_BALANCE` EVER of gas reserved for the current operation.
+
+[.contract-item]
+[[TokenWalletUpgradeable-_buildWalletInitData-address-]]
+==== `[.contract-item-name]#++_buildWalletInitData++#++(address walletOwner) → TvmCell++` [.item-kind]#internal#
+
+Implementation of the {TokenRootBase-_buildWalletInitData}.
+
+This function builds the init data for the upgradeable wallet.
+Used in transfer and mint function, for deploy new wallet, when the recipient is not a deployed wallet.
+It is also used in AcceptTransfer to ensure that the transfer is from a valid wallet.
+
+[.contract-item]
+[[TokenWalletUpgradeable-_deployWallet-TvmCell-uint128-address-]]
+==== `[.contract-item-name]#++_deployWallet++#++(TvmCell initData, uint128 deployWalletValue, address remainingGasTo) → address++` [.item-kind]#internal#
+
+Deploy new upgradeable TokenWallet.
+

@@ -1,21 +1,31 @@
 pragma ton-solidity >= 0.57.0;
 
-
+/**
+ * @dev Interface defines a callback function that
+ * can be used by a token wallet contract to notify the owner of the wallet
+ * when new tokens are minted on their wallet.
+*/
 interface IAcceptTokensMintCallback {
 
-    /*
-        @notice Callback from TokenWallet on accept minted tokens
-        @param tokenRoot TokenRoot of received tokens
-        @param amount Minted tokens amount
-        @param remainingGasTo Address specified for receive remaining gas
-        @param payload Additional data attached to mint
-    */
+    /**
+     * @dev Callback used by the wallet contract when it receives a mint
+     * of tokens. This allows the owner of the wallet to take appropriate action,
+     * triggering a business logic.
+     *
+     * @param tokenRoot The address of the token contract that.
+     *        was used to mint the received tokens.
+     * @param amount The amount of minted tokens that were received
+     * @param remainingGasTo Address to send remaining gas.
+     * @param payload Additional data that was attached to the minted tokens.
+     *
+     * NOTE: This callback function has no implementation in the main contracts.
+     * However, you can see an example of its implementation in the test contract.
+     * See {TestWalletCallback-onAcceptTokensMint}.
+     */
     function onAcceptTokensMint(
         address tokenRoot,
         uint128 amount,
         address remainingGasTo,
         TvmCell payload
     ) external;
-
-
 }

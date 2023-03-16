@@ -1,0 +1,495 @@
+:github-icon: pass:[<svg class="icon"><use href="#github-icon"/></svg>]
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:Selector: pass:normal[xref:additional.adoc#Selector[`Selector`]]
+:TokenFactory: pass:normal[xref:additional.adoc#TokenFactory[`TokenFactory`]]
+:TokenRootBurnableByRootBase: pass:normal[xref:contracts.adoc#TokenRootBurnableByRootBase[`TokenRootBurnableByRootBase`]]
+:TokenRootBurnPausableBase: pass:normal[xref:contracts.adoc#TokenRootBurnPausableBase[`TokenRootBurnPausableBase`]]
+:xref-ITokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-: xref:additional.adoc#ITokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:TokenRootUpgradeable: pass:normal[xref:contracts.adoc#TokenRootUpgradeable[`TokenRootUpgradeable`]]
+:xref-TokenFactory-onlyOwner--: xref:additional.adoc#TokenFactory-onlyOwner--
+:xref-TokenFactory-cashBack--: xref:additional.adoc#TokenFactory-cashBack--
+:xref-TokenFactory-constructor-address-uint128-TvmCell-TvmCell-TvmCell-TvmCell-TvmCell-: xref:additional.adoc#TokenFactory-constructor-address-uint128-TvmCell-TvmCell-TvmCell-TvmCell-TvmCell-
+:xref-TokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-: xref:additional.adoc#TokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-
+:xref-TokenFactory-_buildCommonStateInit-uint256-string-string-uint8-address-: xref:additional.adoc#TokenFactory-_buildCommonStateInit-uint256-string-string-uint8-address-
+:xref-TokenFactory-_buildUpgradeableStateInit-uint256-string-string-uint8-address-: xref:additional.adoc#TokenFactory-_buildUpgradeableStateInit-uint256-string-string-uint8-address-
+:xref-TokenFactory-changeDeployValue-uint128-: xref:additional.adoc#TokenFactory-changeDeployValue-uint128-
+:xref-TokenFactory-changeRootCode-TvmCell-: xref:additional.adoc#TokenFactory-changeRootCode-TvmCell-
+:xref-TokenFactory-changeWalletCode-TvmCell-: xref:additional.adoc#TokenFactory-changeWalletCode-TvmCell-
+:xref-TokenFactory-changeRootUpgradeableCode-TvmCell-: xref:additional.adoc#TokenFactory-changeRootUpgradeableCode-TvmCell-
+:xref-TokenFactory-changeWalletUpgradeableCode-TvmCell-: xref:additional.adoc#TokenFactory-changeWalletUpgradeableCode-TvmCell-
+:xref-TokenFactory-changePlatformCode-TvmCell-: xref:additional.adoc#TokenFactory-changePlatformCode-TvmCell-
+:xref-TokenFactory-transferOwner-address-: xref:additional.adoc#TokenFactory-transferOwner-address-
+:xref-TokenFactory-acceptOwner--: xref:additional.adoc#TokenFactory-acceptOwner--
+:xref-TokenFactory-upgrade-TvmCell-: xref:additional.adoc#TokenFactory-upgrade-TvmCell-
+:ITokenFactory-deployRoot: pass:normal[xref:additional.adoc#ITokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-[`ITokenFactory.deployRoot`]]
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:TokenRootUpgradeable: pass:normal[xref:contracts.adoc#TokenRootUpgradeable[`TokenRootUpgradeable`]]
+:TokenRootUpgradeable: pass:normal[xref:contracts.adoc#TokenRootUpgradeable[`TokenRootUpgradeable`]]
+:TokenWalletUpgradeable: pass:normal[xref:contracts.adoc#TokenWalletUpgradeable[`TokenWalletUpgradeable`]]
+:TokenWalletPlatform: pass:normal[xref:contracts.adoc#TokenWalletPlatform[`TokenWalletPlatform`]]
+:Selector: pass:normal[xref:additional.adoc#Selector[`Selector`]]
+:TokenRoot: pass:normal[xref:contracts.adoc#TokenRoot[`TokenRoot`]]
+:TokenWallet: pass:normal[xref:contracts.adoc#TokenWallet[`TokenWallet`]]
+:TokenRootUpgradeable: pass:normal[xref:contracts.adoc#TokenRootUpgradeable[`TokenRootUpgradeable`]]
+:TokenWalletUpgradeable: pass:normal[xref:contracts.adoc#TokenWalletUpgradeable[`TokenWalletUpgradeable`]]
+:xref-SID-supportsInterface-bytes4-: xref:additional.adoc#SID-supportsInterface-bytes4-
+:xref-Selector-constructor--: xref:additional.adoc#Selector-constructor--
+:xref-Selector-calculateAcceptTransferSelector--: xref:additional.adoc#Selector-calculateAcceptTransferSelector--
+:xref-Selector-calculateAcceptMintSelector--: xref:additional.adoc#Selector-calculateAcceptMintSelector--
+:xref-Selector-calculateAcceptBurnSelector--: xref:additional.adoc#Selector-calculateAcceptBurnSelector--
+:xref-Selector-calculateTIP3TokenRootInterfaceID--: xref:additional.adoc#Selector-calculateTIP3TokenRootInterfaceID--
+:xref-Selector-calculateTIP3TokenWalletInterfaceID--: xref:additional.adoc#Selector-calculateTIP3TokenWalletInterfaceID--
+:xref-Selector-calculateSIDInterfaceID--: xref:additional.adoc#Selector-calculateSIDInterfaceID--
+:xref-Selector-calculateVersionedInterfaceID--: xref:additional.adoc#Selector-calculateVersionedInterfaceID--
+:xref-Selector-calculateTokenRootInterfaceID--: xref:additional.adoc#Selector-calculateTokenRootInterfaceID--
+:xref-Selector-calculateTokenWalletInterfaceID--: xref:additional.adoc#Selector-calculateTokenWalletInterfaceID--
+:xref-Selector-calculateBurnableTokenWalletInterfaceID--: xref:additional.adoc#Selector-calculateBurnableTokenWalletInterfaceID--
+:xref-Selector-calculateBurnableByRootTokenRootInterfaceID--: xref:additional.adoc#Selector-calculateBurnableByRootTokenRootInterfaceID--
+:xref-Selector-calculateBurnableByRootTokenWalletInterfaceID--: xref:additional.adoc#Selector-calculateBurnableByRootTokenWalletInterfaceID--
+:xref-Selector-calculateDestroyableInterfaceID--: xref:additional.adoc#Selector-calculateDestroyableInterfaceID--
+:xref-Selector-calculateDisableableMintTokenRootInterfaceID--: xref:additional.adoc#Selector-calculateDisableableMintTokenRootInterfaceID--
+:xref-Selector-calculateTransferableOwnershipInterfaceID--: xref:additional.adoc#Selector-calculateTransferableOwnershipInterfaceID--
+:xref-Selector-calculateBurnPausableTokenRootInterfaceID--: xref:additional.adoc#Selector-calculateBurnPausableTokenRootInterfaceID--
+:xref-Selector-calculateTokenWalletUpgradeableInterfaceID--: xref:additional.adoc#Selector-calculateTokenWalletUpgradeableInterfaceID--
+:xref-Selector-calculateTokenRootUpgradeableInterfaceID--: xref:additional.adoc#Selector-calculateTokenRootUpgradeableInterfaceID--
+= Additional
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.broxus.com/tip3
+
+Additional contracts that can be used in conjunction with the {TokenRoot} and {TokenWallet} contract include:
+
+{Selector}: the contract, defined in the TIP-6.1 standard, provides a method for determining the interfaces implemented by a smart contract on the TVM-like networks. It uses the XOR of all function selectors in the interface as the identifier for the interface. This allows for querying if a contract supports a specific interface and adapting the way it is interacted with.
+
+{TokenFactory}: The TokenFactory contract is used to create new instances of the TokenRoot contract. It allows for easily creating new TIP-3 compliant tokens. It can be configured to use different implementations of the TokenRoot, such as the {TokenRootBurnableByRootBase} or {TokenRootBurnPausableBase}, to add additional functionality to the new tokens.
+
+The use of these contracts allows for more flexibility and functionality in the management and creation of TIP-3 compliant tokens, and can be integrated into the overall token management system for an application or platform built on a blockchain.
+
+== TokenFactory
+
+:deployRoot: pass:normal[xref:#ITokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-[`++deployRoot++`]]
+
+[.contract]
+[[ITokenFactory]]
+=== `++ITokenFactory++` link:https://github.com/broxus/tip3/contracts/additional/ITokenFactory.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/additional/ITokenFactory.sol";
+```
+
+This interface defines a {deployRoot} function that creates
+a new token root contract.
+
+[.contract-index]
+.Functions
+--
+* {xref-ITokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-}[`++deployRoot(name, symbol, decimals, owner, initialSupplyTo, initialSupply, deployWalletValue, mintDisabled, burnByRootDisabled, burnPaused, remainingGasTo, upgradeable)++`]
+
+--
+
+[.contract-item]
+[[ITokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-]]
+==== `[.contract-item-name]#++deployRoot++#++(string name, string symbol, uint8 decimals, address owner, address initialSupplyTo, uint128 initialSupply, uint128 deployWalletValue, bool mintDisabled, bool burnByRootDisabled, bool burnPaused, address remainingGasTo, bool upgradeable) → address++` [.item-kind]#external#
+
+Creates a new token root contract
+
+:_randomNonce: pass:normal[xref:#TokenFactory-_randomNonce-uint256[`++_randomNonce++`]]
+:_owner: pass:normal[xref:#TokenFactory-_owner-address[`++_owner++`]]
+:_pendingOwner: pass:normal[xref:#TokenFactory-_pendingOwner-address[`++_pendingOwner++`]]
+:_tokenNonce: pass:normal[xref:#TokenFactory-_tokenNonce-uint256[`++_tokenNonce++`]]
+:_deployValue: pass:normal[xref:#TokenFactory-_deployValue-uint128[`++_deployValue++`]]
+:_rootCode: pass:normal[xref:#TokenFactory-_rootCode-TvmCell[`++_rootCode++`]]
+:_walletCode: pass:normal[xref:#TokenFactory-_walletCode-TvmCell[`++_walletCode++`]]
+:_rootUpgradeableCode: pass:normal[xref:#TokenFactory-_rootUpgradeableCode-TvmCell[`++_rootUpgradeableCode++`]]
+:_walletUpgradeableCode: pass:normal[xref:#TokenFactory-_walletUpgradeableCode-TvmCell[`++_walletUpgradeableCode++`]]
+:_platformCode: pass:normal[xref:#TokenFactory-_platformCode-TvmCell[`++_platformCode++`]]
+:onlyOwner: pass:normal[xref:#TokenFactory-onlyOwner--[`++onlyOwner++`]]
+:cashBack: pass:normal[xref:#TokenFactory-cashBack--[`++cashBack++`]]
+:constructor: pass:normal[xref:#TokenFactory-constructor-address-uint128-TvmCell-TvmCell-TvmCell-TvmCell-TvmCell-[`++constructor++`]]
+:deployRoot: pass:normal[xref:#TokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-[`++deployRoot++`]]
+:_buildCommonStateInit: pass:normal[xref:#TokenFactory-_buildCommonStateInit-uint256-string-string-uint8-address-[`++_buildCommonStateInit++`]]
+:_buildUpgradeableStateInit: pass:normal[xref:#TokenFactory-_buildUpgradeableStateInit-uint256-string-string-uint8-address-[`++_buildUpgradeableStateInit++`]]
+:changeDeployValue: pass:normal[xref:#TokenFactory-changeDeployValue-uint128-[`++changeDeployValue++`]]
+:changeRootCode: pass:normal[xref:#TokenFactory-changeRootCode-TvmCell-[`++changeRootCode++`]]
+:changeWalletCode: pass:normal[xref:#TokenFactory-changeWalletCode-TvmCell-[`++changeWalletCode++`]]
+:changeRootUpgradeableCode: pass:normal[xref:#TokenFactory-changeRootUpgradeableCode-TvmCell-[`++changeRootUpgradeableCode++`]]
+:changeWalletUpgradeableCode: pass:normal[xref:#TokenFactory-changeWalletUpgradeableCode-TvmCell-[`++changeWalletUpgradeableCode++`]]
+:changePlatformCode: pass:normal[xref:#TokenFactory-changePlatformCode-TvmCell-[`++changePlatformCode++`]]
+:transferOwner: pass:normal[xref:#TokenFactory-transferOwner-address-[`++transferOwner++`]]
+:acceptOwner: pass:normal[xref:#TokenFactory-acceptOwner--[`++acceptOwner++`]]
+:upgrade: pass:normal[xref:#TokenFactory-upgrade-TvmCell-[`++upgrade++`]]
+
+[.contract]
+[[TokenFactory]]
+=== `++TokenFactory++` link:https://github.com/broxus/tip3/contracts/additional/TokenFactory.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/additional/TokenFactory.sol";
+```
+
+This contract is used to create new {TokenRoot} and {TokenRootUpgradeable}.
+
+[.contract-index]
+.Modifiers
+--
+* {xref-TokenFactory-onlyOwner--}[`++onlyOwner()++`]
+* {xref-TokenFactory-cashBack--}[`++cashBack()++`]
+--
+
+[.contract-index]
+.Functions
+--
+* {xref-TokenFactory-constructor-address-uint128-TvmCell-TvmCell-TvmCell-TvmCell-TvmCell-}[`++constructor(owner, deployValue, rootCode, walletCode, rootUpgradeableCode, walletUpgradeableCode, platformCode)++`]
+* {xref-TokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-}[`++deployRoot(name, symbol, decimals, owner, initialSupplyTo, initialSupply, deployWalletValue, mintDisabled, burnByRootDisabled, burnPaused, remainingGasTo, upgradeable)++`]
+* {xref-TokenFactory-_buildCommonStateInit-uint256-string-string-uint8-address-}[`++_buildCommonStateInit(nonce, name, symbol, decimals, owner)++`]
+* {xref-TokenFactory-_buildUpgradeableStateInit-uint256-string-string-uint8-address-}[`++_buildUpgradeableStateInit(nonce, name, symbol, decimals, owner)++`]
+* {xref-TokenFactory-changeDeployValue-uint128-}[`++changeDeployValue(deployValue)++`]
+* {xref-TokenFactory-changeRootCode-TvmCell-}[`++changeRootCode(rootCode)++`]
+* {xref-TokenFactory-changeWalletCode-TvmCell-}[`++changeWalletCode(walletCode)++`]
+* {xref-TokenFactory-changeRootUpgradeableCode-TvmCell-}[`++changeRootUpgradeableCode(rootUpgradeableCode)++`]
+* {xref-TokenFactory-changeWalletUpgradeableCode-TvmCell-}[`++changeWalletUpgradeableCode(walletUpgradeableCode)++`]
+* {xref-TokenFactory-changePlatformCode-TvmCell-}[`++changePlatformCode(platformCode)++`]
+* {xref-TokenFactory-transferOwner-address-}[`++transferOwner(owner)++`]
+* {xref-TokenFactory-acceptOwner--}[`++acceptOwner()++`]
+* {xref-TokenFactory-upgrade-TvmCell-}[`++upgrade(code)++`]
+
+--
+
+[.contract-item]
+[[TokenFactory-onlyOwner--]]
+==== `[.contract-item-name]#++onlyOwner++#++()++` [.item-kind]#modifier#
+
+Modifier than throws if called by any account other than the `owner_`.
+
+[.contract-item]
+[[TokenFactory-cashBack--]]
+==== `[.contract-item-name]#++cashBack++#++()++` [.item-kind]#modifier#
+
+Modifier that returns all remaining gas to the caller.
+
+[.contract-item]
+[[TokenFactory-constructor-address-uint128-TvmCell-TvmCell-TvmCell-TvmCell-TvmCell-]]
+==== `[.contract-item-name]#++constructor++#++(address owner, uint128 deployValue, TvmCell rootCode, TvmCell walletCode, TvmCell rootUpgradeableCode, TvmCell walletUpgradeableCode, TvmCell platformCode)++` [.item-kind]#public#
+
+This is the constructor for the token factory contract,
+which is used to deploy token root contracts.
+
+[.contract-item]
+[[TokenFactory-deployRoot-string-string-uint8-address-address-uint128-uint128-bool-bool-bool-address-bool-]]
+==== `[.contract-item-name]#++deployRoot++#++(string name, string symbol, uint8 decimals, address owner, address initialSupplyTo, uint128 initialSupply, uint128 deployWalletValue, bool mintDisabled, bool burnByRootDisabled, bool burnPaused, address remainingGasTo, bool upgradeable) → address++` [.item-kind]#external#
+
+See {ITokenFactory-deployRoot}.
+
+[.contract-item]
+[[TokenFactory-_buildCommonStateInit-uint256-string-string-uint8-address-]]
+==== `[.contract-item-name]#++_buildCommonStateInit++#++(uint256 nonce, string name, string symbol, uint8 decimals, address owner) → TvmCell++` [.item-kind]#internal#
+
+Builds a `StateInit` for the common {TokenRoot} contract.
+
+[.contract-item]
+[[TokenFactory-_buildUpgradeableStateInit-uint256-string-string-uint8-address-]]
+==== `[.contract-item-name]#++_buildUpgradeableStateInit++#++(uint256 nonce, string name, string symbol, uint8 decimals, address owner) → TvmCell++` [.item-kind]#internal#
+
+Builds a `StateInit` for the {TokenRootUpgradeable} contract.
+
+[.contract-item]
+[[TokenFactory-changeDeployValue-uint128-]]
+==== `[.contract-item-name]#++changeDeployValue++#++(uint128 deployValue)++` [.item-kind]#public#
+
+Changes the value to be sent to the root contract when deploying
+a new token root.
+
+[.contract-item]
+[[TokenFactory-changeRootCode-TvmCell-]]
+==== `[.contract-item-name]#++changeRootCode++#++(TvmCell rootCode)++` [.item-kind]#public#
+
+Changes the rootCode.
+
+[.contract-item]
+[[TokenFactory-changeWalletCode-TvmCell-]]
+==== `[.contract-item-name]#++changeWalletCode++#++(TvmCell walletCode)++` [.item-kind]#public#
+
+Changes the code of the TokenWallet contract, which is used
+to deploy new wallets.
+
+[.contract-item]
+[[TokenFactory-changeRootUpgradeableCode-TvmCell-]]
+==== `[.contract-item-name]#++changeRootUpgradeableCode++#++(TvmCell rootUpgradeableCode)++` [.item-kind]#public#
+
+Changes the code of the {TokenRootUpgradeable} contract, which
+is used to deploy new token roots.
+
+[.contract-item]
+[[TokenFactory-changeWalletUpgradeableCode-TvmCell-]]
+==== `[.contract-item-name]#++changeWalletUpgradeableCode++#++(TvmCell walletUpgradeableCode)++` [.item-kind]#public#
+
+Changes the code of the {TokenWalletUpgradeable} contract,
+which is used to deploy new token roots.
+
+[.contract-item]
+[[TokenFactory-changePlatformCode-TvmCell-]]
+==== `[.contract-item-name]#++changePlatformCode++#++(TvmCell platformCode)++` [.item-kind]#public#
+
+Changes the code of the {TokenWalletPlatform} contract, which
+is used to deploy new token roots.
+
+[.contract-item]
+[[TokenFactory-transferOwner-address-]]
+==== `[.contract-item-name]#++transferOwner++#++(address owner)++` [.item-kind]#public#
+
+Changes the owner of the factory.
+
+It's two-step process: first, the new pending owner is set,
+then the pending owner can accept the ownership.
+
+[.contract-item]
+[[TokenFactory-acceptOwner--]]
+==== `[.contract-item-name]#++acceptOwner++#++()++` [.item-kind]#public#
+
+Accepts the ownership of the factory.
+
+It's two-step process: first, the new pending owner is set,
+then the pending owner can accept the ownership.
+
+Precondition:
+
+ - Sender should be the pending owner.
+ - Pending owner should not be zero.
+
+Postcondition:
+
+ - `_owner` is changed to `_pendingOwner`.
+ - `_pendingOwner` is changed to zero.
+
+[.contract-item]
+[[TokenFactory-upgrade-TvmCell-]]
+==== `[.contract-item-name]#++upgrade++#++(TvmCell code)++` [.item-kind]#public#
+
+Upgrades the factory code to a new version.
+
+== Standard Interface Detection
+
+:supportsInterface: pass:normal[xref:#SID-supportsInterface-bytes4-[`++supportsInterface++`]]
+
+[.contract]
+[[SID]]
+=== `++SID++` link:https://github.com/broxus/tip3/contracts/additional/SID.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/additional/SID.sol";
+```
+
+The SID interface is part of the TIP6.1 standard, as defined in
+the Everscale Network documentation. It defines a smart contract interface
+that allows other contracts to query if a contract implements
+a specific interface.
+
+(See https://docs.everscale.network/standard/TIP-6.1 )
+
+Implementers can declare support of contract interfaces, which can then be
+queried by others {Selector}.
+
+For an implementation, see:
+
+- {TokenRoot}
+- {TokenWallet}
+- {TokenRootUpgradeable}
+- {TokenWalletUpgradeable}
+
+[.contract-index]
+.Functions
+--
+* {xref-SID-supportsInterface-bytes4-}[`++supportsInterface(interfaceID)++`]
+
+--
+
+[.contract-item]
+[[SID-supportsInterface-bytes4-]]
+==== `[.contract-item-name]#++supportsInterface++#++(bytes4 interfaceID) → bool++` [.item-kind]#external#
+
+Returns a bool value that indicates whether the contract implements
+the specified `interfaceID`.
+
+See the corresponding
+https://docs.everscale.network/standard/TIP-6.1#how-interfaces-are-identified
+
+:_randomNonce: pass:normal[xref:#Selector-_randomNonce-uint256[`++_randomNonce++`]]
+:constructor: pass:normal[xref:#Selector-constructor--[`++constructor++`]]
+:calculateAcceptTransferSelector: pass:normal[xref:#Selector-calculateAcceptTransferSelector--[`++calculateAcceptTransferSelector++`]]
+:calculateAcceptMintSelector: pass:normal[xref:#Selector-calculateAcceptMintSelector--[`++calculateAcceptMintSelector++`]]
+:calculateAcceptBurnSelector: pass:normal[xref:#Selector-calculateAcceptBurnSelector--[`++calculateAcceptBurnSelector++`]]
+:calculateTIP3TokenRootInterfaceID: pass:normal[xref:#Selector-calculateTIP3TokenRootInterfaceID--[`++calculateTIP3TokenRootInterfaceID++`]]
+:calculateTIP3TokenWalletInterfaceID: pass:normal[xref:#Selector-calculateTIP3TokenWalletInterfaceID--[`++calculateTIP3TokenWalletInterfaceID++`]]
+:calculateSIDInterfaceID: pass:normal[xref:#Selector-calculateSIDInterfaceID--[`++calculateSIDInterfaceID++`]]
+:calculateVersionedInterfaceID: pass:normal[xref:#Selector-calculateVersionedInterfaceID--[`++calculateVersionedInterfaceID++`]]
+:calculateTokenRootInterfaceID: pass:normal[xref:#Selector-calculateTokenRootInterfaceID--[`++calculateTokenRootInterfaceID++`]]
+:calculateTokenWalletInterfaceID: pass:normal[xref:#Selector-calculateTokenWalletInterfaceID--[`++calculateTokenWalletInterfaceID++`]]
+:calculateBurnableTokenWalletInterfaceID: pass:normal[xref:#Selector-calculateBurnableTokenWalletInterfaceID--[`++calculateBurnableTokenWalletInterfaceID++`]]
+:calculateBurnableByRootTokenRootInterfaceID: pass:normal[xref:#Selector-calculateBurnableByRootTokenRootInterfaceID--[`++calculateBurnableByRootTokenRootInterfaceID++`]]
+:calculateBurnableByRootTokenWalletInterfaceID: pass:normal[xref:#Selector-calculateBurnableByRootTokenWalletInterfaceID--[`++calculateBurnableByRootTokenWalletInterfaceID++`]]
+:calculateDestroyableInterfaceID: pass:normal[xref:#Selector-calculateDestroyableInterfaceID--[`++calculateDestroyableInterfaceID++`]]
+:calculateDisableableMintTokenRootInterfaceID: pass:normal[xref:#Selector-calculateDisableableMintTokenRootInterfaceID--[`++calculateDisableableMintTokenRootInterfaceID++`]]
+:calculateTransferableOwnershipInterfaceID: pass:normal[xref:#Selector-calculateTransferableOwnershipInterfaceID--[`++calculateTransferableOwnershipInterfaceID++`]]
+:calculateBurnPausableTokenRootInterfaceID: pass:normal[xref:#Selector-calculateBurnPausableTokenRootInterfaceID--[`++calculateBurnPausableTokenRootInterfaceID++`]]
+:calculateTokenWalletUpgradeableInterfaceID: pass:normal[xref:#Selector-calculateTokenWalletUpgradeableInterfaceID--[`++calculateTokenWalletUpgradeableInterfaceID++`]]
+:calculateTokenRootUpgradeableInterfaceID: pass:normal[xref:#Selector-calculateTokenRootUpgradeableInterfaceID--[`++calculateTokenRootUpgradeableInterfaceID++`]]
+
+[.contract]
+[[Selector]]
+=== `++Selector++` link:https://github.com/broxus/tip3/contracts/additional/Selector.sol[{github-icon},role=heading-link]
+
+[.hljs-theme-light.nopadding]
+```solidity
+import "@broxus-ton-tokens-contracts/contracts/additional/Selector.sol";
+```
+
+[.contract-index]
+.Functions
+--
+* {xref-Selector-constructor--}[`++constructor()++`]
+* {xref-Selector-calculateAcceptTransferSelector--}[`++calculateAcceptTransferSelector()++`]
+* {xref-Selector-calculateAcceptMintSelector--}[`++calculateAcceptMintSelector()++`]
+* {xref-Selector-calculateAcceptBurnSelector--}[`++calculateAcceptBurnSelector()++`]
+* {xref-Selector-calculateTIP3TokenRootInterfaceID--}[`++calculateTIP3TokenRootInterfaceID()++`]
+* {xref-Selector-calculateTIP3TokenWalletInterfaceID--}[`++calculateTIP3TokenWalletInterfaceID()++`]
+* {xref-Selector-calculateSIDInterfaceID--}[`++calculateSIDInterfaceID()++`]
+* {xref-Selector-calculateVersionedInterfaceID--}[`++calculateVersionedInterfaceID()++`]
+* {xref-Selector-calculateTokenRootInterfaceID--}[`++calculateTokenRootInterfaceID()++`]
+* {xref-Selector-calculateTokenWalletInterfaceID--}[`++calculateTokenWalletInterfaceID()++`]
+* {xref-Selector-calculateBurnableTokenWalletInterfaceID--}[`++calculateBurnableTokenWalletInterfaceID()++`]
+* {xref-Selector-calculateBurnableByRootTokenRootInterfaceID--}[`++calculateBurnableByRootTokenRootInterfaceID()++`]
+* {xref-Selector-calculateBurnableByRootTokenWalletInterfaceID--}[`++calculateBurnableByRootTokenWalletInterfaceID()++`]
+* {xref-Selector-calculateDestroyableInterfaceID--}[`++calculateDestroyableInterfaceID()++`]
+* {xref-Selector-calculateDisableableMintTokenRootInterfaceID--}[`++calculateDisableableMintTokenRootInterfaceID()++`]
+* {xref-Selector-calculateTransferableOwnershipInterfaceID--}[`++calculateTransferableOwnershipInterfaceID()++`]
+* {xref-Selector-calculateBurnPausableTokenRootInterfaceID--}[`++calculateBurnPausableTokenRootInterfaceID()++`]
+* {xref-Selector-calculateTokenWalletUpgradeableInterfaceID--}[`++calculateTokenWalletUpgradeableInterfaceID()++`]
+* {xref-Selector-calculateTokenRootUpgradeableInterfaceID--}[`++calculateTokenRootUpgradeableInterfaceID()++`]
+
+--
+
+[.contract-item]
+[[Selector-constructor--]]
+==== `[.contract-item-name]#++constructor++#++()++` [.item-kind]#public#
+
+[.contract-item]
+[[Selector-calculateAcceptTransferSelector--]]
+==== `[.contract-item-name]#++calculateAcceptTransferSelector++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifier for `acceptTransfer` method.
+
+[.contract-item]
+[[Selector-calculateAcceptMintSelector--]]
+==== `[.contract-item-name]#++calculateAcceptMintSelector++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifier for `acceptMint` method.
+
+[.contract-item]
+[[Selector-calculateAcceptBurnSelector--]]
+==== `[.contract-item-name]#++calculateAcceptBurnSelector++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifier for `acceptBurn` method.
+
+[.contract-item]
+[[Selector-calculateTIP3TokenRootInterfaceID--]]
+==== `[.contract-item-name]#++calculateTIP3TokenRootInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifiers for `name`, `symbol`,
+`decimals`, `totalSupply`, `walletCode`, and `acceptBurn` methods.
+
+[.contract-item]
+[[Selector-calculateTIP3TokenWalletInterfaceID--]]
+==== `[.contract-item-name]#++calculateTIP3TokenWalletInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifiers for `root`, `balance`,
+`walletCode`, `acceptTransfer`, and `acceptMint`methods.
+
+[.contract-item]
+[[Selector-calculateSIDInterfaceID--]]
+==== `[.contract-item-name]#++calculateSIDInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifier for `supportsInterface` method.
+
+[.contract-item]
+[[Selector-calculateVersionedInterfaceID--]]
+==== `[.contract-item-name]#++calculateVersionedInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifier for `version` method.
+
+[.contract-item]
+[[Selector-calculateTokenRootInterfaceID--]]
+==== `[.contract-item-name]#++calculateTokenRootInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifiers for `rootOwner`, `walletOf`,
+`mint`, `deployWallet` methods.
+
+[.contract-item]
+[[Selector-calculateTokenWalletInterfaceID--]]
+==== `[.contract-item-name]#++calculateTokenWalletInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifiers for `owner`, `transfer`,
+and `transferToWallet` methods.
+
+[.contract-item]
+[[Selector-calculateBurnableTokenWalletInterfaceID--]]
+==== `[.contract-item-name]#++calculateBurnableTokenWalletInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifier for `burn` method.
+
+[.contract-item]
+[[Selector-calculateBurnableByRootTokenRootInterfaceID--]]
+==== `[.contract-item-name]#++calculateBurnableByRootTokenRootInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifiers for `burnTokens`,
+`disableBurnByRoot`, and `burnByRootDisabled` methods.
+
+[.contract-item]
+[[Selector-calculateBurnableByRootTokenWalletInterfaceID--]]
+==== `[.contract-item-name]#++calculateBurnableByRootTokenWalletInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifier for `burnByRoot` method.
+
+[.contract-item]
+[[Selector-calculateDestroyableInterfaceID--]]
+==== `[.contract-item-name]#++calculateDestroyableInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifier for `destroy` method.
+
+[.contract-item]
+[[Selector-calculateDisableableMintTokenRootInterfaceID--]]
+==== `[.contract-item-name]#++calculateDisableableMintTokenRootInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifiers for `disableMint`
+and `mintDisabled` methods.
+
+[.contract-item]
+[[Selector-calculateTransferableOwnershipInterfaceID--]]
+==== `[.contract-item-name]#++calculateTransferableOwnershipInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifier for `transferOwnership` method.
+
+[.contract-item]
+[[Selector-calculateBurnPausableTokenRootInterfaceID--]]
+==== `[.contract-item-name]#++calculateBurnPausableTokenRootInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifiers for `setBurnPaused` and `burnPaused` methods.
+
+[.contract-item]
+[[Selector-calculateTokenWalletUpgradeableInterfaceID--]]
+==== `[.contract-item-name]#++calculateTokenWalletUpgradeableInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifiers for `upgrade`, `acceptUpgrade`
+and `platformCode` methods.
+
+[.contract-item]
+[[Selector-calculateTokenRootUpgradeableInterfaceID--]]
+==== `[.contract-item-name]#++calculateTokenRootUpgradeableInterfaceID++#++() → bytes4++` [.item-kind]#public#
+
+Calculate an interface identifiers for `walletVersion`,
+`platformCode`, `requestUpgradeWallet`, `setWalletCode` and `upgrade` methods.
+

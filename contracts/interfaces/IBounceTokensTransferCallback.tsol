@@ -1,20 +1,29 @@
 pragma ton-solidity >= 0.57.0;
 
-
+/**
+ * @dev Callback interface for handling a reverted token transfer, according to
+ * the TIP-3.2 standard.
+ *
+ *  walletOwner  -> ITokenWallet(walletOwner).transfer(...) ->
+ *                  ITokenWallet(receiver).acceptTransfer(...) ->
+ *                  TokenWalletBase.onBounce(...) ->
+ *                  IBounceTokensTransferCallback(callbackTo).onBounceTokensTransfer(...) ->
+ */
 interface IBounceTokensTransferCallback {
 
-    /*
-        @notice Callback from TokenWallet when tokens transfer reverted
-        @param tokenWallet TokenWallet for which tokens were received
-        @param tokenRoot TokenRoot of received tokens
-        @param amount Reverted tokens amount
-        @param revertedFrom Address which declained acceptTransfer
+    /**
+     * @dev Invoked by the {TokenWallet} when a transfer operation is reverted.
+     * @param tokenRoot TokenRoot of token wallet.
+     * @param amount Reverted tokens amount.
+     * @param revertedFrom Address of the wallet that rejected the transfer.
+     *
+     * NOTE: This callback function has no implementation in the main contracts.
+     * However, you can see an example of its implementation in the test contract.
+     * See {TestWalletCallback-onBounceTokensTransfer}.
     */
     function onBounceTokensTransfer(
         address tokenRoot,
         uint128 amount,
         address revertedFrom
     ) external;
-
-
 }

@@ -1,0 +1,6 @@
+name: tip3
+title: Tip3
+version: 1.x
+nav:
+  - modules/ROOT/nav.adoc
+  - modules/api/nav.adoc

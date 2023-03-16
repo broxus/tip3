@@ -1,7 +1,21 @@
 pragma ton-solidity >= 0.57.0;
 
+/**
+ * @dev Interface of the TIP-3.1 TokenWallet contract.
+ */
 interface TIP3TokenWallet {
+    /**
+     * @dev Returns the current root contract of the wallet.
+     */
     function root() external view responsible returns (address);
+
+    /**
+     * @dev Returns the current balance of the wallet.
+     */
     function balance() external view responsible returns (uint128);
+
+    /**
+     * @dev Returns the wallet code.
+     */
     function walletCode() external view responsible returns (TvmCell);
 }

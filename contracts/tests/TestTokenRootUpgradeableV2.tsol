@@ -24,7 +24,7 @@ contract TestTokenRootUpgradeableV2 is TokenRootUpgradeable {
     ) {}
 
     function onlyInV2() public pure responsible returns (string) {
-        return "Some method in root v2";
+        return { value: 0, flag: 64, bounce: false } "Some method in root v2";
     }
 
 }

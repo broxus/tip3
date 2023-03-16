@@ -1,0 +1,24 @@
+= Additional
+
+[.readme-notice]
+NOTE: This document is better viewed at https://docs.broxus.com/tip3
+
+Additional contracts that can be used in conjunction with the {TokenRoot} and {TokenWallet} contract include:
+
+{Selector}: the contract, defined in the TIP-6.1 standard, provides a method for determining the interfaces implemented by a smart contract on the TVM-like networks. It uses the XOR of all function selectors in the interface as the identifier for the interface. This allows for querying if a contract supports a specific interface and adapting the way it is interacted with.
+
+{TokenFactory}: The TokenFactory contract is used to create new instances of the TokenRoot contract. It allows for easily creating new TIP-3 compliant tokens. It can be configured to use different implementations of the TokenRoot, such as the {TokenRootBurnableByRootBase} or {TokenRootBurnPausableBase}, to add additional functionality to the new tokens.
+
+The use of these contracts allows for more flexibility and functionality in the management and creation of TIP-3 compliant tokens, and can be integrated into the overall token management system for an application or platform built on a blockchain.
+
+== TokenFactory
+
+{{ITokenFactory}}
+
+{{TokenFactory}}
+
+== Standard Interface Detection
+
+{{SID}}
+
+{{Selector}}

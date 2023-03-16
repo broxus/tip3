@@ -2,12 +2,59 @@ pragma ton-solidity >= 0.57.0;
 
 import "./ITokenRoot.tsol";
 
-
+/**
+ * @dev Interface extends the {ITokenRoot} interface and defines functionality
+ * for upgradable token wallets.
+ * The interface includes functions for interacting with upgradable token wallets,
+ * such as requesting upgrades, changing the wallet code, and upgrading
+ * the TokenRoot contract.
+ */
 interface ITokenRootUpgradeable is ITokenRoot {
+    /**
+     * @dev Get the current version of the wallet code.
+     * @return The current version of the wallet code.
+     */
     function walletVersion() external view responsible returns (uint32);
+
+    /**
+     * @dev Returns the {TokenWalletPlatform} code cell.
+     */
     function platformCode() external view responsible returns (TvmCell);
 
+    /**
+     * @dev Upgrades the wallet code on request {TokenWallet}.
+     *
+     * @param currentVersion current version of the wallet.
+     * @param walletOwner owner of the wallet.
+     * @param remainingGasTo address to which the remaining gas will be sent.
+     *
+     * Preconditions:
+     *  - Sender must be a wallet.
+     *  - `currentVersion` must be not equal to `walletVersion_`.
+     */
     function requestUpgradeWallet(uint32 currentVersion, address walletOwner, address remainingGasTo) external;
+
+    /**
+     * @dev Changes the wallet code for future deploy new wallets.
+     *
+     * @param code Code of the wallet.
+     *
+     * Precondition:
+     *  - Sender must be the owner of the {TokenRoot}.
+     *
+     * Postconditions:
+     *  - `walletCode_` must be changed to `code`.
+     *  - `walletVersion_` must be incremented by 1.
+     */
     function setWalletCode(TvmCell code) external;
+
+    /**
+     * @dev Upgrades the {TokenRoot} code.
+     *
+     * @param code - new TokenRoot code.
+     *
+     * Precondition:
+     *  - Sender must be the owner of the TokenRoot.
+     */
     function upgrade(TvmCell code) external;
 }

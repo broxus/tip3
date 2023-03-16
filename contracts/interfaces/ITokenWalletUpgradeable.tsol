@@ -3,9 +3,49 @@ pragma ton-solidity >= 0.57.0;
 import "./ITokenWallet.tsol";
 import "./IVersioned.tsol";
 
-
+/**
+ * @dev The interface extends the {ITokenWallet} defines a set of functions for
+ * upgradable token wallets.
+ */
 interface ITokenWalletUpgradeable is ITokenWallet, IVersioned {
+    /**
+     * @dev Returns the code of functions implemented in {TokenWalletPlatform}.
+     */
     function platformCode() external view responsible returns (TvmCell);
+
+    /**
+     * @dev Sends a request to the TokenRoot to upgrade the Wallet code to
+     * the latest version.
+     *
+     * @dev The wallet calls a method {ITokenRootUpgradeable-requestUpgradeWallet}
+     * and then the TokenRoot calls {acceptUpgrade} of Token Wallet
+     * passing in the new wallet code.
+     *
+     * @param remainingGasTo The receipient of the remaining gas.
+     *
+     * Preconditions:
+     *  - Caller must be the owner of the wallet.
+     *  - The current version of the Wallet code must be not equal to the
+     * latest version.
+     */
     function upgrade(address remainingGasTo) external;
+
+    /**
+     * @dev The function is a callback that can be called by the {TokenRootUpgradeable}
+     * contract to upgrade the code of an {TokenWalletUpgradeable} to the
+     * latest version.
+     *
+     * @dev Callback upgrades Wallet code to the latest version of the `walletCode_`.
+     * @dev Only TokenRoot can call this method.
+
+     * @param code New Wallet code.
+     * @param newVersion New Wallet version.
+     * @param remainingGasTo The receipient of the remaining gas.
+     *
+     * Preconditions:
+     *   - Caller must be the TokenRoot.
+     *   - The current version of the Wallet code must be not equal
+     *     to the new version.
+     */
     function acceptUpgrade(TvmCell code, uint32 newVersion, address remainingGasTo) external;
 }
