@@ -62,12 +62,12 @@ contract TokenRoot is
      *
      * Preconditions:
      *
-     * - The owner of TokenRoot can be an external or internal:
+     * - TokenRoot can be deployed using external or internal message:
      *
-     * - If the owner of TokenRoot is external, then the message being expanded
+     * - If TokenRoot deployed by external message, then message
      *   must be signed with the same key passed to `StateInit`.
      *
-     * - If the owner of TokenRoot is internal, then the sender of the message
+     * - If TokenRoot deployed by internal message, then the sender of message
      *   must be a `deployer_` and the `deployer_` must be an existed address.
      *   Or the `deployer_` can be 0, but in this case the `msg.sender`
      *   must be a equal `rootOwner_` passed to `StateInit`.
