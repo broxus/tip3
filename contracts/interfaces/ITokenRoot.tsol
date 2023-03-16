@@ -20,10 +20,10 @@ interface ITokenRoot is TIP3TokenRoot, SID {
 
     /**
      * @dev Derive {TokenWallet} address from owner address.
-     * @param owner TokenWallet owner address
+     * @param walletOwner TokenWallet owner address
      * @return Returns token wallet address, owned by owner. MUST NOT deploy token wallet.
     */
-    function walletOf(address owner) external view responsible returns (address);
+    function walletOf(address walletOwner) external view responsible returns (address);
 
     /**
      * @dev Accepts burning `amount` of tokens from the TokenWallet,

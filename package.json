@@ -25,7 +25,6 @@
     "chai": "^4.3.0",
     "chai-bignumber": "^3.0.0",
     "locklift": "^1.4.5",
-    "tsolidity-docgen": "../tsolidity-docgen",
     "solidity-ast": "^0.4.40",
     "lodash.startcase": "^4.4.0"
   }
