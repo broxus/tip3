@@ -201,7 +201,7 @@ contract TokenRootUpgradeable is
      * Precondition:
      *  - Sender must be the owner of the TokenRoot.
      */
-    function upgrade(TvmCell code) override external onlyRootOwner {
+    function upgrade(TvmCell code) override external virtual onlyRootOwner {
         TvmBuilder builder;
 
         builder.store(rootOwner_);
