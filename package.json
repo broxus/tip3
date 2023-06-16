@@ -1,14 +1,18 @@
 {
-  "name": "broxus-ton-tokens-contracts",
+  "name": "@broxus/tip3",
   "version": "1.0.0",
-  "description": "",
+  "description": "Set of ready-to-use tvm token contracts following tip3 standard",
   "main": "index.js",
   "scripts": {
-    "compile": "locklift build --config locklift.config.js",
+    "compile": "locklift build",
     "prepare-docs": "scripts/prepare-docs.sh"
+  },
+  "bugs": {
+    "url": "https://github.com/broxus/tip3/issues"
   },
   "author": "aleksandr-hramcov <aleksandr.hramcov@gmail.com>",
   "license": "AGPLv3",
+  "homepage": "https://github.com/broxus/tip3",
   "dependencies": {
     "bignumber.js": "^9.0.1",
     "chai-as-promised": "^7.1.1",
