@@ -1,15 +1,25 @@
 {
   "name": "@broxus/tip3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Set of ready-to-use tvm token contracts following tip3 standard",
   "main": "index.js",
   "scripts": {
-    "compile": "locklift build",
+    "compile": "locklift build --config locklift.config.js",
     "prepare-docs": "scripts/prepare-docs.sh"
   },
   "bugs": {
     "url": "https://github.com/broxus/tip3/issues"
   },
+  "keywords": [
+    "Venom",
+    "Everscale",
+    "TON",
+    "blockchain",
+    "smart-contracts",
+    "javascript",
+    "solidity",
+    "dapps"
+  ],
   "author": "aleksandr-hramcov <aleksandr.hramcov@gmail.com>",
   "license": "AGPLv3",
   "homepage": "https://github.com/broxus/tip3",
