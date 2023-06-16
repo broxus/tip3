@@ -1,6 +1,6 @@
 {
   "name": "@broxus/tip3",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Set of ready-to-use tvm token contracts following tip3 standard",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,9 @@
   "license": "AGPLv3",
   "homepage": "https://github.com/broxus/tip3",
   "dependencies": {
+    "@broxus/contracts": "^1.1.1"
+  },
+  "devDependencies": {
     "bignumber.js": "^9.0.1",
     "chai-as-promised": "^7.1.1",
     "folder-hash": "^4.0.1",
@@ -32,10 +35,7 @@
     "prompts": "^2.4.2",
     "mocha": "^8.2.1",
     "mocha-logger": "^1.0.7",
-    "ton-client-js": "^0.28.1"
-  },
-  "devDependencies": {
-    "@broxus/contracts": "^1.0.4",
+    "ton-client-js": "^0.28.1",
     "chai": "^4.3.0",
     "chai-bignumber": "^3.0.0",
     "locklift": "^1.4.5",
