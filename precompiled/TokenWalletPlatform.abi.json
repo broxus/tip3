@@ -1,0 +1,32 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["time"],
+	"functions": [
+		{
+			"name": "constructor",
+			"id": "0x15A038FB",
+			"inputs": [
+				{"name":"walletCode","type":"cell"},
+				{"name":"walletVersion","type":"uint32"},
+				{"name":"sender","type":"address"},
+				{"name":"remainingGasTo","type":"address"}
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"root","type":"address"},
+		{"key":2,"name":"owner","type":"address"}
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"root","type":"address"},
+		{"name":"owner","type":"address"}
+	]
+}

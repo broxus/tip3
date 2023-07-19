@@ -31,6 +31,9 @@ declare module 'locklift' {
 const config: LockliftConfig = {
   compiler: {
     version: '0.62.0',
+    externalContracts: {
+      precompiled: ['TokenWalletPlatform'],
+    },
   },
   verifier: {
     verifierVersion: 'latest',

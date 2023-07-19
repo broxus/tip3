@@ -1,37 +1,10 @@
 import { getRandomNonce, toNano, WalletTypes } from 'locklift';
-import prompts, { PromptObject } from 'prompts';
-
-import { Command } from 'commander';
-import { displayTx, isValidEverAddress } from '../scripts/helpers/utils';
-
-const program = new Command();
+import { displayTx } from '../scripts/helpers/utils';
 
 export default async () => {
   console.log('0-DEPLOY-FACTORY');
   const signer = await locklift.keystore.getSigner('0');
-
-  const promptsData: PromptObject[] = [];
-
-  program
-    .allowUnknownOption()
-    .option('-fo, --factory_owner <root_owner>', 'Token factory owner');
-
-  program.parse(process.argv);
-
-  const options = program.opts();
-
-  if (!isValidEverAddress(options.root_owner)) {
-    promptsData.push({
-      type: 'text',
-      name: 'factoryOwner',
-      message: 'Factory owner',
-    });
-  }
-
-  const response = await prompts(promptsData);
-  const factoryOwner = response.factoryOwner
-    ? response.factoryOwner
-    : process.env.LOCAL_GIVER_ADDRESS;
+  const factoryOwner = process.env.LOCAL_GIVER_ADDRESS;
 
   const manager = (
     await locklift.deployments.deployAccounts([
