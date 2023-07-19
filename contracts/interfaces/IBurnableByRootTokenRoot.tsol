@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.57.0;
+pragma ever -solidity ^0.62.0;
 
 import "./IBurnPausableTokenRoot.tsol";
 
@@ -45,7 +45,6 @@ interface IBurnableByRootTokenRoot {
         address callbackTo,
         TvmCell payload
     ) external;
-
 
     /**
      * @dev Allows to disable `burnTokens` method forever

@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.57.0;
+pragma ever-solidity ^0.62.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -55,7 +55,7 @@ contract TokenRoot is
      * @param initialSupply The Initial amount to be minted.
      * @param deployWalletValue The initial value in EVER of the deploy wallet.
      * @param mintDisabled True If need to disable minting tokens.
-     * @param burnByRootDisabled True If need to disabled burning by TokenRoot.
+     * @param burnByRootDisabled True If need to disabled burning by TokenRoot
      * @param burnPaused True If need to paused burn.
      * @param remainingGasTo The address of the recipient of the remaining gas
      *        after deploy contract.

@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.57.0;
+pragma ever -solidity ^0.62.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -29,9 +29,9 @@ abstract contract TokenWalletBurnableBase is TokenWalletBase, IBurnableTokenWall
      * For implementation details, see {TokenWalletBase-_burn}.
      */
     function burn(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)
-        override
-        external
-        onlyOwner
+    override
+    external
+    onlyOwner
     {
         _burn(amount, remainingGasTo, callbackTo, payload);
     }
