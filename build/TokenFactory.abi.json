@@ -1,87 +1,75 @@
 {
 	"ABI version": 2,
 	"version": "2.2",
-	"header": ["pubkey", "time", "expire"],
+	"header": ["time"],
 	"functions": [
 		{
 			"name": "constructor",
 			"inputs": [
-				{"name":"owner","type":"address"},
-				{"name":"deployValue","type":"uint128"},
-				{"name":"rootCode","type":"cell"},
-				{"name":"walletCode","type":"cell"},
-				{"name":"rootUpgradeableCode","type":"cell"},
-				{"name":"walletUpgradeableCode","type":"cell"},
-				{"name":"platformCode","type":"cell"}
+				{"name":"_owner","type":"address"}
 			],
 			"outputs": [
 			]
 		},
 		{
-			"name": "deployRoot",
+			"name": "owner",
 			"inputs": [
-				{"name":"answerId","type":"uint32"},
-				{"name":"name","type":"string"},
-				{"name":"symbol","type":"string"},
-				{"name":"decimals","type":"uint8"},
-				{"name":"owner","type":"address"},
-				{"name":"initialSupplyTo","type":"address"},
-				{"name":"initialSupply","type":"uint128"},
-				{"name":"deployWalletValue","type":"uint128"},
-				{"name":"mintDisabled","type":"bool"},
-				{"name":"burnByRootDisabled","type":"bool"},
-				{"name":"burnPaused","type":"bool"},
-				{"name":"remainingGasTo","type":"address"},
-				{"name":"upgradeable","type":"bool"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
 				{"name":"value0","type":"address"}
 			]
 		},
 		{
-			"name": "changeDeployValue",
+			"name": "pendingOwner",
 			"inputs": [
-				{"name":"deployValue","type":"uint128"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
+				{"name":"value0","type":"address"}
 			]
 		},
 		{
-			"name": "changeRootCode",
+			"name": "rootCode",
 			"inputs": [
-				{"name":"rootCode","type":"cell"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
+				{"name":"value0","type":"cell"}
 			]
 		},
 		{
-			"name": "changeWalletCode",
+			"name": "walletCode",
 			"inputs": [
-				{"name":"walletCode","type":"cell"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
+				{"name":"value0","type":"cell"}
 			]
 		},
 		{
-			"name": "changeRootUpgradeableCode",
+			"name": "walletPlatformCode",
 			"inputs": [
-				{"name":"rootUpgradeableCode","type":"cell"}
+				{"name":"answerId","type":"uint32"}
 			],
 			"outputs": [
+				{"name":"value0","type":"cell"}
 			]
 		},
 		{
-			"name": "changeWalletUpgradeableCode",
+			"name": "createToken",
 			"inputs": [
-				{"name":"walletUpgradeableCode","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "changePlatformCode",
-			"inputs": [
-				{"name":"platformCode","type":"cell"}
+				{"name":"callId","type":"uint32"},
+				{"name":"name","type":"string"},
+				{"name":"symbol","type":"string"},
+				{"name":"decimals","type":"uint8"},
+				{"name":"initialSupplyTo","type":"address"},
+				{"name":"initialSupply","type":"uint128"},
+				{"name":"deployWalletValue","type":"uint128"},
+				{"name":"mintDisabled","type":"bool"},
+				{"name":"burnByRootDisabled","type":"bool"},
+				{"name":"burnPaused","type":"bool"},
+				{"name":"remainingGasTo","type":"address"}
 			],
 			"outputs": [
 			]
@@ -89,14 +77,42 @@
 		{
 			"name": "transferOwner",
 			"inputs": [
-				{"name":"owner","type":"address"}
+				{"name":"answerId","type":"uint32"},
+				{"name":"newOwner","type":"address"}
 			],
 			"outputs": [
+				{"name":"value0","type":"address"}
 			]
 		},
 		{
 			"name": "acceptOwner",
 			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
+			]
+		},
+		{
+			"name": "setRootCode",
+			"inputs": [
+				{"name":"_rootCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setWalletCode",
+			"inputs": [
+				{"name":"_walletCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setWalletPlatformCode",
+			"inputs": [
+				{"name":"_walletPlatformCode","type":"cell"}
 			],
 			"outputs": [
 			]
@@ -108,98 +124,30 @@
 			],
 			"outputs": [
 			]
-		},
-		{
-			"name": "_owner",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_owner","type":"address"}
-			]
-		},
-		{
-			"name": "_pendingOwner",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_pendingOwner","type":"address"}
-			]
-		},
-		{
-			"name": "_tokenNonce",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_tokenNonce","type":"uint256"}
-			]
-		},
-		{
-			"name": "_deployValue",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_deployValue","type":"uint128"}
-			]
-		},
-		{
-			"name": "_rootCode",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_rootCode","type":"cell"}
-			]
-		},
-		{
-			"name": "_walletCode",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_walletCode","type":"cell"}
-			]
-		},
-		{
-			"name": "_rootUpgradeableCode",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_rootUpgradeableCode","type":"cell"}
-			]
-		},
-		{
-			"name": "_walletUpgradeableCode",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_walletUpgradeableCode","type":"cell"}
-			]
-		},
-		{
-			"name": "_platformCode",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_platformCode","type":"cell"}
-			]
 		}
 	],
 	"data": [
-		{"key":1,"name":"_randomNonce","type":"uint256"}
+		{"key":1,"name":"randomNonce_","type":"uint32"}
 	],
 	"events": [
+		{
+			"name": "TokenCreated",
+			"inputs": [
+				{"name":"tokenRoot","type":"address"}
+			],
+			"outputs": [
+			]
+		}
 	],
 	"fields": [
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"name":"_randomNonce","type":"uint256"},
-		{"name":"_owner","type":"address"},
-		{"name":"_pendingOwner","type":"address"},
-		{"name":"_tokenNonce","type":"uint256"},
-		{"name":"_deployValue","type":"uint128"},
-		{"name":"_rootCode","type":"cell"},
-		{"name":"_walletCode","type":"cell"},
-		{"name":"_rootUpgradeableCode","type":"cell"},
-		{"name":"_walletUpgradeableCode","type":"cell"},
-		{"name":"_platformCode","type":"cell"}
+		{"name":"randomNonce_","type":"uint32"},
+		{"name":"owner_","type":"address"},
+		{"name":"pendingOwner_","type":"address"},
+		{"name":"rootCode_","type":"cell"},
+		{"name":"walletCode_","type":"cell"},
+		{"name":"walletPlatformCode_","type":"cell"}
 	]
 }

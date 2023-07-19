@@ -1,4 +1,4 @@
-.version sol 0.57.1
+.version sol 0.62.0
 
 .macro constructor
 DROP
@@ -10,7 +10,7 @@ IFREF {
 GETGLOB 6
 THROWIF 51
 ENDS
-.loc ../node_modules/@broxus/contracts/contracts/utils/CheckPubKey.sol, 9
+.loc ../node_modules/@broxus/contracts/contracts/utils/CheckPubKey.tsol, 9
 GETGLOB 5
 DUP
 ISNULL
@@ -22,9 +22,9 @@ IF
 GETGLOB 2
 EQUAL
 THROWIFNOT 1103
-.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 18
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.tsol, 18
 ACCEPT
-.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 20
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.tsol, 20
 GETGLOB 5
 DUP
 ISNULL
@@ -34,9 +34,9 @@ PUSHCONT {
 }
 IF
 CALLREF {
-	CALL $setOwnership_internal_macro$
+	CALL $setOwnership_3e1af783_internal_macro$
 }
-.loc ../node_modules/@broxus/contracts/contracts/utils/CheckPubKey.sol, 0
+.loc ../node_modules/@broxus/contracts/contracts/utils/CheckPubKey.tsol, 0
 CALLREF {
 	CALL $c7_to_c4$
 }
@@ -51,7 +51,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 31
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.tsol, 31
 OVER
 PUSHCONT {
 	LDREF
@@ -65,21 +65,21 @@ LDI 1
 LDU 8
 LDREF
 ENDS
-.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 0
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.tsol, 0
 CALLREF {
-	CALL $sendTransaction_internal_macro$
+	CALL $sendTransaction_c96c9ed1_internal_macro$
 }
 IFREF {
 	CALL $upd_only_time_in_c4$
 }
 THROW 0
 
-.globl	sendTransaction_internal
-.type	sendTransaction_internal, @function
-CALL $sendTransaction_internal_macro$
+.globl	sendTransaction_c96c9ed1_internal
+.type	sendTransaction_c96c9ed1_internal, @function
+CALL $sendTransaction_c96c9ed1_internal_macro$
 
-.macro sendTransaction_internal_macro
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 14
+.macro sendTransaction_c96c9ed1_internal_macro
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 14
 GETGLOB 5
 DUP
 ISNULL
@@ -91,16 +91,15 @@ IF
 GETGLOB 10
 EQUAL
 THROWIFNOT 1101
-.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 42
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.tsol, 42
 ACCEPT
-.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 44
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.tsol, 44
 ROLL 3
 BLKSWAP 2, 3
 NEWC
 STSLICECONST x6_
 STI 1
-PUSHINT 3
-STZEROES
+STSLICECONST x1_
 STSLICE
 SWAP
 STGRAMS
@@ -110,19 +109,19 @@ STREF
 ENDC
 SWAP
 SENDRAWMSG
-.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.sol, 0
+.loc ../node_modules/@broxus/contracts/contracts/wallets/Account.tsol, 0
 
-.globl	setOwnership_internal
-.type	setOwnership_internal, @function
-CALL $setOwnership_internal_macro$
+.globl	setOwnership_3e1af783_internal
+.type	setOwnership_3e1af783_internal, @function
+CALL $setOwnership_3e1af783_internal_macro$
 
-.macro setOwnership_internal_macro
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 23
+.macro setOwnership_3e1af783_internal_macro
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 23
 GETGLOB 10
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 25
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 25
 OVER
 SETGLOB 10
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 27
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 27
 PUSHSLICE xc0000000000000000000000000536cd3f2
 NEWC
 STSLICE
@@ -131,7 +130,7 @@ STU 256
 ENDC
 PUSHINT 0
 SENDRAWMSG
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 0
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 0
 
 .macro transferOwnership
 DROP
@@ -142,12 +141,12 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 33
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 33
 LDU 256
 ENDS
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 0
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 0
 CALLREF {
-	CALL $transferOwnership_internal_macro$
+	CALL $transferOwnership_d23e8489_internal_macro$
 }
 DROP
 CALLREF {
@@ -155,8 +154,8 @@ CALLREF {
 }
 THROW 0
 
-.macro transferOwnership_internal_macro
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 14
+.macro transferOwnership_d23e8489_internal_macro
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 14
 GETGLOB 5
 DUP
 ISNULL
@@ -168,16 +167,16 @@ IF
 GETGLOB 10
 EQUAL
 THROWIFNOT 1101
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 36
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 36
 DUP
 THROWIFNOT 1102
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 37
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 37
 ACCEPT
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 39
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 39
 CALLREF {
-	CALL $setOwnership_internal_macro$
+	CALL $setOwnership_3e1af783_internal_macro$
 }
-.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.sol, 0
+.loc ../node_modules/@broxus/contracts/contracts/access/ExternalOwner.tsol, 0
 
 .macro c4_to_c7
 PUSHROOT
@@ -209,13 +208,11 @@ PUSHCONT {
 	PUSH S2
 	PUSHINT 64
 	DICTUGET
+	ZEROSWAPIFNOT
 	PUSHCONT {
 		PLDU 256
 	}
-	PUSHCONT {
-		PUSHINT 0
-	}
-	IFELSE
+	IF
 	SETGLOB 11
 	SETGLOB 10
 	PUSHINT 64
@@ -305,7 +302,7 @@ CALLREF {
 LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
-	PUSHINT 512
+	PUSHPOW2 9
 	LDSLICEX ; signatureSlice msgSlice
 	DUP
 	HASHSU ; signatureSlice msgSlice hashMsgSlice

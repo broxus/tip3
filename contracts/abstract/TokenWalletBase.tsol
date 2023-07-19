@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.57.0;
+pragma ever-solidity ^0.62.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -32,7 +32,7 @@ abstract contract TokenWalletBase is ITokenWallet {
     uint128 balance_;
 
     /**
-     * @dev Modifier than throws if called by any account other than the TokenRoot.
+     * @dev Modifier than throws if called by any account other than the TokenRoot
      */
     modifier onlyRoot() {
         require(root_ == msg.sender, TokenErrors.NOT_ROOT);
@@ -248,7 +248,7 @@ abstract contract TokenWalletBase is ITokenWallet {
     /**
      * @dev See {ITokenWallet-acceptMint}.
      *
-     * Accepts incoming mint foramount of tokens from TokenRoot.
+     * Accepts incoming mint foramount of tokens from TokenRoot
      * If `notify` is `false`, than the remaining gas MUST be sent to the
      * `remainingGasTo`.
      * Otherwise, the {IAcceptTokensMintCallback-onAcceptTokensMint} sends to the

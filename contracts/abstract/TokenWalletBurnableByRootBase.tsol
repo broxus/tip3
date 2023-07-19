@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.57.0;
+pragma ever -solidity ^0.62.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -10,7 +10,7 @@ import "../interfaces/IBurnableByRootTokenWallet.tsol";
  * @dev Implementation of the {IBurnableByRootTokenWallet} interface.
  *
  * This abstraction extends the functionality of {TokenWalletBase} and adding
- * burning tokens by TokenRoot.
+ * burning tokens by TokenRoot
  */
 abstract contract TokenWalletBurnableByRootBase is TokenWalletBase, IBurnableByRootTokenWallet {
 
@@ -28,9 +28,9 @@ abstract contract TokenWalletBurnableByRootBase is TokenWalletBase, IBurnableByR
      * For implementation details, see {TokenWalletBase-_burn}.
     */
     function burnByRoot(uint128 amount, address remainingGasTo, address callbackTo, TvmCell payload)
-        override
-        external
-        onlyRoot
+    override
+    external
+    onlyRoot
     {
         _burn(amount, remainingGasTo, callbackTo, payload);
     }

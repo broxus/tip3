@@ -1,4 +1,4 @@
-pragma ton-solidity >= 0.57.0;
+pragma ever-solidity ^0.62.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -14,7 +14,7 @@ import "../libraries/TokenMsgFlag.tsol";
  *
  * This abstraction extends the functionality of {TokenRootBase} and increases
  * the capabilities of TokenRoot, namely burning tokens of any wallet, disabling
- * the ability to burn tokens through the TokenRoot.
+ * the ability to burn tokens through the TokenRoot
  * And a view method that returns the state of 'burnByRootDisabled_'.
  */
 abstract contract TokenRootBurnableByRootBase is TokenRootBase, IBurnableByRootTokenRoot {
@@ -34,7 +34,7 @@ abstract contract TokenRootBurnableByRootBase is TokenRootBase, IBurnableByRootT
      * so the TokenWallet must implement this method.
      *
      * NOTE: We pass the bounce `true` flag to the wallet, but this Bounce
-     * is not covered by the TokenRoot.
+     * is not covered by the TokenRoot
      */
     function burnTokens(
         uint128 amount,

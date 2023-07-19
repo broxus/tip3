@@ -1,0 +1,56 @@
+pragma ever-solidity ^0.62.0;
+
+pragma AbiHeader time;
+pragma AbiHeader expire;
+pragma AbiHeader pubkey;
+
+import "../TokenRoot.tsol";
+
+contract Callbacks is
+    IAcceptTokensTransferCallback,
+    IBounceTokensTransferCallback,
+    IAcceptTokensMintCallback,
+    IAcceptTokensBurnCallback,
+    IBounceTokensBurnCallback
+{
+    uint32 static _nonce;
+
+    constructor() public {
+        tvm.accept();
+    }
+
+    function onAcceptTokensTransfer(
+        address tokenRoot,
+        uint128 amount,
+        address sender,
+        address senderWallet,
+        address remainingGasTo,
+        TvmCell payload
+    ) public override {}
+
+    function onBounceTokensTransfer(
+        address tokenRoot,
+        uint128 amount,
+        address revertedFrom
+    ) public override {}
+
+    function onAcceptTokensMint(
+        address tokenRoot,
+        uint128 amount,
+        address remainingGasTo,
+        TvmCell payload
+    ) public override {}
+
+    function onAcceptTokensBurn(
+        uint128 amount,
+        address walletOwner,
+        address wallet,
+        address remainingGasTo,
+        TvmCell payload
+    ) public override {}
+
+    function onBounceTokensBurn(
+        address tokenRoot,
+        uint128 amount
+    ) public override {}
+}
