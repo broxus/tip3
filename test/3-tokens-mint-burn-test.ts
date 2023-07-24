@@ -79,15 +79,16 @@ describe('Testing tokens mint and burn methods', function () {
     }
 
     const deployedTokenRoot = await latestCreatedRoot();
+
     await locklift.deployments.saveContract({
       contractName: 'TokenRootUpgradeable',
-      deploymentName: `TokenRoot4`,
+      deploymentName: 'TokenRootMintBurn',
       address: deployedTokenRoot,
     });
 
     deployedTokenRootContract =
       await locklift.deployments.getContract<TokenRootUpgradeableAbi>(
-        `TokenRoot4`,
+        'TokenRootMintBurn',
       );
 
     const ownerWallet = await deployedTokenRootContract.methods
@@ -99,7 +100,7 @@ describe('Testing tokens mint and burn methods', function () {
 
     await locklift.deployments.saveContract({
       contractName: 'TokenWalletUpgradeable',
-      deploymentName: `Wallet0`,
+      deploymentName: 'WalletMintBurn',
       address: ownerWallet.value0,
     });
 
@@ -141,7 +142,7 @@ describe('Testing tokens mint and burn methods', function () {
       const { traceTree } = await locklift.tracing.trace(
         deployedTokenRootContract.methods
           .mint({
-            amount: 333,
+            amount: 200,
             recipient: callbacksContractVar.address,
             deployWalletValue: toNano(0.1),
             remainingGasTo: manager.address,

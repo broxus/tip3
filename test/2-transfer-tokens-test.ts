@@ -25,9 +25,9 @@ interface ITokenData {
   symbol: string;
   decimals: number;
   owner: Address;
-  mintDisabled: true;
-  burnByRootDisabled: true;
-  burnPaused: true;
+  mintDisabled: boolean;
+  burnByRootDisabled: boolean;
+  burnPaused: boolean;
   initialSupplyTo: Address;
   initialSupply: '10';
   deployWalletValue: string;
@@ -71,9 +71,9 @@ describe('Testing transfers of tokens made via factory ', function () {
       symbol: 'TST3',
       decimals: 5,
       owner: manager.address,
-      mintDisabled: true,
-      burnByRootDisabled: true,
-      burnPaused: true,
+      mintDisabled: false,
+      burnByRootDisabled: false,
+      burnPaused: false,
       initialSupplyTo: manager.address,
       initialSupply: '10',
       deployWalletValue: toNano(0.1),
@@ -113,8 +113,6 @@ describe('Testing transfers of tokens made via factory ', function () {
     }
 
     deployedTokenRoot = await latestCreatedRoot();
-
-    console.log(deployedTokenRoot, 'deployedTokenRoot');
 
     await locklift.deployments.saveContract({
       contractName: 'TokenRootUpgradeable',
