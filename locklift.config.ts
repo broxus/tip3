@@ -124,27 +124,7 @@ const config: LockliftConfig = {
         phrase: process.env.MAINNET_PHRASE,
         amount: 20,
       },
-    },
-    broxus: {
-      connection: {
-        id: 1,
-        type: 'jrpc',
-        data: {
-          endpoint: process.env.BROXUS_NETWORK_ENDPOINT ?? '',
-        },
-      },
-      giver: {
-        giverFactory: (ever, _, address) => new GiverV1(ever, address),
-        address: process.env.BROXUS_GIVER_ADDRESS ?? '',
-        key: process.env.BROXUS_GIVER_KEY ?? '',
-      },
-      keys: {
-        // Use everdev to generate your phrase
-        // !!! Never commit it in your repos !!!
-        phrase: process.env.BROXUS_PHRASE ?? '',
-        amount: 20,
-      },
-    },
+    }
   },
   mocha: {
     timeout: 3000000,

@@ -1,10 +1,10 @@
 pragma ever-solidity ^0.62.0;
 
 library TokenGas {
-    uint128 constant TARGET_ROOT_BALANCE                            = 1 ton;
-    uint128 constant TARGET_WALLET_BALANCE                          = 0.1 ton;
+    uint128 constant TARGET_ROOT_BALANCE                            = 6 ever;
+    uint128 constant TARGET_WALLET_BALANCE                          = 0.6 ever;
 
     // ABSOLUTE
-    uint128 constant TOKEN_FACTORY_INITIAL_BALANCE      = 1 ton;
-    uint128 constant DEPLOY_TOKEN_ROOT_VALUE            = 2 ton;
+    uint128 constant TOKEN_FACTORY_INITIAL_BALANCE      = 6 ever;
+    uint128 constant DEPLOY_TOKEN_ROOT_VALUE            = 12 ever;
 }

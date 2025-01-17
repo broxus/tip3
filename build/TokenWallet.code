@@ -138,7 +138,7 @@ CALL $_targetBalance_81a00f03_internal_macro$
 
 .macro _targetBalance_81a00f03_internal_macro
 .loc ../contracts/TokenWallet.tsol, 73
-PUSHINT 100000000
+PUSHINT 600000000
 .loc ../contracts/TokenWallet.tsol, 0
 
 .globl	_buildWalletInitData_b9a5b881_internal

@@ -239,7 +239,7 @@ contract TokenRootUpgradeable is
     /**
      * @dev Returns the target balance.
      */
-    function _targetBalance() override internal pure returns (uint128) {
+    function _targetBalance() override virtual internal pure returns (uint128) {
         return TokenGas.TARGET_ROOT_BALANCE;
     }
 

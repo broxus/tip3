@@ -29,7 +29,7 @@ ACCEPT
 .loc ../contracts/additional/TokenFactory.tsol, 29
 SETGLOB 11
 .loc ../contracts/additional/TokenFactory.tsol, 31
-PUSHINT 1000000000
+PUSHINT 6000000000
 PUSHINT 0
 RAWRESERVE
 .loc ../contracts/additional/TokenFactory.tsol, 32
@@ -538,7 +538,7 @@ CALL $createToken_d96d19b0_internal_macro$
 
 .macro createToken_d96d19b0_internal_macro
 .loc ../contracts/additional/TokenFactory.tsol, 73
-PUSHINT 1000000000
+PUSHINT 6000000000
 PUSHINT 0
 RAWRESERVE
 .loc ../contracts/additional/TokenFactory.tsol, 75
@@ -617,8 +617,8 @@ PUSH S8
 NEWC
 STSLICECONST x62_
 STSLICE
-PUSHINT 3112111703474754619475120804657301188247555
-STUR 143
+PUSHINT 893976919263175486022127667029391996239216643
+STUR 151
 OVER
 CALLREF {
 	CTOS

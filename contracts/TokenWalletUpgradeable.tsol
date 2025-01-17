@@ -172,7 +172,7 @@ contract TokenWalletUpgradeable is
     /**
      * @dev Returns the `TokenGas.TARGET_WALLET_BALANCE` EVER of gas reserved for the current operation.
      */
-    function _targetBalance() override internal pure returns (uint128) {
+    function _targetBalance() override virtual internal pure returns (uint128) {
         return TokenGas.TARGET_WALLET_BALANCE;
     }
 

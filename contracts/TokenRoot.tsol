@@ -130,7 +130,7 @@ contract TokenRoot is
      *
      * @return the `TokenGas.TARGET_ROOT_BALANCE` EVER.
      */
-    function _targetBalance() override internal pure returns (uint128) {
+    function _targetBalance() override virtual internal pure returns (uint128) {
         return TokenGas.TARGET_ROOT_BALANCE;
     }
 

@@ -69,7 +69,7 @@ contract TokenWallet is
     /**
      * @dev See {TokenWalletBase-_targetBalance}.
      */
-    function _targetBalance() override internal pure returns (uint128) {
+    function _targetBalance() override virtual internal pure returns (uint128) {
         return TokenGas.TARGET_WALLET_BALANCE;
     }
 
