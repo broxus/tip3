@@ -1,4 +1,4 @@
-pragma ever-solidity ^0.62.0;
+pragma ever-solidity ^0.71.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -312,8 +312,8 @@ abstract contract TokenRootBase is ITokenRoot, ICallbackParamsStructure {
      *    to `acceptMint`.
     */
     onBounce(TvmSlice slice) external {
-        if (slice.decode(uint32) == tvm.functionId(ITokenWallet.acceptMint)) {
-            totalSupply_ -= slice.decode(uint128);
+        if (slice.load(uint32) == tvm.functionId(ITokenWallet.acceptMint)) {
+            totalSupply_ -= slice.load(uint128);
         }
     }
 

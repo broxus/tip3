@@ -1,4 +1,4 @@
-pragma ever-solidity ^0.62.0;
+pragma ever-solidity ^0.71.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -81,7 +81,6 @@ contract TokenRoot is
         bool burnPaused,
         address remainingGasTo
     )
-        public
     {
 
         if (msg.pubkey() != 0) {

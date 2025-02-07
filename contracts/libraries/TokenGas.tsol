@@ -1,4 +1,4 @@
-pragma ever-solidity ^0.62.0;
+pragma ever-solidity ^0.71.0;
 
 library TokenGas {
     uint128 constant TARGET_ROOT_BALANCE                            = 6 ever;

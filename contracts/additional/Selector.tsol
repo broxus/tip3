@@ -1,4 +1,4 @@
-pragma ever-solidity ^0.62.0;
+pragma ever-solidity ^0.71.0;
 
 import "./../additional/SID.tsol";
 import "../interfaces/TIP3TokenWallet.tsol";
@@ -29,7 +29,7 @@ interface TIP3 {
 contract Selector {
     uint static _randomNonce;
 
-    constructor() public {
+    constructor() {
         tvm.accept();
     }
 

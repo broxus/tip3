@@ -1,6 +1,5 @@
-pragma ever-solidity ^0.62.0;
+pragma ever-solidity ^0.71.0;
 
-pragma AbiHeader time;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
@@ -15,7 +14,7 @@ contract Callbacks is
 {
     uint32 static _nonce;
 
-    constructor() public {
+    constructor() {
         tvm.accept();
     }
 

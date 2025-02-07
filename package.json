@@ -24,8 +24,7 @@
   "license": "AGPLv3",
   "homepage": "https://github.com/broxus/tip3",
   "dependencies": {
-    "@broxus/contracts": "^1.1.1",
-    "locklift": "git://github.com/broxus/ton-locklift#f647b67"
+    "@broxus/contracts": "^2.0.0"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
@@ -45,10 +44,11 @@
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.0.0",
     "folder-hash": "^4.0.1",
-    "locklift": "2.5.6",
-    "locklift-deploy": "1.0.3",
-    "locklift-verifier": "1.0.4",
-    "lodash.startcase": "^4.4.0",
+    "locklift": "2.9.4",
+    "@broxus/locklift-network": "1.0.7",
+    "@broxus/locklift-verifier": "1.0.5",
+    "@broxus/locklift-deploy": "1.1.1",
+     "lodash.startcase": "^4.4.0",
     "mocha": "^10.2.0",
     "mocha-logger": "^1.0.7",
     "ora": "^3.4.0",

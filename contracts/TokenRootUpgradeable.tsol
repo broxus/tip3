@@ -1,4 +1,4 @@
-pragma ever-solidity ^0.62.0;
+pragma ever-solidity ^0.71.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -80,7 +80,6 @@ contract TokenRootUpgradeable is
         bool burnPaused,
         address remainingGasTo
     )
-        public
     {
         if (msg.pubkey() != 0) {
             require(msg.pubkey() == tvm.pubkey() && deployer_.value == 0, TokenErrors.WRONG_ROOT_OWNER);

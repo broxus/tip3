@@ -1,20 +1,20 @@
-.version sol 0.62.0
+.version sol 0.71.0
 
 .macro constructor
 DROP
 GETGLOB 2
 ISNULL
 IFREF {
-	CALL $c4_to_c7_with_init_storage$
+	.inline __c4_to_c7_with_init_storage
 }
 GETGLOB 6
 THROWIF 51
 ENDS
-.loc ../contracts/additional/Selector.tsol, 33
+.loc contracts/additional/Selector.tsol, 33
 ACCEPT
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
@@ -22,11 +22,11 @@ THROW 0
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 40
+.loc contracts/additional/Selector.tsol, 40
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateAcceptTransferSelector_79aeb768_internal_macro$
+	.inline __calculateAcceptTransferSelector_79aeb768_internal_macro
 }
 OVER
 PUSHCONT {
@@ -51,30 +51,30 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateAcceptTransferSelector_79aeb768_internal
 .type	calculateAcceptTransferSelector_79aeb768_internal, @function
-CALL $calculateAcceptTransferSelector_79aeb768_internal_macro$
+.inline __calculateAcceptTransferSelector_79aeb768_internal_macro
 
 .macro calculateAcceptTransferSelector_79aeb768_internal_macro
-.loc ../contracts/additional/Selector.tsol, 42
+.loc contracts/additional/Selector.tsol, 42
 PUSHINT 1738586464
 DEC
 UFITS 32
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateAcceptMintSelector
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 49
+.loc contracts/additional/Selector.tsol, 49
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateAcceptMintSelector_891babd7_internal_macro$
+	.inline __calculateAcceptMintSelector_891babd7_internal_macro
 }
 OVER
 PUSHCONT {
@@ -99,30 +99,30 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateAcceptMintSelector_891babd7_internal
 .type	calculateAcceptMintSelector_891babd7_internal, @function
-CALL $calculateAcceptMintSelector_891babd7_internal_macro$
+.inline __calculateAcceptMintSelector_891babd7_internal_macro
 
 .macro calculateAcceptMintSelector_891babd7_internal_macro
-.loc ../contracts/additional/Selector.tsol, 51
+.loc contracts/additional/Selector.tsol, 51
 PUSHINT 1132786329
 DEC
 UFITS 32
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateAcceptBurnSelector
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 58
+.loc contracts/additional/Selector.tsol, 58
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateAcceptBurnSelector_5a2e482b_internal_macro$
+	.inline __calculateAcceptBurnSelector_5a2e482b_internal_macro
 }
 OVER
 PUSHCONT {
@@ -147,30 +147,30 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateAcceptBurnSelector_5a2e482b_internal
 .type	calculateAcceptBurnSelector_5a2e482b_internal, @function
-CALL $calculateAcceptBurnSelector_5a2e482b_internal_macro$
+.inline __calculateAcceptBurnSelector_5a2e482b_internal_macro
 
 .macro calculateAcceptBurnSelector_5a2e482b_internal_macro
-.loc ../contracts/additional/Selector.tsol, 60
+.loc contracts/additional/Selector.tsol, 60
 PUSHINT 422269362
 DEC
 UFITS 32
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateTIP3TokenRootInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 70
+.loc contracts/additional/Selector.tsol, 70
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateTIP3TokenRootInterfaceID_ad92399b_internal_macro$
+	.inline __calculateTIP3TokenRootInterfaceID_ad92399b_internal_macro
 }
 OVER
 PUSHCONT {
@@ -195,16 +195,16 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateTIP3TokenRootInterfaceID_ad92399b_internal
 .type	calculateTIP3TokenRootInterfaceID_ad92399b_internal, @function
-CALL $calculateTIP3TokenRootInterfaceID_ad92399b_internal_macro$
+.inline __calculateTIP3TokenRootInterfaceID_ad92399b_internal_macro
 
 .macro calculateTIP3TokenRootInterfaceID_ad92399b_internal_macro
-.loc ../contracts/additional/Selector.tsol, 73
+.loc contracts/additional/Selector.tsol, 73
 PUSHINT 428082246
 PUSHINT 394429597
 XOR
@@ -215,20 +215,20 @@ XOR
 PUSHINT 1717423775
 XOR
 CALLREF {
-	CALL $calculateAcceptBurnSelector_5a2e482b_internal_macro$
+	.inline __calculateAcceptBurnSelector_5a2e482b_internal_macro
 }
 XOR
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateTIP3TokenWalletInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 89
+.loc contracts/additional/Selector.tsol, 89
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateTIP3TokenWalletInterfaceID_d002eed8_internal_macro$
+	.inline __calculateTIP3TokenWalletInterfaceID_d002eed8_internal_macro
 }
 OVER
 PUSHCONT {
@@ -253,40 +253,40 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateTIP3TokenWalletInterfaceID_d002eed8_internal
 .type	calculateTIP3TokenWalletInterfaceID_d002eed8_internal, @function
-CALL $calculateTIP3TokenWalletInterfaceID_d002eed8_internal_macro$
+.inline __calculateTIP3TokenWalletInterfaceID_d002eed8_internal_macro
 
 .macro calculateTIP3TokenWalletInterfaceID_d002eed8_internal_macro
-.loc ../contracts/additional/Selector.tsol, 92
+.loc contracts/additional/Selector.tsol, 92
 PUSHINT 1146569348
 PUSHINT 1231640703
 XOR
 PUSHINT 1717423775
 XOR
 CALLREF {
-	CALL $calculateAcceptTransferSelector_79aeb768_internal_macro$
+	.inline __calculateAcceptTransferSelector_79aeb768_internal_macro
 }
 XOR
 CALLREF {
-	CALL $calculateAcceptMintSelector_891babd7_internal_macro$
+	.inline __calculateAcceptMintSelector_891babd7_internal_macro
 }
 XOR
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateSIDInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 103
+.loc contracts/additional/Selector.tsol, 103
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateSIDInterfaceID_6facd142_internal_macro$
+	.inline __calculateSIDInterfaceID_6facd142_internal_macro
 }
 OVER
 PUSHCONT {
@@ -311,28 +311,28 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateSIDInterfaceID_6facd142_internal
 .type	calculateSIDInterfaceID_6facd142_internal, @function
-CALL $calculateSIDInterfaceID_6facd142_internal_macro$
+.inline __calculateSIDInterfaceID_6facd142_internal_macro
 
 .macro calculateSIDInterfaceID_6facd142_internal_macro
-.loc ../contracts/additional/Selector.tsol, 106
+.loc contracts/additional/Selector.tsol, 106
 PUSHINT 839183401
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateVersionedInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 113
+.loc contracts/additional/Selector.tsol, 113
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateVersionedInterfaceID_194a2410_internal_macro$
+	.inline __calculateVersionedInterfaceID_194a2410_internal_macro
 }
 OVER
 PUSHCONT {
@@ -357,28 +357,28 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateVersionedInterfaceID_194a2410_internal
 .type	calculateVersionedInterfaceID_194a2410_internal, @function
-CALL $calculateVersionedInterfaceID_194a2410_internal_macro$
+.inline __calculateVersionedInterfaceID_194a2410_internal_macro
 
 .macro calculateVersionedInterfaceID_194a2410_internal_macro
-.loc ../contracts/additional/Selector.tsol, 116
+.loc contracts/additional/Selector.tsol, 116
 PUSHINT 322087217
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateTokenRootInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 125
+.loc contracts/additional/Selector.tsol, 125
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateTokenRootInterfaceID_c4a74ab3_internal_macro$
+	.inline __calculateTokenRootInterfaceID_c4a74ab3_internal_macro
 }
 OVER
 PUSHCONT {
@@ -403,16 +403,16 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateTokenRootInterfaceID_c4a74ab3_internal
 .type	calculateTokenRootInterfaceID_c4a74ab3_internal, @function
-CALL $calculateTokenRootInterfaceID_c4a74ab3_internal_macro$
+.inline __calculateTokenRootInterfaceID_c4a74ab3_internal_macro
 
 .macro calculateTokenRootInterfaceID_c4a74ab3_internal_macro
-.loc ../contracts/additional/Selector.tsol, 128
+.loc contracts/additional/Selector.tsol, 128
 PUSHINT 911978585
 PUSHINT 739640645
 XOR
@@ -420,17 +420,17 @@ PUSHINT 549434296
 XOR
 PUSHINT 837670087
 XOR
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateTokenWalletInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 141
+.loc contracts/additional/Selector.tsol, 141
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateTokenWalletInterfaceID_62436339_internal_macro$
+	.inline __calculateTokenWalletInterfaceID_62436339_internal_macro
 }
 OVER
 PUSHCONT {
@@ -455,32 +455,32 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateTokenWalletInterfaceID_62436339_internal
 .type	calculateTokenWalletInterfaceID_62436339_internal, @function
-CALL $calculateTokenWalletInterfaceID_62436339_internal_macro$
+.inline __calculateTokenWalletInterfaceID_62436339_internal_macro
 
 .macro calculateTokenWalletInterfaceID_62436339_internal_macro
-.loc ../contracts/additional/Selector.tsol, 144
+.loc contracts/additional/Selector.tsol, 144
 PUSHINT 520172177
 PUSHINT 1944199491
 XOR
 PUSHINT 1185535980
 XOR
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateBurnableTokenWalletInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 155
+.loc contracts/additional/Selector.tsol, 155
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateBurnableTokenWalletInterfaceID_44874015_internal_macro$
+	.inline __calculateBurnableTokenWalletInterfaceID_44874015_internal_macro
 }
 OVER
 PUSHCONT {
@@ -505,28 +505,28 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateBurnableTokenWalletInterfaceID_44874015_internal
 .type	calculateBurnableTokenWalletInterfaceID_44874015_internal, @function
-CALL $calculateBurnableTokenWalletInterfaceID_44874015_internal_macro$
+.inline __calculateBurnableTokenWalletInterfaceID_44874015_internal_macro
 
 .macro calculateBurnableTokenWalletInterfaceID_44874015_internal_macro
-.loc ../contracts/additional/Selector.tsol, 158
+.loc contracts/additional/Selector.tsol, 158
 PUSHINT 1445284013
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateBurnableByRootTokenRootInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 167
+.loc contracts/additional/Selector.tsol, 167
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateBurnableByRootTokenRootInterfaceID_0d2933bb_internal_macro$
+	.inline __calculateBurnableByRootTokenRootInterfaceID_0d2933bb_internal_macro
 }
 OVER
 PUSHCONT {
@@ -551,32 +551,32 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateBurnableByRootTokenRootInterfaceID_0d2933bb_internal
 .type	calculateBurnableByRootTokenRootInterfaceID_0d2933bb_internal, @function
-CALL $calculateBurnableByRootTokenRootInterfaceID_0d2933bb_internal_macro$
+.inline __calculateBurnableByRootTokenRootInterfaceID_0d2933bb_internal_macro
 
 .macro calculateBurnableByRootTokenRootInterfaceID_0d2933bb_internal_macro
-.loc ../contracts/additional/Selector.tsol, 170
+.loc contracts/additional/Selector.tsol, 170
 PUSHINT 211314732
 PUSHINT 1519307959
 XOR
 PUSHINT 1323395199
 XOR
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateBurnableByRootTokenWalletInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 181
+.loc contracts/additional/Selector.tsol, 181
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateBurnableByRootTokenWalletInterfaceID_6bf99922_internal_macro$
+	.inline __calculateBurnableByRootTokenWalletInterfaceID_6bf99922_internal_macro
 }
 OVER
 PUSHCONT {
@@ -601,28 +601,28 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateBurnableByRootTokenWalletInterfaceID_6bf99922_internal
 .type	calculateBurnableByRootTokenWalletInterfaceID_6bf99922_internal, @function
-CALL $calculateBurnableByRootTokenWalletInterfaceID_6bf99922_internal_macro$
+.inline __calculateBurnableByRootTokenWalletInterfaceID_6bf99922_internal_macro
 
 .macro calculateBurnableByRootTokenWalletInterfaceID_6bf99922_internal_macro
-.loc ../contracts/additional/Selector.tsol, 184
+.loc contracts/additional/Selector.tsol, 184
 PUSHINT 204468749
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateDestroyableInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 191
+.loc contracts/additional/Selector.tsol, 191
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateDestroyableInterfaceID_b3d27f0f_internal_macro$
+	.inline __calculateDestroyableInterfaceID_b3d27f0f_internal_macro
 }
 OVER
 PUSHCONT {
@@ -647,28 +647,28 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateDestroyableInterfaceID_b3d27f0f_internal
 .type	calculateDestroyableInterfaceID_b3d27f0f_internal, @function
-CALL $calculateDestroyableInterfaceID_b3d27f0f_internal_macro$
+.inline __calculateDestroyableInterfaceID_b3d27f0f_internal_macro
 
 .macro calculateDestroyableInterfaceID_b3d27f0f_internal_macro
-.loc ../contracts/additional/Selector.tsol, 194
+.loc contracts/additional/Selector.tsol, 194
 PUSHINT 251812010
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateDisableableMintTokenRootInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 202
+.loc contracts/additional/Selector.tsol, 202
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateDisableableMintTokenRootInterfaceID_b02ac966_internal_macro$
+	.inline __calculateDisableableMintTokenRootInterfaceID_b02ac966_internal_macro
 }
 OVER
 PUSHCONT {
@@ -693,30 +693,30 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateDisableableMintTokenRootInterfaceID_b02ac966_internal
 .type	calculateDisableableMintTokenRootInterfaceID_b02ac966_internal, @function
-CALL $calculateDisableableMintTokenRootInterfaceID_b02ac966_internal_macro$
+.inline __calculateDisableableMintTokenRootInterfaceID_b02ac966_internal_macro
 
 .macro calculateDisableableMintTokenRootInterfaceID_b02ac966_internal_macro
-.loc ../contracts/additional/Selector.tsol, 205
+.loc contracts/additional/Selector.tsol, 205
 PUSHINT 2094753589
 PUSHINT 2085541327
 XOR
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateTransferableOwnershipInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 215
+.loc contracts/additional/Selector.tsol, 215
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateTransferableOwnershipInterfaceID_ab5e5e01_internal_macro$
+	.inline __calculateTransferableOwnershipInterfaceID_ab5e5e01_internal_macro
 }
 OVER
 PUSHCONT {
@@ -741,28 +741,28 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateTransferableOwnershipInterfaceID_ab5e5e01_internal
 .type	calculateTransferableOwnershipInterfaceID_ab5e5e01_internal, @function
-CALL $calculateTransferableOwnershipInterfaceID_ab5e5e01_internal_macro$
+.inline __calculateTransferableOwnershipInterfaceID_ab5e5e01_internal_macro
 
 .macro calculateTransferableOwnershipInterfaceID_ab5e5e01_internal_macro
-.loc ../contracts/additional/Selector.tsol, 218
+.loc contracts/additional/Selector.tsol, 218
 PUSHINT 502498758
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateBurnPausableTokenRootInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 227
+.loc contracts/additional/Selector.tsol, 227
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateBurnPausableTokenRootInterfaceID_937b344b_internal_macro$
+	.inline __calculateBurnPausableTokenRootInterfaceID_937b344b_internal_macro
 }
 OVER
 PUSHCONT {
@@ -787,30 +787,30 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateBurnPausableTokenRootInterfaceID_937b344b_internal
 .type	calculateBurnPausableTokenRootInterfaceID_937b344b_internal, @function
-CALL $calculateBurnPausableTokenRootInterfaceID_937b344b_internal_macro$
+.inline __calculateBurnPausableTokenRootInterfaceID_937b344b_internal_macro
 
 .macro calculateBurnPausableTokenRootInterfaceID_937b344b_internal_macro
-.loc ../contracts/additional/Selector.tsol, 230
+.loc contracts/additional/Selector.tsol, 230
 PUSHINT 2146356303
 PUSHINT 975694363
 XOR
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateTokenWalletUpgradeableInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 243
+.loc contracts/additional/Selector.tsol, 243
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateTokenWalletUpgradeableInterfaceID_c660fac3_internal_macro$
+	.inline __calculateTokenWalletUpgradeableInterfaceID_c660fac3_internal_macro
 }
 OVER
 PUSHCONT {
@@ -835,32 +835,32 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateTokenWalletUpgradeableInterfaceID_c660fac3_internal
 .type	calculateTokenWalletUpgradeableInterfaceID_c660fac3_internal, @function
-CALL $calculateTokenWalletUpgradeableInterfaceID_c660fac3_internal_macro$
+.inline __calculateTokenWalletUpgradeableInterfaceID_c660fac3_internal_macro
 
 .macro calculateTokenWalletUpgradeableInterfaceID_c660fac3_internal_macro
-.loc ../contracts/additional/Selector.tsol, 246
+.loc contracts/additional/Selector.tsol, 246
 PUSHINT 8748794
 PUSHINT 2104488532
 XOR
 PUSHINT 53907865
 XOR
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro calculateTokenRootUpgradeableInterfaceID
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/additional/Selector.tsol, 260
+.loc contracts/additional/Selector.tsol, 260
 ENDS
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 CALLREF {
-	CALL $calculateTokenRootUpgradeableInterfaceID_e87f9183_internal_macro$
+	.inline __calculateTokenRootUpgradeableInterfaceID_e87f9183_internal_macro
 }
 OVER
 PUSHCONT {
@@ -885,16 +885,16 @@ PUSHCONT {
 }
 IFELSE
 IFREF {
-	CALL $c7_to_c4$
+	.inline __c7_to_c4
 }
 THROW 0
 
 .globl	calculateTokenRootUpgradeableInterfaceID_e87f9183_internal
 .type	calculateTokenRootUpgradeableInterfaceID_e87f9183_internal, @function
-CALL $calculateTokenRootUpgradeableInterfaceID_e87f9183_internal_macro$
+.inline __calculateTokenRootUpgradeableInterfaceID_e87f9183_internal_macro
 
 .macro calculateTokenRootUpgradeableInterfaceID_e87f9183_internal_macro
-.loc ../contracts/additional/Selector.tsol, 263
+.loc contracts/additional/Selector.tsol, 263
 PUSHINT 1172038416
 PUSHINT 8748794
 XOR
@@ -904,7 +904,7 @@ PUSHINT 1911415692
 XOR
 PUSHINT 388172858
 XOR
-.loc ../contracts/additional/Selector.tsol, 0
+.loc contracts/additional/Selector.tsol, 0
 
 .macro c4_to_c7
 PUSHROOT
@@ -948,7 +948,7 @@ PUSHCONT {
 	SETGLOB 3
 }
 IFREFELSE {
-	CALL $c4_to_c7$
+	.inline __c4_to_c7
 }
 
 .macro c7_to_c4
@@ -1006,7 +1006,7 @@ IFNOTJMPREF {
 }
 SWAP
 CALLREF {
-	CALL $public_function_selector$
+	.inline __public_function_selector
 }
 THROW 60
 
@@ -1019,28 +1019,33 @@ NEQINT 1
 SETGLOB 6
 OVER
 CALLREF {
-	CALL $c4_to_c7_with_init_storage$
+	.inline __c4_to_c7_with_init_storage
 }
 LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
 	PUSHPOW2 9
-	LDSLICEX ; signatureSlice msgSlice
+	LDSLICEX
 	DUP
-	HASHSU ; signatureSlice msgSlice hashMsgSlice
+	MYADDR
+	NEWC
+	STSLICE
+	STSLICE
+	ENDC
+	HASHCU
 	ROT
 	GETGLOB 2
-	CHKSIGNU ; msgSlice isSigned
+	CHKSIGNU
 	THROWIFNOT 40
 }
 IF
 LDU 64 ; timestamp msgSlice
 SWAP
-CALL $replay_protection_macro$
+.inline __replay_protection_macro
 LDU 32 ; funcId body
 SWAP
 CALLREF {
-	CALL $public_function_selector$
+	.inline __public_function_selector
 }
 THROW 60
 
@@ -1057,25 +1062,25 @@ IFJMPREF {
 		PUSHINT 366082215
 		EQUAL
 		IFJMPREF {
-			CALL $calculateAcceptMintSelector$
+			.inline __calculateAcceptMintSelector
 		}
 		DUP
 		PUSHINT 375654403
 		EQUAL
 		IFJMPREF {
-			CALL $calculateBurnableByRootTokenRootInterfaceID$
+			.inline __calculateBurnableByRootTokenRootInterfaceID
 		}
 		DUP
 		PUSHINT 477178710
 		EQUAL
 		IFJMPREF {
-			CALL $calculateTransferableOwnershipInterfaceID$
+			.inline __calculateTransferableOwnershipInterfaceID
 		}
 		DUP
 		PUSHINT 482379448
 		EQUAL
 		IFJMPREF {
-			CALL $calculateTokenRootUpgradeableInterfaceID$
+			.inline __calculateTokenRootUpgradeableInterfaceID
 		}
 	}
 	DUP
@@ -1086,25 +1091,25 @@ IFJMPREF {
 		PUSHINT 520508104
 		EQUAL
 		IFJMPREF {
-			CALL $calculateAcceptBurnSelector$
+			.inline __calculateAcceptBurnSelector
 		}
 		DUP
 		PUSHINT 656630431
 		EQUAL
 		IFJMPREF {
-			CALL $calculateTIP3TokenRootInterfaceID$
+			.inline __calculateTIP3TokenRootInterfaceID
 		}
 		DUP
 		PUSHINT 708638903
 		EQUAL
 		IFJMPREF {
-			CALL $calculateTokenWalletUpgradeableInterfaceID$
+			.inline __calculateTokenWalletUpgradeableInterfaceID
 		}
 		DUP
 		PUSHINT 736416887
 		EQUAL
 		IFJMPREF {
-			CALL $calculateTokenWalletInterfaceID$
+			.inline __calculateTokenWalletInterfaceID
 		}
 	}
 	DUP
@@ -1115,25 +1120,25 @@ IFJMPREF {
 		PUSHINT 844169456
 		EQUAL
 		IFJMPREF {
-			CALL $calculateBurnableByRootTokenWalletInterfaceID$
+			.inline __calculateBurnableByRootTokenWalletInterfaceID
 		}
 		DUP
 		PUSHINT 1048748463
 		EQUAL
 		IFJMPREF {
-			CALL $calculateDestroyableInterfaceID$
+			.inline __calculateDestroyableInterfaceID
 		}
 		DUP
 		PUSHINT 1092396664
 		EQUAL
 		IFJMPREF {
-			CALL $calculateBurnableTokenWalletInterfaceID$
+			.inline __calculateBurnableTokenWalletInterfaceID
 		}
 		DUP
 		PUSHINT 1258335142
 		EQUAL
 		IFJMPREF {
-			CALL $calculateVersionedInterfaceID$
+			.inline __calculateVersionedInterfaceID
 		}
 	}
 	DUP
@@ -1144,25 +1149,25 @@ IFJMPREF {
 		PUSHINT 1538368818
 		EQUAL
 		IFJMPREF {
-			CALL $calculateTIP3TokenWalletInterfaceID$
+			.inline __calculateTIP3TokenWalletInterfaceID
 		}
 		DUP
 		PUSHINT 1625325912
 		EQUAL
 		IFJMPREF {
-			CALL $calculateTokenRootInterfaceID$
+			.inline __calculateTokenRootInterfaceID
 		}
 		DUP
 		PUSHINT 1653652510
 		EQUAL
 		IFJMPREF {
-			CALL $calculateAcceptTransferSelector$
+			.inline __calculateAcceptTransferSelector
 		}
 		DUP
 		PUSHINT 1675000662
 		EQUAL
 		IFJMPREF {
-			CALL $calculateDisableableMintTokenRootInterfaceID$
+			.inline __calculateDisableableMintTokenRootInterfaceID
 		}
 	}
 }
@@ -1174,19 +1179,19 @@ IFJMPREF {
 	PUSHINT 1756716863
 	EQUAL
 	IFJMPREF {
-		CALL $constructor$
+		.inline __constructor
 	}
 	DUP
 	PUSHINT 1902223749
 	EQUAL
 	IFJMPREF {
-		CALL $calculateSIDInterfaceID$
+		.inline __calculateSIDInterfaceID
 	}
 	DUP
 	PUSHINT 2089405281
 	EQUAL
 	IFJMPREF {
-		CALL $calculateBurnPausableTokenRootInterfaceID$
+		.inline __calculateBurnPausableTokenRootInterfaceID
 	}
 }
 

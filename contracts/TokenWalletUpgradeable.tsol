@@ -1,4 +1,4 @@
-pragma ever-solidity ^0.62.0;
+pragma ever-solidity ^0.71.0;
 
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
@@ -43,7 +43,7 @@ contract TokenWalletUpgradeable is
      * the TokenWalletPlatform. The `revert()` function is used to prevent
      * the contract from executing any further.
      */
-    constructor() public {
+    constructor() {
         revert();
     }
 
@@ -150,7 +150,7 @@ contract TokenWalletUpgradeable is
         address remainingGasTo;
 
         TvmSlice s = data.toSlice();
-        (root_, owner_, balance_, oldVersion, version_, remainingGasTo) = s.decode(
+        (root_, owner_, balance_, oldVersion, version_, remainingGasTo) = s.load(
             address,
             address,
             uint128,

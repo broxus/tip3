@@ -1,4 +1,4 @@
-pragma ever-solidity ^0.62.0;
+pragma ever-solidity ^0.71.0;
 
 import "./libraries/TokenMsgFlag.tsol";
 
@@ -32,7 +32,6 @@ contract TokenWalletPlatform {
      *    to remainingGasTo.
      */
     constructor(TvmCell walletCode, uint32 walletVersion, address sender, address remainingGasTo)
-        public
         functionID(0x15A038FB)
     {
         if (msg.sender == root || (sender.value != 0 && _getExpectedAddress(sender) == msg.sender)) {
